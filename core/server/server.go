@@ -19,7 +19,8 @@ func main() {
 		message := c.PostForm("message")		//get key from body
 		fmt.Printf("id: %T; page: %T; name: %T; message: %T", id, page, name, message)
 
-		c.JSON(200, gin.H{ //
+		//It will show the json formated data below when it success
+		c.JSON(200, gin.H{ 
 			"message": message,
 			"status":  200,
 		})
