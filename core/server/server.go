@@ -1,14 +1,26 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"fmt"
+
+	"github.com/gin-gonic/gin"
+)
 
 func main() {
-	server := gin.Default()
+	router := gin.Default()
 
-	server.POST("/test", func(ctx *gin.Context) {
-		ctx.JSON(200, gin.H{
-			"message": "ok",
+	router.POST("/editor", func(c *gin.Context) {
+		id := c.Query("id")
+		page := c.DefaultQuery("page", "0")
+		name := c.PostForm("name")
+		message := c.PostForm("message")
+		fmt.Printf("id: %s; page: %s; name: %s; message: %s", id, page, name, message)
+
+		c.JSON(200, gin.H{
+			"message": message,
+			"status":  200,
 		})
 	})
-	server.Run(":8888")
+
+	router.Run(":8888")
 }
