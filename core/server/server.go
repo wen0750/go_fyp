@@ -21,19 +21,25 @@ type Template struct {
 		Description    string   `json:"description,omitempty"`
 		Remediation    string   `json:"remediation,omitempty"`
 		Reference      []string `json:"reference,omitempty"`
+		//
 		Classification struct {
 			CvssMetrics string  `json:"cvss-metrics,omitempty"`
 			CvssScore   float64 `json:"cvss-score,omitempty"`
 			CveID       string  `json:"cve-id,omitempty"`
 			CweID       string  `json:"cwe-id,omitempty"`
 		} `json:"classification,omitempty"`
+		//
 		Metadata struct {
 			Verified    bool   `json:"verified,omitempty"`
 			ShodanQuery string `json:"shodan-query,omitempty"`
 		} `json:"metadata,omitempty"`
+		//
 		Tags string `json:"tags,omitempty"`
+		//
 	} `json:"info,omitempty"`
+	//
 	Name     string `json:"name,omitempty"`
+	//
 	Requests []struct {
 		Raw               []string `json:"raw,omitempty"`
 		CookieReuse       bool     `json:"cookie-reuse,omitempty"`
@@ -43,6 +49,7 @@ type Template struct {
 		MaxRedirects      int      `json:"max-redirects,omitempty"`
 		StopAtFirstMatch  bool     `json:"stop-at-first-match,omitempty"`
 		MatchersCondition string   `json:"matchers-condition,omitempty"`
+		//
 		Matchers          []struct {
 			Type      string   `json:"type,omitempty"`
 			Part      string   `json:"part,omitempty"`
@@ -52,19 +59,25 @@ type Template struct {
 			Condition string   `json:"condition,omitempty"`
 			Status    []int    `json:"status,omitempty"`
 		} `json:"matchers,omitempty"`
+		//
 		Extractors []struct {
 			Type  string   `json:"type,omitempty"`
 			Name  string   `json:"name,omitempty"`
 			Group int      `json:"group,omitempty"`
 			Regex []string `json:"regex,omitempty"`
 		} `json:"extractors,omitempty"`
+		//
 	} `json:"requests,omitempty"`
+	//
 	Workflows []struct {
 		Template     string `json:"template,omitempty"`
+		//
 		Subtemplates []struct {
 			Tags string `json:"tags,omitempty"`
 		} `json:"subtemplates,omitempty"`
+		//
 	} `json:"workflows,omitempty"`
+	//
 }
 
 // receive raw json data and convert it into .yaml file
