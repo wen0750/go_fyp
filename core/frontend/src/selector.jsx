@@ -10,14 +10,15 @@ import Select from '@mui/material/Select';
 
 
 
-export default class SigleSelect extends Component {
+export default class SigleSelect extends React.Component {
     constructor(props) {
-        super(props)
+        super(props);
+        this.state = {
+            option: ""
+        };
 
         const ITEM_HEIGHT = 40;
         const ITEM_PADDING_TOP = 8;
-
-        //[this.personName, this.setPersonName] = useState(0);
 
         this.menuProps = {
             PaperProps: {
@@ -34,9 +35,8 @@ export default class SigleSelect extends Component {
         const {
             target: { value },
         } = event;
-        this.setPersonName(
-            // On autofill we get a stringified value.
-            typeof value === 'string' ? value.split(',') : value,
+        this.setState(
+            { option: typeof value === 'string' ? value.split(',') : value }
           );
     };
 
@@ -47,7 +47,7 @@ export default class SigleSelect extends Component {
                 <Select
                     labelId="demo-multiple-chip-label"
                     id="demo-multiple-chip"
-                    value={this.personName}
+                    value={this.state.option}
                     onChange={this.handleChange}
                     input={<OutlinedInput id="select-multiple-chip" label={this.props.label} />}
                     renderValue={(selected) => (
