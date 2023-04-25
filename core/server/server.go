@@ -35,7 +35,6 @@ type Template struct {
 		} `json:"metadata,omitempty"`
 		//
 		Tags string `json:"tags,omitempty"`
-		//
 	} `json:"info,omitempty"`
 	//
 	Name     string `json:"name,omitempty"`
@@ -66,7 +65,6 @@ type Template struct {
 			Group int      `json:"group,omitempty"`
 			Regex []string `json:"regex,omitempty"`
 		} `json:"extractors,omitempty"`
-		//
 	} `json:"requests,omitempty"`
 	//
 	Workflows []struct {
@@ -75,9 +73,7 @@ type Template struct {
 		Subtemplates []struct {
 			Tags string `json:"tags,omitempty"`
 		} `json:"subtemplates,omitempty"`
-		//
 	} `json:"workflows,omitempty"`
-	//
 }
 
 // receive raw json data and convert it into .yaml file
