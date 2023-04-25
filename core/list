@@ -1,0 +1,102 @@
+id
+info
+    name
+    author
+    severity
+    description (opt)
+    reference (opt)
+    classification
+        cvss-metrics
+        cvss-score
+        cve-id (opt)
+        cwe-id
+    remediation (opt)
+    metadata
+        verified
+        fofa-query
+        shodan-query
+        verified
+        google-query
+    tags
+requests
+workflows
+template
+subtemplates
+matchers
+variables
+a1
+a2
+file
+extensions
+type
+regex
+denylist
+dns
+class
+recursion
+retries
+type
+words
+condition
+network
+inputs
+data
+host
+read-size
+status
+size
+regex
+word
+binary
+part
+dsl
+headless
+steps
+args
+url
+by
+xpath
+value
+code
+action
+requests
+raw
+Post
+Authorization
+Origin
+Content-Type
+Content-Length
+Transfer-Encoding
+X-Requested-With
+Accept-Encoding
+Referer
+timezone
+race
+race_count
+unsafe
+pipeline
+pipeline-concurrent-connections
+pipeline-requests-per-connections
+matchers-condition
+extractors
+kval
+json
+group
+method
+path
+redirects
+max-redirects
+stop-at-first-match
+headers
+User-Agent
+cmd
+body
+payloads
+paths
+header
+password
+threads
+attack
+params
+cookie-reuse
+status
