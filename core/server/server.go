@@ -26,7 +26,7 @@ type Template struct {
 	} `json:"request"`
 }
 
-func GetData(c *gin.Context) {
+func GetYMAL(c *gin.Context) {
 	jsonData := Template{}
 	c.BindJSON(&jsonData)
 	c.JSON(http.StatusOK, gin.H{
@@ -51,7 +51,7 @@ func main() {
 	router := gin.Default()
 	//Use POST method to receive json data from Website
 	// "/editor" is a temporary URL
-	router.POST("/editor", GetData)
+	router.POST("/editor", GetYMAL)
 
 	router.Run(":8888")
 }
