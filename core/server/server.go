@@ -4,9 +4,12 @@
 package main
 
 import (
+	"fmt"
+	"io/ioutil"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"gopkg.in/yaml.v3"
 )
 
 type Template struct {
@@ -30,6 +33,18 @@ func GetData(c *gin.Context) {
 		"name":    jsonData.Name,
 		"request": jsonData.Request,
 	})
+
+	yamlData, err := yaml.Marshal(&jsonData)
+
+	if err != nil {
+		fmt.Printf("Error while Marshaling. %v", err)
+	}
+
+	filename := "test.yaml"
+	err = ioutil.WriteFile(filename, yamlData, 0777)
+	if err != nil {
+		panic("Unable to write data into the file")
+	}
 }
 
 func main() {
