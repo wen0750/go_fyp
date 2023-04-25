@@ -12,6 +12,7 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+// create a template structure
 type Template struct {
 	Name    string `json:"name"`
 	Request struct {
@@ -26,20 +27,25 @@ type Template struct {
 	} `json:"request"`
 }
 
+// receive raw json data and convert it into .yaml file
 func GetYMAL(c *gin.Context) {
+	//receive data from website with POST method
 	jsonData := Template{}
 	c.BindJSON(&jsonData)
+	//For checking, check the response on Postman
 	c.JSON(http.StatusOK, gin.H{
 		"name":    jsonData.Name,
 		"request": jsonData.Request,
 	})
 
+	//Convert the data to yaml format
 	yamlData, err := yaml.Marshal(&jsonData)
 
 	if err != nil {
 		fmt.Printf("Error while Marshaling. %v", err)
 	}
 
+	//write output into the file
 	filename := "test.yaml"
 	err = ioutil.WriteFile(filename, yamlData, 0777)
 	if err != nil {
