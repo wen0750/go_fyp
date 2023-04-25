@@ -6,7 +6,6 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"gopkg.in/yaml.v3"
@@ -14,17 +13,47 @@ import (
 
 // create a template structure
 type Template struct {
-	Name    string `json:"name"`
-	Request struct {
-		Path              string `json:"path"`
-		Method            string `json:"method"`
-		MatchersCondition string `json:"matchersCondition"`
+	ID   string `json:"id"`
+	Info struct {
+		Name           string   `json:"name"`
+		Author         string   `json:"author"`
+		Severity       string   `json:"severity,omitempty"`
+		Description    string   `json:"description,omitempty"`
+		Remediation    string   `json:"remediation,omitempty"`
+		Reference      []string `json:"reference,omitempty"`
+		Classification struct {
+			CvssMetrics string   `json:"cvss-metrics,omitempty"`
+			CvssScore   *float64 `json:"cvss-score,omitempty"`
+			CveID       string   `json:"cve-id,omitempty"`
+			CweID       string   `json:"cwe-id,omitempty"`
+		} `json:"classification,omitempty"`
+		Metadata struct {
+			Verified string `json:"verified,omitempty"`
+		} `json:"metadata,omitempty"`
+		Tags string `json:"tags,omitempty"`
+	} `json:"info,omitempty"`
+	Name     string `json:"name,omitempty"`
+	Requests []struct {
+		Raw               []string `json:"raw,omitempty"`
+		CookieReuse       bool     `json:"cookie-reuse,omitempty"`
+		Method            string   `json:"method,omitempty"`
+		Path              []string `json:"path,omitempty"`
+		MatchersCondition string   `json:"matchers-condition,omitempty"`
 		Matchers          []struct {
-			Type  string   `json:"type"`
-			Part  string   `json:"part"`
-			Words []string `json:"words"`
-		} `json:"matchers"`
-	} `json:"request"`
+			Type      string   `json:"type,omitempty"`
+			Part      string   `json:"part,omitempty"`
+			Words     []string `json:"words,omitempty"`
+			Dsl       []string `json:"dsl,omitempty"`
+			Condition string   `json:"condition,omitempty"`
+			Status    []int    `json:"status,omitempty"`
+		} `json:"matchers,omitempty"`
+	} `json:"requests,omitempty"`
+	Workflows []struct {
+		Template     string `json:"template,omitempty"`
+		Subtemplates []struct {
+			Tags string `json:"tags,omitempty"`
+		} `json:"subtemplates,omitempty"`
+	} `json:"workflows,omitempty"`
 }
 
 // receive raw json data and convert it into .yaml file
@@ -33,9 +62,12 @@ func GetYMAL(c *gin.Context) {
 	jsonData := Template{}
 	c.BindJSON(&jsonData)
 	//For checking, check the response on Postman
-	c.JSON(http.StatusOK, gin.H{
-		"name":    jsonData.Name,
-		"request": jsonData.Request,
+	c.JSON(200, gin.H{
+		"id":        jsonData.ID,
+		"name":      jsonData.Name,
+		"info":      jsonData.Info,
+		"requests":  jsonData.Requests,
+		"workflows": jsonData.Workflows,
 	})
 
 	//Convert the data to yaml format

