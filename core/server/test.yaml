@@ -4,7 +4,7 @@ request:
     method: GET
     matcherscondition: and
     matchers:
-        - type: ""
+        - type: word
           part: part
           words:
             - <jira-database-config>

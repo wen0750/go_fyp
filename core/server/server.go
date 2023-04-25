@@ -19,7 +19,7 @@ type Template struct {
 		Method            string `json:"method"`
 		MatchersCondition string `json:"matchersCondition"`
 		Matchers          []struct {
-			Type  string   `json:"path"`
+			Type  string   `json:"type"`
 			Part  string   `json:"part"`
 			Words []string `json:"words"`
 		} `json:"matchers"`
