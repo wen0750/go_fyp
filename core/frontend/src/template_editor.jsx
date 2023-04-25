@@ -7,7 +7,7 @@ import {
     CardActions,
     Typography,
     Button,
-    Grid,
+    Box,
     TextField,
     Container,
 } from "@mui/material";
@@ -15,30 +15,22 @@ import {
 import "./assets/css/editor.css";
 import SigleSelect from "./selector.jsx"
 
+import { experimentalStyled as styled } from '@mui/material/styles';
+
+import Grid from '@mui/material/Unstable_Grid2';
+
 const names = [
-    'Oliver Hansen',
-    'Van Henry',
-    'April Tucker',
-    'Ralph Hubbard',
-    'Omar Alexander',
-    'Carlos Abbott',
-    'Miriam Wagner',
-    'Bradley Wilkerson',
-    'Virginia Andrews',
-    'Kelly Snyder',
+    "info", "high", "medium", "critical", "low", "unknown"
 ];
 
+const classification = ["cvss-metrics", "cvss-score", "cve-id", "cwe-id"]
 
 function TemplateInfo() {
     return (<Card>
         <CardHeader title="Template" />
         <hr />
         <CardContent>
-            <Grid container="container" spacing={2} columns={{
-                xs: 4,
-                sm: 8,
-                md: 12
-            }}>
+            <Grid container="container" spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
                 <Grid item="item">
                     <TextField required="required" label="name" />
                 </Grid>
@@ -54,21 +46,11 @@ function TemplateInfo() {
                 <Grid item="item">
                     <TextField label="reference (list)" />
                 </Grid>
-                <Grid item="item">
-                    <TextField label="cvss-metrics" />
-                </Grid>
                 <Grid item="item" xs={8} sm={8} md={8}>
                     <TextField id="outlined-multiline-static" label="description" multiline="multiline" rows={3} />
                 </Grid>
-                <Grid item="item">
-                    <TextField label="cvss-score" />
-                </Grid>
-                <Grid item="item">
-                    <TextField label="cve-id" />
-                </Grid>
-                <Grid item="item">
-                    <TextField label="cwe-id" />
-                </Grid>
+
+
                 <Grid item="item">
                     <TextField label="remediation" />
                 </Grid>
@@ -88,6 +70,16 @@ function TemplateInfo() {
                     <TextField label="tags" />
                 </Grid>
             </Grid>
+            <h3>classification</h3>
+            <Box sx={{ flexGrow: 1, borderRadius: '16px', border: 1, p: 3, my: 2 }}>
+                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                    {Array.from(classification).map((value, index) => (
+                        <Grid xs={2} sm={4} md={4} key={index}>
+                            <TextField label={value} />
+                        </Grid>
+                    ))}
+                </Grid>
+            </Box>
         </CardContent>
     </Card>);
 }
@@ -97,11 +89,7 @@ function TemplateRequest() {
         <CardHeader title="Template" />
         <hr />
         <CardContent>
-            <Grid container="container" spacing={2} columns={{
-                xs: 4,
-                sm: 8,
-                md: 12
-            }}>
+            <Grid container="container" spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
                 <Grid item="item">
                 </Grid>
                 <Grid item="item" xs={4}>
