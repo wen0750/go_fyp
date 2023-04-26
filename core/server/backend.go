@@ -5,22 +5,23 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
 
 	"github.com/gin-gonic/gin"
+
 	"gopkg.in/yaml.v3"
 )
 
 // create a template structure
 type Template struct {
-	ID   string `json:"id"`
+	ID   string `json:"id,omitempty"`
 	Info struct {
-		Name           string   `json:"name"`
-		Author         string   `json:"author"`
-		Severity       string   `json:"severity,omitempty"`
-		Description    string   `json:"description,omitempty"`
-		Remediation    string   `json:"remediation,omitempty"`
-		Reference      []string `json:"reference,omitempty"`
+		Name        string   `json:"name,omitempty"`
+		Author      string   `json:"author,omitempty"`
+		Severity    string   `json:"severity,omitempty"`
+		Description string   `json:"description,omitempty"`
+		Remediation string   `json:"remediation,omitempty"`
+		Reference   []string `json:"reference,omitempty"`
 		//
 		Classification struct {
 			CvssMetrics string  `json:"cvss-metrics,omitempty"`
@@ -37,8 +38,6 @@ type Template struct {
 		Tags string `json:"tags,omitempty"`
 	} `json:"info,omitempty"`
 	//
-	Name     string `json:"name,omitempty"`
-	//
 	Requests []struct {
 		Raw               []string `json:"raw,omitempty"`
 		CookieReuse       bool     `json:"cookie-reuse,omitempty"`
@@ -49,7 +48,7 @@ type Template struct {
 		StopAtFirstMatch  bool     `json:"stop-at-first-match,omitempty"`
 		MatchersCondition string   `json:"matchers-condition,omitempty"`
 		//
-		Matchers          []struct {
+		Matchers []struct {
 			Type      string   `json:"type,omitempty"`
 			Part      string   `json:"part,omitempty"`
 			Words     []string `json:"words,omitempty"`
@@ -68,7 +67,7 @@ type Template struct {
 	} `json:"requests,omitempty"`
 	//
 	Workflows []struct {
-		Template     string `json:"template,omitempty"`
+		Template string `json:"template,omitempty"`
 		//
 		Subtemplates []struct {
 			Tags string `json:"tags,omitempty"`
@@ -84,7 +83,6 @@ func GetYMAL(c *gin.Context) {
 	//For checking, check the response on Postman
 	c.JSON(200, gin.H{
 		"id":        jsonData.ID,
-		"name":      jsonData.Name,
 		"info":      jsonData.Info,
 		"requests":  jsonData.Requests,
 		"workflows": jsonData.Workflows,
@@ -99,7 +97,7 @@ func GetYMAL(c *gin.Context) {
 
 	//write output into the file
 	filename := "test.yaml"
-	err = ioutil.WriteFile(filename, yamlData, 0777)
+	err = os.WriteFile(filename, yamlData, 0777)
 	if err != nil {
 		panic("Unable to write data into the file")
 	}
