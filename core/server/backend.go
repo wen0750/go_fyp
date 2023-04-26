@@ -105,7 +105,7 @@ func GetYMAL(c *gin.Context) {
 
 func main() {
 	router := gin.Default()
-	mongodb.NewDB()
+	mongodb.ConnectDB()
 	//Use POST method to receive json data from Website
 	// "/editor" is a temporary URL
 	router.POST("/editor", GetYMAL)
