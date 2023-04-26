@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"os"
 
+	"gilab.com/pragmaticreviews/golang-gin-poc/mongodb"
 	"github.com/gin-gonic/gin"
-
 	"gopkg.in/yaml.v3"
 )
 
@@ -105,6 +105,7 @@ func GetYMAL(c *gin.Context) {
 
 func main() {
 	router := gin.Default()
+	mongodb.NewDB()
 	//Use POST method to receive json data from Website
 	// "/editor" is a temporary URL
 	router.POST("/editor", GetYMAL)

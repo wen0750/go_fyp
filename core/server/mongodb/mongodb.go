@@ -1,7 +1,7 @@
-package database
+package mongodb
 
 import "fmt"
 
-func start() {
-	fmt.Println(1)
+func NewDB() {
+	fmt.Println("wwww")
 }
