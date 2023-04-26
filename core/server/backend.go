@@ -97,7 +97,7 @@ func GetYMAL(c *gin.Context) {
 
 	//write output into the file
 	filename := "test.yaml"
-	err = os.WriteFile(filename, yamlData, 0777)
+	err = os.WriteFile(filename, yamlData, 0664)
 	if err != nil {
 		panic("Unable to write data into the file")
 	}
