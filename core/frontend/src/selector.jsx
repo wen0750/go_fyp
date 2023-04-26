@@ -28,7 +28,6 @@ export default class SigleSelect extends React.Component {
                 },
             },
         };
-        
     }
 
     handleChange = (event) => {
