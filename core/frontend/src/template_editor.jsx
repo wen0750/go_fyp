@@ -25,6 +25,31 @@ const names = [
 
 const classification = ["cvss-metrics", "cvss-score", "cve-id", "cwe-id"]
 
+function ondatasubmit () {
+
+    fetch('http://192.168.174.128:8888/editor', {
+        method: 'POST',
+        body: JSON.stringify({
+            id:"",info:{
+                name:"ssss",
+                author:"bbb"
+            }
+        }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      })
+         .then((response) => response.json())
+         .then((data) => {
+            console.log(data);
+            // Handle data
+         })
+         .catch((err) => {
+            console.log(err.message);
+         });
+}
+
+
 function TemplateInfo() {
     return (<Card>
         <CardHeader title="Template" />
@@ -80,6 +105,7 @@ function TemplateInfo() {
                     ))}
                 </Grid>
             </Box>
+            <Button variant="contained" onClick={ondatasubmit}></Button>
         </CardContent>
     </Card>);
 }
