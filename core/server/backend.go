@@ -97,9 +97,6 @@ func GetYMAL(c *gin.Context) {
 		fmt.Printf("Error while Marshaling. %v", err)
 	}
 
-	//write output into the file
-	//filename := "test.yaml"
-
 	//Create a temporary YAML file
 	tmpfile, err := os.CreateTemp(os.TempDir(), "test.yaml")
 	if err != nil {
