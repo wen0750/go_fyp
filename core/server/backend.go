@@ -5,6 +5,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 
 	"gilab.com/pragmaticreviews/golang-gin-poc/mongodb"
@@ -97,12 +98,38 @@ func GetYMAL(c *gin.Context) {
 	}
 
 	//write output into the file
+	//filename := "test.yaml"
+
+	//Create a temporary YAML file
+	tmpfile, err := os.CreateTemp(os.TempDir(), "test.yaml")
+	if err != nil {
+		c.JSON(http.StatusInternalServerError,"Unable to create Temporary file")
+		return
+	}
+	defer os.Remove(tmpfile.Name()) //Cleanup the temporary file after serving 
+
+	//Write YAML data to the temporary file
+	if _, err := tmpfile.Write(yamlData); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to write"})
+		return
+	} 
+	//Close the file after finishing
+	if err := tmpfile.Close(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error":"Unable to close temporary file"})
+		return
+	}
+	//Set the appropriate headers to trigger a download in the browser
+	c.Writer.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%s", tmpfile.Name()))
+	c.Writer.Header().Set("Content-Type", "application/x-yaml") 
+	
+	//Create a yaml file for checking
 	filename := "test.yaml"
 	err = os.WriteFile(filename, yamlData, 0664)
 	if err != nil {
 		panic("Unable to write data into the file")
 	}
-	mongodb.InsertData(yamlData)
+
+	//mongodb.InsertData(yamlData)
 }
 
 func main() {
