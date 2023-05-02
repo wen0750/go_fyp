@@ -47,6 +47,23 @@ function ondatasubmit () {
                 const a = document.createElement('a');
                 a.href = url;
                 a.download = "test.yaml";
+                const button = document.createElement('button');
+                button.textContent = "Download YAML";
+                button.addEventListener('click', () => {
+                    a.click();
+                });
+                document.body.appendChild(button);
+            });
+        } else {
+            console.log('Server responded with an error');
+        }
+    })
+    .catch((err) => {
+        console.log(err.message);
+    });
+
+
+             {/*a.download = "test.yaml";
                 a.click();
             });
         } else {
@@ -59,7 +76,7 @@ function ondatasubmit () {
 
 
 
-      {/* 
+      
          .then((response) => response.json())
          .then((data) => {
             console.log(data);
