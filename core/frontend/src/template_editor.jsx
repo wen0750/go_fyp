@@ -41,7 +41,7 @@ function ondatasubmit () {
       })
       .then((response) => {
         if (response.ok) {
-            // If the response is successful, trigger a download of the file
+            // If the response is successful, create a button to download file
             response.blob().then(blob => {
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
