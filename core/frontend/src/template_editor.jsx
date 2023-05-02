@@ -27,7 +27,7 @@ const classification = ["cvss-metrics", "cvss-score", "cve-id", "cwe-id"]
 
 function ondatasubmit () {
 
-    fetch('http://192.168.174.128:8888/editor', {
+    fetch('http://192.168.0.104:8888/editor', {
         method: 'POST',
         body: JSON.stringify({
             id:"",info:{
@@ -39,6 +39,27 @@ function ondatasubmit () {
           'Content-type': 'application/json; charset=UTF-8',
         },
       })
+      .then((response) => {
+        if (response.ok) {
+            // If the response is successful, trigger a download of the file
+            response.blob().then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = "test.yaml";
+                a.click();
+            });
+        } else {
+            console.log('Server responded with an error');
+        }
+    })
+    .catch((err) => {
+        console.log(err.message);
+    });
+
+
+
+      {/* 
          .then((response) => response.json())
          .then((data) => {
             console.log(data);
@@ -46,7 +67,7 @@ function ondatasubmit () {
          })
          .catch((err) => {
             console.log(err.message);
-         });
+         });This is a JSX comment */} 
 }
 
 

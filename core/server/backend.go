@@ -118,13 +118,14 @@ func GetYMAL(c *gin.Context) {
 	//Set the appropriate headers to trigger a download in the browser
 	c.Writer.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%s", tmpfile.Name()))
 	c.Writer.Header().Set("Content-Type", "application/x-yaml") 
+	http.ServeFile(c.Writer, c.Request, tmpfile.Name())
 	
 	//Create a yaml file for checking
-	filename := "test.yaml"
-	err = os.WriteFile(filename, yamlData, 0664)
-	if err != nil {
-		panic("Unable to write data into the file")
-	}
+	//filename := "test.yaml"
+	//err = os.WriteFile(filename, yamlData, 0664)
+	//if err != nil {
+	//	panic("Unable to write data into the file")
+	//}
 
 	//mongodb.InsertData(yamlData)
 }
