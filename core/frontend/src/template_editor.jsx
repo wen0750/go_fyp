@@ -22,14 +22,30 @@ import "./assets/css/editor.css";
 const names = ["info", "high", "medium", "critical", "low", "unknown"];
 const classification = ["cvss-metrics", "cvss-score", "cve-id", "cwe-id"]
 
-const Item = styled(Button)(({ theme }) => ({
-    ...theme.typography.body2,
-    padding: theme.spacing(1.7),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-    border: '3px dashed rgba(0, 0, 0, 0.12)',
-    width: 1,
-  }));
+function ondatasubmit () {
+
+    fetch('http://192.168.174.128:8888/editor', {
+        method: 'POST',
+        body: JSON.stringify({
+            id:"",info:{
+                name:"ssss",
+                author:"bbb"
+            }
+        }),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8',
+        },
+      })
+         .then((response) => response.json())
+         .then((data) => {
+            console.log(data);
+            // Handle data
+         })
+         .catch((err) => {
+            console.log(err.message);
+         });
+}
+
 
 function TemplateInfo() {
     return (<Card sx={{ my: 3, boxShadow: 3 }}>
@@ -85,7 +101,7 @@ function TemplateInfo() {
                     </Grid>
                 </Grid>
             </Box>
-            <Button variant="contained" >Button</Button>
+            <Button variant="contained" onClick={ondatasubmit}></Button>
         </CardContent>
     </Card>);
 }
