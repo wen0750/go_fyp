@@ -200,6 +200,8 @@ function Editor() {
     return (<Container maxWidth="lg">
         <TemplateInfo />
         <TemplateRequest />
+        <TemplateWorkflows/>
+        <TemplateVariables/>
     </Container>);
 }
 
