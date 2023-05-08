@@ -13,6 +13,8 @@ import {
 } from "@mui/material";
 
 import "./assets/css/editor.css";
+
+
 import SigleSelect from "./selector.jsx"
 
 import { experimentalStyled as styled } from '@mui/material/styles';
@@ -196,13 +198,31 @@ function TemplateVariables() {
     </Card>);
 }
 
+function ButtonSizes() {
+    return (
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', '& button': { m: 1 } }}>
+        <div>
+            <Button variant="contained" size="medium">
+                Clear
+            </Button>
+            <Button variant="contained" size="medium">
+                Submit
+            </Button>
+        </div>
+      </Box>
+    );
+}
+
+
 function Editor() {
-    return (<Container maxWidth="lg">
+    return (
+      <Container maxWidth="lg">
         <TemplateInfo />
         <TemplateRequest />
-        <TemplateWorkflows/>
-        <TemplateVariables/>
-    </Container>);
-}
+        <TemplateWorkflows />
+        <TemplateVariables />
+        <ButtonSizes/>
+      </Container>);
+};
 
 export default Editor;
