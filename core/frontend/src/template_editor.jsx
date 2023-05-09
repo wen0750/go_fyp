@@ -107,7 +107,6 @@ function TemplateInfo() {
                     ))}
                 </Grid>
             </Box>
-            <Button variant="contained" onClick={ondatasubmit}></Button>
         </CardContent>
     </Card>);
 }
@@ -205,7 +204,7 @@ function ButtonSizes() {
             <Button variant="contained" size="medium">
                 Clear
             </Button>
-            <Button variant="contained" size="medium">
+            <Button variant="contained" onclick={ondatasubmit}size="medium">
                 Submit
             </Button>
         </div>
