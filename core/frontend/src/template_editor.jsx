@@ -202,6 +202,9 @@ function ButtonSizes() {
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', '& button': { m: 1 } }}>
         <div>
             <Button variant="contained" size="medium">
+                Import
+            </Button>
+            <Button variant="contained" size="medium">
                 Clear
             </Button>
             <Button variant="contained" onclick={ondatasubmit}size="medium">
