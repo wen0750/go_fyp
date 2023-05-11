@@ -207,8 +207,11 @@ function ButtonSizes() {
             <Button variant="contained" size="medium">
                 Clear
             </Button>
+            <Button variant="contained" size="medium">
+                save
+            </Button>
             <Button variant="contained" onClick={ondatasubmit}size="medium">
-                Submit
+                Download
             </Button>
         </div>
       </Box>
