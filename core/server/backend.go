@@ -77,8 +77,10 @@ type Template struct {
 	} `json:"workflows,omitempty"`
 }
 
+
+
 // receive raw json data and convert it into .yaml file
-func GetYMAL(c *gin.Context) {
+func Download(c *gin.Context) {
 	//receive data from website with POST method
 	jsonData := Template{}
 	c.BindJSON(&jsonData)
@@ -127,7 +129,18 @@ func GetYMAL(c *gin.Context) {
 	//	panic("Unable to write data into the file")
 	//}
 
-	mongodb.InsertData(yamlData)
+	//mongodb.InsertData(yamlData)
+}
+func SaveToDB(c *gin.Context) {
+	jsonData := mongodb.Template{}
+	err := c.BindJSON(&jsonData)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
+		return
+	}
+	mongodb.InsertData(&jsonData)
+
+	c.JSON(http.StatusOK, gin.H{"message": "data saved successfully"})
 }
 
 func main() {
@@ -138,7 +151,17 @@ func main() {
 	mongodb.ConnectDB()
 	//Use POST method to receive json data from Website
 	// "/editor" is a temporary URL
-	router.POST("/editor", GetYMAL)
+	//router.POST("/editor", GetYMAL)
+
+	router.POST("/editor/:action", func(c *gin.Context) {
+		action := c.Param("action")
+		if action == "save" {
+			SaveToDB(c)
+		} else if (action == "download"){
+			Download(c)
+		}
+	})
+    
 
 	router.Run(":8888")
 }
