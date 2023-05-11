@@ -183,6 +183,7 @@ func main() {
     if err != nil {
         log.Fatalf("Error creating or checking collection: %v\n", err)
     }
+	
 	//Use POST method to receive json data from Website
 	router.POST("/editor/:action", func(c *gin.Context) {
 		action := c.Param("action")
@@ -192,7 +193,7 @@ func main() {
 			Download(c)
 		}
 	})
-	router.POST("/editor", SaveToDB)
+	//router.POST("/editor", SaveToDB)
     
 
 	router.Run(":8888")
