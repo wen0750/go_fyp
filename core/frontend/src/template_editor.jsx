@@ -28,7 +28,7 @@ const names = [
 const classification = ["cvss-metrics", "cvss-score", "cve-id", "cwe-id"]
 
 function ondatasubmit () {
-    //change ip & port
+
     fetch('http://127.0.0.1:8888/editor', {
         method: 'POST',
         body: JSON.stringify({
