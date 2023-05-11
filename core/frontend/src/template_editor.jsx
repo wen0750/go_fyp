@@ -29,7 +29,7 @@ const classification = ["cvss-metrics", "cvss-score", "cve-id", "cwe-id"]
 
 function ondatasubmit () {
 
-    fetch('http://192.168.174.128:8888/editor', {
+    fetch('http://127.0.0.1:8888/editor', {
         method: 'POST',
         body: JSON.stringify({
             id:"",info:{
