@@ -127,7 +127,7 @@ func GetYMAL(c *gin.Context) {
 	//	panic("Unable to write data into the file")
 	//}
 
-	//mongodb.InsertData(yamlData)
+	mongodb.InsertData(yamlData)
 }
 
 func main() {
