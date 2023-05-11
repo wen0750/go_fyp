@@ -87,13 +87,16 @@ func CreateCollection(mongoURI, dbName, collectionName string) (*mongo.Collectio
 	return collection, nil
 }
 
-func EnsureCollectionExists(mongoURI, dbName, collectionName string) (*mongo.Collection, error) {
+
+func CheckCollectionExists(mongoURI, dbName, collectionName string) (*mongo.Collection, error) {
+	//connect to DB
     client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mongoURI))
     if err != nil {
         log.Printf("Error connecting to MongoDB: %v\n", err)
         return nil, err
     }
 
+	//List out all the Collection Names
     db := client.Database(dbName)
     collections, err := db.ListCollectionNames(context.Background(), bson.M{})
     if err != nil {
@@ -109,8 +112,6 @@ func EnsureCollectionExists(mongoURI, dbName, collectionName string) (*mongo.Col
 
     return db.Collection(collectionName), nil
 }
-
-
 
 func InsertTemplate(ctx context.Context, client *mongo.Client, template *Template) error {
 	collection := client.Database("FYP").Collection("Templates")

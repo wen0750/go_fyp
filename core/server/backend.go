@@ -152,7 +152,7 @@ func SaveToDB(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	// Insert the Template struct instance into the MongoDB collection
+	// Insert the Template into the MongoDB collection
 	result, err := collection.InsertOne(ctx, template)
 	if err != nil {
 		log.Printf("Error inserting template: %v\n", err)
@@ -168,22 +168,20 @@ func SaveToDB(c *gin.Context) {
 	})
 }
 
-//check if the collection Templates exists
-
-
 func main() {
+	var err error
 	router := gin.Default()
 	router.Use(cors.Default())
-
+	
+	//check if collectionName is exist, if not, create one
 	mongoURI := "mongodb+srv://sam1916:ue6aE6jfXGtBvwS@cluster0.981q5hl.mongodb.net/?retryWrites=true&w=majority"
     dbName := "FYP"
     collectionName := "Templates"
-	var err error
-    collection, err = mongodb.EnsureCollectionExists(mongoURI, dbName, collectionName)
+    collection, err = mongodb.CheckCollectionExists(mongoURI, dbName, collectionName)
     if err != nil {
         log.Fatalf("Error creating or checking collection: %v\n", err)
     }
-	
+
 	//Use POST method to receive json data from Website
 	router.POST("/editor/:action", func(c *gin.Context) {
 		action := c.Param("action")
