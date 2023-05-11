@@ -2,7 +2,9 @@ package mongodb
 
 import (
 	"context"
+	"log"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -70,7 +72,10 @@ type Template struct {
 	} `json:"workflows,omitempty"`
 }
 
-func ConnectDB() {
+var collection *mongo.Collection
+
+
+func ConnectDB() *mongo.Client{
 	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
 	opts := options.Client().ApplyURI("mongodb+srv://sam1916:ue6aE6jfXGtBvwS@cluster0.981q5hl.mongodb.net/?retryWrites=true&w=majority").SetServerAPIOptions(serverAPI)
 	// Create a new client and connect to the server
@@ -78,19 +83,67 @@ func ConnectDB() {
 	if err != nil {
 		panic(err)
 	}
-	defer func() {
-		if err = client.Disconnect(context.TODO()); err != nil {
-			panic(err)
-		}
-	}()
+	return client
 	// Send a ping to confirm a successful connection
 	//if err := client.Database("admin").RunCommand(context.TODO(), bson.D{{Key: "ping", Value: 1}}).Err(); err != nil {
 	//	panic(err)
 	//}
 	//fmt.Println("Pinged your deployment. You successfully connected to MongoDB!")
+	
+	/* Check how many tables in mongodb
+	db := client.Database("admin")
+	collection = db.Collection("yourCollectionName")
+	
+	collectionNames, err := client.Database("admin").ListCollectionNames(context.TODO(), bson.D{})
+	if err != nil {
+    panic(err)
+	}
+	fmt.Printf("Your collection names are %s",collectionNames)
+	return client
+	*/
 }
 
-func InsertData(template *Template) {
-    ConnectDB()
-    // do something
+func CreateCollection(mongoURI, dbName, collectionName string) (*mongo.Collection, error) {
+
+	// Create a new client and connect to MongoDB server
+	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mongoURI))
+	if err != nil {
+        log.Printf("Error connecting to MongoDB: %v\n", err)
+        return nil, err
+    }
+
+	//create table in mongoDB
+	collection := client.Database(dbName).Collection(collectionName)
+	return collection, nil
+}
+
+func EnsureCollectionExists(mongoURI, dbName, collectionName string) (*mongo.Collection, error) {
+    client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mongoURI))
+    if err != nil {
+        log.Printf("Error connecting to MongoDB: %v\n", err)
+        return nil, err
+    }
+
+    db := client.Database(dbName)
+    collections, err := db.ListCollectionNames(context.Background(), bson.M{})
+    if err != nil {
+        log.Printf("Error listing collections: %v\n", err)
+        return nil, err
+    }
+
+    for _, collName := range collections {
+        if collName == collectionName {
+            return db.Collection(collectionName), nil
+        }
+    }
+
+    return db.Collection(collectionName), nil
+}
+
+
+
+func InsertTemplate(ctx context.Context, client *mongo.Client, template *Template) error {
+	collection := client.Database("FYP").Collection("Templates")
+	_, err := collection.InsertOne(ctx, template)
+	return err
 }

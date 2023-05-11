@@ -4,15 +4,21 @@
 package main
 
 import (
+	"context"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"gilab.com/pragmaticreviews/golang-gin-poc/mongodb"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/mongo"
 	"gopkg.in/yaml.v3"
 )
+
+var collection *mongo.Collection
 
 // create a template structure
 type Template struct {
@@ -131,28 +137,53 @@ func Download(c *gin.Context) {
 
 	//mongodb.InsertData(yamlData)
 }
+
+// Save data To MongoDB by using InsertData method in mongodb.go
 func SaveToDB(c *gin.Context) {
-	jsonData := mongodb.Template{}
-	err := c.BindJSON(&jsonData)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid JSON"})
+	var template Template
+	
+	// Bind the JSON data received to the Template struct
+	if err := c.ShouldBindJSON(&template); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid JSON data",
+		})
 		return
 	}
-	mongodb.InsertData(&jsonData)
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 
-	c.JSON(http.StatusOK, gin.H{"message": "data saved successfully"})
+	// Insert the Template struct instance into the MongoDB collection
+	result, err := collection.InsertOne(ctx, template)
+	if err != nil {
+		log.Printf("Error inserting template: %v\n", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Failed to save the template",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"message": "Template saved successfully",
+		"id":      result.InsertedID,
+	})
 }
+
+//check if the collection Templates exists
+
 
 func main() {
 	router := gin.Default()
-
 	router.Use(cors.Default())
 
-	mongodb.ConnectDB()
+	mongoURI := "mongodb+srv://sam1916:ue6aE6jfXGtBvwS@cluster0.981q5hl.mongodb.net/?retryWrites=true&w=majority"
+    dbName := "FYP"
+    collectionName := "Templates"
+	var err error
+    collection, err = mongodb.EnsureCollectionExists(mongoURI, dbName, collectionName)
+    if err != nil {
+        log.Fatalf("Error creating or checking collection: %v\n", err)
+    }
 	//Use POST method to receive json data from Website
-	// "/editor" is a temporary URL
-	//router.POST("/editor", GetYMAL)
-
 	router.POST("/editor/:action", func(c *gin.Context) {
 		action := c.Param("action")
 		if action == "save" {
@@ -161,6 +192,7 @@ func main() {
 			Download(c)
 		}
 	})
+	router.POST("/editor", SaveToDB)
     
 
 	router.Run(":8888")
