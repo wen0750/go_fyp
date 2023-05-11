@@ -191,7 +191,7 @@ func main() {
 			Download(c)
 		}
 	})
-	//router.POST("/editor", SaveToDB)
+	router.POST("/editor", Download)
     
 
 	router.Run(":8888")

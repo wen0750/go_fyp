@@ -45,11 +45,20 @@ function ondatasubmit () {
         if (response.ok) {
             // If the response is successful, create a button to download file
             response.blob().then(blob => {
+                // Remove any existing download buttons
+                const existingButton = document.getElementById('download-button');
+                if (existingButton) {
+                    document.body.removeChild(existingButton);
+                }
+
+                // Create a new download button
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
                 a.download = "test.yaml";
+
                 const button = document.createElement('button');
+                button.id = 'download-button';
                 button.textContent = "Download YAML";
                 button.addEventListener('click', () => {
                     a.click();
