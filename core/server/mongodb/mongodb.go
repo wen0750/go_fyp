@@ -72,36 +72,6 @@ type Template struct {
 	} `json:"workflows,omitempty"`
 }
 
-var collection *mongo.Collection
-
-
-func ConnectDB() *mongo.Client{
-	serverAPI := options.ServerAPI(options.ServerAPIVersion1)
-	opts := options.Client().ApplyURI("mongodb+srv://sam1916:ue6aE6jfXGtBvwS@cluster0.981q5hl.mongodb.net/?retryWrites=true&w=majority").SetServerAPIOptions(serverAPI)
-	// Create a new client and connect to the server
-	client, err := mongo.Connect(context.TODO(), opts)
-	if err != nil {
-		panic(err)
-	}
-	return client
-	// Send a ping to confirm a successful connection
-	//if err := client.Database("admin").RunCommand(context.TODO(), bson.D{{Key: "ping", Value: 1}}).Err(); err != nil {
-	//	panic(err)
-	//}
-	//fmt.Println("Pinged your deployment. You successfully connected to MongoDB!")
-	
-	/* Check how many tables in mongodb
-	db := client.Database("admin")
-	collection = db.Collection("yourCollectionName")
-	
-	collectionNames, err := client.Database("admin").ListCollectionNames(context.TODO(), bson.D{})
-	if err != nil {
-    panic(err)
-	}
-	fmt.Printf("Your collection names are %s",collectionNames)
-	return client
-	*/
-}
 
 func CreateCollection(mongoURI, dbName, collectionName string) (*mongo.Collection, error) {
 
