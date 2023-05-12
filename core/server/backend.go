@@ -193,8 +193,7 @@ func main() {
 			Download(c)
 		}
 	})
+	//This router.POST is for testing
 	router.POST("/editor", Download)
-    
-
 	router.Run(":8888")
 }
