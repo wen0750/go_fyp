@@ -34,10 +34,11 @@ function ondatasubmit () {
     fetch('http://127.0.0.1:8888/editor', {
         method: 'POST',
         body: JSON.stringify({
-            id:"",info:{
+            id:"Test",
+            info:{
                 name: "Test",
                 author: "FYP",
-            }
+            },
         }),
         headers: {
           'Content-type': 'application/json; charset=UTF-8',
@@ -105,7 +106,7 @@ function SaveToMongo() {
     fetch('http://127.0.0.1:8888/editor', {
         method: 'POST',
         body: JSON.stringify({
-        id: "",
+        id: "Test",
         info: {
             name: "Test",
             author: "FYP",
@@ -118,9 +119,11 @@ function SaveToMongo() {
     .then((response) => {
         if (response.ok) {
             return response.json();
+        } else if (response.status === 409) {
+            throw new Error('Duplicate entry');
         } else {
             console.log('Server responded with an error');
-            throw new Error('Server Error')
+            throw new Error('Server Error');
         }
     })
     .then((data) => {
@@ -137,6 +140,16 @@ function SaveToMongo() {
     })
     .catch((error) => {
         console.error('Error:', error);
+
+        if (error.message === 'Duplicate entry') {
+            // Display a failure message box for duplicate entry
+            Swal.fire({
+                title: 'Name Duplicated in Database',
+                text: 'A template with this Name already exists. Please try again with a different Name.',
+                icon: 'error',
+            });
+        } else {
+        }
     });
 }
 

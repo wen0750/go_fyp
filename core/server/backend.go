@@ -22,7 +22,7 @@ var collection *mongo.Collection
 
 // create a template structure
 type Template struct {
-	ID   string `json:"id,omitempty"`
+	ID   string `json:"id"`
 	Info struct {
 		Name        string   `json:"name,omitempty"`
 		Author      string   `json:"author,omitempty"`
@@ -149,18 +149,31 @@ func SaveToDB(c *gin.Context) {
 		})
 		return
 	}
+
+	// Validate the input data
+	if template.Info.Name == "" || template.Info.Author == "" {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Name and Author fields must not be empty",
+		})
+		return
+	}
+
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	// Insert the Template into the MongoDB collection
 	result, err := collection.InsertOne(ctx, template)
 	if err != nil {
-		log.Printf("Error inserting template: %v\n", err)
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Failed to save the template",
-		})
+		if mongo.IsDuplicateKeyError(err) {
+			c.JSON(http.StatusConflict, gin.H{"error": "Duplicate entry"})
+		} else {
+			log.Printf("Error inserting template: %v\n", err)
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": "Failed to save the template",
+			})
+		}
 		return
-	}
+    }
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Template saved successfully",
@@ -177,11 +190,17 @@ func main() {
 	mongoURI := "mongodb+srv://sam1916:ue6aE6jfXGtBvwS@cluster0.981q5hl.mongodb.net/?retryWrites=true&w=majority"
     dbName := "FYP"
     collectionName := "Templates"
+
     collection, err = mongodb.CheckCollectionExists(mongoURI, dbName, collectionName)
     if err != nil {
         mongodb.CreateCollection(mongoURI,dbName,collectionName)
     } else{
 		log.Println("Collection already exist")
+	}
+
+	err = mongodb.EnsureUniqueIndex(mongoURI, dbName, collectionName)
+	if err != nil {
+		log.Fatalf("Error ensuring unique index: %v\n", err)
 	}
 
 	//Use POST method to receive json data from Website
