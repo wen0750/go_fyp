@@ -35,8 +35,8 @@ function ondatasubmit () {
         method: 'POST',
         body: JSON.stringify({
             id:"",info:{
-                name:"ssss",
-                author:"bbb"
+                name: "Test",
+                author: "FYP",
             }
         }),
         headers: {
@@ -107,8 +107,8 @@ function SaveToMongo() {
         body: JSON.stringify({
         id: "",
         info: {
-            name: "ssss",
-            author: "bbb",
+            name: "Test",
+            author: "FYP",
         },
         }),
         headers: {
@@ -129,9 +129,9 @@ function SaveToMongo() {
 
         // Show a message box to let the user know the Inserted ID
         Swal.fire({
-            title: 'Inserted Successfully',
-            html: 'ID: ' + data.id + '<br>'+
-            'This is the uid in the Database, you can save it for later search',
+            title: 'Saved Successfully',
+            html: '<strong>UID:</strong> ' + data.id + '<br>'+
+            'This is the <strong>UID</strong> in the Database, you can save it for later search',
             icon: 'success',
           });
     })
