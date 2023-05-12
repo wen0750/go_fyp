@@ -112,9 +112,3 @@ func CheckCollectionExists(mongoURI, dbName, collectionName string) (*mongo.Coll
 
     return db.Collection(collectionName), nil
 }
-
-func InsertTemplate(ctx context.Context, client *mongo.Client, template *Template) error {
-	collection := client.Database("FYP").Collection("Templates")
-	_, err := collection.InsertOne(ctx, template)
-	return err
-}

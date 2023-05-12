@@ -179,8 +179,10 @@ func main() {
     collectionName := "Templates"
     collection, err = mongodb.CheckCollectionExists(mongoURI, dbName, collectionName)
     if err != nil {
-        log.Fatalf("Error creating or checking collection: %v\n", err)
-    }
+        mongodb.CreateCollection(mongoURI,dbName,collectionName)
+    } else{
+		log.Println("Collection already exist")
+	}
 
 	//Use POST method to receive json data from Website
 	router.POST("/editor/:action", func(c *gin.Context) {
