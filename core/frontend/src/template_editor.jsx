@@ -27,8 +27,10 @@ const names = [
 
 const classification = ["cvss-metrics", "cvss-score", "cve-id", "cwe-id"]
 
+// Serve the YAML to user 
 function ondatasubmit () {
-//change ip & port, should be set to server-side IP
+    //change ip & port, should be set to server-side IP
+    //this is hard-coded
     fetch('http://127.0.0.1:8888/editor', {
         method: 'POST',
         body: JSON.stringify({
@@ -95,6 +97,49 @@ function ondatasubmit () {
          
     */
 }
+
+//After the user clicks it, it will return the uid to user for later searching(find his own YAML)
+function SaveToMongo() {
+    //change ip & port, should be set to server-side IP
+    //this is hard-coded
+    fetch('http://127.0.0.1:8888/editor', {
+        method: 'POST',
+        body: JSON.stringify({
+        id: "",
+        info: {
+            name: "ssss",
+            author: "bbb",
+        },
+        }),
+        headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+        },
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            console.log('Server responded with an error');
+            throw new Error('Server Error')
+        }
+    })
+    .then((data) => {
+        console.log('Success:', data.message);
+        console.log('Inserted ID:', data.id);
+
+        // Show a message box to let the user know the Inserted ID
+        Swal.fire({
+            title: 'Inserted Successfully',
+            html: 'ID: ' + data.id + '<br>'+
+            'This is the uid in the Database, you can save it for later search',
+            icon: 'success',
+          });
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+
 
 
 function TemplateInfo() {
@@ -252,10 +297,10 @@ function ButtonSizes() {
             <Button variant="contained" size="medium">
                 Clear
             </Button>
-            <Button variant="contained" onClick={ondatasubmit}size="medium">
+            <Button variant="contained" onClick={SaveToMongo} size="medium">
                 save to database
             </Button>
-            <Button variant="contained" size="medium">
+            <Button variant="contained" onClick={ondatasubmit} size="medium">
                 Download
             </Button>
         </div>
