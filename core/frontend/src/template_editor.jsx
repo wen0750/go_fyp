@@ -28,7 +28,7 @@ const names = [
 const classification = ["cvss-metrics", "cvss-score", "cve-id", "cwe-id"]
 
 function ondatasubmit () {
-//change ip & port
+//change ip & port, should be set to server-side IP
     fetch('http://127.0.0.1:8888/editor', {
         method: 'POST',
         body: JSON.stringify({
@@ -51,7 +51,7 @@ function ondatasubmit () {
                     document.body.removeChild(existingButton);
                 }
 
-                // Create a new download button
+                // Create a new UGLY download button, please work on this first
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
