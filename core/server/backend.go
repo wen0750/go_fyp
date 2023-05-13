@@ -150,14 +150,6 @@ func SaveToDB(c *gin.Context) {
 		return
 	}
 
-	// Validate the input data
-	if template.Info.Name == "" || template.Info.Author == "" {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Name and Author fields must not be empty",
-		})
-		return
-	}
-
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
