@@ -193,6 +193,8 @@ func main() {
 	err = mongodb.EnsureUniqueIndex(mongoURI, dbName, collectionName)
 	if err != nil {
 		log.Fatalf("Error ensuring unique index: %v\n", err)
+	} else {
+		log.Printf("Unique Key set successful")
 	}
 
 	//Use POST method to receive json data from Website
@@ -204,6 +206,7 @@ func main() {
 			Download(c)
 		}
 	})
+
 	//This router.POST is for testing
 	router.POST("/editor", SaveToDB)
 	router.Run(":8888")
