@@ -190,12 +190,12 @@ func main() {
 		log.Println("Collection already exist")
 	}
 
-	err = mongodb.EnsureUniqueIndex(mongoURI, dbName, collectionName)
+	/*err = mongodb.EnsureUniqueIndex(mongoURI, dbName, collectionName)
 	if err != nil {
 		log.Fatalf("Error ensuring unique index: %v\n", err)
 	} else {
 		log.Printf("Unique Key set successful")
-	}
+	}*/
 
 	//Use POST method to receive json data from Website
 	router.POST("/editor/:action", func(c *gin.Context) {
