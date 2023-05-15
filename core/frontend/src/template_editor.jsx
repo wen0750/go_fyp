@@ -31,7 +31,7 @@ const classification = ["cvss-metrics", "cvss-score", "cve-id", "cwe-id"]
 function ondatasubmit () {
     //change ip & port, should be set to server-side IP
     //this is hard-coded
-    fetch('http://127.0.0.1:8888/editor/download', {
+    fetch('http://127.0.0.1:8888/editor', {
         method: 'POST',
         body: JSON.stringify({
             id:"Test",
@@ -93,7 +93,7 @@ function ondatasubmit () {
 function SaveToMongo() {
     //change ip & port, should be set to server-side IP
     //this is hard-coded
-    fetch('http://127.0.0.1:8888/editor/save', {
+    fetch('http://127.0.0.1:8888/editor', {
         method: 'POST',
         body: JSON.stringify({
         id: "Test",
@@ -325,11 +325,8 @@ function ButtonSizes() {
             <Button variant="contained" onClick={SaveToMongo} size="medium">
                 save to database
             </Button>
-            <Button variant="contained" onClick={ondatasubmit} size="medium">
-                Download
-            </Button>
             <Button variant="contained" onClick={GetDataFromMongoDB} size="medium">
-            GetDataFromMongoDB
+                Download
             </Button>
         </div>
       </Box>
