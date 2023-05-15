@@ -143,7 +143,29 @@ function SaveToMongo() {
     });
 }
 
-
+function GetDataFromMongoDB() {
+    const [data, setData] = useState([]);
+  
+    useEffect(() => {
+      async function fetchData() {
+        const response = await fetch('http://localhost:8000/data');
+        const data = await response.json();
+        setData(data);
+      }
+      fetchData();
+    }, []);
+  
+    return (
+      <div>
+        {data && data.map((item, index) => (
+          <div key={index}>
+            <p>{id}</p>
+            <p>{info.name}</p>
+          </div>
+        ))}
+      </div>
+    );
+  }
 
 function TemplateInfo() {
     return (<Card>
@@ -303,7 +325,7 @@ function ButtonSizes() {
             <Button variant="contained" onClick={SaveToMongo} size="medium">
                 save to database
             </Button>
-            <Button variant="contained" onClick={ondatasubmit} size="medium">
+            <Button variant="contained" onClick={GetDataFromMongoDB} size="medium">
                 Download
             </Button>
         </div>
