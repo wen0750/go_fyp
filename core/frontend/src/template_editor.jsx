@@ -74,10 +74,10 @@ function SaveToMongo() {
     fetch('http://127.0.0.1:8888/editor/save', {
         method: 'POST',
         body: JSON.stringify({
-            ID:"Test1",
+            ID:"Test12",
             Info:{
                 Name: "Test1",
-                Author: "Test",
+                Author: "Test2",
                 Severity: "Test",
                 Reference: ["Test1","Test2","Test3"]
             }
@@ -97,7 +97,6 @@ function SaveToMongo() {
         }
     })
     .then((data) => {
-        console.log('Success:', data.message);
         console.log('Action:', data.action);
         console.log('Inserted ID:', data.id);
 
@@ -127,8 +126,8 @@ function SaveToMongo() {
         if (error.message === 'Duplicate entry') {
             // Display a failure message box for duplicate entry
             Swal.fire({
-                title: 'Name Duplicated in Database',
-                text: 'A template with this Name already exists. Please try again with a different Name.',
+                title: 'ID Duplicated in Database',
+                text: 'A template with this ID already exists. Please try again with a different Name.',
                 icon: 'error',
             });
         } else {
