@@ -91,7 +91,7 @@ func Download(c *gin.Context) {
 	jsonData := Template{}
 	c.BindJSON(&jsonData)
 	//For checking, check the response on Postman
-	c.JSON(200, gin.H{
+	fmt.Printf("JSON data: %v\n", gin.H{
 		"id":        jsonData.ID,
 		"info":      jsonData.Info,
 		"requests":  jsonData.Requests,
@@ -104,7 +104,7 @@ func Download(c *gin.Context) {
 	if err != nil {
 		fmt.Printf("Error while Marshaling. %v", err)
 	}
-
+	
 	//Create a temporary YAML file
 	tmpfile, err := os.CreateTemp(os.TempDir(), "test.yaml")
 	if err != nil {
