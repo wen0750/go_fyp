@@ -163,8 +163,8 @@ func SaveToDB(c *gin.Context) {
 	err := collection.FindOne(ctx, filter).Decode(&existingDoc)
 
 	// There are 3 scenarios
+	// First scenario, check if Template ID is exist
 	if err == mongo.ErrNoDocuments {
-		// First scenario, check if Template ID is exist
 		result, err := collection.InsertOne(ctx, template)
 		if err != nil {
 			log.Printf("Error inserting template: %v\n", err)
@@ -173,7 +173,7 @@ func SaveToDB(c *gin.Context) {
 			})
 			return
 		}
-		// If (Data != same) && (name == new), create one
+		// If (Data == new) && (name == new), create one
 		c.JSON(http.StatusOK, gin.H{
 			"message": "Template saved successfully",
 			"action":  "created",
@@ -186,11 +186,10 @@ func SaveToDB(c *gin.Context) {
 		})
 		return
 	} else {
-		// Second scenario, If Data == unchanged, return 409 error
+		// Second scenario, If all the Data == unchanged(Duplicated), return 409 error
 		if template.Equal(existingDoc) {
 			c.JSON(http.StatusConflict, gin.H{
-				"message": "Template data is the same, no changes made",
-				"error":  "no_changes",
+				"error":  "Duplicated data",
 			})
 			return
 		} else {
