@@ -167,17 +167,10 @@ func SaveToDB(c *gin.Context) {
 		// First scenario, check if Template ID is exist
 		result, err := collection.InsertOne(ctx, template)
 		if err != nil {
-			// If ID == exist, return 409 error
-			if mongo.IsDuplicateKeyError(err) {
-				c.JSON(http.StatusConflict, gin.H{
-					"error": "Duplicate template with the same info.name",
-				})
-			} else {
-				log.Printf("Error inserting template: %v\n", err)
-				c.JSON(http.StatusInternalServerError, gin.H{
-					"error": "Failed to save the template",
-				})
-			}
+			log.Printf("Error inserting template: %v\n", err)
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": "Failed to save the template",
+			})
 			return
 		}
 		// If (Data != same) && (name == new), create one

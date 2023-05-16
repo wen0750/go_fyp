@@ -65,28 +65,6 @@ function ondatasubmit () {
     .catch((err) => {
         console.log(err.message);
     });
-             /*a.download = "test.yaml";
-                a.click();
-            });
-        } else {
-            console.log('Server responded with an error');
-        }
-    })
-    .catch((err) => {
-        console.log(err.message);
-    });
-    
-      /** 
-         .then((response) => response.json())
-         .then((data) => {
-            console.log(data);
-            // Handle data
-         })
-         .catch((err) => {
-            console.log(err.message);
-         });
-         
-    */
 }
 
 //After the user clicks it, it will return the uid to user for later searching(find his own YAML)
@@ -101,7 +79,7 @@ function SaveToMongo() {
                 Name: "Test1",
                 Author: "Test",
                 Severity: "Test",
-                Reference: ["Test","Test","Test"]
+                Reference: ["Test1","Test2","Test3"]
             }
         }),
         headers: {
@@ -133,7 +111,7 @@ function SaveToMongo() {
         } else{
             title = 'Template Updated Successfully';
             htmlContent = '<strong>Template Name:</strong> ' + data.id + '<br>'+
-            'This is the <strong>Template Name</strong> in the Database, you can check it anytime';
+            'It is updated in the Database, you can check it anytime';
         }
 
         // Show a message box to let the user know the Inserted ID
