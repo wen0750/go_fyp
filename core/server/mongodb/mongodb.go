@@ -113,7 +113,7 @@ func CheckCollectionExists(mongoURI, dbName, collectionName string) (*mongo.Coll
     return db.Collection(collectionName), nil
 }
 
-/*Prevent users to inserting the same data into MongoDB
+//Prevent users to inserting the same data into MongoDB
 func EnsureUniqueIndex(mongoURI, dbName, collectionName string) error {
 	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mongoURI))
 	if err != nil {
@@ -124,7 +124,7 @@ func EnsureUniqueIndex(mongoURI, dbName, collectionName string) error {
 
 	collection := client.Database(dbName).Collection(collectionName)
 	indexModel := mongo.IndexModel{
-		Keys:    bson.D{{Key: "name", Value: 1}},
+		Keys:    bson.D{{Key: "info.name", Value: 1}},
 		Options: options.Index().SetUnique(true),
 	}
 
@@ -135,4 +135,4 @@ func EnsureUniqueIndex(mongoURI, dbName, collectionName string) error {
 	}
 
 	return nil
-}*/
+}

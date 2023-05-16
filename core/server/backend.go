@@ -158,6 +158,7 @@ func SaveToDB(c *gin.Context) {
 	if err != nil {
 		if mongo.IsDuplicateKeyError(err) {
 			c.JSON(http.StatusConflict, gin.H{"error": "Duplicate entry"})
+			log.Printf("%v",err)
 		} else {
 			log.Printf("Error inserting template: %v\n", err)
 			c.JSON(http.StatusInternalServerError, gin.H{
@@ -190,12 +191,12 @@ func main() {
 		log.Println("Collection already exist")
 	}
 
-	/*err = mongodb.EnsureUniqueIndex(mongoURI, dbName, collectionName)
+	err = mongodb.EnsureUniqueIndex(mongoURI, dbName, collectionName)
 	if err != nil {
 		log.Fatalf("Error ensuring unique index: %v\n", err)
 	} else {
 		log.Printf("Unique Key set successful")
-	}*/
+	}
 
 	//Use POST method to receive json data from Website
 	router.POST("/editor/:action", func(c *gin.Context) {
@@ -208,6 +209,6 @@ func main() {
 	})
 
 	//This router.POST is for testing
-	router.POST("/editor", SaveToDB)
+	//router.POST("/editor", SaveToDB)
 	router.Run(":8888")
 }

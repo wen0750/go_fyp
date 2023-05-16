@@ -36,7 +36,7 @@ function ondatasubmit () {
         body: JSON.stringify({
             ID:"Test",
             Info:{
-                Name: "Test",
+                Name: "abc",
                 Author: "FYP",
             }
         }),
@@ -93,12 +93,12 @@ function ondatasubmit () {
 function SaveToMongo() {
     //change ip & port, should be set to server-side IP
     //this is hard-coded
-    fetch('http://127.0.0.1:8888/editor', {
+    fetch('http://127.0.0.1:8888/editor/save', {
         method: 'POST',
         body: JSON.stringify({
             ID:"Test",
             Info:{
-                Name: "Test",
+                Name: "bcd",
                 Author: "FYP",
             }
         }),
