@@ -11,7 +11,7 @@ import (
 
 // create a template structure
 type Template struct {
-	ID   string `json:"id,omitempty"`
+	ID   string `json:"id"`
 	Info struct {
 		Name        string   `json:"name,omitempty"`
 		Author      string   `json:"author,omitempty"`
@@ -124,7 +124,9 @@ func EnsureUniqueIndex(mongoURI, dbName, collectionName string) error {
 
 	collection := client.Database(dbName).Collection(collectionName)
 	indexModel := mongo.IndexModel{
-		Keys:    bson.D{{Key: "info.name", Value: 1}},
+		Keys: bson.D{
+			{Key: "id", Value: 1},
+		},
 		Options: options.Index().SetUnique(true),
 	}
 

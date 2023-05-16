@@ -9,11 +9,13 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"reflect"
 	"time"
 
 	"gilab.com/pragmaticreviews/golang-gin-poc/mongodb"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"gopkg.in/yaml.v3"
 )
@@ -90,12 +92,12 @@ func Download(c *gin.Context) {
 	//receive data from website with POST method
 	jsonData := Template{}
 	c.BindJSON(&jsonData)
-	//For checking, check the response on Postman
+	//For checking
 	fmt.Printf("JSON data: %v\n", gin.H{
 		"id":        jsonData.ID,
-		"info":      jsonData.Info,
-		"requests":  jsonData.Requests,
-		"workflows": jsonData.Workflows,
+		"\ninfo":      jsonData.Info,
+		"\nrequests":  jsonData.Requests,
+		"\nworkflows": jsonData.Workflows,
 	})
 
 	//Convert the data to yaml format
@@ -153,25 +155,90 @@ func SaveToDB(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	// Insert the Template into the MongoDB collection
-	result, err := collection.InsertOne(ctx, template)
-	if err != nil {
-		if mongo.IsDuplicateKeyError(err) {
-			c.JSON(http.StatusConflict, gin.H{"error": "Duplicate entry"})
-			log.Printf("%v",err)
+
+	// Check for an existing document with the same info.name
+	filter := bson.M{"id": template.ID}
+
+	var existingDoc Template
+	err := collection.FindOne(ctx, filter).Decode(&existingDoc)
+
+	// There are 3 scenarios
+	if err == mongo.ErrNoDocuments {
+		// First scenario, check if Template ID is exist
+		result, err := collection.InsertOne(ctx, template)
+		if err != nil {
+			// If ID == exist, return 409 error
+			if mongo.IsDuplicateKeyError(err) {
+				c.JSON(http.StatusConflict, gin.H{
+					"error": "Duplicate template with the same info.name",
+				})
+			} else {
+				log.Printf("Error inserting template: %v\n", err)
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"error": "Failed to save the template",
+				})
+			}
+			return
+		}
+		// If (Data != same) && (name == new), create one
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Template saved successfully",
+			"action":  "created",
+			"id":      result.InsertedID,
+		})
+	} else if err != nil {
+		log.Printf("Error retrieving template: %v\n", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Failed to retrieve existing template",
+		})
+		return
+	} else {
+		// Second scenario, If Data == unchanged, return 409 error
+		if template.Equal(existingDoc) {
+			c.JSON(http.StatusConflict, gin.H{
+				"message": "Template data is the same, no changes made",
+				"error":  "no_changes",
+			})
+			return
 		} else {
-			log.Printf("Error inserting template: %v\n", err)
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"error": "Failed to save the template",
+			// Third scenario, if Data == Updated, return 200 OK
+			update := bson.M{"$set": template}
+			_, err := collection.UpdateOne(ctx, filter, update)
+
+			if err != nil {
+				log.Printf("Error updating template: %v\n", err)
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"error": "Failed to update the template",
+				})
+				return
+			}
+			c.JSON(http.StatusOK, gin.H{
+				"message": "Template updated successfully",
+				"action":  "updated",
+				"id":      template.ID,
 			})
 		}
-		return
-    }
+	}
+}
 
-	c.JSON(http.StatusOK, gin.H{
-		"message": "Template saved successfully",
-		"id":      result.InsertedID,
-	})
+//return ture if the data is the same
+func (t Template) Equal(other Template) bool {
+	return t.ID == other.ID &&
+		t.Info.Name == other.Info.Name &&
+		t.Info.Author == other.Info.Author &&
+		t.Info.Severity == other.Info.Severity &&
+		t.Info.Description == other.Info.Description &&
+		t.Info.Remediation == other.Info.Remediation &&
+		reflect.DeepEqual(t.Info.Reference, other.Info.Reference) &&
+		t.Info.Classification.CvssMetrics == other.Info.Classification.CvssMetrics &&
+		t.Info.Classification.CvssScore == other.Info.Classification.CvssScore &&
+		t.Info.Classification.CveID == other.Info.Classification.CveID &&
+		t.Info.Classification.CweID == other.Info.Classification.CweID &&
+		t.Info.Metadata.Verified == other.Info.Metadata.Verified &&
+		t.Info.Metadata.ShodanQuery == other.Info.Metadata.ShodanQuery &&
+		t.Info.Tags == other.Info.Tags &&
+		reflect.DeepEqual(t.Requests, other.Requests) &&
+		reflect.DeepEqual(t.Workflows, other.Workflows)
 }
 
 func main() {
@@ -187,6 +254,7 @@ func main() {
     collection, err = mongodb.CheckCollectionExists(mongoURI, dbName, collectionName)
     if err != nil {
         mongodb.CreateCollection(mongoURI,dbName,collectionName)
+		log.Println("Collection created")
     } else{
 		log.Println("Collection already exist")
 	}

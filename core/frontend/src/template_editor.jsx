@@ -96,10 +96,12 @@ function SaveToMongo() {
     fetch('http://127.0.0.1:8888/editor/save', {
         method: 'POST',
         body: JSON.stringify({
-            ID:"Test",
+            ID:"Test1",
             Info:{
-                Name: "bcd",
-                Author: "FYP",
+                Name: "Test1",
+                Author: "Test",
+                Severity: "Test",
+                Reference: ["Test","Test","Test"]
             }
         }),
         headers: {
@@ -118,13 +120,26 @@ function SaveToMongo() {
     })
     .then((data) => {
         console.log('Success:', data.message);
+        console.log('Action:', data.action);
         console.log('Inserted ID:', data.id);
+
+
+        let title;
+        let htmlContent;
+        if (data.action === 'created') {
+            title = 'Template Created Successfully';
+            htmlContent = '<strong>UID:</strong> ' + data.id + '<br>' +
+                      'This is the <strong>UID</strong> in the Database, you can save it for later search';
+        } else{
+            title = 'Template Updated Successfully';
+            htmlContent = '<strong>Template Name:</strong> ' + data.id + '<br>'+
+            'This is the <strong>Template Name</strong> in the Database, you can check it anytime';
+        }
 
         // Show a message box to let the user know the Inserted ID
         Swal.fire({
-            title: 'Saved Successfully',
-            html: '<strong>UID:</strong> ' + data.id + '<br>'+
-            'This is the <strong>UID</strong> in the Database, you can save it for later search',
+            title: title,
+            html: htmlContent,
             icon: 'success',
           });
     })
