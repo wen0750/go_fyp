@@ -16,6 +16,7 @@ import {
 
 import Grid from "@mui/material/Unstable_Grid2";
 import "./assets/css/editor.css";
+import SigleSelect from "./selector";
 
 export default class EditorTemplate extends React.Component {
     constructor(props) {
@@ -46,7 +47,7 @@ export default class EditorTemplate extends React.Component {
 
     PartInformation = () => {
         return (
-            <Card>
+            <Card sx={{ my: 2 }}>
                 <CardHeader title="Template" />
                 <hr />
                 <CardContent>
@@ -137,7 +138,7 @@ export default class EditorTemplate extends React.Component {
 
     PartRequest = () => {
         return (
-            <Card>
+            <Card sx={{ my: 2 }}>
                 <CardHeader title="Template" />
                 <hr />
                 <CardContent>
@@ -180,41 +181,6 @@ export default class EditorTemplate extends React.Component {
         );
     };
 
-    ActionButton = (props) => {
-        return (
-            <Box
-                sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    "& button": { m: 1 },
-                }}
-            >
-                <div>
-                    <Button variant="contained" size="medium">
-                        Import
-                    </Button>
-                    <Button variant="contained" size="medium">
-                        Clear
-                    </Button>
-                    <Button
-                        variant="contained"
-                        onClick={this.saveToMongo}
-                        size="medium"
-                    >
-                        save to database
-                    </Button>
-                    <Button
-                        variant="contained"
-                        onClick={this.ondatasubmit}
-                        size="medium"
-                    >
-                        Download
-                    </Button>
-                </div>
-            </Box>
-        );
-    };
-
     render() {
         return (
             <Container maxWidth="lg">
@@ -234,7 +200,7 @@ export default class EditorTemplate extends React.Component {
                     </Grid>
                 </Grid> */}
 
-                {/* <this.PartInformation /> */}
+                <this.PartInformation />
                 <this.PartRequest />
             </Container>
         );
