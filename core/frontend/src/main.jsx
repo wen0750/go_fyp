@@ -1,10 +1,12 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import Editor from './template_editor'
-import './assets/css/index.css'
+import * as React from 'react';
+import * as ReactDOM from 'react-dom/client';
+import { StyledEngineProvider } from '@mui/material/styles';
+import Editor from './editor';
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.querySelector("#root")).render(
   <React.StrictMode>
-    <Editor />
-  </React.StrictMode>,
-)
+    <StyledEngineProvider injectFirst>
+      <Editor />
+    </StyledEngineProvider>
+  </React.StrictMode>
+);
