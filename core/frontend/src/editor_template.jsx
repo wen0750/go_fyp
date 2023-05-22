@@ -35,14 +35,14 @@ export default class EditorTemplate extends React.Component {
                 },
             },
         };
-        this.names = [
-            "info", "high", "medium", "critical", "low", "unknown"
+        this.names = ["info", "high", "medium", "critical", "low", "unknown"];
+        this.classification = [
+            "cvss-metrics",
+            "cvss-score",
+            "cve-id",
+            "cwe-id",
         ];
-        this.classification = ["cvss-metrics", "cvss-score", "cve-id", "cwe-id"]
-
     }
-
-
 
     PartInformation = () => {
         return (
@@ -50,7 +50,11 @@ export default class EditorTemplate extends React.Component {
                 <CardHeader title="Template" />
                 <hr />
                 <CardContent>
-                    <Grid container="container" spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
+                    <Grid
+                        container="container"
+                        spacing={2}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                    >
                         <Grid item="item">
                             <TextField required="required" label="name" />
                         </Grid>
@@ -58,18 +62,30 @@ export default class EditorTemplate extends React.Component {
                             <TextField label="author" />
                         </Grid>
                         <Grid item="item" xs={2.3}>
-                            <SigleSelect list={this.names} label="Risk Level"></SigleSelect>
+                            <SigleSelect
+                                list={this.names}
+                                label="Risk Level"
+                            ></SigleSelect>
                         </Grid>
                         <Grid item="item">
-                            <TextField required="required" id="outlined-required" label="Required" defaultValue="Hello World" />
+                            <TextField
+                                required="required"
+                                id="outlined-required"
+                                label="Required"
+                                defaultValue="Hello World"
+                            />
                         </Grid>
                         <Grid item="item">
                             <TextField label="reference (list)" />
                         </Grid>
                         <Grid item="item" xs={8} sm={8} md={8}>
-                            <TextField id="outlined-multiline-static" label="description" multiline="multiline" rows={3} />
+                            <TextField
+                                id="outlined-multiline-static"
+                                label="description"
+                                multiline="multiline"
+                                rows={3}
+                            />
                         </Grid>
-
 
                         <Grid item="item">
                             <TextField label="remediation" />
@@ -91,59 +107,78 @@ export default class EditorTemplate extends React.Component {
                         </Grid>
                     </Grid>
                     <h3>classification</h3>
-                    <Box sx={{ flexGrow: 1, borderRadius: '16px', border: 1, p: 3, my: 2 }}>
-                        <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                            {Array.from(this.classification).map((value, index) => (
-                                <Grid xs={2} sm={4} md={4} key={index}>
-                                    <TextField label={value} />
-                                </Grid>
-                            ))}
+                    <Box
+                        sx={{
+                            flexGrow: 1,
+                            borderRadius: "16px",
+                            border: 1,
+                            p: 3,
+                            my: 2,
+                        }}
+                    >
+                        <Grid
+                            container
+                            spacing={{ xs: 2, md: 3 }}
+                            columns={{ xs: 4, sm: 8, md: 12 }}
+                        >
+                            {Array.from(this.classification).map(
+                                (value, index) => (
+                                    <Grid xs={2} sm={4} md={4} key={index}>
+                                        <TextField label={value} />
+                                    </Grid>
+                                )
+                            )}
                         </Grid>
                     </Box>
                 </CardContent>
-            </Card>);
-    }
+            </Card>
+        );
+    };
 
     PartRequest = () => {
-        return (<Card>
-            <CardHeader title="Template" />
-            <hr />
-            <CardContent>
-                <Grid container="container" spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
-                    <Grid item="item">
+        return (
+            <Card>
+                <CardHeader title="Template" />
+                <hr />
+                <CardContent>
+                    <Grid
+                        container="container"
+                        spacing={2}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                    >
+                        <Grid item="item"></Grid>
+                        <Grid item="item" xs={4}>
+                            <TextField label="path" />
+                        </Grid>
+                        <Grid item="item">
+                            <TextField label="author" />
+                        </Grid>
+                        <Grid item="item">
+                            <TextField label="author" />
+                        </Grid>
+                        <Grid item="item">
+                            <TextField label="author" />
+                        </Grid>
+                        <Grid item="item">
+                            <TextField label="author" />
+                        </Grid>
+                        <Grid item="item">
+                            <TextField label="author" />
+                        </Grid>
+                        <Grid item="item">
+                            <TextField label="author" />
+                        </Grid>
+                        <Grid item="item">
+                            <TextField label="author" />
+                        </Grid>
+                        <Grid item="item">
+                            <TextField label="author" />
+                        </Grid>
                     </Grid>
-                    <Grid item="item" xs={4}>
-                        <TextField label="path" />
-                    </Grid>
-                    <Grid item="item">
-                        <TextField label="author" />
-                    </Grid>
-                    <Grid item="item">
-                        <TextField label="author" />
-                    </Grid>
-                    <Grid item="item">
-                        <TextField label="author" />
-                    </Grid>
-                    <Grid item="item">
-                        <TextField label="author" />
-                    </Grid>
-                    <Grid item="item">
-                        <TextField label="author" />
-                    </Grid>
-                    <Grid item="item">
-                        <TextField label="author" />
-                    </Grid>
-                    <Grid item="item">
-                        <TextField label="author" />
-                    </Grid>
-                    <Grid item="item">
-                        <TextField label="author" />
-                    </Grid>
-
-                </Grid>
-            </CardContent>
-        </Card>);
-    }
+                </CardContent>
+            </Card>
+        );
+    };
 
     ActionButton = (props) => {
         return (
@@ -161,10 +196,18 @@ export default class EditorTemplate extends React.Component {
                     <Button variant="contained" size="medium">
                         Clear
                     </Button>
-                    <Button variant="contained" onClick={this.saveToMongo} size="medium">
+                    <Button
+                        variant="contained"
+                        onClick={this.saveToMongo}
+                        size="medium"
+                    >
                         save to database
                     </Button>
-                    <Button variant="contained" onClick={this.ondatasubmit} size="medium">
+                    <Button
+                        variant="contained"
+                        onClick={this.ondatasubmit}
+                        size="medium"
+                    >
                         Download
                     </Button>
                 </div>

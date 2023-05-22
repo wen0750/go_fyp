@@ -35,42 +35,45 @@ export default class EditorWorkflow extends React.Component {
                 },
             },
         };
-        this.names = [
-            "info", "high", "medium", "critical", "low", "unknown"
+        this.names = ["info", "high", "medium", "critical", "low", "unknown"];
+        this.classification = [
+            "cvss-metrics",
+            "cvss-score",
+            "cve-id",
+            "cwe-id",
         ];
-        this.classification = ["cvss-metrics", "cvss-score", "cve-id", "cwe-id"]
-
     }
 
     TemplateWorkflows = () => {
         return (
-        <Card>
-            <CardHeader title="+ Workflows" />
-            <hr />
-            <CardContent>
-                <Grid container="container" spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
-                    <Grid item="item">
+            <Card>
+                <CardHeader title="+ Workflows" />
+                <hr />
+                <CardContent>
+                    <Grid
+                        container="container"
+                        spacing={2}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                    >
+                        <Grid item="item"></Grid>
+                        <Grid item="item" xs={4}>
+                            <TextField label="+ Template" />
+                        </Grid>
+                        <Grid item="item">
+                            <TextField label="+ Subtemplates" />
+                        </Grid>
+                        <Grid item="item">
+                            <TextField label="+ matchers" />
+                        </Grid>
                     </Grid>
-                    <Grid item="item" xs={4}>
-                        <TextField label="+ Template" />
-                    </Grid>
-                    <Grid item="item">
-                        <TextField label="+ Subtemplates" />
-                    </Grid>
-                    <Grid item="item">
-                        <TextField label="+ matchers" />
-                    </Grid>
-
-
-                </Grid>
-            </CardContent>
-        </Card>
+                </CardContent>
+            </Card>
         );
-    }
+    };
     render() {
         return (
             <Container maxWidth="lg">
-                <this.TemplateWorkflows/>
+                <this.TemplateWorkflows />
             </Container>
         );
     }

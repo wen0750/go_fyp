@@ -35,32 +35,38 @@ export default class EditorVariables extends React.Component {
                 },
             },
         };
-        this.names = [
-            "info", "high", "medium", "critical", "low", "unknown"
+        this.names = ["info", "high", "medium", "critical", "low", "unknown"];
+        this.classification = [
+            "cvss-metrics",
+            "cvss-score",
+            "cve-id",
+            "cwe-id",
         ];
-        this.classification = ["cvss-metrics", "cvss-score", "cve-id", "cwe-id"]
-
     }
-
 
     TemplateVariables = () => {
-        return (<Card>
-            <CardHeader title="+ Variables" />
-            <hr />
-            <CardContent>
-                <Grid container="container" spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
-                    <Grid item="item">
+        return (
+            <Card>
+                <CardHeader title="+ Variables" />
+                <hr />
+                <CardContent>
+                    <Grid
+                        container="container"
+                        spacing={2}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                    >
+                        <Grid item="item"></Grid>
+                        <Grid item="item" xs={4}>
+                            <TextField label="+ a1" />
+                        </Grid>
+                        <Grid item="item">
+                            <TextField label="+ a2" />
+                        </Grid>
                     </Grid>
-                    <Grid item="item" xs={4}>
-                        <TextField label="+ a1" />
-                    </Grid>
-                    <Grid item="item">
-                        <TextField label="+ a2" />
-                    </Grid>
-                </Grid>
-            </CardContent>
-        </Card>);
-    }
+                </CardContent>
+            </Card>
+        );
+    };
 
     render() {
         return (
