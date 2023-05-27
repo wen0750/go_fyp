@@ -6,10 +6,6 @@ import {
     Card,
     CardHeader,
     CardContent,
-    CardActions,
-    Typography,
-    Button,
-    Box,
     TextField,
     Container,
 } from "@mui/material";
@@ -35,13 +31,6 @@ export default class EditorVariables extends React.Component {
                 },
             },
         };
-        this.names = ["info", "high", "medium", "critical", "low", "unknown"];
-        this.classification = [
-            "cvss-metrics",
-            "cvss-score",
-            "cve-id",
-            "cwe-id",
-        ];
     }
 
     TemplateVariables = () => {

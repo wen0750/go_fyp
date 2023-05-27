@@ -6,6 +6,9 @@ import {
     Card,
     CardHeader,
     CardContent,
+    CardActions,
+    Typography,
+    Button,
     Box,
     TextField,
     Container,
@@ -14,7 +17,6 @@ import {
 import Grid from "@mui/material/Unstable_Grid2";
 import "./assets/css/editor.css";
 import SigleSelect from "./editor_ext_selector";
-import FormTableFormat from "./editor_ext_formTableFormat";
 import OutlinedButtons from "./editor_ext_moreOptionBtn";
 
 export default class EditorTemplate extends React.Component {
@@ -35,70 +37,19 @@ export default class EditorTemplate extends React.Component {
                 },
             },
         };
+        this.names = ["info", "high", "medium", "critical", "low", "unknown"];
         this.classification = [
             "cvss-metrics",
             "cvss-score",
             "cve-id",
             "cwe-id",
         ];
-        this.OptionList = [
-            {
-                key: 0,
-                label: "Name",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 1,
-                label: "Author",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 2,
-                label: "Risk Level",
-                type: "SigleSelect",
-                value: ["info", "high", "medium", "critical", "low", "unknown"],
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 3,
-                label: "reference",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 4,
-                label: "remediation",
-                type: "multiline",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 5,
-                label: "verified",
-                type: "TextField",
-                visible: false,
-                removable: true,
-            },
-            {
-                key: 6,
-                label: "tags",
-                type: "TextField",
-                visible: false,
-                removable: true,
-            },
-        ];
     }
 
     PartInformation = () => {
         return (
             <Card sx={{ my: 2 }}>
-                <CardHeader title="Information" />
+                <CardHeader title="Template" />
                 <hr />
                 <CardContent>
                     <Grid
@@ -106,9 +57,59 @@ export default class EditorTemplate extends React.Component {
                         spacing={2}
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     >
-                        <FormTableFormat
-                            opts={this.OptionList}
-                        ></FormTableFormat>
+                        <Grid item="item">
+                            <TextField required="required" label="name" />
+                        </Grid>
+                        <Grid item="item">
+                            <TextField label="author" />
+                        </Grid>
+                        <Grid item="item" xs={2.3}>
+                            <SigleSelect
+                                list={this.names}
+                                label="Risk Level"
+                            ></SigleSelect>
+                        </Grid>
+                        <Grid item="item">
+                            <TextField
+                                required="required"
+                                id="outlined-required"
+                                label="Required"
+                                defaultValue="Hello World"
+                            />
+                        </Grid>
+                        <Grid item="item">
+                            <TextField label="reference (list)" />
+                        </Grid>
+                        <Grid item="item" xs={8} sm={8} md={8}>
+                            <TextField
+                                id="outlined-multiline-static"
+                                label="description"
+                                multiline="multiline"
+                                rows={3}
+                            />
+                        </Grid>
+
+                        <Grid item="item">
+                            <TextField label="remediation" />
+                        </Grid>
+                        <Grid item="item">
+                            <TextField label="verified" />
+                        </Grid>
+                        <Grid item="item">
+                            <TextField label="fofa-query" />
+                        </Grid>
+                        <Grid item="item">
+                            <TextField label="shodan-query" />
+                        </Grid>
+                        <Grid item="item">
+                            <TextField label="google-query" />
+                        </Grid>
+                        <Grid item="item">
+                            <TextField label="tags" />
+                        </Grid>
+                        <Grid item="item">
+                            <OutlinedButtons />
+                        </Grid>
                     </Grid>
                     <h3>classification</h3>
                     <Box
@@ -142,7 +143,7 @@ export default class EditorTemplate extends React.Component {
     PartRequest = () => {
         return (
             <Card sx={{ my: 2 }}>
-                <CardHeader title="Request" />
+                <CardHeader title="Template" />
                 <hr />
                 <CardContent>
                     <Grid

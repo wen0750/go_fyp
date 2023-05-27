@@ -4,7 +4,6 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-
 import EditorTemplate from "./editor_template";
 import EditorAction from "./editor_action";
 import EditorVariables from "./editor_variables";
@@ -51,29 +50,31 @@ export default function BasicTabs() {
     };
 
     return (
-        <Box sx={{ width: "100%" }}>
-            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="basic tabs example"
-                    centered
-                >
-                    <Tab label="Item One" {...a11yProps(0)} />
-                    <Tab label="Item Two" {...a11yProps(1)} />
-                    <Tab label="Item Three" {...a11yProps(2)} />
-                </Tabs>
+        <div>
+            <Box sx={{ width: "100%" }}>
+                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                    <Tabs
+                        value={value}
+                        onChange={handleChange}
+                        aria-label="basic tabs example"
+                        centered
+                    >
+                        <Tab label="Template" {...a11yProps(0)} />
+                        <Tab label="Workflow" {...a11yProps(1)} />
+                        <Tab label="Variable" {...a11yProps(2)} />
+                    </Tabs>
+                </Box>
+                <TabPanel value={value} index={0}>
+                    <EditorTemplate />
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                    <EditorWorkflow />
+                </TabPanel>
+                <TabPanel value={value} index={2}>
+                    <EditorVariables />
+                </TabPanel>
+                <EditorAction />
             </Box>
-            <TabPanel value={value} index={0}>
-                <EditorTemplate />
-            </TabPanel>
-            <TabPanel value={value} index={1}>
-                <EditorWorkflow />
-            </TabPanel>
-            <TabPanel value={value} index={2}>
-                <EditorVariables />
-            </TabPanel>
-            <EditorAction></EditorAction>
-        </Box>
+        </div>
     );
 }

@@ -1,0 +1,12 @@
+[
+    name
+    author
+    Risk Level
+    description
+    remediation
+    verified
+    fofa-query
+    shodan-query
+    google-query
+    tags
+]

@@ -35,13 +35,6 @@ export default class EditorWorkflow extends React.Component {
                 },
             },
         };
-        this.names = ["info", "high", "medium", "critical", "low", "unknown"];
-        this.classification = [
-            "cvss-metrics",
-            "cvss-score",
-            "cve-id",
-            "cwe-id",
-        ];
     }
 
     TemplateWorkflows = () => {
