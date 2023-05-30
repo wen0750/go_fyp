@@ -25,10 +25,13 @@ export default class FormTableFormat extends React.Component {
         this.state = {
             anchorEl: null,
             open: false,
+            removableBtn: null,
             optionalItemList: this.props.opts.filter(function (item) {
                 return item.visible == false && item.removable == true;
             }),
         };
+
+        console.log(this.state.optionalItemList);
 
         this.defaultTheme = createTheme();
         this.theme = createTheme({
@@ -50,16 +53,24 @@ export default class FormTableFormat extends React.Component {
         });
     }
 
-    del_removableBtn = (e) => {
-        alert(e);
+    findOptionalItemIndex = (key) => {
+        return this.state.optionalItemList.findIndex((item) => item.key == key);
     };
 
-    removableBtn = () => {
+    del_removableBtn = (e) => {
+        let itemIndex = this.findOptionalItemIndex(
+            e.currentTarget.getAttribute("data-key")
+        );
+        this.changeRemoveableBtnVisable(itemIndex, false);
+        this.formateRemovableBtn();
+    };
+
+    removableBtn = (key, lable) => {
         return (
             <Grid sx={{ width: 1 / 3 }}>
                 <FormControl variant="outlined" sx={{ width: 1 }}>
                     <InputLabel htmlFor="outlined-adornment-password">
-                        Password
+                        {lable}
                     </InputLabel>
                     <OutlinedInput
                         id="outlined-adornment-password"
@@ -68,6 +79,7 @@ export default class FormTableFormat extends React.Component {
                             <InputAdornment position="end">
                                 <IconButton
                                     aria-label="toggle password visibility"
+                                    data-key={key}
                                     onClick={this.del_removableBtn}
                                     edge="end"
                                 >
@@ -82,8 +94,43 @@ export default class FormTableFormat extends React.Component {
         );
     };
 
+    formateRemovableBtn = () => {
+        return this.state.optionalItemList.map((data) => {
+            return (() => {
+                if (data.visible == true) {
+                    return this.removableBtn(data.key, data.label);
+                }
+            })();
+        });
+    };
+
+    displayRemoveableBtn = () => {
+        if (this.state.removableBtn == null) {
+            return this.formateRemovableBtn();
+        } else {
+            return this.state.removableBtn;
+        }
+    };
+
     optsBtnHandleClose = () => {
-        this.setState({ anchorEl: null, open: false });
+        this.setState({ anchorEl: null, open: false, optionalItemList: items });
+    };
+
+    changeRemoveableBtnVisable = (itemIndex, visable) => {
+        let items = this.state.optionalItemList;
+        let item = { ...items[itemIndex] };
+        item.visible = visable;
+        items[itemIndex] = item;
+        this.setState({ anchorEl: null, open: false, optionalItemList: items });
+    };
+
+    optsBtnOptClickHandle = (e) => {
+        let itemIndex = this.findOptionalItemIndex(
+            e.currentTarget.getAttribute("data-key")
+        );
+        this.changeRemoveableBtnVisable(itemIndex, true);
+
+        console.log(this.state.optionalItemList);
     };
 
     optsBtnHandleClick = (event) => {
@@ -101,11 +148,14 @@ export default class FormTableFormat extends React.Component {
                     "aria-labelledby": "basic-button",
                 }}
             >
-                {this.props.opts.map((data) => {
+                {this.state.optionalItemList.map((data) => {
                     return (() => {
                         if (data.visible === false && data.removable === true) {
                             return (
-                                <MenuItem onClick={this.optsBtnHandleClose}>
+                                <MenuItem
+                                    data-key={data.key}
+                                    onClick={this.optsBtnOptClickHandle}
+                                >
                                     {data.label}
                                 </MenuItem>
                             );
@@ -175,7 +225,7 @@ export default class FormTableFormat extends React.Component {
                             }
                             return (
                                 <Grid
-                                    key={data.key}
+                                    data-key={data.key}
                                     sx={{ width: `${defwidth}` }}
                                 >
                                     {element}
@@ -184,7 +234,7 @@ export default class FormTableFormat extends React.Component {
                         }
                     })();
                 })}
-                <this.removableBtn />
+                <this.displayRemoveableBtn />
                 <this.optsBtnFormater />
             </Grid>
         );
