@@ -57,12 +57,71 @@ export default class FormTableFormat extends React.Component {
         return this.state.optionalItemList.findIndex((item) => item.key == key);
     };
 
-    del_removableBtn = (e) => {
+    optsBtn = () => {
+        return (
+            <Grid sx={{ width: 1 / 3 }}>
+                <FormControl variant="outlined" sx={{ width: 1, height: 1 }}>
+                    <ThemeProvider theme={this.theme} sx={{ width: 1 }}>
+                        <Button
+                            id="basiceee-button"
+                            aria-controls={
+                                this.state.open ? "basic-menu" : undefined
+                            }
+                            aria-haspopup="true"
+                            aria-expanded={this.state.open ? "true" : undefined}
+                            onClick={this.optsBtnMenu_open}
+                            variant="solid"
+                            sx={{ width: 1, height: 1 }}
+                        >
+                            <AddRoundedIcon />
+                        </Button>
+                    </ThemeProvider>
+                </FormControl>
+                {this.state.open ? <this.optsBtnMenu /> : ""}
+            </Grid>
+        );
+    };
+    optsBtnMenu = () => {
+        return (
+            <Menu
+                id="basiceee-menu"
+                anchorEl={this.state.anchorEl}
+                open={this.state.open}
+                onClose={this.optsBtnMenu_close}
+                MenuListProps={{
+                    "aria-labelledby": "basic-button",
+                }}
+            >
+                {this.state.optionalItemList.map((data) => {
+                    return (() => {
+                        if (data.visible === false && data.removable === true) {
+                            return (
+                                <MenuItem
+                                    data-key={data.key}
+                                    onClick={this.optsBtnMenuOpt_click}
+                                >
+                                    {data.label}
+                                </MenuItem>
+                            );
+                        }
+                    })();
+                })}
+            </Menu>
+        );
+    };
+    optsBtnMenu_open = (event) => {
+        this.setState({ anchorEl: event.currentTarget, open: true });
+    };
+    optsBtnMenu_close = () => {
+        this.setState({ anchorEl: null, open: false, optionalItemList: items });
+    };
+    optsBtnMenuOpt_click = (e) => {
         let itemIndex = this.findOptionalItemIndex(
             e.currentTarget.getAttribute("data-key")
         );
-        this.changeRemoveableBtnVisable(itemIndex, false);
-        this.formateRemovableBtn();
+        this.removableBtn_changeVisable(itemIndex, true);
+
+        console.log(this.state.optionalItemList);
     };
 
     removableBtn = (key, lable) => {
@@ -80,7 +139,7 @@ export default class FormTableFormat extends React.Component {
                                 <IconButton
                                     aria-label="toggle password visibility"
                                     data-key={key}
-                                    onClick={this.del_removableBtn}
+                                    onClick={this.removableBtn_drop}
                                     edge="end"
                                 >
                                     <DeleteIcon />
@@ -93,8 +152,7 @@ export default class FormTableFormat extends React.Component {
             </Grid>
         );
     };
-
-    formateRemovableBtn = () => {
+    removableBtn_formate = () => {
         return this.state.optionalItemList.map((data) => {
             return (() => {
                 if (data.visible == true) {
@@ -103,92 +161,26 @@ export default class FormTableFormat extends React.Component {
             })();
         });
     };
-
-    displayRemoveableBtn = () => {
+    removableBtn_show = () => {
         if (this.state.removableBtn == null) {
-            return this.formateRemovableBtn();
+            return this.removableBtn_formate();
         } else {
             return this.state.removableBtn;
         }
     };
-
-    optsBtnHandleClose = () => {
-        this.setState({ anchorEl: null, open: false, optionalItemList: items });
+    removableBtn_drop = (e) => {
+        let itemIndex = this.findOptionalItemIndex(
+            e.currentTarget.getAttribute("data-key")
+        );
+        this.removableBtn_changeVisable(itemIndex, false);
+        this.removableBtn_formate();
     };
-
-    changeRemoveableBtnVisable = (itemIndex, visable) => {
+    removableBtn_changeVisable = (itemIndex, visable) => {
         let items = this.state.optionalItemList;
         let item = { ...items[itemIndex] };
         item.visible = visable;
         items[itemIndex] = item;
         this.setState({ anchorEl: null, open: false, optionalItemList: items });
-    };
-
-    optsBtnOptClickHandle = (e) => {
-        let itemIndex = this.findOptionalItemIndex(
-            e.currentTarget.getAttribute("data-key")
-        );
-        this.changeRemoveableBtnVisable(itemIndex, true);
-
-        console.log(this.state.optionalItemList);
-    };
-
-    optsBtnHandleClick = (event) => {
-        this.setState({ anchorEl: event.currentTarget, open: true });
-    };
-
-    optsBtnDropDownMenu = () => {
-        return (
-            <Menu
-                id="basiceee-menu"
-                anchorEl={this.state.anchorEl}
-                open={this.state.open}
-                onClose={this.optsBtnHandleClose}
-                MenuListProps={{
-                    "aria-labelledby": "basic-button",
-                }}
-            >
-                {this.state.optionalItemList.map((data) => {
-                    return (() => {
-                        if (data.visible === false && data.removable === true) {
-                            return (
-                                <MenuItem
-                                    data-key={data.key}
-                                    onClick={this.optsBtnOptClickHandle}
-                                >
-                                    {data.label}
-                                </MenuItem>
-                            );
-                        }
-                    })();
-                })}
-            </Menu>
-        );
-    };
-
-    optsBtnFormater = () => {
-        return (
-            <Grid sx={{ width: 1 / 3 }}>
-                <FormControl variant="outlined" sx={{ width: 1, height: 1 }}>
-                    <ThemeProvider theme={this.theme} sx={{ width: 1 }}>
-                        <Button
-                            id="basiceee-button"
-                            aria-controls={
-                                this.state.open ? "basic-menu" : undefined
-                            }
-                            aria-haspopup="true"
-                            aria-expanded={this.state.open ? "true" : undefined}
-                            onClick={this.optsBtnHandleClick}
-                            variant="solid"
-                            sx={{ width: 1, height: 1 }}
-                        >
-                            <AddRoundedIcon />
-                        </Button>
-                    </ThemeProvider>
-                </FormControl>
-                {this.state.open ? <this.optsBtnDropDownMenu /> : ""}
-            </Grid>
-        );
     };
 
     render() {
@@ -234,8 +226,8 @@ export default class FormTableFormat extends React.Component {
                         }
                     })();
                 })}
-                <this.displayRemoveableBtn />
-                <this.optsBtnFormater />
+                <this.removableBtn_show />
+                <this.optsBtn />
             </Grid>
         );
     }
