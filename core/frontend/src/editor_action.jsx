@@ -42,6 +42,20 @@ export default class EditorAction extends React.Component {
 
     }
 
+    FileUploadPage = () => {
+        const [selectedFile, setSelectedFile] = useState();
+        const [isFilePicked, setIsFilePicked] = useState(false);
+    
+        const changeHandler = (event) => {
+            setSelectedFile(event.target.files[0]);
+            setIsSelected(true);
+        };
+    
+        const handleSubmission = () => {
+        };
+
+    }
+
     ondatasubmit = () => {
         //change ip & port, should be set to server-side IP
         //this is hard-coded
@@ -159,8 +173,9 @@ export default class EditorAction extends React.Component {
                 }}
             >
                 <div>
-                    <Button variant="contained" size="medium">
+                    <Button variant="contained" component="label" size="medium"> 
                         Import
+                    <input type="file" hidden/>
                     </Button>
                     <Button variant="contained" size="medium">
                         Clear

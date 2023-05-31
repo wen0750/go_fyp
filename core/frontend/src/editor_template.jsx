@@ -36,10 +36,34 @@ export default class EditorTemplate extends React.Component {
             },
         };
         this.classification = [
-            "cvss-metrics",
-            "cvss-score",
-            "cve-id",
-            "cwe-id",
+            {
+                key: 0,
+                label: "cvss-metrics",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 1,
+                label: "cvss-score",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 2,
+                label: "cve-id",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 3,
+                label: "cwe-id",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
         ];
         this.OptionList = [
             {
@@ -125,13 +149,9 @@ export default class EditorTemplate extends React.Component {
                             spacing={{ xs: 2, md: 3 }}
                             columns={{ xs: 4, sm: 8, md: 12 }}
                         >
-                            {Array.from(this.classification).map(
-                                (value, index) => (
-                                    <Grid xs={2} sm={4} md={4} key={index}>
-                                        <TextField label={value} />
-                                    </Grid>
-                                )
-                            )}
+                            <FormTableFormat
+                                opts={this.classification}
+                            ></FormTableFormat>
                         </Grid>
                     </Box>
                 </CardContent>
@@ -154,28 +174,28 @@ export default class EditorTemplate extends React.Component {
                             <TextField label="path" />
                         </Grid>
                         <Grid item="item">
-                            <TextField label="author" />
+                            <TextField label="redirects" />
                         </Grid>
                         <Grid item="item">
-                            <TextField label="author" />
+                            <TextField label="max-redirects" />
                         </Grid>
                         <Grid item="item">
-                            <TextField label="author" />
+                            <TextField label="stop-at-first-match" />
                         </Grid>
                         <Grid item="item">
-                            <TextField label="author" />
+                            <TextField label="headers" />
                         </Grid>
                         <Grid item="item">
-                            <TextField label="author" />
+                            <TextField label="User-Agent" />
                         </Grid>
                         <Grid item="item">
-                            <TextField label="author" />
+                            <TextField label="Origin" />
                         </Grid>
                         <Grid item="item">
-                            <TextField label="author" />
+                            <TextField label="Content-Type" />
                         </Grid>
                         <Grid item="item">
-                            <TextField label="author" />
+                            <TextField label="cmd" />
                         </Grid>
                     </Grid>
                 </CardContent>
