@@ -13,15 +13,14 @@ import {
 
 import Grid from "@mui/material/Unstable_Grid2";
 import "./assets/css/editor.css";
-import SigleSelect from "./editor_ext_selector";
 import FormTableFormat from "./editor_ext_formTableFormat";
-import OutlinedButtons from "./editor_ext_moreOptionBtn";
 
 export default class EditorTemplate extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             option: "",
+            FormData: {},
         };
 
         const ITEM_HEIGHT = 40;
@@ -35,7 +34,20 @@ export default class EditorTemplate extends React.Component {
                 },
             },
         };
-        this.classification = [
+        this.changeFormData = (catalog, name, value) => {
+            if (catalog in this.state.FormData) {
+                let newdata = this.state.FormData;
+                newdata[catalog][name] = value;
+                this.setState({ FormData: newdata });
+            } else {
+                let newdata = this.state.FormData;
+                newdata[catalog] = [];
+                newdata[catalog][name] = value;
+                this.setState({ FormData: newdata });
+            }
+            console.log(this.state.FormData);
+        };
+        this.classificationOptionList = [
             {
                 key: 0,
                 label: "cvss-metrics",
@@ -65,7 +77,7 @@ export default class EditorTemplate extends React.Component {
                 removable: false,
             },
         ];
-        this.OptionList = [
+        this.infoOptionList = [
             {
                 key: 0,
                 label: "Name",
@@ -82,7 +94,7 @@ export default class EditorTemplate extends React.Component {
             },
             {
                 key: 2,
-                label: "Risk Level",
+                label: "Risk-Level",
                 type: "SigleSelect",
                 value: ["info", "high", "medium", "critical", "low", "unknown"],
                 visible: true,
@@ -117,6 +129,71 @@ export default class EditorTemplate extends React.Component {
                 removable: true,
             },
         ];
+        this.requestOptionList = [
+            {
+                key: 0,
+                label: "path",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 1,
+                label: "redirects",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 2,
+                label: "max-redirects",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 3,
+                label: "stop-at-first-match",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 4,
+                label: "headers",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 5,
+                label: "User-Agent",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 6,
+                label: "Origin",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 7,
+                label: "Content-Type",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 8,
+                label: "cmd",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+        ];
     }
 
     PartInformation = () => {
@@ -131,7 +208,9 @@ export default class EditorTemplate extends React.Component {
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     >
                         <FormTableFormat
-                            opts={this.OptionList}
+                            catalog="information"
+                            opts={this.infoOptionList}
+                            callback={this.changeFormData}
                         ></FormTableFormat>
                     </Grid>
                     <h3>classification</h3>
@@ -150,7 +229,9 @@ export default class EditorTemplate extends React.Component {
                             columns={{ xs: 4, sm: 8, md: 12 }}
                         >
                             <FormTableFormat
-                                opts={this.classification}
+                                catalog="classification"
+                                opts={this.classificationOptionList}
+                                callback={this.changeFormData}
                             ></FormTableFormat>
                         </Grid>
                     </Box>
@@ -170,33 +251,11 @@ export default class EditorTemplate extends React.Component {
                         spacing={2}
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     >
-                        <Grid item="item" xs={4}>
-                            <TextField label="path" />
-                        </Grid>
-                        <Grid item="item">
-                            <TextField label="redirects" />
-                        </Grid>
-                        <Grid item="item">
-                            <TextField label="max-redirects" />
-                        </Grid>
-                        <Grid item="item">
-                            <TextField label="stop-at-first-match" />
-                        </Grid>
-                        <Grid item="item">
-                            <TextField label="headers" />
-                        </Grid>
-                        <Grid item="item">
-                            <TextField label="User-Agent" />
-                        </Grid>
-                        <Grid item="item">
-                            <TextField label="Origin" />
-                        </Grid>
-                        <Grid item="item">
-                            <TextField label="Content-Type" />
-                        </Grid>
-                        <Grid item="item">
-                            <TextField label="cmd" />
-                        </Grid>
+                        <FormTableFormat
+                            catalog="request"
+                            opts={this.requestOptionList}
+                            callback={this.changeFormData}
+                        ></FormTableFormat>
                     </Grid>
                 </CardContent>
             </Card>

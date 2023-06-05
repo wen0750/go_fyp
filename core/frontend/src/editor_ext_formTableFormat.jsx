@@ -31,8 +31,14 @@ export default class FormTableFormat extends React.Component {
             }),
         };
 
-        console.log(this.state.optionalItemList);
-
+        this.handleOnChange = (event) => {
+            console.log(event.target);
+            this.props.callback(
+                this.props.catalog,
+                event.target.name,
+                event.target.value
+            );
+        };
         this.defaultTheme = createTheme();
         this.theme = createTheme({
             components: {
@@ -60,7 +66,10 @@ export default class FormTableFormat extends React.Component {
     optsBtn = () => {
         return (
             <Grid sx={{ width: 1 / 3 }}>
-                <FormControl variant="outlined" sx={{ width: 1, height: 1 }}>
+                <FormControl
+                    variant="outlined"
+                    sx={{ width: 1, height: "56px" }}
+                >
                     <ThemeProvider theme={this.theme} sx={{ width: 1 }}>
                         <Button
                             id="basiceee-button"
@@ -124,16 +133,18 @@ export default class FormTableFormat extends React.Component {
         console.log(this.state.optionalItemList);
     };
 
-    removableBtn = (key, lable) => {
+    removableBtn = (key, label) => {
         return (
             <Grid sx={{ width: 1 / 3 }}>
                 <FormControl variant="outlined" sx={{ width: 1 }}>
                     <InputLabel htmlFor="outlined-adornment-password">
-                        {lable}
+                        {label}
                     </InputLabel>
                     <OutlinedInput
                         id="outlined-adornment-password"
                         type="text"
+                        name={label}
+                        onChange={this.handleOnChange}
                         endAdornment={
                             <InputAdornment position="end">
                                 <IconButton
@@ -146,7 +157,7 @@ export default class FormTableFormat extends React.Component {
                                 </IconButton>
                             </InputAdornment>
                         }
-                        label="Password"
+                        label={label}
                     />
                 </FormControl>
             </Grid>
@@ -197,19 +208,28 @@ export default class FormTableFormat extends React.Component {
                             let defwidth = 1 / 3;
 
                             if (data.type === "TextField") {
-                                element = <TextField label={data.label} />;
+                                element = (
+                                    <TextField
+                                        name={data.label}
+                                        label={data.label}
+                                        onChange={this.handleOnChange}
+                                    />
+                                );
                             } else if (data.type === "SigleSelect") {
                                 element = (
                                     <SigleSelect
                                         list={data.value}
                                         label={data.label}
+                                        callback={this.handleOnChange}
                                     />
                                 );
                             } else if (data.type === "multiline") {
                                 defwidth = 1;
                                 element = (
                                     <TextField
+                                        name={data.label}
                                         label={data.label}
+                                        onChange={this.handleOnChange}
                                         multiline
                                         rows={3}
                                     />

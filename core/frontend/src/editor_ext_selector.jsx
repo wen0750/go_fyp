@@ -1,18 +1,18 @@
-import React, { Component, useState } from 'react'
+import React, { Component, useState } from "react";
 
-import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import { useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 export default class SigleSelect extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            option: ""
+            option: "",
         };
 
         const ITEM_HEIGHT = 40;
@@ -30,25 +30,36 @@ export default class SigleSelect extends React.Component {
 
     handleChange = (event) => {
         const {
-            target: { value },
+            target: { name, value },
         } = event;
-        this.setState(
-            { option: typeof value === 'string' ? value.split(',') : value }
-          );
+        this.setState({
+            option: typeof value === "string" ? value.split(",") : value,
+        });
+        this.props.callback(event);
     };
 
     render() {
         return (
             <FormControl sx={{ width: "100%" }}>
-                <InputLabel id="demo-multiple-chip-label">{this.props.label}</InputLabel>
+                <InputLabel id="demo-multiple-chip-label">
+                    {this.props.label}
+                </InputLabel>
                 <Select
                     labelId="demo-multiple-chip-label"
                     id="demo-multiple-chip"
                     value={this.state.option}
                     onChange={this.handleChange}
-                    input={<OutlinedInput id="select-multiple-chip" label={this.props.label} />}
+                    name={this.props.label}
+                    input={
+                        <OutlinedInput
+                            id="select-multiple-chip"
+                            label={this.props.label}
+                        />
+                    }
                     renderValue={(selected) => (
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                        <Box
+                            sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
+                        >
                             {selected.map((value) => (
                                 <span>{value}</span>
                             ))}
@@ -57,10 +68,7 @@ export default class SigleSelect extends React.Component {
                     MenuProps={this.MenuProps}
                 >
                     {this.props.list.map((name) => (
-                        <MenuItem
-                            key={name}
-                            value={name}
-                        >
+                        <MenuItem key={name} value={name}>
                             {name}
                         </MenuItem>
                     ))}

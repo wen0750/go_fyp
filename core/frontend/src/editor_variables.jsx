@@ -44,7 +44,6 @@ export default class EditorVariables extends React.Component {
                         spacing={2}
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     >
-                        <Grid item="item"></Grid>
                         <Grid item="item" xs={4}>
                             <TextField label="+ a1" />
                         </Grid>
