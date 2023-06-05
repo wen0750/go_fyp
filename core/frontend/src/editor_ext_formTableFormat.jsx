@@ -32,7 +32,6 @@ export default class FormTableFormat extends React.Component {
         };
 
         this.handleOnChange = (event) => {
-            console.log(event.target);
             this.props.callback(
                 this.props.catalog,
                 event.target.name,
@@ -185,6 +184,11 @@ export default class FormTableFormat extends React.Component {
         );
         this.removableBtn_changeVisable(itemIndex, false);
         this.removableBtn_formate();
+        this.props.callback(
+            this.props.catalog,
+            this.state.optionalItemList[itemIndex].label,
+            null
+        );
     };
     removableBtn_changeVisable = (itemIndex, visable) => {
         let items = this.state.optionalItemList;
