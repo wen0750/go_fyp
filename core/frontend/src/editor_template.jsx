@@ -41,10 +41,11 @@ export default class EditorTemplate extends React.Component {
                 this.setState({ FormData: newdata });
             } else {
                 let newdata = this.state.FormData;
-                newdata[catalog] = [];
+                newdata[catalog] = {};
                 newdata[catalog][name] = value;
                 this.setState({ FormData: newdata });
             }
+            this.props.dataChange(this.state.FormData);
             console.log(this.state.FormData);
         };
         this.classificationOptionList = [

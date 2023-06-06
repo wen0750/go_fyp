@@ -10,12 +10,14 @@ import {
     OutlinedInput,
     InputLabel,
     InputAdornment,
+    ListItemIcon,
     FormControl,
 } from "@mui/material";
 
 import Grid from "@mui/material/Unstable_Grid2";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import Check from "@mui/icons-material/Check";
 import SigleSelect from "./editor_ext_selector";
 
 export default class FormTableFormat extends React.Component {
@@ -92,7 +94,6 @@ export default class FormTableFormat extends React.Component {
     optsBtnMenu = () => {
         return (
             <Menu
-                id="basiceee-menu"
                 anchorEl={this.state.anchorEl}
                 open={this.state.open}
                 onClose={this.optsBtnMenu_close}
@@ -101,18 +102,21 @@ export default class FormTableFormat extends React.Component {
                 }}
             >
                 {this.state.optionalItemList.map((data) => {
-                    return (() => {
-                        if (data.visible === false && data.removable === true) {
-                            return (
-                                <MenuItem
-                                    data-key={data.key}
-                                    onClick={this.optsBtnMenuOpt_click}
-                                >
-                                    {data.label}
-                                </MenuItem>
-                            );
-                        }
-                    })();
+                    return (
+                        <MenuItem
+                            ket={data.key}
+                            data-key={data.key}
+                            onClick={this.optsBtnMenuOpt_click}
+                        >
+                            {data.label}
+                            {data.visible === false &&
+                            data.removable === true ? null : (
+                                <ListItemIcon>
+                                    <Check />
+                                </ListItemIcon>
+                            )}
+                        </MenuItem>
+                    );
                 })}
             </Menu>
         );
@@ -121,15 +125,22 @@ export default class FormTableFormat extends React.Component {
         this.setState({ anchorEl: event.currentTarget, open: true });
     };
     optsBtnMenu_close = () => {
-        this.setState({ anchorEl: null, open: false, optionalItemList: items });
+        this.setState({ anchorEl: null, open: false });
     };
     optsBtnMenuOpt_click = (e) => {
-        let itemIndex = this.findOptionalItemIndex(
-            e.currentTarget.getAttribute("data-key")
-        );
-        this.removableBtn_changeVisable(itemIndex, true);
-
-        console.log(this.state.optionalItemList);
+        let datakey = e.currentTarget.getAttribute("data-key");
+        let itemIndex = this.findOptionalItemIndex(datakey);
+        if (this.state.optionalItemList[itemIndex].visible === false) {
+            this.removableBtn_changevisible(itemIndex, true);
+        } else {
+            this.removableBtn_changevisible(itemIndex, false);
+            this.removableBtn_formate();
+            this.props.callback(
+                this.props.catalog,
+                this.state.optionalItemList[itemIndex].label,
+                null
+            );
+        }
     };
 
     removableBtn = (key, label) => {
@@ -182,7 +193,7 @@ export default class FormTableFormat extends React.Component {
         let itemIndex = this.findOptionalItemIndex(
             e.currentTarget.getAttribute("data-key")
         );
-        this.removableBtn_changeVisable(itemIndex, false);
+        this.removableBtn_changevisible(itemIndex, false);
         this.removableBtn_formate();
         this.props.callback(
             this.props.catalog,
@@ -190,10 +201,10 @@ export default class FormTableFormat extends React.Component {
             null
         );
     };
-    removableBtn_changeVisable = (itemIndex, visable) => {
+    removableBtn_changevisible = (itemIndex, visible) => {
         let items = this.state.optionalItemList;
         let item = { ...items[itemIndex] };
-        item.visible = visable;
+        item.visible = visible;
         items[itemIndex] = item;
         this.setState({ anchorEl: null, open: false, optionalItemList: items });
     };

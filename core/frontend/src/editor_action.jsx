@@ -1,20 +1,5 @@
 import * as React from "react";
-
-import { experimentalStyled as styled } from "@mui/material/styles";
-
-import {
-    Card,
-    CardHeader,
-    CardContent,
-    CardActions,
-    Typography,
-    Button,
-    Box,
-    TextField,
-    Container,
-} from "@mui/material";
-
-import Grid from "@mui/material/Unstable_Grid2";
+import { Button, Box } from "@mui/material";
 import "./assets/css/editor.css";
 
 export default class EditorAction extends React.Component {
@@ -98,16 +83,12 @@ export default class EditorAction extends React.Component {
     saveToMongo = () => {
         //change ip & port, should be set to server-side IP
         //this is hard-coded
+        console.log(this.props.input);
         fetch("http://127.0.0.1:8888/editor/save", {
             method: "POST",
             body: JSON.stringify({
                 ID: "Test12",
-                Info: {
-                    Name: "Test1",
-                    Author: "Test2",
-                    Severity: "Test",
-                    Reference: ["Test1", "Test2", "Test3"],
-                },
+                Info: this.props.input.information,
             }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
@@ -189,7 +170,7 @@ export default class EditorAction extends React.Component {
                         onClick={this.saveToMongo}
                         size="medium"
                     >
-                        save to database
+                        Save To Database
                     </Button>
                     <Button
                         variant="contained"
