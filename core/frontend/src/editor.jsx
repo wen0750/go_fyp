@@ -66,6 +66,7 @@ class Editor extends React.Component {
                         <Tab label="Template" {...this.a11yProps(0)} />
                         <Tab label="Workflow" {...this.a11yProps(1)} />
                         <Tab label="Variable" {...this.a11yProps(2)} />
+                        <Tab label="Import / Upload" {...this.a11yProps(3)} />
                     </Tabs>
                 </Box>
                 <this.TabPanel value={this.state.curTab} index={0}>
@@ -75,6 +76,9 @@ class Editor extends React.Component {
                     <EditorWorkflow dataChange={this.setInput} />
                 </this.TabPanel>
                 <this.TabPanel value={this.state.curTab} index={2}>
+                    <EditorVariables dataChange={this.setInput} />
+                </this.TabPanel>
+                <this.TabPanel value={this.state.curTab} index={3}>
                     <EditorVariables dataChange={this.setInput} />
                 </this.TabPanel>
                 <EditorAction input={this.state.input} />

@@ -246,7 +246,7 @@ export default class FormTableFormat extends React.Component {
                                         label={data.label}
                                         onChange={this.handleOnChange}
                                         multiline
-                                        rows={3}
+                                        rows={9}
                                     />
                                 );
                             }

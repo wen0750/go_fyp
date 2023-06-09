@@ -87,8 +87,8 @@ export default class EditorAction extends React.Component {
         fetch("http://127.0.0.1:8888/editor/save", {
             method: "POST",
             body: JSON.stringify({
-                ID: "Test12",
-                Info: this.props.input.information,
+                id: "Test12",
+                info: this.props.input.information,
             }),
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
