@@ -19,6 +19,7 @@ import SigleSelect from "./selector.jsx";
 import { experimentalStyled as styled } from "@mui/material/styles";
 
 import Grid from "@mui/material/Unstable_Grid2";
+import Upload from "./editor_upload";
 
 const names = ["info", "high", "medium", "critical", "low", "unknown"];
 
@@ -385,6 +386,7 @@ function Editor() {
             <TemplateRequest />
             <TemplateWorkflows />
             <TemplateVariables />
+            <Upload />
             <ButtonSizes />
         </Container>
     );
