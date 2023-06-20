@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { experimentalStyled as styled } from "@mui/material/styles";
+import React, { useState, useEffect } from 'react';
 
 import {
     Card,
@@ -17,9 +16,8 @@ const DropZone = (props) => {
     const [errorMessage, setErrorMessage] = useState("");
     // Track when a file is being dragged over the drop area
     const [dragging, setDragging] = useState(false);
-
-    const [showWarning, setShowWarning] = useState(false);
-
+    //storing uploaded files
+    const [uploadedFiles, setUploadedFiles] = useState([]);
 
     const handleDragEnter = (e) => {
         e.preventDefault();
@@ -54,7 +52,8 @@ const DropZone = (props) => {
             reader.onload = (event) => {
                 const fileContent = event.target.result;
                 console.log(fileContent);
-                // Process the file content here
+                // Store uploaded file
+                setUploadedFiles([...uploadedFiles, { name: file.name, content: fileContent }]);
             };
 
             reader.readAsText(file);
@@ -71,46 +70,56 @@ const DropZone = (props) => {
     };
 
     return (
-        <div
-            onDragEnter={handleDragEnter}
-            onDragLeave={handleDragLeave}
-            onDragOver={handleDragOver}
-            onDrop={handleDrop}
-            style={{
-                border: "2px dashed #ccc",
-                borderRadius: "10px",
-                padding: "20px",
-                textAlign: "center",
-                marginBottom: "20px",
-                height: "200px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                position: "relative",
-                transition: "all 0.3s",
-                ...(dragging ? draggingStyle : {}), // Apply the dragging style when dragging is true
-            }}
-        >
-            {errorMessage && (
-                <div
-                    style={{
-                        position: "absolute",
-                        borderTopLeftRadius: "10px",
-                        borderTopRightRadius: "10px",
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        padding: "10px",
-                        backgroundColor: "rgb(255,175,175)",
-                        color: "red",
-                        textAlign: "center",
-                        transition: "all 0.9s",
-                    }}
-                >
-                    {errorMessage}
-                </div>
-            )}
-            <p>Drag and drop your .yaml or .js file here</p>
+        <div>
+            <div
+                onDragEnter={handleDragEnter}
+                onDragLeave={handleDragLeave}
+                onDragOver={handleDragOver}
+                onDrop={handleDrop}
+                style={{
+                    border: "2px dashed #ccc",
+                    borderRadius: "10px",
+                    padding: "20px",
+                    textAlign: "center",
+                    marginBottom: "20px",
+                    height: "200px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    position: "relative",
+                    transition: "all 0.3s",
+                    ...(dragging ? draggingStyle : {}),
+                }}
+            >
+                {errorMessage && (
+                    <div
+                        style={{
+                            position: "absolute",
+                            borderTopLeftRadius: "10px",
+                            borderTopRightRadius: "10px",
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            padding: "10px",
+                            backgroundColor: "rgb(255,175,175)",
+                            color: "red",
+                            textAlign: "center",
+                            transition: "all 0.9s",
+                        }}
+                    >
+                        {errorMessage}
+                    </div>
+                )}
+                <p>Drag and drop your .yaml or .js file here</p>
+            </div>
+            <div>
+                <h3>Uploaded Files:</h3>
+                <ul>
+                    {uploadedFiles.map((file, index) => (
+                        <li key={index}>{file.name}</li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
 };
