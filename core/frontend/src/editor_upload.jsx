@@ -15,8 +15,11 @@ import "./assets/css/editor.css";
 // DropZone for drag and drop file uploads
 const DropZone = (props) => {
     const [errorMessage, setErrorMessage] = useState("");
-    // New state to track when a file is being dragged over the drop area
+    // Track when a file is being dragged over the drop area
     const [dragging, setDragging] = useState(false);
+
+    const [showWarning, setShowWarning] = useState(false);
+
 
     const handleDragEnter = (e) => {
         e.preventDefault();
@@ -84,6 +87,7 @@ const DropZone = (props) => {
                 alignItems: "center",
                 justifyContent: "center",
                 position: "relative",
+                transition: "all 0.3s",
                 ...(dragging ? draggingStyle : {}), // Apply the dragging style when dragging is true
             }}
         >
@@ -100,6 +104,7 @@ const DropZone = (props) => {
                         backgroundColor: "rgb(255,175,175)",
                         color: "red",
                         textAlign: "center",
+                        transition: "all 0.9s",
                     }}
                 >
                     {errorMessage}
