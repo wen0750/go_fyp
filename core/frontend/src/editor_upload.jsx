@@ -14,18 +14,33 @@ import "./assets/css/editor.css";
 
 // DropZone for drag and drop file uploads
 const DropZone = (props) => {
-    // State for error
     const [errorMessage, setErrorMessage] = useState("");
+    // New state to track when a file is being dragged over the drop area
+    const [dragging, setDragging] = useState(false);
+
+    const handleDragEnter = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        // Set dragging state to true when a file enters the drop area
+        setDragging(true);
+    };
+
+    const handleDragLeave = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        // Set dragging state to false when a file leaves the drop area
+        setDragging(false);
+    };
 
     const handleDragOver = (e) => {
         e.preventDefault();
         e.stopPropagation();
     };
 
-    // Drag and Drop zone
     const handleDrop = (e) => {
         e.preventDefault();
         e.stopPropagation();
+        setDragging(false);
         const file = e.dataTransfer.files[0];
 
         // Check if file is .yaml or .js file
@@ -44,11 +59,18 @@ const DropZone = (props) => {
             // Error Message
             setErrorMessage("Can't upload. Use an template in one of these formats: .js or .yaml "); // Set error message
         }
+    }; 
+
+    // Style for the drop area when a file is being dragged over it
+    const draggingStyle = {
+        backgroundColor: "#e0e0e0",
+        borderColor: "#3f51b5",
     };
 
-    // Design of drop area and error message
     return (
         <div
+            onDragEnter={handleDragEnter}
+            onDragLeave={handleDragLeave}
             onDragOver={handleDragOver}
             onDrop={handleDrop}
             style={{
@@ -61,13 +83,14 @@ const DropZone = (props) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                position: "relative", // Add position: relative
+                position: "relative",
+                ...(dragging ? draggingStyle : {}), // Apply the dragging style when dragging is true
             }}
         >
             {errorMessage && (
                 <div
                     style={{
-                        position: "absolute", // Add position: absolute
+                        position: "absolute",
                         borderTopLeftRadius: "10px",
                         borderTopRightRadius: "10px",
                         top: 0,
@@ -135,3 +158,26 @@ export default class Upload extends React.Component {
         );
     }
 }
+
+/*const handleDrop = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const file = e.dataTransfer.files[0];
+
+        // Check if file is .yaml or .js file
+        if (file && (file.name.endsWith('.yaml') || file.name.endsWith('.js'))) {
+            setErrorMessage(""); // Clear error message
+            const reader = new FileReader();
+
+            reader.onload = (event) => {
+                const fileContent = event.target.result;
+                console.log(fileContent);
+                // Process the file content here
+            };
+
+            reader.readAsText(file);
+        } else {
+            // Error Message
+            setErrorMessage("Can't upload. Use an template in one of these formats: .js or .yaml "); // Set error message
+        }
+    }; */
