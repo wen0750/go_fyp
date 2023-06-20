@@ -214,6 +214,17 @@ func SaveToDB(c *gin.Context) {
 	}
 }
 
+//upload page
+func SubmitToDB(c *gin.Context) {
+	var template Template
+	
+	c.JSON(http.StatusOK, gin.H{
+		//Template updated successfully
+		"action":  "updated",
+		"id":      template.ID,
+	})
+}
+
 //return ture if the data is the same
 func (t Template) Equal(other Template) bool {
 	return t.ID == other.ID &&
@@ -233,6 +244,9 @@ func (t Template) Equal(other Template) bool {
 		reflect.DeepEqual(t.Requests, other.Requests) &&
 		reflect.DeepEqual(t.Workflows, other.Workflows)
 }
+
+
+//Upload
 
 func main() {
 	var err error
@@ -266,7 +280,9 @@ func main() {
 			SaveToDB(c)
 		} else if (action == "download"){
 			Download(c)
-		}
+		} else if (action == "submit"){
+			SubmitToDB(c)
+		} 
 	})
 
 	//This router.POST is for testing
