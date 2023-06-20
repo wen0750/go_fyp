@@ -163,26 +163,3 @@ export default class Upload extends React.Component {
         );
     }
 }
-
-/*const handleDrop = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        const file = e.dataTransfer.files[0];
-
-        // Check if file is .yaml or .js file
-        if (file && (file.name.endsWith('.yaml') || file.name.endsWith('.js'))) {
-            setErrorMessage(""); // Clear error message
-            const reader = new FileReader();
-
-            reader.onload = (event) => {
-                const fileContent = event.target.result;
-                console.log(fileContent);
-                // Process the file content here
-            };
-
-            reader.readAsText(file);
-        } else {
-            // Error Message
-            setErrorMessage("Can't upload. Use an template in one of these formats: .js or .yaml "); // Set error message
-        }
-    }; */
