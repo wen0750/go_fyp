@@ -12,8 +12,9 @@ import Grid from "@mui/material/Unstable_Grid2";
 import "./assets/css/editor.css";
 
 
-
+// DropZone for drag and drop file uploads
 const DropZone = (props) => {
+    // State for error
     const [errorMessage, setErrorMessage] = useState("");
 
     const handleDragOver = (e) => {
@@ -21,11 +22,13 @@ const DropZone = (props) => {
         e.stopPropagation();
     };
 
+    // Drag and Drop zone
     const handleDrop = (e) => {
         e.preventDefault();
         e.stopPropagation();
         const file = e.dataTransfer.files[0];
 
+        // Check if file is .yaml or .js file
         if (file && (file.name.endsWith('.yaml') || file.name.endsWith('.js'))) {
             setErrorMessage(""); // Clear error message
             const reader = new FileReader();
@@ -38,10 +41,12 @@ const DropZone = (props) => {
 
             reader.readAsText(file);
         } else {
+            // Error Message
             setErrorMessage("Can't upload. Use an template in one of these formats: .js or .yaml "); // Set error message
         }
     };
 
+    // Design of drop area and error message
     return (
         <div
             onDragOver={handleDragOver}
@@ -82,7 +87,7 @@ const DropZone = (props) => {
     );
 };
 
-
+// Upload component wrapping the DropZone component
 export default class Upload extends React.Component {
     constructor(props) {
         super(props);
@@ -90,7 +95,7 @@ export default class Upload extends React.Component {
             option: "",
         };
 
-        const ITEM_HEIGHT = 40;
+        const ITEM_HEIGHT = 0;
         const ITEM_PADDING_TOP = 8;
 
         this.menuProps = {
@@ -102,7 +107,7 @@ export default class Upload extends React.Component {
             },
         };
     }
-
+    // This a styled Card component containing the DropZone
     TemplateVariables = () => {
         return (
             <Card>
@@ -121,7 +126,7 @@ export default class Upload extends React.Component {
         );
     };
 
-    
+    // Render method for the Upload component
     render() {
         return (
             <Container maxWidth="lg">
