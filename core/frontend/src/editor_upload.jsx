@@ -62,6 +62,80 @@ const DropZone = (props) => {
             setErrorMessage("Can't upload. Use an template in one of these formats: .js or .yaml "); // Set error message
         }
     }; 
+    
+    const saveToMongo = () => {
+        //change ip & port, should be set to server-side IP
+        //this is hard-coded
+        console.log(props.input);
+        fetch("http://127.0.0.1:8888/editor/save", {
+          method: "POST",
+          body: JSON.stringify({
+            id: "Test12",
+            info: props.input.information,
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        })
+          .then((response) => {
+            if (response.ok) {
+              return response.json();
+            } else if (response.status === 409) {
+              throw new Error("Duplicate entry");
+            } else {
+              console.log("Server responded with an error");
+              throw new Error("Server Error");
+            }
+          })
+          .then((data) => {
+            console.log("Action:", data.action);
+            console.log("Inserted ID:", data.id);
+    
+            let title;
+            let htmlContent;
+            if (data.action === "created") {
+              title = "Template Created Successfully";
+              htmlContent =
+                "<strong>UID:</strong> " +
+                data.id +
+                "<br>" +
+                "This is the <strong>UID</strong> in the Database, you can save it for later search";
+            } else {
+              title = "Template Updated Successfully";
+              htmlContent =
+                "<strong>Template Name:</strong> " +
+                data.id +
+                "<br>" +
+                "It is updated in the Database, you can check it anytime";
+            }
+    
+            // Show a message box to let the user know the Inserted ID
+            Swal.fire({
+              title: title,
+              html: htmlContent,
+              icon: "success",
+            });
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+    
+            if (error.message === "Duplicate entry") {
+              // Display a failure message box for duplicate entry
+              Swal.fire({
+                title: "ID Duplicated in Database",
+                text: "A template with this ID already exists. Please try again with a different Name.",
+                icon: "error",
+              });
+            } else {
+            }
+          });
+    };
+    
+    const handleSubmit = (file) => {
+        console.log("Submitting files:", uploadedFiles);
+        saveToMongo(); // Call the saveToMongo function here
+        FileSubmit(); // Call the FileSubmit function here
+    };
 
     // Style for the drop area when a file is being dragged over it
     const draggingStyle = {
@@ -116,7 +190,8 @@ const DropZone = (props) => {
                 <h3>Uploaded Files:</h3>
                 <ul>
                     {uploadedFiles.map((file, index) => (
-                        <li key={index}>{file.name}</li>
+                        <li key={index}>{file.name}
+                        <button onClick={handleSubmit}>Submit</button></li>
                     ))}
                 </ul>
             </div>
