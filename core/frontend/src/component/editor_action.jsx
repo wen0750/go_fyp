@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Button, Box } from "@mui/material";
-import "./assets/css/editor.css";
+import "../assets/css/editor.css";
 
 export default class EditorAction extends React.Component {
     constructor(props) {

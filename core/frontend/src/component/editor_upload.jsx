@@ -1,17 +1,10 @@
 import React, { useState } from "react";
 import { experimentalStyled as styled } from "@mui/material/styles";
 
-import {
-    Card,
-    CardHeader,
-    CardContent,
-    Container,
-} from "@mui/material";
+import { Card, CardHeader, CardContent, Container } from "@mui/material";
 
 import Grid from "@mui/material/Unstable_Grid2";
-import "./assets/css/editor.css";
-
-
+import "../assets/css/editor.css";
 
 const DropZone = (props) => {
     const [errorMessage, setErrorMessage] = useState("");
@@ -26,7 +19,10 @@ const DropZone = (props) => {
         e.stopPropagation();
         const file = e.dataTransfer.files[0];
 
-        if (file && (file.name.endsWith('.yaml') || file.name.endsWith('.js'))) {
+        if (
+            file &&
+            (file.name.endsWith(".yaml") || file.name.endsWith(".js"))
+        ) {
             setErrorMessage(""); // Clear error message
             const reader = new FileReader();
 
@@ -38,7 +34,9 @@ const DropZone = (props) => {
 
             reader.readAsText(file);
         } else {
-            setErrorMessage("Can't upload. Use an template in one of these formats: .js or .yaml "); // Set error message
+            setErrorMessage(
+                "Can't upload. Use an template in one of these formats: .js or .yaml "
+            ); // Set error message
         }
     };
 
@@ -82,8 +80,7 @@ const DropZone = (props) => {
     );
 };
 
-
-export default class Upload extends React.Component {
+export default class EditorUpload extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -114,14 +111,12 @@ export default class Upload extends React.Component {
                         container="container"
                         spacing={2}
                         columns={{ xs: 4, sm: 8, md: 12 }}
-                    >
-                    </Grid>
+                    ></Grid>
                 </CardContent>
             </Card>
         );
     };
 
-    
     render() {
         return (
             <Container maxWidth="lg">

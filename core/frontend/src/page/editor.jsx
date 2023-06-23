@@ -3,11 +3,12 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import EditorTemplate from "./editor_template";
-import EditorAction from "./editor_action";
-import EditorVariables from "./editor_variables";
-import EditorWorkflow from "./editor_workflow";
-import Upload from "./editor_upload";
+
+import EditorTemplate from "../component/editor_template";
+import EditorAction from "../component/editor_action";
+import EditorVariables from "../component/editor_variables";
+import EditorWorkflow from "../component/editor_workflow";
+import EditorUpload from "../component/editor_upload";
 
 class Editor extends React.Component {
     constructor(props) {
@@ -80,7 +81,7 @@ class Editor extends React.Component {
                     <EditorVariables dataChange={this.setInput} />
                 </this.TabPanel>
                 <this.TabPanel value={this.state.curTab} index={3}>
-                    <Upload dataChange={this.setInput} />
+                    <EditorUpload dataChange={this.setInput} />
                 </this.TabPanel>
                 <EditorAction input={this.state.input} />
             </Box>

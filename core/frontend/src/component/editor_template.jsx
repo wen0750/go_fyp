@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 
 import Grid from "@mui/material/Unstable_Grid2";
-import "./assets/css/editor.css";
+import "../assets/css/editor.css";
 import FormTableFormat from "./editor_ext_formTableFormat";
 
 export default class EditorTemplate extends React.Component {
@@ -81,21 +81,21 @@ export default class EditorTemplate extends React.Component {
         this.infoOptionList = [
             {
                 key: 0,
-                label: "Name",
+                label: "name",
                 type: "TextField",
                 visible: true,
                 removable: false,
             },
             {
                 key: 1,
-                label: "Author",
+                label: "author",
                 type: "TextField",
                 visible: true,
                 removable: false,
             },
             {
                 key: 2,
-                label: "Risk-Level",
+                label: "severity",
                 type: "SigleSelect",
                 value: ["info", "high", "medium", "critical", "low", "unknown"],
                 visible: true,
@@ -117,13 +117,6 @@ export default class EditorTemplate extends React.Component {
             },
             {
                 key: 5,
-                label: "verified",
-                type: "TextField",
-                visible: false,
-                removable: true,
-            },
-            {
-                key: 6,
                 label: "tags",
                 type: "TextField",
                 visible: false,

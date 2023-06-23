@@ -6,14 +6,18 @@ import {
     Card,
     CardHeader,
     CardContent,
+    CardActions,
+    Typography,
+    Button,
+    Box,
     TextField,
     Container,
 } from "@mui/material";
 
 import Grid from "@mui/material/Unstable_Grid2";
-import "./assets/css/editor.css";
+import "../assets/css/editor.css";
 
-export default class EditorVariables extends React.Component {
+export default class EditorWorkflow extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -33,10 +37,10 @@ export default class EditorVariables extends React.Component {
         };
     }
 
-    TemplateVariables = () => {
+    TemplateWorkflows = () => {
         return (
             <Card>
-                <CardHeader title="+ Variables" />
+                <CardHeader title="+ Workflows" />
                 <hr />
                 <CardContent>
                     <Grid
@@ -45,21 +49,23 @@ export default class EditorVariables extends React.Component {
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     >
                         <Grid item="item" xs={4}>
-                            <TextField label="+ a1" />
+                            <TextField label="+ Template" />
                         </Grid>
                         <Grid item="item">
-                            <TextField label="+ a2" />
+                            <TextField label="+ Subtemplates" />
+                        </Grid>
+                        <Grid item="item">
+                            <TextField label="+ matchers" />
                         </Grid>
                     </Grid>
                 </CardContent>
             </Card>
         );
     };
-
     render() {
         return (
             <Container maxWidth="lg">
-                <this.TemplateVariables />
+                <this.TemplateWorkflows />
             </Container>
         );
     }
