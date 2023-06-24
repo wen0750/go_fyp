@@ -57,6 +57,21 @@ const DropZone = (props) => {
         }
     };
 
+
+    const handleSubmit = (file) => {
+        console.log("Submitting files:", uploadedFiles);
+        saveToMongo(); // Call the saveToMongo function here
+        FileSubmit(); // Call the FileSubmit function here
+    };
+
+    // Style for the drop area when a file is being dragged over it
+    const draggingStyle = {
+        backgroundColor: "#e0e0e0",
+        borderColor: "#3f51b5",
+    };
+
+
+    
     const saveToMongo = () => {
         //change ip & port, should be set to server-side IP
         //this is hard-coded
@@ -123,18 +138,6 @@ const DropZone = (props) => {
             } else {
             }
           });
-    };
-
-    const handleSubmit = (file) => {
-        console.log("Submitting files:", uploadedFiles);
-        saveToMongo(); // Call the saveToMongo function here
-        FileSubmit(); // Call the FileSubmit function here
-    };
-
-    // Style for the drop area when a file is being dragged over it
-    const draggingStyle = {
-        backgroundColor: "#e0e0e0",
-        borderColor: "#3f51b5",
     };
 
     return (
