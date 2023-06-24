@@ -67,7 +67,7 @@ const DropZone = (props) => {
 
     const handleSubmit = (file) => {
         console.log("Submitting files:", uploadedFiles);
-        saveToMongo(); // Call the saveToMongo function here
+        SubmitToDB(); // Call the UploadToMongo function here
         FileSubmit(); // Call the FileSubmit function here
         setSubmitted((prevSubmitted) => [...prevSubmitted, index]); //submit button
     };
@@ -80,11 +80,11 @@ const DropZone = (props) => {
 
 
     
-    const saveToMongo = () => {
+    const SubmitToDB = () => {
         //change ip & port, should be set to server-side IP
         //this is hard-coded
         console.log(props.input);
-        fetch("http://127.0.0.1:8888/editor/save", {
+        fetch("http://127.0.0.1:8888/editor/submit", {
           method: "POST",
           body: JSON.stringify({
             id: "Test12",
@@ -105,46 +105,10 @@ const DropZone = (props) => {
             }
           })
           .then((data) => {
-            console.log("Action:", data.action);
-            console.log("Inserted ID:", data.id);
-
-            let title;
-            let htmlContent;
-            if (data.action === "created") {
-              title = "Template Created Successfully";
-              htmlContent =
-                "<strong>UID:</strong> " +
-                data.id +
-                "<br>" +
-                "This is the <strong>UID</strong> in the Database, you can save it for later search";
-            } else {
-              title = "Template Updated Successfully";
-              htmlContent =
-                "<strong>Template Name:</strong> " +
-                data.id +
-                "<br>" +
-                "It is updated in the Database, you can check it anytime";
-            }
-
-            // Show a message box to let the user know the Inserted ID
-            Swal.fire({
-              title: title,
-              html: htmlContent,
-              icon: "success",
-            });
+            
           })
           .catch((error) => {
-            console.error("Error:", error);
-
-            if (error.message === "Duplicate entry") {
-              // Display a failure message box for duplicate entry
-              Swal.fire({
-                title: "ID Duplicated in Database",
-                text: "A template with this ID already exists. Please try again with a different Name.",
-                icon: "error",
-              });
-            } else {
-            }
+            
           });
     };
 
