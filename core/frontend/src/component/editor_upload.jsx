@@ -67,8 +67,7 @@ const DropZone = (props) => {
 
     const handleSubmit = (file) => {
         console.log("Submitting files:", uploadedFiles);
-        SubmitToDB(); // Call the UploadToMongo function here
-        FileSubmit(); // Call the FileSubmit function here
+        SubmitToDB(uploadedFiles[0]); // Call the UploadToMongo function here
         setSubmitted((prevSubmitted) => [...prevSubmitted, index]); //submit button
     };
 
@@ -80,36 +79,20 @@ const DropZone = (props) => {
 
 
     
-    const SubmitToDB = () => {
+    const SubmitToDB = (uploadedFile) => {
         //change ip & port, should be set to server-side IP
-        //this is hard-coded
         console.log(props.input);
+
+        // Prepare the FormData object
+        const formData = new FormData();
+        formData.append("file", new Blob([uploadedFile.content], { type: uploadedFile.type }), uploadedFile.name);
         fetch("http://127.0.0.1:8888/editor/submit", {
           method: "POST",
-          body: JSON.stringify({
-            id: "Test12",
-            info: props.input.information,
-          }),
+          body: JSON.stringify({}),
           headers: {
             "Content-type": "application/json; charset=UTF-8",
           },
         })
-          .then((response) => {
-            if (response.ok) {
-              return response.json();
-            } else if (response.status === 409) {
-              throw new Error("Duplicate entry");
-            } else {
-              console.log("Server responded with an error");
-              throw new Error("Server Error");
-            }
-          })
-          .then((data) => {
-            
-          })
-          .catch((error) => {
-            
-          });
     };
 
     return (
