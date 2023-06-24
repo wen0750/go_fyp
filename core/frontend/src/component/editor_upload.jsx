@@ -195,15 +195,15 @@ const DropZone = (props) => {
                 <h3>Files:</h3>
                 <ul>
                 {uploadedFiles.map((file, index) => (
-  <li key={index}>
-    <span style={{ fontFamily: "'Fira Code', Consolas, 'Courier New', monospace" }}>
-      {file.name}
-    </span>
-    <button className={`styled-submit-button${submitted.includes(index) ? " fade-out" : ""}`} onClick={() => handleSubmit(index)}>
-      Submit
-    </button>
-  </li>
-))}
+                    <li key={index}>
+                        <span style={{ fontFamily: "'Fira Code', Consolas, 'Courier New', monospace" }}>
+                        {file.name}
+                        </span>
+                        <button className={`styled-submit-button${submitted.includes(index) ? " fade-out" : ""}`} onClick={() => handleSubmit(index)}>
+                        Submit
+                        </button>
+                    </li>
+                    ))}
                 </ul>
                 
             </div>
