@@ -12,6 +12,8 @@ const DropZone = (props) => {
     //storing uploaded files
     const [uploadedFiles, setUploadedFiles] = useState([]);
 
+    const [submitted, setSubmitted] = useState([]);
+
     const handleDragEnter = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -36,6 +38,11 @@ const DropZone = (props) => {
         e.stopPropagation();
         setDragging(false);
         const file = e.dataTransfer.files[0];
+
+        if (uploadedFiles.length > 0) {
+            setErrorMessage("Only one file can be uploaded at a time.");
+            return;
+        }
 
         // Check if file is .yaml or .js file
         if (file && (file.name.endsWith('.yaml') || file.name.endsWith('.js'))) {
@@ -62,6 +69,7 @@ const DropZone = (props) => {
         console.log("Submitting files:", uploadedFiles);
         saveToMongo(); // Call the saveToMongo function here
         FileSubmit(); // Call the FileSubmit function here
+        setSubmitted((prevSubmitted) => [...prevSubmitted, index]); //submit button
     };
 
     // Style for the drop area when a file is being dragged over it
@@ -184,13 +192,20 @@ const DropZone = (props) => {
                 <p>Drag and drop your .yaml or .js file here</p>
             </div>
             <div>
-                <h3>Uploaded Files:</h3>
+                <h3>Files:</h3>
                 <ul>
-                    {uploadedFiles.map((file, index) => (
-                        <li key={index}>{file.name}
-                        <button onClick={handleSubmit}>Submit</button></li>
-                    ))}
+                {uploadedFiles.map((file, index) => (
+  <li key={index}>
+    <span style={{ fontFamily: "'Fira Code', Consolas, 'Courier New', monospace" }}>
+      {file.name}
+    </span>
+    <button className={`styled-submit-button${submitted.includes(index) ? " fade-out" : ""}`} onClick={() => handleSubmit(index)}>
+      Submit
+    </button>
+  </li>
+))}
                 </ul>
+                
             </div>
         </div>
     );
@@ -239,6 +254,8 @@ export default class EditorUpload extends React.Component {
             <Container maxWidth="lg">
                 <this.TemplateVariables />
             </Container>
+            
         );
+
     }
 }

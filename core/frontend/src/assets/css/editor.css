@@ -8,12 +8,36 @@ li {
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
-  }
+}
   
-  li span {
-    flex-grow: 1;
-  }
-  
-  .submit-button {
-    margin-left: 20px;
-  }
+li span {
+  flex-grow: 1;
+}
+
+
+.styled-submit-button {
+  padding: 1.3em 3em;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  font-weight: 500;
+  color: #000;
+  background-color: #fff;
+  border: none;
+  border-radius: 45px;
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  outline: none;
+}
+
+.styled-submit-button:hover {
+  background-color: #3ea7e4;
+  box-shadow: 0px 15px 20px rgba(46, 192, 229, 0.4);
+  color: #fff;
+  transform: translateY(-7px);
+}
+
+.styled-submit-button:active {
+  transform: translateY(-1px);
+}
