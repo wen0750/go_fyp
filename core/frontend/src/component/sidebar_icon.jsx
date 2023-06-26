@@ -11,6 +11,7 @@ import InputOutlinedIcon from "@mui/icons-material/InputOutlined";
 
 import DrawRoundedIcon from "@mui/icons-material/DrawRounded";
 import DehazeRoundedIcon from "@mui/icons-material/DehazeRounded";
+import FolderCopyRoundedIcon from "@mui/icons-material/FolderCopyRounded";
 
 import ArrowRightOutlinedIcon from "@mui/icons-material/ArrowRightOutlined";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
@@ -29,5 +30,6 @@ export {
     ArrowBackIcon,
     DrawRoundedIcon,
     DehazeRoundedIcon,
+    FolderCopyRoundedIcon,
     ArrowRightOutlinedIcon as ArrowIcon,
 };

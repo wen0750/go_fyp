@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
 import { Card, CardHeader, CardContent, Container } from "@mui/material";
 
@@ -45,7 +45,10 @@ const DropZone = (props) => {
         }
 
         // Check if file is .yaml or .js file
-        if (file && (file.name.endsWith('.yaml') || file.name.endsWith('.js'))) {
+        if (
+            file &&
+            (file.name.endsWith(".yaml") || file.name.endsWith(".js"))
+        ) {
             setErrorMessage(""); // Clear error message
             const reader = new FileReader();
 
@@ -53,7 +56,10 @@ const DropZone = (props) => {
                 const fileContent = event.target.result;
                 console.log(fileContent);
                 // Store uploaded file
-                setUploadedFiles([...uploadedFiles, { name: file.name, content: fileContent }]);
+                setUploadedFiles([
+                    ...uploadedFiles,
+                    { name: file.name, content: fileContent },
+                ]);
             };
 
             reader.readAsText(file);
@@ -63,7 +69,6 @@ const DropZone = (props) => {
             ); // Set error message
         }
     };
-
 
     const handleSubmit = (file) => {
         console.log("Submitting files:", uploadedFiles);
@@ -77,22 +82,24 @@ const DropZone = (props) => {
         borderColor: "#3f51b5",
     };
 
-
-    
     const SubmitToDB = (uploadedFile) => {
         //change ip & port, should be set to server-side IP
         console.log(props.input);
 
         // Prepare the FormData object
         const formData = new FormData();
-        formData.append("file", new Blob([uploadedFile.content], { type: uploadedFile.type }), uploadedFile.name);
+        formData.append(
+            "file",
+            new Blob([uploadedFile.content], { type: uploadedFile.type }),
+            uploadedFile.name
+        );
         fetch("http://127.0.0.1:8888/editor/submit", {
-          method: "POST",
-          body: JSON.stringify({}),
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-          },
-        })
+            method: "POST",
+            body: JSON.stringify({}),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+            },
+        });
     };
 
     return (
@@ -141,18 +148,27 @@ const DropZone = (props) => {
             <div>
                 <h3>Files:</h3>
                 <ul>
-                {uploadedFiles.map((file, index) => (
-                    <li key={index}>
-                        <span style={{ fontFamily: "'Fira Code', Consolas, 'Courier New', monospace" }}>
-                        {file.name}
-                        </span>
-                        <button className={`styled-submit-button${submitted.includes(index) ? " fade-out" : ""}`} onClick={() => handleSubmit(index)}>
-                        Submit
-                        </button>
-                    </li>
+                    {uploadedFiles.map((file, index) => (
+                        <li key={index}>
+                            <span
+                                style={{
+                                    fontFamily:
+                                        "'Fira Code', Consolas, 'Courier New', monospace",
+                                }}
+                            >
+                                {file.name}
+                            </span>
+                            <button
+                                className={`styled-submit-button${
+                                    submitted.includes(index) ? " fade-out" : ""
+                                }`}
+                                onClick={() => handleSubmit(index)}
+                            >
+                                Submit
+                            </button>
+                        </li>
                     ))}
                 </ul>
-                
             </div>
         </div>
     );
@@ -201,8 +217,6 @@ export default class EditorUpload extends React.Component {
             <Container maxWidth="lg">
                 <this.TemplateVariables />
             </Container>
-            
         );
-
     }
 }

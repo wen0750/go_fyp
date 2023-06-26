@@ -1,13 +1,15 @@
-import { Link } from "react-router-dom";
-import { ArrowBackIcon } from "../sidebar_icon";
-import { StyledEngineProvider } from "@mui/material/styles";
-
 import Editor from "../../page/editor";
+import ProjectFolder from "../../page/folder";
+import ProjectItem from "../../page/project";
 
 const Item = (props) => {
-    const { page } = props;
+    const { page, path } = props;
 
-    switch (page) {
+    switch (path) {
+        case "folder":
+            return <ProjectFolder />;
+        case "project":
+            return <ProjectItem />;
         case "editor":
             return <Editor />;
         default:

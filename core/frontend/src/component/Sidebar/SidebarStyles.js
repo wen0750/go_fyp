@@ -90,7 +90,8 @@ export const ItemName = styled.span`
 
 // Sidebar Container
 export const SidebarContainer = styled.div`
-  position: absolute;
+  position: fixed;
+  top: 0;
   left: 0;
   width: ${({ displaySidebar }) => (displaySidebar ? "15rem" : "5rem")};
   height: 100vh;
@@ -108,14 +109,14 @@ export const SidebarContainer = styled.div`
 
   &:hover {
     ${({ displaySidebar }) =>
-      !displaySidebar && "box-shadow: 8px 0px 12px 0px rgba(0,0,0,0.1)"};
+    !displaySidebar && "box-shadow: 8px 0px 12px 0px rgba(0,0,0,0.1)"};
 
     @media (min-width: 468px) {
       width: ${({ displaySidebar }) => !displaySidebar && "15rem"};
 
       ${SidebarLogoWrapper} {
         justify-content: ${({ displaySidebar }) =>
-          !displaySidebar && "space-between"};
+    !displaySidebar && "space-between"};
       }
 
       ${SidebarBrand} {
@@ -128,7 +129,7 @@ export const SidebarContainer = styled.div`
 
       ${ItemWrapper} {
         justify-content: ${({ displaySidebar }) =>
-          !displaySidebar && "flex-start"};
+    !displaySidebar && "flex-start"};
       }
 
       ${ItemName} {

@@ -1,5 +1,5 @@
 import {
-    HomeIcon,
+    FolderCopyRoundedIcon,
     LayoutIcon,
     CalendarIcon,
     InvoiceIcon,
@@ -14,14 +14,14 @@ import {
 export const SIDEBAR_DATA = [
     {
         id: 1,
-        name: "Dashboards",
-        path: "dashboards",
-        icon: <HomeIcon />,
+        name: "project folder",
+        path: "folder",
+        icon: <FolderCopyRoundedIcon />,
     },
     {
         id: 2,
-        name: "Layouts",
-        path: "layouts",
+        name: "project item",
+        path: "project",
         icon: <LayoutIcon />,
     },
     {
@@ -68,8 +68,8 @@ export const SIDEBAR_DATA = [
     },
     {
         id: 10,
-        name: "editor",
-        path: "tmp_editor",
+        name: "template editor",
+        path: "editor",
         icon: <DrawRoundedIcon />,
     },
 ];

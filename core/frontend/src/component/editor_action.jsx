@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Button, Box } from "@mui/material";
+import { Button, Box, Container } from "@mui/material";
 import "../assets/css/editor.css";
 
 export default class EditorAction extends React.Component {
@@ -150,37 +150,43 @@ export default class EditorAction extends React.Component {
 
     render() {
         return (
-            <Box
-                sx={{
-                    display: "flex",
-                    justifyContent: "flex-end",
-                    "& button": { m: 1 },
-                }}
-            >
-                <div>
-                    <Button variant="contained" component="label" size="medium">
-                        Import
-                        <input type="file" hidden />
-                    </Button>
-                    <Button variant="contained" size="medium">
-                        Clear
-                    </Button>
-                    <Button
-                        variant="contained"
-                        onClick={this.saveToMongo}
-                        size="medium"
-                    >
-                        Save To Database
-                    </Button>
-                    <Button
-                        variant="contained"
-                        onClick={this.ondatasubmit}
-                        size="medium"
-                    >
-                        Download
-                    </Button>
-                </div>
-            </Box>
+            <Container maxWidth="lg">
+                <Box
+                    sx={{
+                        display: "flex",
+                        justifyContent: "flex-end",
+                        "& button": { m: 1 },
+                    }}
+                >
+                    <div>
+                        <Button
+                            variant="contained"
+                            component="label"
+                            size="medium"
+                        >
+                            Import
+                            <input type="file" hidden />
+                        </Button>
+                        <Button variant="contained" size="medium">
+                            Clear
+                        </Button>
+                        <Button
+                            variant="contained"
+                            onClick={this.saveToMongo}
+                            size="medium"
+                        >
+                            Save To Database
+                        </Button>
+                        <Button
+                            variant="contained"
+                            onClick={this.ondatasubmit}
+                            size="medium"
+                        >
+                            Download
+                        </Button>
+                    </div>
+                </Box>
+            </Container>
         );
     }
 }
