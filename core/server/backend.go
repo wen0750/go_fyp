@@ -5,11 +5,15 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"reflect"
+	"strings"
 	"time"
 
 	"gilab.com/pragmaticreviews/golang-gin-poc/mongodb"
@@ -217,11 +221,54 @@ func SaveToDB(c *gin.Context) {
 //upload page
 func SubmitToDB(c *gin.Context) {
 	var template Template
+
+	// Read the file from the request
+	_, header, err := c.Request.FormFile("file")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error reading the uploaded file"})
+		return
+	}
+	
+	// Save the file to a temporary directory
+	tmpDir := "temp-uploads"
+	filePath := filepath.Join(tmpDir, header.Filename)
+	err = c.SaveUploadedFile(header, filePath)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error saving the uploaded file"})
+		return
+	}
+
+	// Read the file content
+	content, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error reading the uploaded file"})
+		return
+	}
+
+	// Parse the content and convert it to JSON if it's a YAML file
+	var data interface{}
+	fileExt := strings.ToLower(filepath.Ext(header.Filename))
+	if fileExt == ".yaml" {
+		err = yaml.Unmarshal(content, &data)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Error parsing the YAML file"})
+			return
+		}
+	} else if fileExt == ".json" {
+		err = json.Unmarshal(content, &data)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Error parsing the JSON file"})
+			return
+		}
+	} else {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Unsupported file type"})
+		return
+	}
 	
 	c.JSON(http.StatusOK, gin.H{
 		//Template updated successfully
 		"action":  "updated",
-		"id":      template.ID,
+		"info":     template.Info,
 	})
 }
 

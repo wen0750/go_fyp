@@ -85,7 +85,6 @@ class Editor extends React.Component {
                 </this.TabPanel>
                 <this.TabPanel value={this.state.curTab} index={3}>
                     <EditorUpload dataChange={this.setInput} />
-                    <EditorAction input={this.state.input} />
                 </this.TabPanel>
             </Box>
         );
