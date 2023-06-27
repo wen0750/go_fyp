@@ -15,7 +15,7 @@ import { ProjectHeader } from "../component/page_style/project_style";
 class ProjectItem extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { anchorEl: null, open: false, curTab: 1 };
+        this.state = { anchorEl: null, open: false, curTab: 0 };
     }
 
     StyledTab = styled((props) => <Tab disableRipple {...props} />)(
@@ -200,12 +200,16 @@ class ProjectItem extends React.Component {
                                 {...this.a11yProps(2)}
                             ></this.StyledTab>
                             <this.StyledTab
-                                label="VPT Top Threats"
+                                label="Notes"
                                 {...this.a11yProps(3)}
                             ></this.StyledTab>
                             <this.StyledTab
-                                label="History"
+                                label="VPT Top Threats"
                                 {...this.a11yProps(4)}
+                            ></this.StyledTab>
+                            <this.StyledTab
+                                label="History"
+                                {...this.a11yProps(5)}
                             ></this.StyledTab>
                         </this.AntTabs>
                     </Box>
@@ -223,6 +227,9 @@ class ProjectItem extends React.Component {
                     </this.TabPanel>
                     <this.TabPanel value={this.state.curTab} index={4}>
                         5
+                    </this.TabPanel>
+                    <this.TabPanel value={this.state.curTab} index={5}>
+                        6
                     </this.TabPanel>
                 </div>
             </div>
