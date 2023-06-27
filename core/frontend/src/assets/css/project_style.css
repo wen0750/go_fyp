@@ -1,0 +1,9 @@
+.custscandetails div img {
+    height: 55px;
+    width: auto;
+}
+.custscandetails div div {
+    display: flex;
+    text-align: left;
+    align-items: center;
+}

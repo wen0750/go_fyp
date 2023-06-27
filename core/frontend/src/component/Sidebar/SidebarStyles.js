@@ -58,6 +58,7 @@ export const SidebarToggler = styled.button`
 // SidebarItem styles
 export const ItemsList = styled.ul`
   list-style: none;
+  overflow-y: auto;
 `;
 
 export const ItemContainer = styled.li`

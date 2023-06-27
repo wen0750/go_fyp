@@ -11,6 +11,8 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { ProjectHeader } from "../component/page_style/project_style";
+import ProjectSummary from "../component/project_summary";
+import "../assets/css/project_style.css";
 
 class ProjectItem extends React.Component {
     constructor(props) {
@@ -214,7 +216,7 @@ class ProjectItem extends React.Component {
                         </this.AntTabs>
                     </Box>
                     <this.TabPanel value={this.state.curTab} index={0}>
-                        1
+                        <ProjectSummary />
                     </this.TabPanel>
                     <this.TabPanel value={this.state.curTab} index={1}>
                         2
