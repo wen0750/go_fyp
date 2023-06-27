@@ -20,7 +20,10 @@ const SidebarItems = ({ displaySidebar }) => {
                     onClick={() => setActiveItem(itemData.id)}
                     className={itemData.id === activeItem ? "active" : ""}
                 >
-                    <Link to={itemData.path}>
+                    <Link
+                        to={itemData.path}
+                        style={{ padding: "0.5rem 0.25rem", width: "100%" }}
+                    >
                         <ItemWrapper>
                             {itemData.icon}
                             <ItemName displaySidebar={displaySidebar}>

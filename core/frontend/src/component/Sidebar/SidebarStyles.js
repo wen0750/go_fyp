@@ -63,7 +63,6 @@ export const ItemsList = styled.ul`
 export const ItemContainer = styled.li`
   margin-top: 0.5rem;
   width: 100%;
-  padding: 0.5rem 0.25rem;
   border-radius: 0.2rem;
   cursor: pointer;
 
@@ -100,6 +99,8 @@ export const SidebarContainer = styled.div`
   transition: width 350ms ease;
   border-right: 1px solid #d4d8dd;
   overflow-x: hidden;
+  z-index:1000;
+  
   ${({ displaySidebar }) =>
     displaySidebar && "box-shadow: 8px 0px 12px 0px rgba(0,0,0,0.1)"};
 
