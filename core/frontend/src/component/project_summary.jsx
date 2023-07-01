@@ -58,7 +58,7 @@ export default class ProjectSummary extends React.Component {
                 </CardMedia>
                 <Typography
                     gutterBottom
-                    variant="h5"
+                    variant="p"
                     component="div"
                     sx={{ textAlign: "center" }}
                 >
@@ -120,23 +120,27 @@ export default class ProjectSummary extends React.Component {
         // const { data: chartData } = this.state;
         const options = {
             animationEnabled: true,
-            title: {
-                text: "Customer Satisfaction",
-            },
             subtitles: [
                 {
-                    text: "71% Positive",
+                    text: "Top 5 OS",
                     verticalAlign: "center",
                     fontSize: 24,
                     dockInsidePlotArea: true,
                 },
             ],
+            legend: {
+                cursor: "pointer",
+                verticalAlign: "center",
+                horizontalAlign: "right",
+            },
             data: [
                 {
                     type: "doughnut",
                     showInLegend: true,
                     indexLabel: "{name}: {y}",
                     yValueFormatString: "#,###'%'",
+                    radius: "120%",
+                    innerRadius: "65%",
                     dataPoints: [
                         { name: "Unsatisfied", y: 5 },
                         { name: "Very Unsatisfied", y: 31 },
@@ -161,8 +165,8 @@ export default class ProjectSummary extends React.Component {
     hostScanStatus = () => {
         return (
             <div style={{ display: "flex" }}>
-                <this.mediaCard cname="ssss" cvalue="sss" />
-                <this.mediaCard cname="ssss" cvalue="sss" />
+                <this.mediaCard cname="SUCCEEDED" cvalue="0" />
+                <this.mediaCard cname="FAILED" cvalue="0" />
             </div>
         );
     };
@@ -170,9 +174,12 @@ export default class ProjectSummary extends React.Component {
     scanDuration = () => {
         return (
             <div style={{ display: "flex" }}>
-                <this.mediaCard cname="ssss" cvalue="ss:ss:ss" />
-                <this.mediaCard cname="ssss" cvalue="ss:ss:ss" />
-                <this.mediaCard cname="ssss" cvalue="ss:ss:ss" />
+                <this.mediaCard cname="SCAN DURATION" cvalue="00:00:00" />
+                <this.mediaCard
+                    cname="MEDIAN SCAN TIME PER HOST"
+                    cvalue="00:00:00"
+                />
+                <this.mediaCard cname="MAX SCAN TIME" cvalue="00:00:00" />
             </div>
         );
     };
@@ -183,22 +190,26 @@ export default class ProjectSummary extends React.Component {
                 <Grid container spacing={2}>
                     <Grid {...{ xs: 12, sm: 12, md: 6, lg: 6 }} minHeight={160}>
                         <MiniTitle>
-                            <b>Title</b>
+                            <b>Scan Details</b>
                         </MiniTitle>
                         <this.scanDetails></this.scanDetails>
                         <b>Details</b>
                         <this.details></this.details>
                     </Grid>
                     <Grid {...{ xs: 12, sm: 12, md: 6, lg: 6 }} minHeight={160}>
-                        <MiniTitle>Title</MiniTitle>
+                        <MiniTitle>
+                            Top 5 Operating System Detected During Scan
+                        </MiniTitle>
                         <this.detectedDuringScan></this.detectedDuringScan>
                     </Grid>
                     <Grid {...{ xs: 12, sm: 12, md: 6, lg: 6 }} minHeight={160}>
-                        <MiniTitle>Title</MiniTitle>
+                        <MiniTitle>
+                            Authentication / Credential Info (Hosts)
+                        </MiniTitle>
                         <this.hostScanStatus></this.hostScanStatus>
                     </Grid>
                     <Grid {...{ xs: 12, sm: 12, md: 6, lg: 6 }} minHeight={160}>
-                        <MiniTitle>Title</MiniTitle>
+                        <MiniTitle>Scan Durations</MiniTitle>
                         <this.scanDuration></this.scanDuration>
                     </Grid>
                 </Grid>
