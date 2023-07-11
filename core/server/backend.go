@@ -220,8 +220,6 @@ func SaveToDB(c *gin.Context) {
 
 //upload page
 func SubmitToDB(c *gin.Context) {
-	var template Template
-
 	// Read the file from the request
 	_, header, err := c.Request.FormFile("file")
 	if err != nil {
@@ -246,7 +244,7 @@ func SubmitToDB(c *gin.Context) {
 	}
 
 	// Parse the content and convert it to JSON if it's a YAML file
-	var data interface{}
+	var data Template
 	fileExt := strings.ToLower(filepath.Ext(header.Filename))
 	if fileExt == ".yaml" {
 		err = yaml.Unmarshal(content, &data)
@@ -264,11 +262,14 @@ func SubmitToDB(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Unsupported file type"})
 		return
 	}
+
 	
+
 	c.JSON(http.StatusOK, gin.H{
 		//Template updated successfully
 		"action":  "updated",
-		"info":     template.Info,
+		//return file data 
+		"info":     data,
 	})
 }
 

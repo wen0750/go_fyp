@@ -76,6 +76,12 @@ const DropZone = (props) => {
         setSubmitted((prevSubmitted) => [...prevSubmitted, file]); //submit button
     };
 
+    const handleDelete = (fileToDelete) => {
+        // Remove the file from the list of uploaded files
+        const updatedFiles = uploadedFiles.filter(file => file.name !== fileToDelete.name);
+        setUploadedFiles(updatedFiles);
+    };
+
     // Style for the drop area when a file is being dragged over it
     const draggingStyle = {
         backgroundColor: "#e0e0e0",
@@ -83,7 +89,6 @@ const DropZone = (props) => {
     };
 
     const SubmitToDB = (uploadedFile) => {
-        //change ip & port, should be set to server-side IP
         var data = new FormData();
         data.append(
             "file",
@@ -91,9 +96,33 @@ const DropZone = (props) => {
             uploadedFile.name
         );
 
+        //change ip & port, should be set to server-side IP
+        
         fetch("http://127.0.0.1:8888/editor/submit", {
             method: "POST",
             body: data,
+        })
+        .then(response => {
+            console.log("Action:", data.action);
+            console.log("Inserted ID:", data.id);
+            let title;
+
+            if (response.ok) {
+                Swal.fire({
+                    title: title,
+                    icon: "success",
+                });
+            } else {
+                reject(new Error('File submission failed'));
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            Swal.fire({
+                title: "ID Duplicated in Database",
+                text: "A template with this ID already exists. Please try again with a different Name.",
+                icon: "error",
+            });
         });
     };
 
@@ -153,6 +182,15 @@ const DropZone = (props) => {
                             >
                                 {file.name}
                             </span>
+                            
+                            <button
+                                className={`styled-delete-button${
+                                    submitted.includes(file) ? " fade-out" : ""
+                                }`}
+                                onClick={() => handleDelete(file)}
+                            >
+                                Delete
+                            </button>
                             <button
                                 className={`styled-submit-button${
                                     submitted.includes(file) ? " fade-out" : ""
