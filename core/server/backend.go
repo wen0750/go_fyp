@@ -263,14 +263,61 @@ func SubmitToDB(c *gin.Context) {
 		return
 	}
 
-	
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 
-	c.JSON(http.StatusOK, gin.H{
-		//Template updated successfully
-		"action":  "updated",
-		//return file data 
-		"info":     data,
-	})
+	filter := bson.M{"id": data.ID}
+
+	var existingTemplate Template
+	err = collection.FindOne(ctx, filter).Decode(&existingTemplate)
+
+	if err == mongo.ErrNoDocuments {
+		result, err := collection.InsertOne(ctx, data)
+		if err != nil {
+			log.Printf("Error inserting template: %v\n", err)
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": "Failed to save the template",
+			})
+			return
+		}
+		//reture message to user/frontend
+		c.JSON(http.StatusOK, gin.H{
+			//Template saved successfully
+			"action":  "created",
+			"id":      result.InsertedID,
+		})
+	} else if err != nil {
+		log.Printf("Error retrieving template: %v\n", err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "Failed to retrieve existing template",
+		})
+		return
+	} else {
+		// Second scenario, If all the Data == unchanged(Duplicated), return 409 error
+		if data.Equal(existingTemplate) {
+			c.JSON(http.StatusConflict, gin.H{
+				"error":  "Duplicated data",
+			})
+			return
+		} else {
+			// Third scenario, if Data == Updated, return 200 OK
+			update := bson.M{"$set": data}
+			_, err := collection.UpdateOne(ctx, filter, update)
+
+			if err != nil {
+				log.Printf("Error updating template: %v\n", err)
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"error": "Failed to update the template",
+				})
+				return
+			}
+			c.JSON(http.StatusOK, gin.H{
+				//Template updated successfully
+				"action":  "updated",
+				"id":      data.ID,
+			})
+		}
+	}
 }
 
 //return ture if the data is the same

@@ -102,27 +102,57 @@ const DropZone = (props) => {
             method: "POST",
             body: data,
         })
-        .then(response => {
-            console.log("Action:", data.action);
-            console.log("Inserted ID:", data.id);
-            let title;
-
+        .then((response) => {
             if (response.ok) {
-                Swal.fire({
-                    title: title,
-                    icon: "success",
-                });
+                return response.json();
+            } else if (response.status === 409) {
+                throw new Error("Duplicate entry");
             } else {
-                reject(new Error('File submission failed'));
+                console.log("Server responded with an error");
+                throw new Error("Server Error");
             }
         })
-        .catch(error => {
-            console.error("Error:", error);
+        .then((data) => {
+            console.log("Action:", data.action);
+            console.log("Inserted ID:", data.id);
+
+            let title;
+            let htmlContent;
+            if (data.action === "created") {
+                title = "Template Created Successfully";
+                htmlContent =
+                    "<strong>UID:</strong> " +
+                    data.id +
+                    "<br>" +
+                    "This is the <strong>UID</strong> in the Database, you can save it for later search";
+            } else {
+                title = "Template Updated Successfully";
+                htmlContent =
+                    "<strong>Template Name:</strong> " +
+                    data.id +
+                    "<br>" +
+                    "It is updated in the Database, you can check it anytime";
+            }
+
+            // Show a message box to let the user know the Inserted ID
             Swal.fire({
-                title: "ID Duplicated in Database",
-                text: "A template with this ID already exists. Please try again with a different Name.",
-                icon: "error",
+                title: title,
+                html: htmlContent,
+                icon: "success",
             });
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+
+            if (error.message === "Duplicate entry") {
+                // Display a failure message box for duplicate entry
+                Swal.fire({
+                    title: "ID Duplicated in Database",
+                    text: "A template with this ID already exists. Please try again with a different Name.",
+                    icon: "error",
+                });
+            } else {
+            }
         });
     };
 
