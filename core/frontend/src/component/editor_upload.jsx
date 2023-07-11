@@ -71,9 +71,9 @@ const DropZone = (props) => {
     };
 
     const handleSubmit = (file) => {
-        console.log("Submitting files:", uploadedFiles);
-        SubmitToDB(uploadedFiles[0]); // Call the UploadToMongo function here
-        setSubmitted((prevSubmitted) => [...prevSubmitted, index]); //submit button
+        console.log("Submitting files:", file);
+        SubmitToDB(file); // Call the UploadToMongo function here
+        setSubmitted((prevSubmitted) => [...prevSubmitted, file]); //submit button
     };
 
     // Style for the drop area when a file is being dragged over it
@@ -84,21 +84,16 @@ const DropZone = (props) => {
 
     const SubmitToDB = (uploadedFile) => {
         //change ip & port, should be set to server-side IP
-        console.log(props.input);
-
-        // Prepare the FormData object
-        const formData = new FormData();
-        formData.append(
+        var data = new FormData();
+        data.append(
             "file",
             new Blob([uploadedFile.content], { type: uploadedFile.type }),
             uploadedFile.name
         );
+
         fetch("http://127.0.0.1:8888/editor/submit", {
             method: "POST",
-            body: JSON.stringify({}),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8",
-            },
+            body: data,
         });
     };
 
@@ -160,9 +155,9 @@ const DropZone = (props) => {
                             </span>
                             <button
                                 className={`styled-submit-button${
-                                    submitted.includes(index) ? " fade-out" : ""
+                                    submitted.includes(file) ? " fade-out" : ""
                                 }`}
-                                onClick={() => handleSubmit(index)}
+                                onClick={() => handleSubmit(file)}
                             >
                                 Submit
                             </button>

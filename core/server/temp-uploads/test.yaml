@@ -1,0 +1,19 @@
+id: Test
+info:
+    name: abc
+    author: FYP
+    severity: ""
+    description: ""
+    remediation: ""
+    reference: []
+    classification:
+        cvssmetrics: ""
+        cvssscore: 0
+        cveid: ""
+        cweid: ""
+    metadata:
+        verified: false
+        shodanquery: ""
+    tags: ""
+requests: []
+workflows: []
