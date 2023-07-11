@@ -254,10 +254,14 @@ func SubmitToDB(c *gin.Context) {
 		}
 	} else if fileExt == ".json" {
 		err = json.Unmarshal(content, &data)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{"error": "Error parsing the JSON file"})
-			return
-		}
+    if err != nil {
+        c.JSON(405, gin.H{
+            "error": err.Error(),
+        })
+        return
+    }
+
+
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Unsupported file type"})
 		return
@@ -297,6 +301,7 @@ func SubmitToDB(c *gin.Context) {
 		if data.Equal(existingTemplate) {
 			c.JSON(http.StatusConflict, gin.H{
 				"error":  "Duplicated data",
+				"data" : data,
 			})
 			return
 		} else {

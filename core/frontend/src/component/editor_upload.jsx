@@ -44,10 +44,10 @@ const DropZone = (props) => {
             return;
         }
 
-        // Check if file is .yaml or .js file
+        // Check if file is .yaml or .json file
         if (
             file &&
-            (file.name.endsWith(".yaml") || file.name.endsWith(".js"))
+            (file.name.endsWith(".yaml") || file.name.endsWith(".json"))
         ) {
             setErrorMessage(""); // Clear error message
             const reader = new FileReader();
@@ -65,7 +65,7 @@ const DropZone = (props) => {
             reader.readAsText(file);
         } else {
             setErrorMessage(
-                "Can't upload. Use an template in one of these formats: .js or .yaml "
+                "Can't upload. Use an template in one of these formats: .json or .yaml "
             ); // Set error message
         }
     };
@@ -107,7 +107,11 @@ const DropZone = (props) => {
                 return response.json();
             } else if (response.status === 409) {
                 throw new Error("Duplicate entry");
-            } else {
+            } else if (response.status === 405) {
+                return response.json().then((jsonResponse) => {
+                    throw new Error(jsonResponse.error);
+                });
+            }else {
                 console.log("Server responded with an error");
                 throw new Error("Server Error");
             }
@@ -140,6 +144,7 @@ const DropZone = (props) => {
                 html: htmlContent,
                 icon: "success",
             });
+            handleDelete(uploadedFile)
         })
         .catch((error) => {
             console.error("Error:", error);
@@ -152,6 +157,11 @@ const DropZone = (props) => {
                     icon: "error",
                 });
             } else {
+                Swal.fire({
+                    title: "Wrong Format",
+                    text: error.message,
+                    icon: "error",
+                });
             }
         });
     };
@@ -197,7 +207,7 @@ const DropZone = (props) => {
                         {errorMessage}
                     </div>
                 )}
-                <p>Drag and drop your .yaml or .js file here</p>
+                <p>Drag and drop your .yaml or .json file here</p>
             </div>
             <div>
                 <h3>Files:</h3>
