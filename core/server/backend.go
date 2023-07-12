@@ -7,7 +7,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -237,7 +236,7 @@ func SubmitToDB(c *gin.Context) {
 	}
 
 	// Read the file content
-	content, err := ioutil.ReadFile(filePath)
+	content, err := os.ReadFile(filePath)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error reading the uploaded file"})
 		return
@@ -345,18 +344,11 @@ func (t Template) Equal(other Template) bool {
 		reflect.DeepEqual(t.Workflows, other.Workflows)
 }
 
-
-//Upload
-
-func main() {
+// Connect, Check collection, Create collection if not exist
+func initializeMongoDB(mongoURI, dbName, collectionName string) (*mongo.Collection, error) {
 	var err error
-	router := gin.Default()
-	router.Use(cors.Default())
-	
 	//check if collectionName is exist, if not, create one
-	mongoURI := "mongodb+srv://sam1916:ue6aE6jfXGtBvwS@cluster0.981q5hl.mongodb.net/?retryWrites=true&w=majority"
-    dbName := "FYP"
-    collectionName := "Templates"
+	
 
     collection, err = mongodb.CheckCollectionExists(mongoURI, dbName, collectionName)
     if err != nil {
@@ -372,6 +364,21 @@ func main() {
 	} else {
 		log.Printf("Unique Key set successful")
 	}
+
+	return collection, nil
+}
+
+
+func main() {
+	router := gin.Default()
+	router.Use(cors.Default())
+
+
+	mongoURI := "mongodb+srv://sam1916:ue6aE6jfXGtBvwS@cluster0.981q5hl.mongodb.net/?retryWrites=true&w=majority"
+    dbName := "FYP"
+    collectionName := "Templates"
+	initializeMongoDB(mongoURI,dbName,collectionName)
+
 
 	//Use POST method to receive json data from Website
 	router.POST("/editor/:action", func(c *gin.Context) {

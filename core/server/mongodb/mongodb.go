@@ -138,3 +138,5 @@ func EnsureUniqueIndex(mongoURI, dbName, collectionName string) error {
 
 	return nil
 }
+
+
