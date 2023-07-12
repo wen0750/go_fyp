@@ -344,29 +344,7 @@ func (t Template) Equal(other Template) bool {
 		reflect.DeepEqual(t.Workflows, other.Workflows)
 }
 
-// Connect, Check collection, Create collection if not exist
-func initializeMongoDB(mongoURI, dbName, collectionName string) (*mongo.Collection, error) {
-	var err error
-	//check if collectionName is exist, if not, create one
-	
 
-    collection, err = mongodb.CheckCollectionExists(mongoURI, dbName, collectionName)
-    if err != nil {
-        mongodb.CreateCollection(mongoURI,dbName,collectionName)
-		log.Println("Collection created")
-    } else{
-		log.Println("Collection already exist")
-	}
-
-	err = mongodb.EnsureUniqueIndex(mongoURI, dbName, collectionName)
-	if err != nil {
-		log.Fatalf("Error ensuring unique index: %v\n", err)
-	} else {
-		log.Printf("Unique Key set successful")
-	}
-
-	return collection, nil
-}
 
 
 func main() {
@@ -377,7 +355,7 @@ func main() {
 	mongoURI := "mongodb+srv://sam1916:ue6aE6jfXGtBvwS@cluster0.981q5hl.mongodb.net/?retryWrites=true&w=majority"
     dbName := "FYP"
     collectionName := "Templates"
-	initializeMongoDB(mongoURI,dbName,collectionName)
+	mongodb.InitializeMongoDB(mongoURI,dbName,collectionName)
 
 
 	//Use POST method to receive json data from Website

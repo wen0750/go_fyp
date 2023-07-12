@@ -9,6 +9,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+var collection *mongo.Collection
+
 // create a template structure
 type Template struct {
 	ID   string `json:"id"`
@@ -140,3 +142,26 @@ func EnsureUniqueIndex(mongoURI, dbName, collectionName string) error {
 }
 
 
+// Connect, Check collection, Create collection if not exist
+func InitializeMongoDB(mongoURI, dbName, collectionName string) (error) {
+	var err error
+	//check if collectionName is exist, if not, create one
+	
+
+    collection, err = CheckCollectionExists(mongoURI, dbName, collectionName)
+    if err != nil {
+        CreateCollection(mongoURI,dbName,collectionName)
+		log.Println("Collection created")
+    } else{
+		log.Println("Collection already exist")
+	}
+
+	err = EnsureUniqueIndex(mongoURI, dbName, collectionName)
+	if err != nil {
+		log.Fatalf("Error ensuring unique index: %v\n", err)
+	} else {
+		log.Printf("Unique Key set successful")
+	}
+
+	return nil
+}
