@@ -11,7 +11,7 @@ const DropZone = (props) => {
     const [dragging, setDragging] = useState(false);
     //storing uploaded files
     const [uploadedFiles, setUploadedFiles] = useState([]);
-
+    
     const [submitted, setSubmitted] = useState([]);
 
     const handleDragEnter = (e) => {
@@ -207,10 +207,10 @@ const DropZone = (props) => {
                         {errorMessage}
                     </div>
                 )}
-                <p>Drag and drop your .yaml or .json file here</p>
+                <p className="cardContent">Drag and drop your .yaml or .json file here</p>
             </div>
             <div>
-                <h3>Files:</h3>
+                <h3 className="cardContent">File:</h3>
                 <ul>
                     {uploadedFiles.map((file, index) => (
                         <li key={index}>
@@ -270,7 +270,7 @@ export default class EditorUpload extends React.Component {
     TemplateVariables = () => {
         return (
             <Card>
-                <CardHeader title="+ Variables" />
+                <CardHeader title="Submit your own Template for others"  />
                 <hr />
                 <CardContent>
                     <DropZone />

@@ -69,3 +69,7 @@ li span {
 .styled-delete-button:active {
   transform: translateY(-1px);
 }
+
+.cardContent {
+  font-family: Consolas, 'Fira Code', 'Courier New', monospace;
+}

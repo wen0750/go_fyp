@@ -23,4 +23,12 @@ export const SIDEBAR_DATA = [
         path: "editor",
         icon: <DrawRoundedIcon />,
     },
+    /* 
+    {
+        id: 4,
+        name: "terminal",
+        path: "editor",
+        icon: <TerminalIcon />,
+    },
+    */
 ];
