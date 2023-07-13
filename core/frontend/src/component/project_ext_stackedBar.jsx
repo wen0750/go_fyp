@@ -10,7 +10,6 @@ const App = () => {
     const minusNumResult = parseFloat(targetNum - currentNum).toFixed(1);
     const gapNum =
         minusNumResult >= 0 ? minusNumResult : Math.abs(minusNumResult);
-    console.log("minusNumResult", minusNumResult);
     const defaultValue = (5 - parseFloat(currentNum + minusNumResult)).toFixed(
         1
     );

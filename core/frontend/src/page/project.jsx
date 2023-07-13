@@ -13,6 +13,8 @@ import { styled } from "@mui/material/styles";
 import { ProjectHeader } from "../component/page_style/project_style";
 import ProjectSummary from "../component/project_summary";
 import ProjectHosts from "../component/project_hosts";
+import ProjectVulnerabilities from "../component/project_vulnerabilities";
+import ProjectNotes from "../component/project_notes";
 import "../assets/css/project_style.css";
 
 class ProjectItem extends React.Component {
@@ -78,7 +80,7 @@ class ProjectItem extends React.Component {
             >
                 {value === index && (
                     <Box sx={{ pt: 3 }}>
-                        <Typography>{children}</Typography>
+                        {children}
                     </Box>
                 )}
             </div>
@@ -223,10 +225,10 @@ class ProjectItem extends React.Component {
                         <ProjectHosts />
                     </this.TabPanel>
                     <this.TabPanel value={this.state.curTab} index={2}>
-                        3
+                        <ProjectVulnerabilities />
                     </this.TabPanel>
                     <this.TabPanel value={this.state.curTab} index={3}>
-                        4
+                        <ProjectNotes />
                     </this.TabPanel>
                     <this.TabPanel value={this.state.curTab} index={4}>
                         5
