@@ -15,6 +15,7 @@ import ProjectSummary from "../component/project_summary";
 import ProjectHosts from "../component/project_hosts";
 import ProjectVulnerabilities from "../component/project_vulnerabilities";
 import ProjectNotes from "../component/project_notes";
+import ProjectHistory from "../component/project_history";
 import "../assets/css/project_style.css";
 
 class ProjectItem extends React.Component {
@@ -234,7 +235,7 @@ class ProjectItem extends React.Component {
                         5
                     </this.TabPanel>
                     <this.TabPanel value={this.state.curTab} index={5}>
-                        6
+                        <ProjectHistory />
                     </this.TabPanel>
                 </div>
             </div>
