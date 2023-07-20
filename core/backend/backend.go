@@ -394,7 +394,7 @@ func main() {
 		case "removeFolder":
 			folder.RemoveFolder(c, folderCollection)
 		case "list":
-			folder.ListRecords(c, folderCollection)
+			folder.ListFolder(c, folderCollection)
 		}
 	})
 

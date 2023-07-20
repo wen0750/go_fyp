@@ -29,11 +29,11 @@ type Project struct {
 	Host []string `bson:"host,omitempty" json:"host,omitempty"`
 }
 
-func ListRecords(c *gin.Context, collection *mongo.Collection) {
+func ListFolder(c *gin.Context, collection *mongo.Collection) {
 	// Retrieve all documents from the collection
 	cursor, err := collection.Find(context.Background(), bson.D{})
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error listing records"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error listing folder"})
 		return
 	}
 	defer cursor.Close(context.Background())
@@ -41,7 +41,7 @@ func ListRecords(c *gin.Context, collection *mongo.Collection) {
 	// Iterate through the returned cursor.
 	var results []bson.M
 	if err = cursor.All(context.Background(), &results); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error listing records"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error listing folder"})
 		return
 	}
 
