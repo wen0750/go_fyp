@@ -119,7 +119,7 @@ func EnsureUniqueIndex(client *mongo.Client, dbName, collectionName string) erro
 }
 
 // Connect, Check collection, Create collection if not exist
-func InitializeMongoDB(mongoURI, dbName, collectionName string) error {
+func InitializeMongoDB(mongoURI, dbName, collectionName string) (*mongo.Client, *mongo.Collection, error) {
 	var err error
 	//check if collectionName is exist, if not, create one
 
@@ -127,7 +127,7 @@ func InitializeMongoDB(mongoURI, dbName, collectionName string) error {
 	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mongoURI))
 	if err != nil {
 		log.Printf("Error connecting to MongoDB: %v\n", err)
-		return err
+		return nil, nil, err
 	}
 
 	_, err = CheckCollectionExists(client, dbName, collectionName)
@@ -145,5 +145,5 @@ func InitializeMongoDB(mongoURI, dbName, collectionName string) error {
 		log.Printf("Unique Key set successful")
 	}
 
-	return nil
+	return client, collection, nil
 }

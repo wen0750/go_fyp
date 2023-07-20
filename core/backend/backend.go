@@ -88,8 +88,6 @@ type Template struct {
 	} `json:"workflows,omitempty"`
 }
 
-
-
 // receive raw json data and convert it into .yaml file
 func Download(c *gin.Context) {
 	//receive data from website with POST method
@@ -97,7 +95,7 @@ func Download(c *gin.Context) {
 	c.BindJSON(&jsonData)
 	//For checking
 	fmt.Printf("JSON data: %v\n", gin.H{
-		"id":        jsonData.ID,
+		"id":          jsonData.ID,
 		"\ninfo":      jsonData.Info,
 		"\nrequests":  jsonData.Requests,
 		"\nworkflows": jsonData.Workflows,
@@ -109,30 +107,30 @@ func Download(c *gin.Context) {
 	if err != nil {
 		fmt.Printf("Error while Marshaling. %v", err)
 	}
-	
+
 	//Create a temporary YAML file
 	tmpfile, err := os.CreateTemp(os.TempDir(), "test.yaml")
 	if err != nil {
-		c.JSON(http.StatusInternalServerError,"Unable to create Temporary file")
+		c.JSON(http.StatusInternalServerError, "Unable to create Temporary file")
 		return
 	}
-	defer os.Remove(tmpfile.Name()) //Cleanup the temporary file after serving 
+	defer os.Remove(tmpfile.Name()) //Cleanup the temporary file after serving
 
 	//Write YAML data to the temporary file
 	if _, err := tmpfile.Write(yamlData); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to write"})
 		return
-	} 
+	}
 	//Close the file after finishing
 	if err := tmpfile.Close(); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error":"Unable to close temporary file"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Unable to close temporary file"})
 		return
 	}
 	//Set the appropriate headers to trigger a download in the browser
 	c.Writer.Header().Set("Content-Disposition", fmt.Sprintf("attachment; filename=%s", tmpfile.Name()))
-	c.Writer.Header().Set("Content-Type", "application/x-yaml") 
+	c.Writer.Header().Set("Content-Type", "application/x-yaml")
 	http.ServeFile(c.Writer, c.Request, tmpfile.Name())
-	
+
 	//Create a yaml file for checking
 	//filename := "test.yaml"
 	//err = os.WriteFile(filename, yamlData, 0664)
@@ -146,7 +144,7 @@ func Download(c *gin.Context) {
 // Save data To MongoDB by using InsertData method in mongodb.go
 func SaveToDB(c *gin.Context) {
 	var template Template
-	
+
 	// Bind the JSON data received to the Template struct
 	if err := c.ShouldBindJSON(&template); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -157,7 +155,6 @@ func SaveToDB(c *gin.Context) {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
-
 
 	// Check for an existing document with the same info.name
 	filter := bson.M{"id": template.ID}
@@ -180,8 +177,8 @@ func SaveToDB(c *gin.Context) {
 		//reture message to user/frontend
 		c.JSON(http.StatusOK, gin.H{
 			//Template saved successfully
-			"action":  "created",
-			"id":      result.InsertedID,
+			"action": "created",
+			"id":     result.InsertedID,
 		})
 	} else if err != nil {
 		log.Printf("Error retrieving template: %v\n", err)
@@ -193,7 +190,7 @@ func SaveToDB(c *gin.Context) {
 		// Second scenario, If all the Data == unchanged(Duplicated), return 409 error
 		if template.Equal(existingTemplate) {
 			c.JSON(http.StatusConflict, gin.H{
-				"error":  "Duplicated data",
+				"error": "Duplicated data",
 			})
 			return
 		} else {
@@ -210,8 +207,8 @@ func SaveToDB(c *gin.Context) {
 			}
 			c.JSON(http.StatusOK, gin.H{
 				//Template updated successfully
-				"action":  "updated",
-				"id":      template.ID,
+				"action": "updated",
+				"id":     template.ID,
 			})
 		}
 	}
@@ -225,7 +222,7 @@ func SubmitToDB(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error reading the uploaded file"})
 		return
 	}
-	
+
 	// Save the file to a temporary directory
 	tmpDir := "temp-uploads"
 	filePath := filepath.Join(tmpDir, header.Filename)
@@ -253,13 +250,12 @@ func SubmitToDB(c *gin.Context) {
 		}
 	} else if fileExt == ".json" {
 		err = json.Unmarshal(content, &data)
-    if err != nil {
-        c.JSON(405, gin.H{
-            "error": err.Error(),
-        })
-        return
-    }
-
+		if err != nil {
+			c.JSON(405, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
 
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Unsupported file type"})
@@ -286,8 +282,8 @@ func SubmitToDB(c *gin.Context) {
 		//reture message to user/frontend
 		c.JSON(http.StatusOK, gin.H{
 			//Template saved successfully
-			"action":  "created",
-			"id":      result.InsertedID,
+			"action": "created",
+			"id":     result.InsertedID,
 		})
 	} else if err != nil {
 		log.Printf("Error retrieving template: %v\n", err)
@@ -299,8 +295,8 @@ func SubmitToDB(c *gin.Context) {
 		// Second scenario, If all the Data == unchanged(Duplicated), return 409 error
 		if data.Equal(existingTemplate) {
 			c.JSON(http.StatusConflict, gin.H{
-				"error":  "Duplicated data",
-				"data" : data,
+				"error": "Duplicated data",
+				"data":  data,
 			})
 			return
 		} else {
@@ -317,8 +313,8 @@ func SubmitToDB(c *gin.Context) {
 			}
 			c.JSON(http.StatusOK, gin.H{
 				//Template updated successfully
-				"action":  "updated",
-				"id":      data.ID,
+				"action": "updated",
+				"id":     data.ID,
 			})
 		}
 	}
@@ -344,30 +340,28 @@ func (t Template) Equal(other Template) bool {
 		reflect.DeepEqual(t.Workflows, other.Workflows)
 }
 
-
-
-
 func main() {
 	router := gin.Default()
 	router.Use(cors.Default())
 
-
 	mongoURI := "mongodb+srv://sam1916:ue6aE6jfXGtBvwS@cluster0.981q5hl.mongodb.net/?retryWrites=true&w=majority"
-    dbName := "FYP"
-    collectionName := "Templates"
-	mongodb.InitializeMongoDB(mongoURI,dbName,collectionName)
-
+	dbName := "FYP"
+	collectionName := "Templates"
+	client, collection, err := mongodb.InitializeMongoDB(mongoURI, dbName, collectionName)
+	if err != nil {
+		log.Fatalf("Error initializing MongoDB: %v\n", err)
+	}
 
 	//Use POST method to receive json data from Website
 	router.POST("/editor/:action", func(c *gin.Context) {
 		action := c.Param("action")
 		if action == "save" {
 			SaveToDB(c)
-		} else if (action == "download"){
+		} else if action == "download" {
 			Download(c)
-		} else if (action == "submit"){
+		} else if action == "submit" {
 			SubmitToDB(c)
-		} 
+		}
 	})
 
 	//This router.POST is for testing

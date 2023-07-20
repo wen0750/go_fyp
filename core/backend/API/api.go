@@ -61,16 +61,3 @@ type Template struct {
 		} `json:"subtemplates,omitempty"`
 	} `json:"workflows,omitempty"`
 }
-
-import (
-    "context"
-    "log"
-    "net/http"
-    "time"
-
-    "go.mongodb.org/mongo-driver/bson"
-    "go.mongodb.org/mongo-driver/mongo"
-    "go.mongodb.org/mongo-driver/mongo/options"
-
-    "github.com/gorilla/mux"
-)
