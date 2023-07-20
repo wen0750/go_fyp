@@ -439,7 +439,10 @@ export default class ProjectVulnerabilities extends React.Component {
                                             </TableCell>
                                             <TableCell
                                                 align="right"
-                                                style={{ display: "flex", padding: 0 }}
+                                                style={{
+                                                    display: "flex",
+                                                    padding: 0,
+                                                }}
                                             >
                                                 <StackedBar></StackedBar>
                                             </TableCell>
