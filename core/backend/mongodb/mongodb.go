@@ -145,5 +145,6 @@ func InitializeMongoDB(mongoURI, dbName, collectionName string) (*mongo.Collecti
 		log.Printf("Unique Key set successful")
 	}
 
+	collection := client.Database(dbName).Collection(collectionName)
 	return collection, nil
 }

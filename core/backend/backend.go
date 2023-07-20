@@ -351,6 +351,8 @@ func main() {
 	collection, err := mongodb.InitializeMongoDB(mongoURI, dbName, collectionName)
 	if err != nil {
 		log.Fatalf("Error initializing MongoDB: %v\n", err)
+	} else {
+		log.Println("MongoDB initialized successfully")
 	}
 
 	//Use POST method to receive json data from Website

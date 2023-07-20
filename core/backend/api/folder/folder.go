@@ -27,3 +27,19 @@ func ListRecords(c *gin.Context, collection *mongo.Collection) {
 
 	c.JSON(http.StatusOK, results)
 }
+
+func CreateFolder() {
+	// a button
+}
+
+func RemoveFolder() {
+	// a button
+}
+
+func ViewFolderItem() {
+	//a function that show the Folder content
+}
+
+func GetFolderList() {
+	//user own Folder List
+}
