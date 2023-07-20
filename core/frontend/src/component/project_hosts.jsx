@@ -549,6 +549,6 @@ export default class ProjectHosts extends React.Component {
                     </div>
                 </Box>
             </Box>
-        );
+        );    
     }
 }
