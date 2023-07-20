@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Component } from "react";
 
 import {
     Box,
@@ -27,17 +26,18 @@ import PropTypes from "prop-types";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 
-import { DataGrid } from "@mui/x-data-grid";
 import { visuallyHidden } from "@mui/utils";
 import { alpha } from "@mui/material/styles";
 
+import { UnderLineMiniTitle } from "../component/page_style/project_style";
+
 import CanvasJSReact from "@canvasjs/react-charts";
+
+
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-import StackedBar from "./project_ext_stackedBar";
-
-export default class ProjectHosts extends React.Component {
+export default class ProjectHistory extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -58,14 +58,14 @@ export default class ProjectHosts extends React.Component {
             },
             {
                 id: "Last Scanned",
-                numeric: true,
-                disablePadding: false,
+                numeric: false,
+                disablePadding: true,
                 label: "Last Scanned",
             },
             {
                 id: "Status",
-                numeric: true,
-                disablePadding: false,
+                numeric: false,
+                disablePadding: true,
                 label: "Status",
             },
         ];
@@ -87,6 +87,19 @@ export default class ProjectHosts extends React.Component {
             this.createData("2020-11-26 at 11:18 AM", "2020-11-26 at 11:38 AM", "Completed"),
             this.createData("2020-11-27 at 11:18 AM", "2020-11-27 at 11:38 AM", "Completed"),
             this.createData("2020-11-28 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
+            this.createData("2020-11-29 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
+            this.createData("2020-11-30 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
+            this.createData("2020-12-01 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
+            this.createData("2020-12-02 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
+            this.createData("2020-12-03 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
+            this.createData("2020-12-04 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
+            this.createData("2020-12-05 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
+            this.createData("2020-12-06 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
+            this.createData("2020-12-07 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
+            this.createData("2020-12-08 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
+            this.createData("2020-12-09 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
+            this.createData("2020-12-10 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
+            
         ];
     }
 
@@ -214,7 +227,7 @@ export default class ProjectHosts extends React.Component {
                         id="tableTitle"
                         component="div"
                     >
-                        Nutrition
+                        Scan History
                     </Typography>
                 )}
 
@@ -235,6 +248,8 @@ export default class ProjectHosts extends React.Component {
         );
     };
 
+   
+    
     EnhancedTable = () => {
         const setRowsPerPage = (newValue) => {
             this.setState({ rowsPerPage: newValue });
@@ -342,7 +357,7 @@ export default class ProjectHosts extends React.Component {
         );
 
         return (
-            <Box sx={{ width: "70%" }}>
+            <Box sx={{ width: "100%" }}>
                 <Paper sx={{ width: "100%", mb: 2 }}>
                     <this.EnhancedTableToolbar numSelected={selected.length} />
                     <TableContainer>
@@ -438,13 +453,90 @@ export default class ProjectHosts extends React.Component {
         );
     };
 
-    
+    VulnerabilitiesPiChart = () => {
+        // const { data: chartData } = this.state;
+        const options = {
+            animationEnabled: true,
+            legend: {
+                cursor: "pointer",
+                verticalAlign: "center",
+                horizontalAlign: "right",
+            },
+            data: [
+                {
+                    type: "doughnut",
+                    showInLegend: true,
+                    yValueFormatString: "#,###'%'",
+                    radius: "120%",
+                    innerRadius: "50%",
+                    dataPoints: [
+                        { name: "Critical", y: 2 },
+                        { name: "High", y: 3 },
+                        { name: "Medium", y: 13 },
+                        { name: "Low", y: 7 },
+                        { name: "info", y: 75 },
+                    ],
+                },
+            ],
+        };
+        return (
+            <div>
+                <CanvasJSChart
+                    options={options}
+                    /* onRef={ref => this.chart = ref} */
+                />
+                {/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
+            </div>
+        );
+    };
+
     render() {
         return (
-            <Box>
-                <this.EnhancedTable
-                    style={{ width: "70%" }}
-                ></this.EnhancedTable>
+            <Box component="div" sx={{ display: "flex" }}>
+                <Box sx={{ width: "70%" }}>
+                    <this.EnhancedTable
+                        style={{ width: "75%" }}
+                    ></this.EnhancedTable>
+                </Box>
+                <Box sx={{ width: "30%", padding: "25px" }}>
+                    <div style={{ marginBottom: "1rem" }}>
+                        <UnderLineMiniTitle>Scan Durations</UnderLineMiniTitle>
+                        <table>
+                            <tr>
+                                <td width="5%">Policy:</td>
+                                <td width="20%">Basic Network Scan</td>
+                            </tr>
+                            <tr>
+                                <td >Status:</td>
+                                <td>Completed</td>
+                            </tr>
+                            <tr>
+                                <td>Severity Base:</td>
+                                <td>CVSS v3.0</td>
+                            </tr>
+                            <tr>
+                                <td>Scanner:</td>
+                                <td>Local Scanner</td>
+                            </tr>
+                            <tr>
+                                <td>Start:</td>
+                                <td>January 16 at 5:30 PM</td>
+                            </tr>
+                            <tr>
+                                <td>End:</td>
+                                <td>January 16 at 6:28 PM</td>
+                            </tr>
+                            <tr>
+                                <td>Elapsed:</td>
+                                <td>an hour</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div>
+                        <UnderLineMiniTitle>Vulnerabilities</UnderLineMiniTitle>
+                        <this.VulnerabilitiesPiChart></this.VulnerabilitiesPiChart>
+                    </div>
+                </Box>
             </Box>
         );
     }
