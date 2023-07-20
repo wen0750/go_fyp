@@ -355,19 +355,34 @@ func main() {
 		log.Println("MongoDB initialized successfully")
 	}
 
-	//Use POST method to receive json data from Website
+	// Use POST method to receive json data from Website
 	router.POST("/editor/:action", func(c *gin.Context) {
 		action := c.Param("action")
-		if action == "save" {
+		switch action {
+		case "save":
 			SaveToDB(c)
-		} else if action == "download" {
+		case "download":
 			Download(c)
-		} else if action == "submit" {
+		case "submit":
 			SubmitToDB(c)
+		default:
+			// Handle default case if needed
 		}
 	})
-	router.POST("/folder", func(c *gin.Context) {
+
+	router.POST("/folder/:action", func(c *gin.Context) {
 		folder.ListRecords(c, collection)
+		action := c.Param("action")
+		switch action {
+		case "CreateFolder":
+			folder.CreateFolder(c, collection)
+		case "download":
+			// Your code here
+		case "submit":
+			// Your code here
+		default:
+			// Handle default case if needed
+		}
 	})
 
 	//This router.POST is for testing
