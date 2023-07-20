@@ -36,7 +36,7 @@ export default class ProjectSummary extends React.Component {
     mediaCard = (props) => {
         const { cname, cvalue } = props;
         return (
-            <Card sx={{ maxWidth: 345, width: 250, mt: "20px", mr: "20px" }}>
+            <Card sx={{ maxWidth: 345, width: 250, minWidth: 200, mt: "20px", mr: "20px" }}>
                 <CardMedia
                     sx={{
                         height: 80,

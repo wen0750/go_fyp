@@ -9,6 +9,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+var collection *mongo.Collection
+
 // create a template structure
 type Template struct {
 	ID   string `json:"id"`
@@ -72,57 +74,34 @@ type Template struct {
 	} `json:"workflows,omitempty"`
 }
 
-
-func CreateCollection(mongoURI, dbName, collectionName string) (*mongo.Collection, error) {
-
-	// Create a new client and connect to MongoDB server
-	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mongoURI))
-	if err != nil {
-        log.Printf("Error connecting to MongoDB: %v\n", err)
-        return nil, err
-    }
-
+func CreateCollection(client *mongo.Client, dbName, collectionName string) (*mongo.Collection, error) {
 	//create table in mongoDB
 	collection := client.Database(dbName).Collection(collectionName)
 	return collection, nil
 }
 
-
-func CheckCollectionExists(mongoURI, dbName, collectionName string) (*mongo.Collection, error) {
-	//connect to DB
-    client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mongoURI))
-    if err != nil {
-        log.Printf("Error connecting to MongoDB: %v\n", err)
-        return nil, err
-    }
-
+func CheckCollectionExists(client *mongo.Client, dbName, collectionName string) (*mongo.Collection, error) {
 	//List out all the Collection Names
-    db := client.Database(dbName)
-    collections, err := db.ListCollectionNames(context.Background(), bson.M{})
-    if err != nil {
-        log.Printf("Error listing collections: %v\n", err)
-        return nil, err
-    }
+	db := client.Database(dbName)
+	collections, err := db.ListCollectionNames(context.Background(), bson.M{})
+	if err != nil {
+		log.Printf("Error listing collections: %v\n", err)
+		return nil, err
+	}
 
-    for _, collName := range collections {
-        if collName == collectionName {
-            return db.Collection(collectionName), nil
-        }
-    }
+	for _, collName := range collections {
+		if collName == collectionName {
+			return db.Collection(collectionName), nil
+		}
+	}
 
-    return db.Collection(collectionName), nil
+	return db.Collection(collectionName), nil
 }
 
 //Prevent users to inserting the same data into MongoDB
-func EnsureUniqueIndex(mongoURI, dbName, collectionName string) error {
-	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mongoURI))
-	if err != nil {
-		log.Printf("Error connecting to MongoDB: %v\n", err)
-		return err
-	}
-	defer client.Disconnect(context.Background())
-
+func EnsureUniqueIndex(client *mongo.Client, dbName, collectionName string) error {
 	collection := client.Database(dbName).Collection(collectionName)
+
 	indexModel := mongo.IndexModel{
 		Keys: bson.D{
 			{Key: "id", Value: 1},
@@ -130,7 +109,7 @@ func EnsureUniqueIndex(mongoURI, dbName, collectionName string) error {
 		Options: options.Index().SetUnique(true),
 	}
 
-	_, err = collection.Indexes().CreateOne(context.Background(), indexModel)
+	_, err := collection.Indexes().CreateOne(context.Background(), indexModel)
 	if err != nil {
 		log.Printf("Error creating unique index: %v\n", err)
 		return err
@@ -139,4 +118,32 @@ func EnsureUniqueIndex(mongoURI, dbName, collectionName string) error {
 	return nil
 }
 
+// Connect, Check collection, Create collection if not exist
+func InitializeMongoDB(mongoURI, dbName, collectionName string) (*mongo.Collection, error) {
+	var err error
+	//check if collectionName is exist, if not, create one
 
+	//connect to DB
+	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mongoURI))
+	if err != nil {
+		log.Printf("Error connecting to MongoDB: %v\n", err)
+		return nil, err
+	}
+
+	_, err = CheckCollectionExists(client, dbName, collectionName)
+	if err != nil {
+		CreateCollection(client, dbName, collectionName)
+		log.Println("Collection created")
+	} else {
+		log.Println("Collection already exist")
+	}
+
+	err = EnsureUniqueIndex(client, dbName, collectionName)
+	if err != nil {
+		log.Fatalf("Error ensuring unique index: %v\n", err)
+	} else {
+		log.Printf("Unique Key set successful")
+	}
+
+	return collection, nil
+}
