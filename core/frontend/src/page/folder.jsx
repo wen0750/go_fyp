@@ -67,8 +67,8 @@ class ProjectFolder extends React.Component {
     rows = [
         {
             id: 1,
-            lastName: "CVE-2020-26067",
-            firstName: "CVE-2020-26067",
+            lastName: "sam",
+            firstName: "sam",
             age: "2020-8-12 3:12:02",
         },
         {
