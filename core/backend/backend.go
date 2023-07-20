@@ -4,6 +4,7 @@
 package main
 
 import (
+	"cmd/api"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -347,7 +348,7 @@ func main() {
 	mongoURI := "mongodb+srv://sam1916:ue6aE6jfXGtBvwS@cluster0.981q5hl.mongodb.net/?retryWrites=true&w=majority"
 	dbName := "FYP"
 	collectionName := "Templates"
-	client, collection, err := mongodb.InitializeMongoDB(mongoURI, dbName, collectionName)
+	collection, err := mongodb.InitializeMongoDB(mongoURI, dbName, collectionName)
 	if err != nil {
 		log.Fatalf("Error initializing MongoDB: %v\n", err)
 	}
@@ -362,6 +363,9 @@ func main() {
 		} else if action == "submit" {
 			SubmitToDB(c)
 		}
+	})
+	router.POST("/folder", func(c *gin.Context) {
+		api.ListRecords(c, collection)
 	})
 
 	//This router.POST is for testing
