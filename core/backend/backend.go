@@ -361,39 +361,40 @@ func main() {
 
 	mongoURI := "mongodb+srv://sam1916:ue6aE6jfXGtBvwS@cluster0.981q5hl.mongodb.net/?retryWrites=true&w=majority"
 	dbName := "FYP"
-	collectionName := "Templates"
-	collection, err := mongodb.InitializeMongoDB(mongoURI, dbName, collectionName)
+	templateCollection, err := mongodb.InitializeMongoDB(mongoURI, dbName, "Templates")
 	if err != nil {
-		log.Fatalf("Error initializing MongoDB: %v\n", err)
-	} else {
-		log.Println("MongoDB initialized successfully")
+		log.Fatalf("Error initializing MongoDB Templates collection: %v\n", err)
 	}
+
+	folderCollection, err := mongodb.InitializeMongoDB(mongoURI, dbName, "Folder")
+	if err != nil {
+		log.Fatalf("Error initializing MongoDB Folders collection: %v\n", err)
+	}
+
+	log.Println("MongoDB initialized successfully")
 
 	// Use POST method to receive json data from Website
 	router.POST("/editor/:action", func(c *gin.Context) {
 		action := c.Param("action")
 		switch action {
 		case "save":
-			SaveToDB(c, collection)
+			SaveToDB(c, templateCollection)
 		case "download":
 			Download(c)
 		case "submit":
-			SubmitToDB(c, collection)
-		default:
-			// Handle default case if needed
+			SubmitToDB(c, templateCollection)
 		}
 	})
 
 	router.POST("/folder/:action", func(c *gin.Context) {
-		folder.ListRecords(c, collection)
 		action := c.Param("action")
 		switch action {
-		case "CreateFolder":
-			folder.CreateFolder(c, collection)
-		case "RemoveFolder":
-			folder.RemoveFolder(c, collection)
-		default:
-			// Handle default case if needed
+		case "createFolder":
+			folder.CreateFolder(c, folderCollection)
+		case "removeFolder":
+			folder.RemoveFolder(c, folderCollection)
+		case "list":
+			folder.ListRecords(c, folderCollection)
 		}
 	})
 

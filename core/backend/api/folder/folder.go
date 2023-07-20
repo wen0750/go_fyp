@@ -7,6 +7,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -78,11 +79,18 @@ func RemoveFolder(c *gin.Context, collection *mongo.Collection) {
 		return
 	}
 
+	// Convert the string ID to an ObjectID
+	objectID, err := primitive.ObjectIDFromHex(folder.ID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
+		return
+	}
+
 	// Delete the folder from the collection
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	_, err := collection.DeleteOne(ctx, bson.M{"id": folder.ID})
+	_, err = collection.DeleteOne(ctx, bson.M{"_id": objectID})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to remove folder"})
 		return
