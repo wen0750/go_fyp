@@ -4,7 +4,6 @@
 package main
 
 import (
-	"cmd/api"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -16,6 +15,7 @@ import (
 	"strings"
 	"time"
 
+	"gilab.com/pragmaticreviews/golang-gin-poc/api/folder"
 	"gilab.com/pragmaticreviews/golang-gin-poc/mongodb"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -365,7 +365,7 @@ func main() {
 		}
 	})
 	router.POST("/folder", func(c *gin.Context) {
-		api.ListRecords(c, collection)
+		folder.ListRecords(c, collection)
 	})
 
 	//This router.POST is for testing
