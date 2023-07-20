@@ -28,8 +28,10 @@ func ListRecords(c *gin.Context, collection *mongo.Collection) {
 	c.JSON(http.StatusOK, results)
 }
 
-func CreateFolder() {
+func CreateFolder(folderName string) {
 	// a button
+
+	//
 }
 
 func RemoveFolder() {
