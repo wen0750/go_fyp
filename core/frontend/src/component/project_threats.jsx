@@ -104,79 +104,55 @@ export default class ProjectThreats extends React.Component {
         ];
     }
 
-    descendingComparator = (a, b, orderBy) => {
-        if (b[orderBy] < a[orderBy]) {
-            return -1;
-        }
-        if (b[orderBy] > a[orderBy]) {
-            return 1;
-        }
-        return 0;
+    ThreatsBody = () => {
+        return (
+            <FormControl sx={{ my: 2, width: "25ch" }} variant="outlined">
+                <OutlinedInput
+                    id="outlined-adornment-weight"
+                    endAdornment={
+                        <InputAdornment position="end">
+                            <SearchRoundedIcon />
+                        </InputAdornment>
+                    }
+                    aria-describedby="outlined-weight-helper-text"
+                    inputProps={{
+                        "aria-label": "weight",
+                    }}
+                />
+            </FormControl>
+        );
     };
 
-    getComparator = (order, orderBy) => {
-        return order === "desc"
-            ? (a, b) => this.descendingComparator(a, b, orderBy)
-            : (a, b) => -this.descendingComparator(a, b, orderBy);
+    ThreatsTable = () => {
+        return (
+            <div style={{ height: "100%", width: "100%" }}>
+                <DataGrid
+                    rows={this.rows}
+                    columns={this.columns}
+                    initialState={{
+                        pagination: {
+                            paginationModel: { page: 0, pageSize: 5 },
+                        },
+                    }}
+                    pageSizeOptions={[5, 10]}
+                    checkboxSelection
+                />
+            </div>
+        );
     };
 
-    stableSort = (array, comparator) => {
-        const stabilizedThis = array.map((el, index) => [el, index]);
-        stabilizedThis.sort((a, b) => {
-            const order = comparator(a[0], b[0]);
-            if (order !== 0) {
-                return order;
-            }
-            return a[1] - b[1];
-        });
-        return stabilizedThis.map((el) => el[0]);
-    };
-
-    
     render() {
         return (
-            <Box component="div" sx={{ display: "flex" }}>
-                <Box sx={{ width: "70%" }}>
-                    <this.EnhancedTable
-                        style={{ width: "75%" }}
-                    ></this.EnhancedTable>
-                </Box>
-                <Box sx={{ width: "30%", padding: "25px" }}>
-                    <div style={{ marginBottom: "1rem" }}>
-                        <UnderLineMiniTitle>Scan Durations</UnderLineMiniTitle>
-                        <table>
-                            <tr>
-                                <td width="5%">Policy:</td>
-                                <td width="20%">Basic Network Scan</td>
-                            </tr>
-                            <tr>
-                                <td >Status:</td>
-                                <td>Completed</td>
-                            </tr>
-                            <tr>
-                                <td>Severity Base:</td>
-                                <td>CVSS v3.0</td>
-                            </tr>
-                            <tr>
-                                <td>Scanner:</td>
-                                <td>Local Scanner</td>
-                            </tr>
-                            <tr>
-                                <td>Start:</td>
-                                <td>January 16 at 5:30 PM</td>
-                            </tr>
-                            <tr>
-                                <td>End:</td>
-                                <td>January 16 at 6:28 PM</td>
-                            </tr>
-                            <tr>
-                                <td>Elapsed:</td>
-                                <td>an hour</td>
-                            </tr>
-                        </table>
-                    </div>
-                </Box>
-            </Box>
+            <div>
+                <this.ThreatsHeader />
+                <div style={{ paddingInline: "25px" }}>
+                    <this.ThreatsBody />
+                    <this.ThreatsTable />
+                </div>
+            </div>
         );
     }
-}
+
+    
+    
+}            
