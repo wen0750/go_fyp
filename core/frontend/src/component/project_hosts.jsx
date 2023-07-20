@@ -423,7 +423,7 @@ export default class ProjectHosts extends React.Component {
                                             </TableCell>
                                             <TableCell
                                                 align="right"
-                                                style={{ display: "flex" }}
+                                                style={{ display: "flex" , padding: 0}}
                                             >
                                                 <StackedBar></StackedBar>
                                             </TableCell>
