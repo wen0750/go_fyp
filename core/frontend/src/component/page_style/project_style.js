@@ -15,6 +15,15 @@ export const MiniTitle = styled.div`
     border-width: 1px;
 `;
 
+export const UnderLineMiniTitle = styled.div`
+    border-bottom: outset;
+    border-color: #fff;
+    border-width: 1.99px;
+    padding-bottom: 8px;
+    font-size: bold;
+    font-weight: 700;
+`;
+
 export const CustScanDetails = styled.div`
     column-count: 2;
     display: block;

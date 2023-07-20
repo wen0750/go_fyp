@@ -31,6 +31,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import { visuallyHidden } from "@mui/utils";
 import { alpha } from "@mui/material/styles";
 
+import { UnderLineMiniTitle } from "../component/page_style/project_style";
+
 import CanvasJSReact from "@canvasjs/react-charts";
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -461,12 +463,91 @@ export default class ProjectHosts extends React.Component {
         );
     };
 
+    VulnerabilitiesPiChart = () => {
+        // const { data: chartData } = this.state;
+        const options = {
+            animationEnabled: true,
+            legend: {
+                cursor: "pointer",
+                verticalAlign: "center",
+                horizontalAlign: "right",
+            },
+            data: [
+                {
+                    type: "doughnut",
+                    showInLegend: true,
+                    indexLabel: "{name}: {y}",
+                    yValueFormatString: "#,###'%'",
+                    radius: "120%",
+                    innerRadius: "50%",
+                    dataPoints: [
+                        { name: "Unsatisfied", y: 5 },
+                        { name: "Very Unsatisfied", y: 31 },
+                        { name: "Very Satisfied", y: 40 },
+                        { name: "Satisfied", y: 17 },
+                        { name: "Neutral", y: 7 },
+                    ],
+                },
+            ],
+        };
+        return (
+            <div>
+                <CanvasJSChart
+                    options={options}
+                    /* onRef={ref => this.chart = ref} */
+                />
+                {/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
+            </div>
+        );
+    };
+
     render() {
         return (
-            <Box>
-                <this.EnhancedTable
-                    style={{ width: "70%" }}
-                ></this.EnhancedTable>
+            <Box component="div" sx={{ display: "flex" }}>
+                <Box sx={{ width: 3 / 4 }}>
+                    <this.EnhancedTable
+                        style={{ width: "75%" }}
+                    ></this.EnhancedTable>
+                </Box>
+                <Box sx={{ width: 1 / 4, padding: "25px" }}>
+                    <div style={{ marginBottom: "1rem" }}>
+                        <UnderLineMiniTitle>Scan Durations</UnderLineMiniTitle>
+                        <table>
+                            <tr>
+                                <td>Policy</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Status</td>
+                                <td>Maria Anders</td>
+                            </tr>
+                            <tr>
+                                <td>Severity Base</td>
+                                <td>Francisco Chang</td>
+                            </tr>
+                            <tr>
+                                <td>Scanner</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Start</td>
+                                <td>Maria Anders</td>
+                            </tr>
+                            <tr>
+                                <td>End</td>
+                                <td>Francisco Chang</td>
+                            </tr>
+                            <tr>
+                                <td>Elapsed</td>
+                                <td>Francisco Chang</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div>
+                        <UnderLineMiniTitle>Vulnerabilities</UnderLineMiniTitle>
+                        <this.VulnerabilitiesPiChart></this.VulnerabilitiesPiChart>
+                    </div>
+                </Box>
             </Box>
         );
     }

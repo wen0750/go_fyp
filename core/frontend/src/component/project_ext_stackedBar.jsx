@@ -3,25 +3,34 @@ import Chart from "react-apexcharts";
 
 const App = () => {
     // Defined default value
-    const targetNum = 4.0;
-    const currentNum = 4.2;
-    let colorsGapChart = ["#F3F3F3"];
+    const list = { info: 25, low: 25, medium: 25, high: 25, critical: 25 };
+    let series = [];
+    let colorsGapChart = [];
 
-    const minusNumResult = parseFloat(targetNum - currentNum).toFixed(1);
-    const gapNum =
-        minusNumResult >= 0 ? minusNumResult : Math.abs(minusNumResult);
-    console.log("minusNumResult", minusNumResult);
-    const defaultValue = (5 - parseFloat(currentNum + minusNumResult)).toFixed(
-        1
-    );
-
-    if (minusNumResult > 0) {
-        colorsGapChart = ["#051C2C", "#E44155", "#F3F3F3"];
-    } else if (minusNumResult < 0) {
-        colorsGapChart = ["#051C2C", "#71D2F1", "#F3F3F3"];
-    } else {
-        colorsGapChart = ["#F3F3F3"];
-    }
+    const sKeys = Object.keys(list);
+    sKeys.forEach((key) => {
+        if (list[key] > 0) {
+            series.push({ name: key, data: [list[key]] });
+            console.log(key);
+            switch (key) {
+                case "info":
+                    colorsGapChart.push("#1e7ace");
+                    break;
+                case "low":
+                    colorsGapChart.push("#fdc500");
+                    break;
+                case "medium":
+                    colorsGapChart.push("#fd8c00");
+                    break;
+                case "high":
+                    colorsGapChart.push("#dc0000");
+                    break;
+                case "critical":
+                    colorsGapChart.push("#780000");
+                    break;
+            }
+        }
+    });
 
     const options = {
         chart: {
@@ -51,30 +60,34 @@ const App = () => {
                 },
             },
         },
-        stroke: {
-            width: 1,
-            colors: [],
+        // stroke: {
+        //     width: 0,
+        //     colors: [],
+        // },
+        legend: {
+            show: false,
         },
-        title: {
-            text: "",
-        },
+        colors: colorsGapChart,
         xaxis: {
             type: "category",
-            categories: [],
+            categories: ["Risk Level"],
             labels: {
                 show: false,
             },
             axisBorder: {
                 show: false,
             },
+            axisTicks: {
+                show: false,
+            },
+            max: 100,
         },
-        legend: {
-            show: false,
-        },
-        colors: colorsGapChart,
         yaxis: {
             show: false,
             max: 5,
+            tooltip: {
+                enabled: false,
+            },
         },
         grid: {
             show: false,
@@ -83,34 +96,16 @@ const App = () => {
             enabled: true,
         },
     };
-    const series = [
-        {
-            name: "Current maturity",
-            data: [currentNum],
-        },
-        {
-            name: "Target maturity",
-            data: [gapNum],
-        },
-        {
-            name: "Gap",
-            data: [defaultValue],
-        },
-    ];
 
     return (
-        <div className="app">
-            <div className="row">
-                <div className="mixed-chart">
-                    <Chart
-                        options={options}
-                        series={series}
-                        type="bar"
-                        width="350"
-                        height="105"
-                    />
-                </div>
-            </div>
+        <div style={{ width: "100%" }}>
+            <Chart
+                options={options}
+                series={series}
+                type="bar"
+                width="100%"
+                height="80"
+            />
         </div>
     );
 };
