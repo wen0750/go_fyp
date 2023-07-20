@@ -3,6 +3,7 @@ package mongodb
 import (
 	"context"
 	"log"
+	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -120,11 +121,11 @@ func EnsureUniqueIndex(client *mongo.Client, dbName, collectionName string) erro
 
 // Connect, Check collection, Create collection if not exist
 func InitializeMongoDB(mongoURI, dbName, collectionName string) (*mongo.Collection, error) {
-	var err error
-	//check if collectionName is exist, if not, create one
+	// Connect to DB with a timeout
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 
-	//connect to DB
-	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mongoURI))
+	client, err := mongo.Connect(ctx, options.Client().ApplyURI(mongoURI))
 	if err != nil {
 		log.Printf("Error connecting to MongoDB: %v\n", err)
 		return nil, err
@@ -132,7 +133,11 @@ func InitializeMongoDB(mongoURI, dbName, collectionName string) (*mongo.Collecti
 
 	_, err = CheckCollectionExists(client, dbName, collectionName)
 	if err != nil {
-		CreateCollection(client, dbName, collectionName)
+		_, err = CreateCollection(client, dbName, collectionName)
+		if err != nil {
+			log.Printf("Error creating collection: %v\n", err)
+			return nil, err
+		}
 		log.Println("Collection created")
 	} else {
 		log.Println("Collection already exist")
@@ -141,6 +146,7 @@ func InitializeMongoDB(mongoURI, dbName, collectionName string) (*mongo.Collecti
 	err = EnsureUniqueIndex(client, dbName, collectionName)
 	if err != nil {
 		log.Fatalf("Error ensuring unique index: %v\n", err)
+		return nil, err
 	} else {
 		log.Printf("Unique Key set successful")
 	}

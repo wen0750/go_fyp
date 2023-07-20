@@ -11,7 +11,7 @@ import (
 )
 
 type Folder struct {
-	ID     string      `bson:"_id" json:"_id"`
+	ID     string      `bson:"id" json:"id"`
 	Folder InnerFolder `bson:"folder" json:"folder"`
 }
 
@@ -69,8 +69,26 @@ func CreateFolder(c *gin.Context, collection *mongo.Collection) {
 	c.JSON(http.StatusOK, gin.H{"message": "Folder created successfully"})
 }
 
-func RemoveFolder() {
-	// a button
+func RemoveFolder(c *gin.Context, collection *mongo.Collection) {
+	var folder Folder
+
+	// Decode the JSON request body into the Folder struct
+	if err := c.ShouldBindJSON(&folder); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		return
+	}
+
+	// Delete the folder from the collection
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	_, err := collection.DeleteOne(ctx, bson.M{"id": folder.ID})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to remove folder"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Folder removed successfully"})
 }
 
 func ViewFolderItem() {

@@ -143,7 +143,7 @@ func Download(c *gin.Context) {
 }
 
 // Save data To MongoDB by using InsertData method in mongodb.go
-func SaveToDB(c *gin.Context) {
+func SaveToDB(c *gin.Context, collection *mongo.Collection) {
 	var template Template
 
 	// Bind the JSON data received to the Template struct
@@ -216,7 +216,7 @@ func SaveToDB(c *gin.Context) {
 }
 
 //upload page
-func SubmitToDB(c *gin.Context) {
+func SubmitToDB(c *gin.Context, collection *mongo.Collection) {
 	// Read the file from the request
 	_, header, err := c.Request.FormFile("file")
 	if err != nil {
@@ -230,6 +230,7 @@ func SubmitToDB(c *gin.Context) {
 	err = c.SaveUploadedFile(header, filePath)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Error saving the uploaded file"})
+		log.Printf("Error saving the uploaded file: %v", err)
 		return
 	}
 
@@ -247,6 +248,8 @@ func SubmitToDB(c *gin.Context) {
 		err = yaml.Unmarshal(content, &data)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Error parsing the YAML file"})
+			log.Printf("Error parsing the YAML file: %v", err)
+
 			return
 		}
 	} else if fileExt == ".json" {
@@ -266,11 +269,22 @@ func SubmitToDB(c *gin.Context) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
+	if data.ID == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing ID in the uploaded file"})
+		return
+	}
 	filter := bson.M{"id": data.ID}
 
 	var existingTemplate Template
+	if collection == nil {
+		log.Println("Collection is nil")
+		return
+	}
 	err = collection.FindOne(ctx, filter).Decode(&existingTemplate)
+	if err != nil {
+		log.Printf("Error retrieving template: %v", err)
 
+	}
 	if err == mongo.ErrNoDocuments {
 		result, err := collection.InsertOne(ctx, data)
 		if err != nil {
@@ -360,11 +374,11 @@ func main() {
 		action := c.Param("action")
 		switch action {
 		case "save":
-			SaveToDB(c)
+			SaveToDB(c, collection)
 		case "download":
 			Download(c)
 		case "submit":
-			SubmitToDB(c)
+			SubmitToDB(c, collection)
 		default:
 			// Handle default case if needed
 		}
@@ -376,10 +390,8 @@ func main() {
 		switch action {
 		case "CreateFolder":
 			folder.CreateFolder(c, collection)
-		case "download":
-			// Your code here
-		case "submit":
-			// Your code here
+		case "RemoveFolder":
+			folder.RemoveFolder(c, collection)
 		default:
 			// Handle default case if needed
 		}
