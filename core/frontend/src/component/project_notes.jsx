@@ -318,10 +318,10 @@ export default class ProjectNotes extends React.Component {
                                                 id={labelId}
                                                 scope="row"
                                                 padding="none"
-                                                sx={{padding:"15px"}}
+                                                sx={{paddingInline:"15px"}}
                                             >
-                                                <Typography variant="h6" sx={{color: "red"}} gutterBottom>{row.name}</Typography>
-                                                <Typography variant="subtitle2" gutterBottom>{row.calories}</Typography>
+                                                <Typography variant="h6" sx={{color: "red",margin: 0 }} gutterBottom>{row.name}</Typography>
+                                                <Typography variant="subtitle2" sx={{color: "red" }} gutterBottom>{row.calories}</Typography>
                                             </TableCell>
                                         </TableRow>
                                     );
