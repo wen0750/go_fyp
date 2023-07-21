@@ -30,3 +30,8 @@ export const CustScanDetails = styled.div`
     margin-bottom: 15px;
 `;
 
+export const ThreatsDetails = styled.div`
+    column-count: 2;
+    display: block;
+    margin-bottom: 15px;
+`;

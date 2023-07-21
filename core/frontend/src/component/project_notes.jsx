@@ -42,7 +42,7 @@ export default class ProjectNotes extends React.Component {
         super(props);
         this.state = {
             order: "asc",
-            orderBy: "calories",
+            orderBy: "name",
             selected: [],
             page: 0,
             rowsPerPage: 10,
@@ -53,7 +53,7 @@ export default class ProjectNotes extends React.Component {
                 id: "Scan Notes",
                 numeric: false,
                 disablePadding: true,
-                label: "Dessert (100g serving)",
+                label: "Scan (history)",
             }
         ];
 

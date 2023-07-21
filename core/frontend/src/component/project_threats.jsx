@@ -1,129 +1,80 @@
 import * as React from "react";
+import { Box, Button } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
 
-import {
-    Box,
-    Toolbar,
-    Typography,
-    Paper,
-    Checkbox,
-    IconButton,
-    Tooltip,
-    FormControlLabel,
-    Switch,
-} from "@mui/material";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TablePagination,
-    TableRow,
-    TableSortLabel,
-} from "@mui/material";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import InputAdornment from "@mui/material/InputAdornment";
+import FormControl from "@mui/material/FormControl";
 
-import PropTypes from "prop-types";
-import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
-
-import { visuallyHidden } from "@mui/utils";
-import { alpha } from "@mui/material/styles";
-
+import { FolderHeader } from "../component/page_style/folder_style";
 import { UnderLineMiniTitle } from "../component/page_style/project_style";
 
-import CanvasJSReact from "@canvasjs/react-charts";
+import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
+import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 
+import {
+    ThreatsDetails,
+    MiniTitle,
+} from "../component/page_style/project_style";
 
-var CanvasJS = CanvasJSReact.CanvasJS;
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-
-export default class ProjectThreats extends React.Component {
+class ProjectThreats extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            order: "desc",
-            orderBy: "Start Time",
-            selected: [],
-            page: 0,
-            dense: false,
-            rowsPerPage: 10,
-        };
-
-        this.headCells = [
+        this.state = {};
+        this.columns = [
             {
-                id: "Start Time",
-                numeric: false,
-                disablePadding: true,
-                label: "Start Time",
+                field: "VRP Serverity",
+                flex: 1,
+                width: 150,
             },
             {
-                id: "Last Scanned",
-                numeric: false,
-                disablePadding: true,
-                label: "Last Scanned",
+                field: "Name",
+                flex: 5,
+                width: 500,
             },
             {
-                id: "Status",
-                numeric: false,
-                disablePadding: true,
-                label: "Status",
+                field: "Reasons",
+                flex: 2,
+                width: 200,
             },
-            
-        ];
-
-        this.createData = (Start_Time, Last_Scanned, Status) => {
-            return {
-                Start_Time,
-                Last_Scanned,
-                Status,
-            };
-        };
-
-        this.rows = [
-            this.createData("2020-11-21 at 11:18 AM", "2020-11-21 at 11:38 AM", "Completed"),
-            this.createData("2020-11-22 at 11:18 AM", "2020-11-22 at 11:38 AM", "Completed"),
-            this.createData("2020-11-23 at 11:18 AM", "2020-11-23 at 11:38 AM", "Completed"),
-            this.createData("2020-11-24 at 11:18 AM", "2020-11-24 at 11:38 AM", "Completed"),
-            this.createData("2020-11-25 at 11:18 AM", "2020-11-25 at 11:38 AM", "Completed"),
-            this.createData("2020-11-26 at 11:18 AM", "2020-11-26 at 11:38 AM", "Completed"),
-            this.createData("2020-11-27 at 11:18 AM", "2020-11-27 at 11:38 AM", "Completed"),
-            this.createData("2020-11-28 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-11-29 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-11-30 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-12-01 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-12-02 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-12-03 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-12-04 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-12-05 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-12-06 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-12-07 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-12-08 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-12-09 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-12-10 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            
+            {
+                field: "VRP Score",
+                flex: 1,
+                width: 150,
+            },
+            {
+                field: "Hosts",
+                flex: 1,
+                width: 150,
+            },
         ];
     }
 
-    ThreatsBody = () => {
+    rows = [
+        {
+            id: 1,
+            'VRP Serverity': "LOW",
+            Name: "SSH",
+            Reasons: "No recorded events",
+            'VRP Score': "5.5",
+            Hosts: "4",
+        },
+    ]
+
+    projectbody = () => {
         return (
-            <FormControl sx={{ my: 2, width: "25ch" }} variant="outlined">
-                <OutlinedInput
-                    id="outlined-adornment-weight"
-                    endAdornment={
-                        <InputAdornment position="end">
-                            <SearchRoundedIcon />
-                        </InputAdornment>
-                    }
-                    aria-describedby="outlined-weight-helper-text"
-                    inputProps={{
-                        "aria-label": "weight",
-                    }}
-                />
-            </FormControl>
+            <ThreatsDetails className="threatsDetails">
+                <div>
+                    <div>
+                        <img src="1_star_shield-removebg-preview.png" alt="" />
+                    </div>
+                    <h5>Cirtical Vulnerabilities</h5>
+                </div>
+            </ThreatsDetails>
         );
     };
 
-    ThreatsTable = () => {
+    projectTable = () => {
         return (
             <div style={{ height: "100%", width: "100%" }}>
                 <DataGrid
@@ -135,7 +86,6 @@ export default class ProjectThreats extends React.Component {
                         },
                     }}
                     pageSizeOptions={[5, 10]}
-                    checkboxSelection
                 />
             </div>
         );
@@ -143,16 +93,52 @@ export default class ProjectThreats extends React.Component {
 
     render() {
         return (
-            <div>
-                <this.ThreatsHeader />
-                <div style={{ paddingInline: "25px" }}>
-                    <this.ThreatsBody />
-                    <this.ThreatsTable />
-                </div>
-            </div>
+            <Box component="div" sx={{ display: "flex" }}>
+                <Box sx={{ width: "70%" }}>
+                    <this.projectbody>
+                    </this.projectbody>
+                    <this.projectTable >
+                    </this.projectTable >
+                </Box>
+                <Box sx={{ width: "30%", padding: "25px" }}>
+                    <div style={{ marginBottom: "1rem" }}>
+                        <UnderLineMiniTitle>Scan Durations</UnderLineMiniTitle>
+                        <table>
+                            <tr>
+                                <td width="5%">Policy:</td>
+                                <td width="20%">Basic Network Scan</td>
+                            </tr>
+                            <tr>
+                                <td >Status:</td>
+                                <td>Completed</td>
+                            </tr>
+                            <tr>
+                                <td>Severity Base:</td>
+                                <td>CVSS v3.0</td>
+                            </tr>
+                            <tr>
+                                <td>Scanner:</td>
+                                <td>Local Scanner</td>
+                            </tr>
+                            <tr>
+                                <td>Start:</td>
+                                <td>January 16 at 5:30 PM</td>
+                            </tr>
+                            <tr>
+                                <td>End:</td>
+                                <td>January 16 at 6:28 PM</td>
+                            </tr>
+                            <tr>
+                                <td>Elapsed:</td>
+                                <td>an hour</td>
+                            </tr>
+                        </table>
+                    </div>
+                </Box>
+            </Box>
         );
     }
+}
 
-    
-    
-}            
+export default ProjectThreats;
+   
