@@ -2,15 +2,8 @@ import * as React from "react";
 import { Box, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
-import OutlinedInput from "@mui/material/OutlinedInput";
-import InputAdornment from "@mui/material/InputAdornment";
-import FormControl from "@mui/material/FormControl";
-
-import { FolderHeader } from "../component/page_style/folder_style";
 import { UnderLineMiniTitle } from "../component/page_style/project_style";
-
-import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
-import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import "C:/FYP/go_fyp/core/frontend/src/assets/css/threats.css";
 
 import {
     ThreatsDetails,
@@ -24,28 +17,33 @@ class ProjectThreats extends React.Component {
         this.columns = [
             {
                 field: "VRP Serverity",
-                flex: 1,
+                flex: 1.5,
                 width: 150,
+                headerClassName: "gray-background",
             },
             {
                 field: "Name",
                 flex: 5,
                 width: 500,
+                headerClassName: "gray-background",
             },
             {
                 field: "Reasons",
                 flex: 2,
                 width: 200,
+                headerClassName: "gray-background",
             },
             {
                 field: "VRP Score",
                 flex: 1,
                 width: 150,
+                headerClassName: "gray-background",
             },
             {
                 field: "Hosts",
                 flex: 1,
                 width: 150,
+                headerClassName: "gray-background",
             },
         ];
     }
@@ -59,22 +57,37 @@ class ProjectThreats extends React.Component {
             'VRP Score': "5.5",
             Hosts: "4",
         },
+        {
+            id: 2,
+            'VRP Serverity': "Medium",
+            Name: "wordpress",
+            Reasons: "No recorded events",
+            'VRP Score': "2.5",
+            Hosts: "3",
+        },
     ]
 
-    projectbody = () => {
+    projectimage = () => {
         return (
-            <ThreatsDetails className="threatsDetails">
-                <div>
-                    <div>
-                        <img src="1_star_shield-removebg-preview.png" alt="" />
-                    </div>
-                    <h5>Cirtical Vulnerabilities</h5>
+            <div >
+                <div class="left">
+                    <img src="3_star_shield-removebg-preview.png" alt="" width="125" height="125"/>
                 </div>
-            </ThreatsDetails>
+            <div class="right">
+                <p>Assessed Threat Level: <b>Medium</b></p>
+                <p>
+                    The following vulnerabilities are ranked by Tenable's patented Vulnerability Priority Rating
+                    (VPR) system.The findings listed below detail the top ten vulnerabilities,providing a 
+                    prioritized view to help guide remediation to effectively reduce risk.
+                    Click on each finding to show further details along with the impacted hosts.
+                    To learn more about Tenabl's VPR scoring system, See Predictive Prioritization.
+                </p>
+            </div>
+            </div>
         );
     };
 
-    projectTable = () => {
+    projectlist = () => {
         return (
             <div style={{ height: "100%", width: "100%" }}>
                 <DataGrid
@@ -95,11 +108,11 @@ class ProjectThreats extends React.Component {
         return (
             <Box component="div" sx={{ display: "flex" }}>
                 <Box sx={{ width: "70%" }}>
-                    <this.projectbody>
-                    </this.projectbody>
-                    <this.projectTable >
-                    </this.projectTable >
+                    <this.projectimage>
+                    </this.projectimage>  
                 </Box>
+                <this.projectlist>
+                </this.projectlist>
                 <Box sx={{ width: "30%", padding: "25px" }}>
                     <div style={{ marginBottom: "1rem" }}>
                         <UnderLineMiniTitle>Scan Durations</UnderLineMiniTitle>

@@ -31,7 +31,6 @@ export const CustScanDetails = styled.div`
 `;
 
 export const ThreatsDetails = styled.div`
-    column-count: 2;
-    display: block;
     margin-bottom: 15px;
+    align-items: left;
 `;

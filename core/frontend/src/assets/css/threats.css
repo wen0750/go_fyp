@@ -1,0 +1,17 @@
+.gray-background {
+    background-color: #F1F1F1;
+}
+
+.left{
+    width:30%;
+    height:400px;
+    background-color:#0f0;
+    float:left;
+}
+
+.right{
+    width:70%;
+    height:400px;
+    background-color:#f00;
+    float:left;
+}
