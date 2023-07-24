@@ -1,7 +1,4 @@
-//For testing:
-//1. Use Postman and type [kali IP]:8888/editor
-
-package main
+package editor
 
 import (
 	"context"
@@ -15,16 +12,13 @@ import (
 	"strings"
 	"time"
 
-	"gilab.com/pragmaticreviews/golang-gin-poc/api/folder"
-	"gilab.com/pragmaticreviews/golang-gin-poc/mongodb"
-	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"gopkg.in/yaml.v3"
-)
 
-var collection *mongo.Collection
+	"go_fyp/core/backend/services/database"
+)
 
 // create a template structure
 type Template struct {
@@ -89,6 +83,18 @@ type Template struct {
 	} `json:"workflows,omitempty"`
 }
 
+var collection *mongo.Collection
+
+func init() {
+	connection, err := database.InitializeMongoDB("Templates")
+	if err != nil {
+		log.Fatalf("Error initializing MongoDB Folders collection: %v\n", err)
+	} else {
+		collection = connection
+		log.Println("MongoDB (Templates) initialized successfully")
+	}
+}
+
 // receive raw json data and convert it into .yaml file
 func Download(c *gin.Context) {
 	//receive data from website with POST method
@@ -143,7 +149,7 @@ func Download(c *gin.Context) {
 }
 
 // Save data To MongoDB by using InsertData method in mongodb.go
-func SaveToDB(c *gin.Context, collection *mongo.Collection) {
+func SaveToDB(c *gin.Context) {
 	var template Template
 
 	// Bind the JSON data received to the Template struct
@@ -216,7 +222,7 @@ func SaveToDB(c *gin.Context, collection *mongo.Collection) {
 }
 
 //upload page
-func SubmitToDB(c *gin.Context, collection *mongo.Collection) {
+func SubmitToDB(c *gin.Context) {
 	// Read the file from the request
 	_, header, err := c.Request.FormFile("file")
 	if err != nil {
@@ -353,52 +359,4 @@ func (t Template) Equal(other Template) bool {
 		t.Info.Tags == other.Info.Tags &&
 		reflect.DeepEqual(t.Requests, other.Requests) &&
 		reflect.DeepEqual(t.Workflows, other.Workflows)
-}
-
-func main() {
-	router := gin.Default()
-	router.Use(cors.Default())
-
-	mongoURI := "mongodb+srv://sam1916:ue6aE6jfXGtBvwS@cluster0.981q5hl.mongodb.net/?retryWrites=true&w=majority"
-	dbName := "FYP"
-	templateCollection, err := mongodb.InitializeMongoDB(mongoURI, dbName, "Templates")
-	if err != nil {
-		log.Fatalf("Error initializing MongoDB Templates collection: %v\n", err)
-	}
-
-	folderCollection, err := mongodb.InitializeMongoDB(mongoURI, dbName, "Folder")
-	if err != nil {
-		log.Fatalf("Error initializing MongoDB Folders collection: %v\n", err)
-	}
-
-	log.Println("MongoDB initialized successfully")
-
-	// Use POST method to receive json data from Website
-	router.POST("/editor/:action", func(c *gin.Context) {
-		action := c.Param("action")
-		switch action {
-		case "save":
-			SaveToDB(c, templateCollection)
-		case "download":
-			Download(c)
-		case "submit":
-			SubmitToDB(c, templateCollection)
-		}
-	})
-
-	router.POST("/folder/:action", func(c *gin.Context) {
-		action := c.Param("action")
-		switch action {
-		case "createFolder":
-			folder.CreateFolder(c, folderCollection)
-		case "removeFolder":
-			folder.RemoveFolder(c, folderCollection)
-		case "list":
-			folder.ListFolder(c, folderCollection)
-		}
-	})
-
-	//This router.POST is for testing
-	//router.POST("/editor", SaveToDB)
-	router.Run(":8888")
 }

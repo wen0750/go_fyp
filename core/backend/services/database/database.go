@@ -1,4 +1,4 @@
-package mongodb
+package database
 
 import (
 	"context"
@@ -10,6 +10,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+var mongoURI string = "mongodb+srv://sam1916:ue6aE6jfXGtBvwS@cluster0.981q5hl.mongodb.net/?retryWrites=true&w=majority"
+var dbName string = "FYP"
 var collection *mongo.Collection
 
 // create a template structure
@@ -75,13 +77,14 @@ type Template struct {
 	} `json:"workflows,omitempty"`
 }
 
-func CreateCollection(client *mongo.Client, dbName, collectionName string) (*mongo.Collection, error) {
+// create a template structure
+func CreateCollection(client *mongo.Client, collectionName string) (*mongo.Collection, error) {
 	//create table in mongoDB
 	collection := client.Database(dbName).Collection(collectionName)
 	return collection, nil
 }
 
-func CheckCollectionExists(client *mongo.Client, dbName, collectionName string) (*mongo.Collection, error) {
+func CheckCollectionExists(client *mongo.Client, collectionName string) (*mongo.Collection, error) {
 	//List out all the Collection Names
 	db := client.Database(dbName)
 	collections, err := db.ListCollectionNames(context.Background(), bson.M{})
@@ -100,7 +103,7 @@ func CheckCollectionExists(client *mongo.Client, dbName, collectionName string) 
 }
 
 //Prevent users to inserting the same data into MongoDB
-func EnsureUniqueIndex(client *mongo.Client, dbName, collectionName string) error {
+func EnsureUniqueIndex(client *mongo.Client, collectionName string) error {
 	collection := client.Database(dbName).Collection(collectionName)
 
 	indexModel := mongo.IndexModel{
@@ -120,7 +123,7 @@ func EnsureUniqueIndex(client *mongo.Client, dbName, collectionName string) erro
 }
 
 // Connect, Check collection, Create collection if not exist
-func InitializeMongoDB(mongoURI, dbName, collectionName string) (*mongo.Collection, error) {
+func InitializeMongoDB(collectionName string) (*mongo.Collection, error) {
 	// Connect to DB with a timeout
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -131,9 +134,9 @@ func InitializeMongoDB(mongoURI, dbName, collectionName string) (*mongo.Collecti
 		return nil, err
 	}
 
-	_, err = CheckCollectionExists(client, dbName, collectionName)
+	_, err = CheckCollectionExists(client, collectionName)
 	if err != nil {
-		_, err = CreateCollection(client, dbName, collectionName)
+		_, err = CreateCollection(client, collectionName)
 		if err != nil {
 			log.Printf("Error creating collection: %v\n", err)
 			return nil, err
@@ -143,7 +146,7 @@ func InitializeMongoDB(mongoURI, dbName, collectionName string) (*mongo.Collecti
 		log.Println("Collection already exist")
 	}
 
-	err = EnsureUniqueIndex(client, dbName, collectionName)
+	err = EnsureUniqueIndex(client, collectionName)
 	if err != nil {
 		log.Fatalf("Error ensuring unique index: %v\n", err)
 		return nil, err

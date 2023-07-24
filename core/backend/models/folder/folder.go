@@ -2,6 +2,8 @@ package folder
 
 import (
 	"context"
+	"go_fyp/core/backend/services/database"
+	"log"
 	"net/http"
 	"time"
 
@@ -29,7 +31,19 @@ type Project struct {
 	Host []string `bson:"host,omitempty" json:"host,omitempty"`
 }
 
-func ListFolder(c *gin.Context, collection *mongo.Collection) {
+var collection *mongo.Collection
+
+func init() {
+	connection, err := database.InitializeMongoDB("Folder")
+	if err != nil {
+		log.Fatalf("Error initializing MongoDB Folders collection: %v\n", err)
+	} else {
+		collection = connection
+		log.Println("MongoDB (folder) initialized successfully")
+	}
+}
+
+func ListFolder(c *gin.Context) {
 	// Retrieve all documents from the collection
 	cursor, err := collection.Find(context.Background(), bson.D{})
 	if err != nil {
@@ -48,7 +62,7 @@ func ListFolder(c *gin.Context, collection *mongo.Collection) {
 	c.JSON(http.StatusOK, results)
 }
 
-func CreateFolder(c *gin.Context, collection *mongo.Collection) {
+func CreateFolder(c *gin.Context) {
 	var folder Folder
 
 	// Decode the JSON request body into the Folder struct
@@ -70,7 +84,7 @@ func CreateFolder(c *gin.Context, collection *mongo.Collection) {
 	c.JSON(http.StatusOK, gin.H{"message": "Folder created successfully"})
 }
 
-func RemoveFolder(c *gin.Context, collection *mongo.Collection) {
+func RemoveFolder(c *gin.Context) {
 	var folder Folder
 
 	// Decode the JSON request body into the Folder struct
