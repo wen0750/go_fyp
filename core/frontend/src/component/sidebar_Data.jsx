@@ -34,25 +34,29 @@ const hardData = [
 ];
 
 const dataFetch = async () => {
-    const data = await (
-        await fetch("http://127.0.0.1:8888/folder/list", {
-            method: "POST",
-        })
-    ).json();
-
     var list = [];
-    data.map((val) =>
-        list.push({
-            id: val._id,
-            name: val.name,
-            path: "folder",
-            icon: <FolderCopyRoundedIcon />,
-        })
-    );
+    try {
+        const data = await (
+            await fetch("http://127.0.0.1:8888/folder/list", {
+                method: "POST",
+            })
+        ).json();
 
-    console.log(list.concat(hardData));
-
-    return list.concat(hardData);
+        if (data) {
+            data.map((val) =>
+                list.push({
+                    id: val._id,
+                    name: val.name,
+                    path: "folder",
+                    icon: <FolderCopyRoundedIcon />,
+                })
+            );
+        }
+        return list.concat(hardData);
+    } catch (error) {
+        console.log("backend server error");
+        return hardData;
+    }
 };
 
 export const SIDEBAR_DATA = await dataFetch();
