@@ -80,11 +80,7 @@ class ProjectItem extends React.Component {
                 aria-labelledby={`simple-tab-${index}`}
                 {...other}
             >
-                {value === index && (
-                    <Box sx={{ pt: 3 }}>
-                        {children}
-                    </Box>
-                )}
+                {value === index && <Box sx={{ pt: 3 }}>{children}</Box>}
             </div>
         );
     };

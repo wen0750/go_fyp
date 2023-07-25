@@ -11,7 +11,7 @@ const DropZone = (props) => {
     const [dragging, setDragging] = useState(false);
     //storing uploaded files
     const [uploadedFiles, setUploadedFiles] = useState([]);
-    
+
     const [submitted, setSubmitted] = useState([]);
 
     const handleDragEnter = (e) => {
@@ -78,7 +78,9 @@ const DropZone = (props) => {
 
     const handleDelete = (fileToDelete) => {
         // Remove the file from the list of uploaded files
-        const updatedFiles = uploadedFiles.filter(file => file.name !== fileToDelete.name);
+        const updatedFiles = uploadedFiles.filter(
+            (file) => file.name !== fileToDelete.name
+        );
         setUploadedFiles(updatedFiles);
     };
 
@@ -97,73 +99,73 @@ const DropZone = (props) => {
         );
 
         //change ip & port, should be set to server-side IP
-        
+
         fetch("http://127.0.0.1:8888/editor/submit", {
             method: "POST",
             body: data,
         })
-        .then((response) => {
-            if (response.ok) {
-                return response.json();
-            } else if (response.status === 409) {
-                throw new Error("Duplicate entry");
-            } else if (response.status === 405) {
-                return response.json().then((jsonResponse) => {
-                    throw new Error(jsonResponse.error);
+            .then((response) => {
+                if (response.ok) {
+                    return response.json();
+                } else if (response.status === 409) {
+                    throw new Error("Duplicate entry");
+                } else if (response.status === 405) {
+                    return response.json().then((jsonResponse) => {
+                        throw new Error(jsonResponse.error);
+                    });
+                } else {
+                    console.log("Server responded with an error");
+                    throw new Error("Server Error");
+                }
+            })
+            .then((data) => {
+                console.log("Action:", data.action);
+                console.log("Inserted ID:", data.id);
+
+                let title;
+                let htmlContent;
+                if (data.action === "created") {
+                    title = "Template Created Successfully";
+                    htmlContent =
+                        "<strong>UID:</strong> " +
+                        data.id +
+                        "<br>" +
+                        "This is the <strong>UID</strong> in the Database, you can save it for later search";
+                } else {
+                    title = "Template Updated Successfully";
+                    htmlContent =
+                        "<strong>Template Name:</strong> " +
+                        data.id +
+                        "<br>" +
+                        "It is updated in the Database, you can check it anytime";
+                }
+
+                // Show a message box to let the user know the Inserted ID
+                Swal.fire({
+                    title: title,
+                    html: htmlContent,
+                    icon: "success",
                 });
-            }else {
-                console.log("Server responded with an error");
-                throw new Error("Server Error");
-            }
-        })
-        .then((data) => {
-            console.log("Action:", data.action);
-            console.log("Inserted ID:", data.id);
+                handleDelete(uploadedFile);
+            })
+            .catch((error) => {
+                console.error("Error:", error);
 
-            let title;
-            let htmlContent;
-            if (data.action === "created") {
-                title = "Template Created Successfully";
-                htmlContent =
-                    "<strong>UID:</strong> " +
-                    data.id +
-                    "<br>" +
-                    "This is the <strong>UID</strong> in the Database, you can save it for later search";
-            } else {
-                title = "Template Updated Successfully";
-                htmlContent =
-                    "<strong>Template Name:</strong> " +
-                    data.id +
-                    "<br>" +
-                    "It is updated in the Database, you can check it anytime";
-            }
-
-            // Show a message box to let the user know the Inserted ID
-            Swal.fire({
-                title: title,
-                html: htmlContent,
-                icon: "success",
+                if (error.message === "Duplicate entry") {
+                    // Display a failure message box for duplicate entry
+                    Swal.fire({
+                        title: "ID Duplicated in Database",
+                        text: "A template with this ID already exists. Please try again with a different Name.",
+                        icon: "error",
+                    });
+                } else {
+                    Swal.fire({
+                        title: "Wrong Format",
+                        text: error.message,
+                        icon: "error",
+                    });
+                }
             });
-            handleDelete(uploadedFile)
-        })
-        .catch((error) => {
-            console.error("Error:", error);
-
-            if (error.message === "Duplicate entry") {
-                // Display a failure message box for duplicate entry
-                Swal.fire({
-                    title: "ID Duplicated in Database",
-                    text: "A template with this ID already exists. Please try again with a different Name.",
-                    icon: "error",
-                });
-            } else {
-                Swal.fire({
-                    title: "Wrong Format",
-                    text: error.message,
-                    icon: "error",
-                });
-            }
-        });
     };
 
     return (
@@ -207,7 +209,9 @@ const DropZone = (props) => {
                         {errorMessage}
                     </div>
                 )}
-                <p className="cardContent">Drag and drop your .yaml or .json file here</p>
+                <p className="cardContent">
+                    Drag and drop your .yaml or .json file here
+                </p>
             </div>
             <div>
                 <h3 className="cardContent">File:</h3>
@@ -222,7 +226,7 @@ const DropZone = (props) => {
                             >
                                 {file.name}
                             </span>
-                            
+
                             <button
                                 className={`styled-delete-button${
                                     submitted.includes(file) ? " fade-out" : ""
@@ -270,7 +274,7 @@ export default class EditorUpload extends React.Component {
     TemplateVariables = () => {
         return (
             <Card>
-                <CardHeader title="Submit your own Template for others"  />
+                <CardHeader title="Submit your own Template for others" />
                 <hr />
                 <CardContent>
                     <DropZone />
