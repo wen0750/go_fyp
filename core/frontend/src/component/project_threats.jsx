@@ -3,7 +3,7 @@ import { Box, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
 import { UnderLineMiniTitle } from "../component/page_style/project_style";
-import "C:/FYP/go_fyp/core/frontend/src/assets/css/threats.css";
+import "../assets/css/threats.css";
 
 import {
     ThreatsDetails,
@@ -51,38 +51,48 @@ class ProjectThreats extends React.Component {
     rows = [
         {
             id: 1,
-            'VRP Serverity': "LOW",
+            "VRP Serverity": "LOW",
             Name: "SSH",
             Reasons: "No recorded events",
-            'VRP Score': "5.5",
+            "VRP Score": "5.5",
             Hosts: "4",
         },
         {
             id: 2,
-            'VRP Serverity': "Medium",
+            "VRP Serverity": "Medium",
             Name: "wordpress",
             Reasons: "No recorded events",
-            'VRP Score': "2.5",
+            "VRP Score": "2.5",
             Hosts: "3",
         },
-    ]
+    ];
 
     projectimage = () => {
         return (
-            <div >
+            <div>
                 <div class="left">
-                    <img src="3_star_shield-removebg-preview.png" alt="" width="125" height="125"/>
+                    <img
+                        src="3_star_shield-removebg-preview.png"
+                        alt=""
+                        width="125"
+                        height="125"
+                    />
                 </div>
-            <div class="right">
-                <p>Assessed Threat Level: <b>Medium</b></p>
-                <p>
-                    The following vulnerabilities are ranked by Tenable's patented Vulnerability Priority Rating
-                    (VPR) system.The findings listed below detail the top ten vulnerabilities,providing a 
-                    prioritized view to help guide remediation to effectively reduce risk.
-                    Click on each finding to show further details along with the impacted hosts.
-                    To learn more about Tenabl's VPR scoring system, See Predictive Prioritization.
-                </p>
-            </div>
+                <div class="right">
+                    <p>
+                        Assessed Threat Level: <b>Medium</b>
+                    </p>
+                    <p>
+                        The following vulnerabilities are ranked by Tenable's
+                        patented Vulnerability Priority Rating (VPR) system.The
+                        findings listed below detail the top ten
+                        vulnerabilities,providing a prioritized view to help
+                        guide remediation to effectively reduce risk. Click on
+                        each finding to show further details along with the
+                        impacted hosts. To learn more about Tenabl's VPR scoring
+                        system, See Predictive Prioritization.
+                    </p>
+                </div>
             </div>
         );
     };
@@ -108,11 +118,9 @@ class ProjectThreats extends React.Component {
         return (
             <Box component="div" sx={{ display: "flex" }}>
                 <Box sx={{ width: "70%" }}>
-                    <this.projectimage>
-                    </this.projectimage>  
+                    <this.projectimage></this.projectimage>
                 </Box>
-                <this.projectlist>
-                </this.projectlist>
+                <this.projectlist></this.projectlist>
                 <Box sx={{ width: "30%", padding: "25px" }}>
                     <div style={{ marginBottom: "1rem" }}>
                         <UnderLineMiniTitle>Scan Durations</UnderLineMiniTitle>
@@ -122,7 +130,7 @@ class ProjectThreats extends React.Component {
                                 <td width="20%">Basic Network Scan</td>
                             </tr>
                             <tr>
-                                <td >Status:</td>
+                                <td>Status:</td>
                                 <td>Completed</td>
                             </tr>
                             <tr>
@@ -154,4 +162,3 @@ class ProjectThreats extends React.Component {
 }
 
 export default ProjectThreats;
-   
