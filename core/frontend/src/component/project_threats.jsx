@@ -3,7 +3,7 @@ import { Box, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
 import { UnderLineMiniTitle } from "../component/page_style/project_style";
-import "C:/FYP/go_fyp/core/frontend/src/assets/css/threats.css";
+import  "../assets/css/threats.css";
 
 import {
     ThreatsDetails,
