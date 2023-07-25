@@ -33,7 +33,6 @@ import { UnderLineMiniTitle } from "../component/page_style/project_style";
 
 import CanvasJSReact from "@canvasjs/react-charts";
 
-
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
@@ -79,27 +78,106 @@ export default class ProjectHistory extends React.Component {
         };
 
         this.rows = [
-            this.createData("2020-11-21 at 11:18 AM", "2020-11-21 at 11:38 AM", "Completed"),
-            this.createData("2020-11-22 at 11:18 AM", "2020-11-22 at 11:38 AM", "Completed"),
-            this.createData("2020-11-23 at 11:18 AM", "2020-11-23 at 11:38 AM", "Completed"),
-            this.createData("2020-11-24 at 11:18 AM", "2020-11-24 at 11:38 AM", "Completed"),
-            this.createData("2020-11-25 at 11:18 AM", "2020-11-25 at 11:38 AM", "Completed"),
-            this.createData("2020-11-26 at 11:18 AM", "2020-11-26 at 11:38 AM", "Completed"),
-            this.createData("2020-11-27 at 11:18 AM", "2020-11-27 at 11:38 AM", "Completed"),
-            this.createData("2020-11-28 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-11-29 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-11-30 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-12-01 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-12-02 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-12-03 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-12-04 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-12-05 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-12-06 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-12-07 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-12-08 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-12-09 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            this.createData("2020-12-10 at 11:18 AM", "2020-11-28 at 11:38 AM", "Completed"),
-            
+            this.createData(
+                "2020-11-21 at 11:18 AM",
+                "2020-11-21 at 11:38 AM",
+                "Completed"
+            ),
+            this.createData(
+                "2020-11-22 at 11:18 AM",
+                "2020-11-22 at 11:38 AM",
+                "Completed"
+            ),
+            this.createData(
+                "2020-11-23 at 11:18 AM",
+                "2020-11-23 at 11:38 AM",
+                "Completed"
+            ),
+            this.createData(
+                "2020-11-24 at 11:18 AM",
+                "2020-11-24 at 11:38 AM",
+                "Completed"
+            ),
+            this.createData(
+                "2020-11-25 at 11:18 AM",
+                "2020-11-25 at 11:38 AM",
+                "Completed"
+            ),
+            this.createData(
+                "2020-11-26 at 11:18 AM",
+                "2020-11-26 at 11:38 AM",
+                "Completed"
+            ),
+            this.createData(
+                "2020-11-27 at 11:18 AM",
+                "2020-11-27 at 11:38 AM",
+                "Completed"
+            ),
+            this.createData(
+                "2020-11-28 at 11:18 AM",
+                "2020-11-28 at 11:38 AM",
+                "Completed"
+            ),
+            this.createData(
+                "2020-11-29 at 11:18 AM",
+                "2020-11-28 at 11:38 AM",
+                "Completed"
+            ),
+            this.createData(
+                "2020-11-30 at 11:18 AM",
+                "2020-11-28 at 11:38 AM",
+                "Completed"
+            ),
+            this.createData(
+                "2020-12-01 at 11:18 AM",
+                "2020-11-28 at 11:38 AM",
+                "Completed"
+            ),
+            this.createData(
+                "2020-12-02 at 11:18 AM",
+                "2020-11-28 at 11:38 AM",
+                "Completed"
+            ),
+            this.createData(
+                "2020-12-03 at 11:18 AM",
+                "2020-11-28 at 11:38 AM",
+                "Completed"
+            ),
+            this.createData(
+                "2020-12-04 at 11:18 AM",
+                "2020-11-28 at 11:38 AM",
+                "Completed"
+            ),
+            this.createData(
+                "2020-12-05 at 11:18 AM",
+                "2020-11-28 at 11:38 AM",
+                "Completed"
+            ),
+            this.createData(
+                "2020-12-06 at 11:18 AM",
+                "2020-11-28 at 11:38 AM",
+                "Completed"
+            ),
+            this.createData(
+                "2020-12-07 at 11:18 AM",
+                "2020-11-28 at 11:38 AM",
+                "Completed"
+            ),
+            this.createData(
+                "2020-12-08 at 11:18 AM",
+                "2020-11-28 at 11:38 AM",
+                "Completed"
+            ),
+            this.createData(
+                "2020-12-09 at 11:18 AM",
+                "2020-11-28 at 11:38 AM",
+                "Completed"
+            ),
+            this.createData(
+                "2020-12-10 at 11:18 AM",
+                "2020-11-28 at 11:38 AM",
+                "Completed"
+            ),
         ];
     }
 
@@ -248,8 +326,6 @@ export default class ProjectHistory extends React.Component {
         );
     };
 
-   
-    
     EnhancedTable = () => {
         const setRowsPerPage = (newValue) => {
             this.setState({ rowsPerPage: newValue });
@@ -376,14 +452,19 @@ export default class ProjectHistory extends React.Component {
                             />
                             <TableBody>
                                 {visibleRows.map((row, index) => {
-                                    const isItemSelected = isSelected(row.Start_Time);
+                                    const isItemSelected = isSelected(
+                                        row.Start_Time
+                                    );
                                     const labelId = `enhanced-table-checkbox-${index}`;
 
                                     return (
                                         <TableRow
                                             hover
                                             onClick={(event) =>
-                                                handleClick(event, row.Start_Time)
+                                                handleClick(
+                                                    event,
+                                                    row.Start_Time
+                                                )
                                             }
                                             role="checkbox"
                                             aria-checked={isItemSelected}
@@ -425,11 +506,10 @@ export default class ProjectHistory extends React.Component {
                                                 padding="none"
                                             >
                                                 {row.Status}
-                                                </TableCell>
+                                            </TableCell>
                                         </TableRow>
                                     );
                                 })}
-                                
                             </TableBody>
                         </Table>
                     </TableContainer>
@@ -507,7 +587,7 @@ export default class ProjectHistory extends React.Component {
                                 <td width="20%">Basic Network Scan</td>
                             </tr>
                             <tr>
-                                <td >Status:</td>
+                                <td>Status:</td>
                                 <td>Completed</td>
                             </tr>
                             <tr>

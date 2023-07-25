@@ -1,4 +1,5 @@
 import { Routes, Route } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { DynamicItem, Sidebar, dummyData } from "../component/sidebar_core";
 import "../assets/css/sidebar_style.css";
 

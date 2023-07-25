@@ -54,7 +54,7 @@ export default class ProjectNotes extends React.Component {
                 numeric: false,
                 disablePadding: true,
                 label: "Scan (history)",
-            }
+            },
         ];
 
         this.createData = (name, calories, fat, carbs, protein) => {
@@ -149,8 +149,8 @@ export default class ProjectNotes extends React.Component {
         };
 
         return (
-            <TableHead sx={{margin: 50}}>
-                <TableRow >
+            <TableHead sx={{ margin: 50 }}>
+                <TableRow>
                     {this.headCells.map((headCell) => (
                         <TableCell
                             key={headCell.id}
@@ -206,8 +206,7 @@ export default class ProjectNotes extends React.Component {
             this.setState({ order: newValue });
         };
 
-        const { order, orderBy, selected, page, rowsPerPage } =
-            this.state;
+        const { order, orderBy, selected, page, rowsPerPage } = this.state;
 
         this.EnhancedTableHead.propTypes = {
             numSelected: PropTypes.number.isRequired,
@@ -311,17 +310,36 @@ export default class ProjectNotes extends React.Component {
                                             tabIndex={-1}
                                             key={row.name}
                                             selected={isItemSelected}
-                                            sx={{ cursor: "pointer", paddingInline: "" , margin: "15px"}}
+                                            sx={{
+                                                cursor: "pointer",
+                                                paddingInline: "",
+                                                margin: "15px",
+                                            }}
                                         >
                                             <TableCell
                                                 component="th"
                                                 id={labelId}
                                                 scope="row"
                                                 padding="none"
-                                                sx={{paddingInline:"15px"}}
+                                                sx={{ paddingInline: "15px" }}
                                             >
-                                                <Typography variant="h6" sx={{color: "red",margin: 0 }} gutterBottom>{row.name}</Typography>
-                                                <Typography variant="subtitle2" sx={{color: "red" }} gutterBottom>{row.calories}</Typography>
+                                                <Typography
+                                                    variant="h6"
+                                                    sx={{
+                                                        color: "red",
+                                                        margin: 0,
+                                                    }}
+                                                    gutterBottom
+                                                >
+                                                    {row.name}
+                                                </Typography>
+                                                <Typography
+                                                    variant="subtitle2"
+                                                    sx={{ color: "red" }}
+                                                    gutterBottom
+                                                >
+                                                    {row.calories}
+                                                </Typography>
                                             </TableCell>
                                         </TableRow>
                                     );
