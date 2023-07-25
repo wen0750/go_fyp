@@ -31,9 +31,9 @@ func routing(router *gin.Engine) {
 	router.POST("/folder/:action", func(c *gin.Context) {
 		action := c.Param("action")
 		switch action {
-		case "createFolder":
+		case "create":
 			folder.CreateFolder(c)
-		case "removeFolder":
+		case "remove":
 			folder.RemoveFolder(c)
 		case "list":
 			folder.ListFolder(c)

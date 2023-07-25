@@ -13,22 +13,25 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type Folder struct {
-	ID     string      `bson:"id" json:"id"`
-	Folder InnerFolder `bson:"folder" json:"folder"`
+type InputCreateFolder struct {
+	Name string `json:"name"`
+}
+type InputRemoveFolder struct {
+	ID string `json:"id"`
 }
 
-type InnerFolder struct {
-	Project  []Project `bson:"project" json:"project"`
-	Status   string    `bson:"status" json:"status"`
-	Lastscan int64     `bson:"lastscan" json:"lastscan"`
-	Ownerid  int       `bson:"ownerid" json:"ownerid"`
+type Folder struct {
+	Name     string   `json:"name"`
+	Project  []string `json:"project"`
+	Status   string   `json:"status"`
+	Lastscan int      `json:"lastscan"`
+	Ownerid  int      `json:"ownerid"`
 }
 
 type Project struct {
-	ID   string   `bson:"_id,omitempty" json:"_id,omitempty"`
-	PID  string   `bson:"pid,omitempty" json:"pid,omitempty"`
-	Host []string `bson:"host,omitempty" json:"host,omitempty"`
+	Pid     string   `json:"pid"`
+	Host    []string `json:"host"`
+	History []string `json:"history"`
 }
 
 var collection *mongo.Collection
@@ -63,29 +66,43 @@ func ListFolder(c *gin.Context) {
 }
 
 func CreateFolder(c *gin.Context) {
-	var folder Folder
+	var inputData InputCreateFolder
 
-	// Decode the JSON request body into the Folder struct
-	if err := c.ShouldBindJSON(&folder); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+	// ---> 绑定数据
+	if err := c.ShouldBindJSON(&inputData); err != nil {
+		// c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		c.AbortWithStatusJSON(
+			http.StatusInternalServerError,
+			gin.H{"error": err.Error()})
 		return
 	}
+
+	if inputData.Name == "" {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "empty input"})
+		return
+	}
+
+	var pj = []string{}
+	var folderObject = Folder{inputData.Name, pj, "emo", 0, 0}
 
 	// Insert the folder into the collection
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	_, err := collection.InsertOne(ctx, folder)
+	_, err := collection.InsertOne(ctx, folderObject)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create folder"})
+
+		// gin.H{"error": err.Error()}
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Folder created successfully"})
+	return
 }
 
 func RemoveFolder(c *gin.Context) {
-	var folder Folder
+	var folder InputRemoveFolder
 
 	// Decode the JSON request body into the Folder struct
 	if err := c.ShouldBindJSON(&folder); err != nil {
