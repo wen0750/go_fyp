@@ -36,7 +36,7 @@ func routing(router *gin.Engine) {
 		case "remove":
 			folder.RemoveFolder(c)
 		case "list":
-			folder.ListFolder(c)
+			folder.GetFolderList(c)
 		}
 	})
 }

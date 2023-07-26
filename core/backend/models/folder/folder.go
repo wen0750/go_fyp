@@ -46,7 +46,26 @@ func init() {
 	}
 }
 
-func ListFolder(c *gin.Context) {
+func GetFolder(c *gin.Context) {
+	// Retrieve all documents from the collection
+	cursor, err := collection.Find(context.Background(), bson.D{})
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error listing folder"})
+		return
+	}
+	defer cursor.Close(context.Background())
+
+	// Iterate through the returned cursor.
+	var results []bson.M
+	if err = cursor.All(context.Background(), &results); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error listing folder"})
+		return
+	}
+
+	c.JSON(http.StatusOK, results)
+}
+
+func GetFolderList(c *gin.Context) {
 	// Retrieve all documents from the collection
 	cursor, err := collection.Find(context.Background(), bson.D{})
 	if err != nil {
@@ -132,8 +151,4 @@ func RemoveFolder(c *gin.Context) {
 
 func ViewFolderItem() {
 	//a function that show the Folder content
-}
-
-func GetFolderList() {
-	//user own Folder List
 }
