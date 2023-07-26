@@ -3,11 +3,7 @@ import { Box, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
 import { UnderLineMiniTitle } from "../component/page_style/project_style";
-<<<<<<< HEAD
-import  "../assets/css/threats.css";
-=======
 import "../assets/css/threats.css";
->>>>>>> e72b4bd23259b4b778bd77864b8ca482e2ee45ba
 
 import {
     ThreatsDetails,
