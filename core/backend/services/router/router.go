@@ -6,6 +6,7 @@ import (
 
 	"go_fyp/core/backend/models/editor"
 	"go_fyp/core/backend/models/folder"
+	"go_fyp/core/backend/models/project"
 )
 
 func Initialize() {
@@ -37,6 +38,14 @@ func routing(router *gin.Engine) {
 			folder.RemoveFolder(c)
 		case "list":
 			folder.GetFolderList(c)
+		}
+	})
+
+	router.POST("/project/:action", func(c *gin.Context) {
+		action := c.Param("action")
+		switch action {
+		case "create":
+			project.ProjectCreateHandeler(c)
 		}
 	})
 }
