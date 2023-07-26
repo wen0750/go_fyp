@@ -3,11 +3,11 @@ import ProjectFolder from "../../page/folder";
 import ProjectItem from "../../page/project";
 
 const Item = (props) => {
-    const { page, path } = props;
+    const { page, path, index } = props;
 
     switch (path) {
         case "folder":
-            return <ProjectFolder />;
+            return <ProjectFolder pid={index} />;
         case "project":
             return <ProjectItem />;
         case "editor":
