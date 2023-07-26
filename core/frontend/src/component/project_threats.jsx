@@ -67,18 +67,17 @@ class ProjectThreats extends React.Component {
         },
     ];
 
-    projectimage = () => {
+    riskLevel = () => {
         return (
-            <div>
-                <div class="left">
-                    <img
-                        src="3_star_shield-removebg-preview.png"
-                        alt=""
-                        width="125"
-                        height="125"
-                    />
-                </div>
-                <div class="right">
+            <div style={{ display: "flex", marginBlockEnd: "1rem" }}>
+                <img
+                    src="3_star_shield-removebg-preview.png"
+                    alt=""
+                    width="125"
+                    height="125"
+                    style={{ padding: "10px" }}
+                />
+                <div>
                     <p>
                         Assessed Threat Level: <b>Medium</b>
                     </p>
@@ -97,7 +96,7 @@ class ProjectThreats extends React.Component {
         );
     };
 
-    projectlist = () => {
+    threatslist = () => {
         return (
             <div style={{ height: "100%", width: "100%" }}>
                 <DataGrid
@@ -118,8 +117,8 @@ class ProjectThreats extends React.Component {
         return (
             <Box component="div" sx={{ display: "flex" }}>
                 <Box sx={{ width: "70%" }}>
-                    <this.projectimage></this.projectimage>
-                    <this.projectlist></this.projectlist>
+                    <this.riskLevel></this.riskLevel>
+                    <this.threatslist></this.threatslist>
                 </Box>
                 <Box sx={{ width: "30%", padding: "25px" }}>
                     <div style={{ marginBottom: "1rem" }}>
