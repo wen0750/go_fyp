@@ -50,18 +50,20 @@ export default class ProjectVulnerabilities extends React.Component {
             rowsPerPage: 10,
         };
 
-        this.headCells = [
+        this.columns = [
             {
                 id: "sev",
                 numeric: false,
                 disablePadding: true,
                 label: "Sev",
+                width: 150,
             },
             {
                 id: "sorce",
                 numeric: false,
                 disablePadding: true,
                 label: "Sorce",
+                width: 50,
             },
             {
                 id: "name",
@@ -164,26 +166,26 @@ export default class ProjectVulnerabilities extends React.Component {
                             }}
                         />
                     </TableCell>
-                    {this.headCells.map((headCell) => (
+                    {this.columns.map((columns) => (
                         <TableCell
-                            key={headCell.id}
-                            align={headCell.numeric ? "right" : "left"}
+                            key={columns.id}
+                            align={columns.numeric ? "right" : "left"}
                             padding={
-                                headCell.disablePadding ? "none" : "normal"
+                                columns.disablePadding ? "none" : "normal"
                             }
                             sortDirection={
-                                orderBy === headCell.id ? order : false
+                                orderBy === columns.id ? order : false
                             }
                         >
                             <TableSortLabel
-                                active={orderBy === headCell.id}
+                                active={orderBy === columns.id}
                                 direction={
-                                    orderBy === headCell.id ? order : "asc"
+                                    orderBy === columns.id ? order : "asc"
                                 }
-                                onClick={createSortHandler(headCell.id)}
+                                onClick={createSortHandler(columns.id)}
                             >
-                                {headCell.label}
-                                {orderBy === headCell.id ? (
+                                {columns.label}
+                                {orderBy === columns.id ? (
                                     <Box component="span" sx={visuallyHidden}>
                                         {order === "desc"
                                             ? "sorted descending"
@@ -410,7 +412,7 @@ export default class ProjectVulnerabilities extends React.Component {
                                                 scope="row"
                                                 padding="none"
                                             >
-                                                {row.Sev}
+                                                {row.sev}
                                             </TableCell>
                                             <TableCell
                                                 component="th"
