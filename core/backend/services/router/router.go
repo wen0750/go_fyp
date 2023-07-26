@@ -6,7 +6,6 @@ import (
 
 	"go_fyp/core/backend/models/editor"
 	"go_fyp/core/backend/models/folder"
-	"go_fyp/core/backend/models/project"
 )
 
 func Initialize() {
@@ -45,7 +44,7 @@ func routing(router *gin.Engine) {
 		action := c.Param("action")
 		switch action {
 		case "create":
-			project.ProjectCreateHandeler(c)
+			// project.ProjectCreateHandeler(c)
 		}
 	})
 }

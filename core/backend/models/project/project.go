@@ -1,18 +1,23 @@
 package project
 
 import (
+	"context"
 	"go_fyp/core/backend/services/database"
+	"time"
+
 	"log"
 
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type InputCreateProject struct {
-	Name     string        `json:"name"`
-	Fid      int           `json:"fid"`
-	Host     []string      `json:"host"`
-	Poe      []interface{} `json:"poe"`
-	Template string        `json:"template"`
+	Name     string   `json:"name"`
+	Fid      string   `json:"fid"`
+	Host     []string `json:"host"`
+	Poc      []string `json:"poc"`
+	Template string   `json:"template"`
 }
 
 type Folder struct {
@@ -24,10 +29,11 @@ type Folder struct {
 }
 
 type Project struct {
-	Name string        `json:"name"`
-	Pid  string        `json:"pid"`
-	Host []string      `json:"host"`
-	Poe  []interface{} `json:"poe"`
+	Name     string   `json:"name"`
+	Pid      string   `json:"pid"`
+	Host     []string `json:"host"`
+	Poc      []string `json:"poc"`
+	LastScan int16    `json:"lastscan"`
 }
 
 var collection *mongo.Collection
@@ -42,8 +48,35 @@ func init() {
 	}
 }
 
-func AddProjectToFolder() {
+func ProjectCreateHandeler() {
+	var inputData InputCreateProject
+	var poc []string
+	switch inputData.Template {
+	case "customs":
+		poc = inputData.Poc
+	case "wordpress":
+		poc = []string{"wp"}
+	}
 
+	var newProject = Project(inputData.Name, inputData.Fid, inputData.Host, poc, 1)
+
+	addProjectToFolder(newProject, inputData.Fid)
+}
+
+func addProjectToFolder(projectDetail Project, fid string) (bson.M, error) {
+	var result bson.M
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	objID, _ := primitive.ObjectIDFromHex(fid)
+	filter := bson.M{"_id": objID}
+	update := bson.M{
+		"$push": bson.M{"project": projectDetail},
+	}
+
+	// result, err := collection.findOneAndUpdate(ctx, filter, update)
+	// return result, err
 }
 
 func UpDateProjectProfile() {
