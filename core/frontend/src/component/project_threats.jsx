@@ -119,8 +119,8 @@ class ProjectThreats extends React.Component {
             <Box component="div" sx={{ display: "flex" }}>
                 <Box sx={{ width: "70%" }}>
                     <this.projectimage></this.projectimage>
+                    <this.projectlist></this.projectlist>
                 </Box>
-                <this.projectlist></this.projectlist>
                 <Box sx={{ width: "30%", padding: "25px" }}>
                     <div style={{ marginBottom: "1rem" }}>
                         <UnderLineMiniTitle>Scan Durations</UnderLineMiniTitle>

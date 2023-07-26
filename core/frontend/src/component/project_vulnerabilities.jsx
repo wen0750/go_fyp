@@ -26,6 +26,7 @@ import {
 import PropTypes from "prop-types";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
+import { UnderLineMiniTitle } from "../component/page_style/project_style";
 
 import { DataGrid } from "@mui/x-data-grid";
 import { visuallyHidden } from "@mui/utils";
@@ -42,7 +43,7 @@ export default class ProjectVulnerabilities extends React.Component {
         super(props);
         this.state = {
             order: "asc",
-            orderBy: "calories",
+            orderBy: "Sev",
             selected: [],
             page: 0,
             dense: false,
@@ -58,44 +59,44 @@ export default class ProjectVulnerabilities extends React.Component {
             },
             {
                 id: "sorce",
-                numeric: true,
-                disablePadding: false,
+                numeric: false,
+                disablePadding: true,
                 label: "Sorce",
             },
             {
                 id: "name",
-                numeric: true,
-                disablePadding: false,
+                numeric: false,
+                disablePadding: true,
                 label: "Name",
             },
             {
                 id: "family",
-                numeric: true,
-                disablePadding: false,
+                numeric: false,
+                disablePadding: true,
                 label: "Family",
             },
             {
                 id: "count",
-                numeric: true,
-                disablePadding: false,
+                numeric: false,
+                disablePadding: true,
                 label: "Count",
             },
         ];
 
-        this.createData = (name, calories, fat, carbs, protein) => {
+        this.createData = (sev, Score, Name, Family, Count) => {
             return {
-                name,
-                calories,
-                fat,
-                carbs,
-                protein,
+                sev,
+                Score,
+                Name,
+                Family,
+                Count,
             };
         };
 
         this.rows = [
-            this.createData("google.com", 1, 8, 2, 7),
-            this.createData("facebook.com", 452, 25.0, 51, 4.9),
-            this.createData("amazon.com", 262, 16.0, 24, 6.0),
+            this.createData("MIXED", 1, 8, 2, 7),
+            this.createData("MIXED", 452, 25.0, 51, 4.9),
+            this.createData("MEDIUM", 262, 16.0, 24, 6.0),
             this.createData("imdb.com", 159, 6.0, 24, 4.0),
             this.createData("apple.com", 356, 16.0, 49, 3.9),
             this.createData("pinterest.com", 408, 3.2, 87, 6.5),
@@ -103,32 +104,6 @@ export default class ProjectVulnerabilities extends React.Component {
             this.createData("tripadvisor.com", 3, 10, 9, 2),
             this.createData("wiktionary.org", 518, 26.0, 65, 7.0),
             this.createData("dictionary.com", 392, 0.2, 98, 0.0),
-            this.createData("cambridge.org", 25.3, 87.5, 12.8, 56.7),
-            this.createData("britannica.com", 360, 19.0, 9, 37.0),
-            this.createData("microsoft.com", 6, 4, 8, 1),
-            this.createData("walmart.com", 1.5, 75.8, 69.2, 22.1),
-            this.createData("espn.com", 13.7, 57.2, 90.8, 4.3),
-            this.createData("weather.com", 53.4, 27.6, 10.9, 94.3),
-            this.createData("linkedin.com", 86.9, 3.2, 41.5, 59.1),
-            this.createData("homedepot.com", 437, 18.0, 63, 4.0),
-            this.createData("espncricinfo.com", 58.1, 33.6, 89.7, 22.4),
-            this.createData("samsung.com", 19.7, 67.9, 56.3, 8.2),
-            this.createData("craigslist.org", 69.4, 57.8, 16.3, 4.7),
-            this.createData("gsmarena.com", 28.5, 72.3, 5.9, 50.2),
-            this.createData("ebay.com", 76.9, 44.2, 12.5, 30.7),
-            this.createData("mayoclinic.org", 17.2, 92.8, 41.3, 6.1),
-            this.createData("cricbuzz.com", 94.1, 32.7, 79.4, 1.2),
-            this.createData("timeanddate.com", 79.6, 85.5, 52.1, 34.3),
-            this.createData("webmd.com", 9, 3, 2, 7),
-            this.createData("thesaurus.com", 437, 18.0, 63, 4.0),
-            this.createData("rottentomatoes.com", 60.2, 51.3, 18.9, 7.5),
-            this.createData("bbc.com", 52.1, 94.8, 84.9, 47.4),
-            this.createData("healthline.com", 15.6, 97.8, 88.1, 42.0),
-            this.createData("netflix.com", 47.3, 81.9, 16.4, 38.1),
-            this.createData("indeed.com", 72.4, 36.6, 81.0, 11.1),
-            this.createData("thefreedictionary.com", 70.1, 10.4, 39.5, 51.8),
-            this.createData("spotify.com", 98.5, 77.2, 65.9, 7.8),
-            this.createData("livescore.com", 45.7, 8.2, 74.4, 63.2),
         ];
     }
 
@@ -256,7 +231,7 @@ export default class ProjectVulnerabilities extends React.Component {
                         id="tableTitle"
                         component="div"
                     >
-                        Nutrition
+                        Vulnerabilities
                     </Typography>
                 )}
 
@@ -333,12 +308,12 @@ export default class ProjectVulnerabilities extends React.Component {
             setSelected([]);
         };
 
-        const handleClick = (event, name) => {
-            const selectedIndex = selected.indexOf(name);
+        const handleClick = (event, Sev) => {
+            const selectedIndex = selected.indexOf(Sev);
             let newSelected = [];
 
             if (selectedIndex === -1) {
-                newSelected = newSelected.concat(selected, name);
+                newSelected = newSelected.concat(selected, Sev);
             } else if (selectedIndex === 0) {
                 newSelected = newSelected.concat(selected.slice(1));
             } else if (selectedIndex === selected.length - 1) {
@@ -410,12 +385,12 @@ export default class ProjectVulnerabilities extends React.Component {
                                         <TableRow
                                             hover
                                             onClick={(event) =>
-                                                handleClick(event, row.name)
+                                                handleClick(event, row.Sev)
                                             }
                                             role="checkbox"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
-                                            key={row.name}
+                                            key={row.Sev}
                                             selected={isItemSelected}
                                             sx={{ cursor: "pointer" }}
                                         >
@@ -435,30 +410,43 @@ export default class ProjectVulnerabilities extends React.Component {
                                                 scope="row"
                                                 padding="none"
                                             >
-                                                {row.name}
+                                                {row.Sev}
                                             </TableCell>
                                             <TableCell
-                                                align="right"
-                                                style={{
-                                                    display: "flex",
-                                                    padding: 0,
-                                                }}
+                                                component="th"
+                                                id={labelId}
+                                                scope="row"
+                                                padding="none"
                                             >
-                                                <StackedBar></StackedBar>
+                                                {row.Score}
+                                            </TableCell>
+                                            <TableCell
+                                                component="th"
+                                                id={labelId}
+                                                scope="row"
+                                                padding="none"
+                                            >
+                                                {row.Name}
+                                            </TableCell>
+                                            <TableCell
+                                                component="th"
+                                                id={labelId}
+                                                scope="row"
+                                                padding="none"
+                                            >
+                                                {row.Family}
+                                            </TableCell>
+                                            <TableCell
+                                                component="th"
+                                                id={labelId}
+                                                scope="row"
+                                                padding="none"
+                                            >
+                                                {row.Count}
                                             </TableCell>
                                         </TableRow>
                                     );
                                 })}
-                                {emptyRows > 0 && (
-                                    <TableRow
-                                        style={{
-                                            height:
-                                                (dense ? 33 : 53) * emptyRows,
-                                        }}
-                                    >
-                                        <TableCell colSpan={6} />
-                                    </TableRow>
-                                )}
                             </TableBody>
                         </Table>
                     </TableContainer>
@@ -482,12 +470,90 @@ export default class ProjectVulnerabilities extends React.Component {
         );
     };
 
+    VulnerabilitiesPiChart = () => {
+        // const { data: chartData } = this.state;
+        const options = {
+            animationEnabled: true,
+            legend: {
+                cursor: "pointer",
+                verticalAlign: "center",
+                horizontalAlign: "right",
+            },
+            data: [
+                {
+                    type: "doughnut",
+                    showInLegend: true,
+                    yValueFormatString: "#,###'%'",
+                    radius: "120%",
+                    innerRadius: "50%",
+                    dataPoints: [
+                        { name: "Critical", y: 2 },
+                        { name: "High", y: 3 },
+                        { name: "Medium", y: 13 },
+                        { name: "Low", y: 7 },
+                        { name: "info", y: 75 },
+                    ],
+                },
+            ],
+        };
+        return (
+            <div>
+                <CanvasJSChart
+                    options={options}
+                    /* onRef={ref => this.chart = ref} */
+                />
+                {/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
+            </div>
+        );
+    };
+
     render() {
         return (
-            <Box>
-                <this.EnhancedTable
-                    style={{ width: "70%" }}
-                ></this.EnhancedTable>
+            <Box component="div" sx={{ display: "flex" }}>
+                <Box sx={{ width: "70%" }}>
+                    <this.EnhancedTable
+                        style={{ width: "75%" }}
+                    ></this.EnhancedTable>
+                </Box>
+                <Box sx={{ width: "30%", padding: "25px" }}>
+                    <div style={{ marginBottom: "1rem" }}>
+                        <UnderLineMiniTitle>Scan Durations</UnderLineMiniTitle>
+                        <table>
+                            <tr>
+                                <td width="5%">Policy:</td>
+                                <td width="20%">Basic Network Scan</td>
+                            </tr>
+                            <tr>
+                                <td>Status:</td>
+                                <td>Completed</td>
+                            </tr>
+                            <tr>
+                                <td>Severity Base:</td>
+                                <td>CVSS v3.0</td>
+                            </tr>
+                            <tr>
+                                <td>Scanner:</td>
+                                <td>Local Scanner</td>
+                            </tr>
+                            <tr>
+                                <td>Start:</td>
+                                <td>January 16 at 5:30 PM</td>
+                            </tr>
+                            <tr>
+                                <td>End:</td>
+                                <td>January 16 at 6:28 PM</td>
+                            </tr>
+                            <tr>
+                                <td>Elapsed:</td>
+                                <td>an hour</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div>
+                        <UnderLineMiniTitle>Vulnerabilities</UnderLineMiniTitle>
+                        <this.VulnerabilitiesPiChart></this.VulnerabilitiesPiChart>
+                    </div>
+                </Box>
             </Box>
         );
     }

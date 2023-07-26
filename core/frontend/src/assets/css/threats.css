@@ -3,15 +3,13 @@
 }
 
 .left{
-    width:30%;
-    height:400px;
-    background-color:#0f0;
+    width:10%;
+    height:135px;
     float:left;
 }
 
 .right{
-    width:70%;
-    height:400px;
-    background-color:#f00;
+    width:90%;
+    height:135px;
     float:left;
 }

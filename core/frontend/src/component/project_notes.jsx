@@ -26,6 +26,7 @@ import {
 import PropTypes from "prop-types";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
+import { UnderLineMiniTitle } from "../component/page_style/project_style";
 
 import { DataGrid } from "@mui/x-data-grid";
 import { visuallyHidden } from "@mui/utils";
@@ -53,7 +54,7 @@ export default class ProjectNotes extends React.Component {
                 id: "Scan Notes",
                 numeric: false,
                 disablePadding: true,
-                label: "Scan (history)",
+                label: "Scan Notes",
             },
         ];
 
@@ -68,42 +69,19 @@ export default class ProjectNotes extends React.Component {
         };
 
         this.rows = [
-            this.createData("google.com", 1, 8, 2, 7),
-            this.createData("facebook.com", 452, 25.0, 51, 4.9),
-            this.createData("amazon.com", 262, 16.0, 24, 6.0),
-            this.createData("imdb.com", 159, 6.0, 24, 4.0),
-            this.createData("apple.com", 356, 16.0, 49, 3.9),
-            this.createData("pinterest.com", 408, 3.2, 87, 6.5),
-            this.createData("yelp.com", 237, 9.0, 37, 4.3),
-            this.createData("tripadvisor.com", 3, 10, 9, 2),
-            this.createData("wiktionary.org", 518, 26.0, 65, 7.0),
-            this.createData("dictionary.com", 392, 0.2, 98, 0.0),
-            this.createData("cambridge.org", 25.3, 87.5, 12.8, 56.7),
-            this.createData("britannica.com", 360, 19.0, 9, 37.0),
-            this.createData("microsoft.com", 6, 4, 8, 1),
-            this.createData("walmart.com", 1.5, 75.8, 69.2, 22.1),
-            this.createData("espn.com", 13.7, 57.2, 90.8, 4.3),
-            this.createData("weather.com", 53.4, 27.6, 10.9, 94.3),
-            this.createData("linkedin.com", 86.9, 3.2, 41.5, 59.1),
-            this.createData("homedepot.com", 437, 18.0, 63, 4.0),
-            this.createData("espncricinfo.com", 58.1, 33.6, 89.7, 22.4),
-            this.createData("samsung.com", 19.7, 67.9, 56.3, 8.2),
-            this.createData("craigslist.org", 69.4, 57.8, 16.3, 4.7),
-            this.createData("gsmarena.com", 28.5, 72.3, 5.9, 50.2),
-            this.createData("ebay.com", 76.9, 44.2, 12.5, 30.7),
-            this.createData("mayoclinic.org", 17.2, 92.8, 41.3, 6.1),
-            this.createData("cricbuzz.com", 94.1, 32.7, 79.4, 1.2),
-            this.createData("timeanddate.com", 79.6, 85.5, 52.1, 34.3),
-            this.createData("webmd.com", 9, 3, 2, 7),
-            this.createData("thesaurus.com", 437, 18.0, 63, 4.0),
-            this.createData("rottentomatoes.com", 60.2, 51.3, 18.9, 7.5),
-            this.createData("bbc.com", 52.1, 94.8, 84.9, 47.4),
-            this.createData("healthline.com", 15.6, 97.8, 88.1, 42.0),
-            this.createData("netflix.com", 47.3, 81.9, 16.4, 38.1),
-            this.createData("indeed.com", 72.4, 36.6, 81.0, 11.1),
-            this.createData("thefreedictionary.com", 70.1, 10.4, 39.5, 51.8),
-            this.createData("spotify.com", 98.5, 77.2, 65.9, 7.8),
-            this.createData("livescore.com", 45.7, 8.2, 74.4, 63.2),
+            this.createData("google.com", 1),
+            this.createData("facebook.com", 452),
+            this.createData("amazon.com", 262),
+            this.createData("imdb.com", 159),
+            this.createData("apple.com", 356),
+            this.createData("pinterest.com", 4),
+            this.createData("yelp.com", 237),
+            this.createData("tripadvisor.com", 3),
+            this.createData("wiktionary.org", 518),
+            this.createData("dictionary.com", 392),
+            this.createData("cambridge.org", 25.3),
+            this.createData("britannica.com", 360),
+            this.createData("microsoft.com", 6),
         ];
     }
 
@@ -372,10 +350,46 @@ export default class ProjectNotes extends React.Component {
 
     render() {
         return (
-            <Box>
-                <this.EnhancedTable
-                    style={{ width: "70%" }}
-                ></this.EnhancedTable>
+            <Box component="div" sx={{ display: "flex" }}>
+                <Box sx={{ width: "70%" }}>
+                    <this.EnhancedTable>
+                    </this.EnhancedTable>
+                </Box>
+                <Box sx={{ width: "30%", padding: "25px" }}>
+                    <div style={{ marginBottom: "1rem" }}>
+                        <UnderLineMiniTitle>Scan Durations</UnderLineMiniTitle>
+                        <table>
+                            <tr>
+                                <td width="5%">Policy:</td>
+                                <td width="20%">Basic Network Scan</td>
+                            </tr>
+                            <tr>
+                                <td>Status:</td>
+                                <td>Completed</td>
+                            </tr>
+                            <tr>
+                                <td>Severity Base:</td>
+                                <td>CVSS v3.0</td>
+                            </tr>
+                            <tr>
+                                <td>Scanner:</td>
+                                <td>Local Scanner</td>
+                            </tr>
+                            <tr>
+                                <td>Start:</td>
+                                <td>January 16 at 5:30 PM</td>
+                            </tr>
+                            <tr>
+                                <td>End:</td>
+                                <td>January 16 at 6:28 PM</td>
+                            </tr>
+                            <tr>
+                                <td>Elapsed:</td>
+                                <td>an hour</td>
+                            </tr>
+                        </table>
+                    </div>
+                </Box>
             </Box>
         );
     }
