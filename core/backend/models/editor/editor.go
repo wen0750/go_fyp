@@ -17,7 +17,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"gopkg.in/yaml.v3"
 
-	"go_fyp/core/backend/services/database"
+	"go_fyp_test/core/backend/services/database"
 )
 
 // create a template structure

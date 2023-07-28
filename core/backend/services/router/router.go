@@ -4,8 +4,8 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
-	"go_fyp/core/backend/models/editor"
-	"go_fyp/core/backend/models/folder"
+	"go_fyp_test/core/backend/models/editor"
+	"go_fyp_test/core/backend/models/folder"
 )
 
 func Initialize() {

@@ -1,6 +1,6 @@
 package main
 
-import "go_fyp/core/backend/services/router"
+import "go_fyp_test/core/backend/services/router"
 
 func main() {
 	router.Initialize()
