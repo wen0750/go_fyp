@@ -1,4 +1,6 @@
 import * as React from "react";
+import Modal from 'react-modal';
+import Popover from 'react-popover';
 import { Box, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
@@ -122,6 +124,16 @@ class ProjectFolder extends React.Component {
     ];
 
     projectHeader = () => {
+        const [modalIsOpen, setIsOpen] = React.useState(false);
+    
+        const openModal = () => {
+            setIsOpen(true);
+        }
+    
+        const closeModal = () => {
+            setIsOpen(false);
+        }
+    
         return (
             <Box
                 sx={{
@@ -145,11 +157,21 @@ class ProjectFolder extends React.Component {
                             variant="contained"
                             startIcon={<ControlPointRoundedIcon />}
                             sx={{ mx: 1 }}
+                            onClick={openModal}
                         >
                             New Scan
                         </Button>
                     </div>
                 </FolderHeader>
+                <Modal
+                    isOpen={modalIsOpen}
+                    onRequestClose={closeModal}
+                    contentLabel="New Scan Dialog"
+                >
+                    <h2>New Scan</h2>
+                    <button onClick={closeModal}>close</button>
+                    <div>I am a modal for the New Scan action.</div>
+                </Modal>
             </Box>
         );
     };
