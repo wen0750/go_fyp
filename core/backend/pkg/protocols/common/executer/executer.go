@@ -7,13 +7,12 @@ import (
 
 	"github.com/pkg/errors"
 
+	"github.com/projectdiscovery/gologger"
 	"go_fyp_test/core/backend/pkg/operators/common/dsl"
 	"go_fyp_test/core/backend/pkg/output"
 	"go_fyp_test/core/backend/pkg/protocols"
 	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
 	"go_fyp_test/core/backend/pkg/protocols/common/helpers/writer"
-
-	"github.com/projectdiscovery/gologger"
 )
 
 // Executer executes a group of requests for a protocol

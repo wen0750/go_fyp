@@ -4,15 +4,14 @@ import (
 	"encoding/json"
 	"strings"
 
+	"github.com/alecthomas/jsonschema"
+	stringsutil "github.com/projectdiscovery/utils/strings"
 	"go_fyp_test/core/backend/pkg/protocols/common/expressions"
 	"go_fyp_test/core/backend/pkg/protocols/common/generators"
 	"go_fyp_test/core/backend/pkg/protocols/common/interactsh"
 	protocolutils "go_fyp_test/core/backend/pkg/protocols/utils"
 	"go_fyp_test/core/backend/pkg/types"
 	"go_fyp_test/core/backend/pkg/utils"
-
-	"github.com/alecthomas/jsonschema"
-	stringsutil "github.com/projectdiscovery/utils/strings"
 )
 
 // Variable is a key-value pair of strings that can be used

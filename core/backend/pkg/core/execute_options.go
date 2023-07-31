@@ -6,13 +6,12 @@ import (
 
 	"github.com/remeh/sizedwaitgroup"
 
+	stringsutil "github.com/projectdiscovery/utils/strings"
 	"go_fyp_test/core/backend/pkg/output"
 	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
 	"go_fyp_test/core/backend/pkg/templates"
 	"go_fyp_test/core/backend/pkg/templates/types"
 	"go_fyp_test/core/backend/pkg/types/scanstrategy"
-
-	stringsutil "github.com/projectdiscovery/utils/strings"
 )
 
 // Execute takes a list of templates/workflows that have been compiled

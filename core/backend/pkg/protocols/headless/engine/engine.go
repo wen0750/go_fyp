@@ -8,14 +8,12 @@ import (
 
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/launcher"
-	"github.com/go-rod/rod/lib/launcher/flags"
 	"github.com/pkg/errors"
-
-	"go_fyp_test/core/backend/pkg/types"
 
 	fileutil "github.com/projectdiscovery/utils/file"
 	osutils "github.com/projectdiscovery/utils/os"
 	processutil "github.com/projectdiscovery/utils/process"
+	"go_fyp_test/core/backend/pkg/types"
 )
 
 // Browser is a browser structure for nuclei headless module
@@ -77,11 +75,6 @@ func New(options *types.Options) (*Browser, error) {
 	if types.ProxyURL != "" {
 		chromeLauncher = chromeLauncher.Proxy(types.ProxyURL)
 	}
-
-	for k, v := range options.ParseHeadlessOptionalArguments() {
-		chromeLauncher.Set(flags.Flag(k), v)
-	}
-
 	launcherURL, err := chromeLauncher.Launch()
 	if err != nil {
 		return nil, err

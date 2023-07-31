@@ -6,9 +6,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	nucleiConfig "go_fyp_test/core/backend/pkg/catalog/config"
-	"go_fyp_test/core/backend/pkg/types"
-
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/credentials"
@@ -17,6 +14,8 @@ import (
 	"github.com/projectdiscovery/gologger"
 	errorutil "github.com/projectdiscovery/utils/errors"
 	stringsutil "github.com/projectdiscovery/utils/strings"
+	nucleiConfig "go_fyp_test/core/backend/pkg/catalog/config"
+	"go_fyp_test/core/backend/pkg/types"
 )
 
 var _ Provider = &customTemplateS3Bucket{}

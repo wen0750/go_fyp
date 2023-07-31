@@ -9,6 +9,14 @@ import (
 	jsoniter "github.com/json-iterator/go"
 	"github.com/pkg/errors"
 
+	"github.com/projectdiscovery/fastdialer/fastdialer"
+	"github.com/projectdiscovery/gologger"
+	"github.com/projectdiscovery/tlsx/pkg/tlsx"
+	"github.com/projectdiscovery/tlsx/pkg/tlsx/clients"
+	"github.com/projectdiscovery/tlsx/pkg/tlsx/openssl"
+	errorutil "github.com/projectdiscovery/utils/errors"
+	stringsutil "github.com/projectdiscovery/utils/strings"
+	urlutil "github.com/projectdiscovery/utils/url"
 	"go_fyp_test/core/backend/pkg/model"
 	"go_fyp_test/core/backend/pkg/operators"
 	"go_fyp_test/core/backend/pkg/operators/extractors"
@@ -26,15 +34,6 @@ import (
 	protocolutils "go_fyp_test/core/backend/pkg/protocols/utils"
 	templateTypes "go_fyp_test/core/backend/pkg/templates/types"
 	"go_fyp_test/core/backend/pkg/types"
-
-	"github.com/projectdiscovery/fastdialer/fastdialer"
-	"github.com/projectdiscovery/gologger"
-	"github.com/projectdiscovery/tlsx/pkg/tlsx"
-	"github.com/projectdiscovery/tlsx/pkg/tlsx/clients"
-	"github.com/projectdiscovery/tlsx/pkg/tlsx/openssl"
-	errorutil "github.com/projectdiscovery/utils/errors"
-	stringsutil "github.com/projectdiscovery/utils/strings"
-	urlutil "github.com/projectdiscovery/utils/url"
 )
 
 // Request is a request for the SSL protocol

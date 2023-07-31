@@ -5,13 +5,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	templateTypes "go_fyp_test/core/backend/pkg/templates/types"
-
 	"github.com/projectdiscovery/hmap/store/hybrid"
 	fileutil "github.com/projectdiscovery/utils/file"
 	"github.com/projectdiscovery/utils/ports"
 	stringsutil "github.com/projectdiscovery/utils/strings"
 	urlutil "github.com/projectdiscovery/utils/url"
+	templateTypes "go_fyp_test/core/backend/pkg/templates/types"
 )
 
 // Helper is a structure for helping with input transformation

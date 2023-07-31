@@ -3,11 +3,10 @@ package fuzz
 import (
 	"testing"
 
+	"github.com/stretchr/testify/require"
 	"go_fyp_test/core/backend/pkg/protocols"
 	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
 	"go_fyp_test/core/backend/pkg/protocols/common/interactsh"
-
-	"github.com/stretchr/testify/require"
 )
 
 func TestExecuteQueryPartRule(t *testing.T) {

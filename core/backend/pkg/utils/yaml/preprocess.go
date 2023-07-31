@@ -7,10 +7,9 @@ import (
 	"regexp"
 	"strings"
 
-	"go_fyp_test/core/backend/pkg/templates/extensions"
-
 	fileutil "github.com/projectdiscovery/utils/file"
 	stringsutil "github.com/projectdiscovery/utils/strings"
+	"go_fyp_test/core/backend/pkg/templates/extensions"
 )
 
 var reImportsPattern = regexp.MustCompile(`(?m)# !include:(.+.yaml)`)

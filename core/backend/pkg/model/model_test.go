@@ -5,10 +5,9 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/stretchr/testify/assert"
 	"go_fyp_test/core/backend/pkg/model/types/severity"
 	"go_fyp_test/core/backend/pkg/model/types/stringslice"
-
-	"github.com/stretchr/testify/assert"
 	"gopkg.in/yaml.v2"
 )
 
@@ -19,7 +18,7 @@ func TestInfoJsonMarshal(t *testing.T) {
 		Description:    "Test description",
 		SeverityHolder: severity.Holder{Severity: severity.High},
 		Tags:           stringslice.StringSlice{Value: []string{"cve", "misc"}},
-		Reference:      stringslice.NewRawStringSlice("Reference1"),
+		Reference:      stringslice.NewRaw("Reference1"),
 		Metadata: map[string]interface{}{
 			"string_key": "string_value",
 			"array_key":  []string{"array_value1", "array_value2"},
@@ -43,7 +42,7 @@ func TestInfoYamlMarshal(t *testing.T) {
 		Description:    "Test description",
 		SeverityHolder: severity.Holder{Severity: severity.High},
 		Tags:           stringslice.StringSlice{Value: []string{"cve", "misc"}},
-		Reference:      stringslice.NewRawStringSlice("Reference1"),
+		Reference:      stringslice.NewRaw("Reference1"),
 		Metadata: map[string]interface{}{
 			"string_key": "string_value",
 			"array_key":  []string{"array_value1", "array_value2"},

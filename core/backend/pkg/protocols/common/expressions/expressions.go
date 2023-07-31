@@ -5,11 +5,10 @@ import (
 
 	"github.com/Knetic/govaluate"
 
+	stringsutil "github.com/projectdiscovery/utils/strings"
 	"go_fyp_test/core/backend/pkg/operators/common/dsl"
 	"go_fyp_test/core/backend/pkg/protocols/common/marker"
 	"go_fyp_test/core/backend/pkg/protocols/common/replacer"
-
-	stringsutil "github.com/projectdiscovery/utils/strings"
 )
 
 // Eval compiles the given expression and evaluate it with the given values preserving the return type

@@ -7,6 +7,12 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/corpix/uarand"
+	"github.com/pkg/errors"
+	"github.com/projectdiscovery/gologger"
+	"github.com/projectdiscovery/retryablehttp-go"
+	sliceutil "github.com/projectdiscovery/utils/slice"
+	wappalyzer "github.com/projectdiscovery/wappalyzergo"
 	"go_fyp_test/core/backend/pkg/catalog/config"
 	"go_fyp_test/core/backend/pkg/catalog/loader"
 	"go_fyp_test/core/backend/pkg/core"
@@ -15,13 +21,6 @@ import (
 	"go_fyp_test/core/backend/pkg/protocols/http/httpclientpool"
 	"go_fyp_test/core/backend/pkg/templates"
 	"go_fyp_test/core/backend/pkg/templates/types"
-
-	"github.com/corpix/uarand"
-	"github.com/pkg/errors"
-	"github.com/projectdiscovery/gologger"
-	"github.com/projectdiscovery/retryablehttp-go"
-	sliceutil "github.com/projectdiscovery/utils/slice"
-	wappalyzer "github.com/projectdiscovery/wappalyzergo"
 	"gopkg.in/yaml.v2"
 )
 

@@ -3,10 +3,9 @@ package workflows
 import (
 	"testing"
 
+	"github.com/stretchr/testify/require"
 	"go_fyp_test/core/backend/pkg/model/types/stringslice"
 	"go_fyp_test/core/backend/pkg/operators"
-
-	"github.com/stretchr/testify/require"
 )
 
 func TestWorkflowMatchAndCompile(t *testing.T) {

@@ -6,10 +6,9 @@ import (
 	"path/filepath"
 	"strings"
 
-	"go_fyp_test/core/backend/pkg/types"
-
 	fileutil "github.com/projectdiscovery/utils/file"
 	folderutil "github.com/projectdiscovery/utils/folder"
+	"go_fyp_test/core/backend/pkg/types"
 )
 
 // validate validates the payloads if any.

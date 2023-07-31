@@ -5,13 +5,12 @@ import (
 	"path"
 	"strings"
 
-	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
-	"go_fyp_test/core/backend/pkg/protocols/common/generators"
-
 	"github.com/projectdiscovery/gologger"
 	maputil "github.com/projectdiscovery/utils/maps"
 	urlutil "github.com/projectdiscovery/utils/url"
 	"github.com/weppos/publicsuffix-go/publicsuffix"
+	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
+	"go_fyp_test/core/backend/pkg/protocols/common/generators"
 )
 
 // KnownVariables are the variables that are known to input requests

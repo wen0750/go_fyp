@@ -8,6 +8,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/remeh/sizedwaitgroup"
 
+	"github.com/projectdiscovery/gologger"
 	"go_fyp_test/core/backend/pkg/output"
 	"go_fyp_test/core/backend/pkg/protocols"
 	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
@@ -15,8 +16,6 @@ import (
 	"go_fyp_test/core/backend/pkg/protocols/common/tostring"
 	"go_fyp_test/core/backend/pkg/protocols/utils"
 	templateTypes "go_fyp_test/core/backend/pkg/templates/types"
-
-	"github.com/projectdiscovery/gologger"
 )
 
 var _ protocols.Request = &Request{}

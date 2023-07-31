@@ -1,12 +1,11 @@
 package parsers
 
 import (
+	"github.com/projectdiscovery/gologger"
 	"go_fyp_test/core/backend/pkg/catalog/config"
 	"go_fyp_test/core/backend/pkg/catalog/loader/filter"
 	"go_fyp_test/core/backend/pkg/model"
 	"go_fyp_test/core/backend/pkg/protocols"
-
-	"github.com/projectdiscovery/gologger"
 )
 
 type workflowLoader struct {

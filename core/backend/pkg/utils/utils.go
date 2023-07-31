@@ -6,12 +6,11 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/projectdiscovery/retryablehttp-go"
+	fileutil "github.com/projectdiscovery/utils/file"
 	"go_fyp_test/core/backend/pkg/catalog"
 	"go_fyp_test/core/backend/pkg/catalog/config"
 	"go_fyp_test/core/backend/pkg/utils/yaml"
-
-	"github.com/projectdiscovery/retryablehttp-go"
-	fileutil "github.com/projectdiscovery/utils/file"
 )
 
 func IsBlank(value string) bool {

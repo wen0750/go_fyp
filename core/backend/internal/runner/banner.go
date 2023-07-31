@@ -3,10 +3,9 @@ package runner
 import (
 	"fmt"
 
-	"go_fyp_test/core/backend/pkg/catalog/config"
-
 	"github.com/projectdiscovery/gologger"
 	updateutils "github.com/projectdiscovery/utils/update"
+	"go_fyp_test/core/backend/pkg/catalog/config"
 )
 
 var banner = fmt.Sprintf(`

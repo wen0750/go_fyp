@@ -3,10 +3,9 @@ package installer
 import (
 	"testing"
 
-	"go_fyp_test/core/backend/pkg/catalog/config"
-
 	"github.com/projectdiscovery/utils/generic"
 	"github.com/stretchr/testify/require"
+	"go_fyp_test/core/backend/pkg/catalog/config"
 )
 
 func TestVersionCheck(t *testing.T) {

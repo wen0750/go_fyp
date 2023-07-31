@@ -11,11 +11,10 @@ import (
 	"path/filepath"
 	"sort"
 
-	"go_fyp_test/core/backend/pkg/catalog/config"
-
 	"github.com/Masterminds/semver/v3"
 	"github.com/projectdiscovery/gologger"
 	errorutil "github.com/projectdiscovery/utils/errors"
+	"go_fyp_test/core/backend/pkg/catalog/config"
 )
 
 // GetNewTemplatesInVersions returns templates path of all newly added templates

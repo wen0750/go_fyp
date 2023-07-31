@@ -2,8 +2,9 @@ package contextargs
 
 import (
 	"net/http/cookiejar"
+	"sync"
 
-	mapsutil "github.com/projectdiscovery/utils/maps"
+	"golang.org/x/exp/maps"
 )
 
 // Context implements a shared context struct to share information across multiple templates within a workflow
@@ -14,8 +15,10 @@ type Context struct {
 	// CookieJar shared within workflow's http templates
 	CookieJar *cookiejar.Jar
 
+	// Access to Args must use lock strategies to prevent data races
+	*sync.RWMutex
 	// Args is a workflow shared key-value store
-	args *mapsutil.SyncLockMap[string, interface{}]
+	args Args
 }
 
 // Create a new contextargs instance
@@ -29,7 +32,15 @@ func NewWithInput(input string) *Context {
 }
 
 func (ctx *Context) initialize() {
-	ctx.args = &mapsutil.SyncLockMap[string, interface{}]{Map: mapsutil.Map[string, interface{}]{}}
+	ctx.args = newArgs()
+	ctx.RWMutex = &sync.RWMutex{}
+}
+
+func (ctx *Context) set(key string, value interface{}) {
+	ctx.Lock()
+	defer ctx.Unlock()
+
+	ctx.args.Set(key, value)
 }
 
 // Set the specific key-value pair
@@ -38,7 +49,7 @@ func (ctx *Context) Set(key string, value interface{}) {
 		ctx.initialize()
 	}
 
-	_ = ctx.args.Set(key, value)
+	ctx.set(key, value)
 }
 
 func (ctx *Context) isInitialized() bool {
@@ -49,33 +60,49 @@ func (ctx *Context) hasArgs() bool {
 	return ctx.isInitialized() && !ctx.args.IsEmpty()
 }
 
+func (ctx *Context) get(key string) (interface{}, bool) {
+	ctx.RLock()
+	defer ctx.RUnlock()
+
+	return ctx.args.Get(key)
+}
+
 // Get the value with specific key if exists
 func (ctx *Context) Get(key string) (interface{}, bool) {
 	if !ctx.hasArgs() {
 		return nil, false
 	}
 
-	return ctx.args.Get(key)
+	return ctx.get(key)
 }
 
-func (ctx *Context) GetAll() *mapsutil.SyncLockMap[string, interface{}] {
+func (ctx *Context) GetAll() Args {
 	if !ctx.hasArgs() {
 		return nil
 	}
 
-	return ctx.args.Clone()
+	return maps.Clone(ctx.args)
 }
 
 func (ctx *Context) ForEach(f func(string, interface{})) {
-	_ = ctx.args.Iterate(func(k string, v interface{}) error {
+	ctx.RLock()
+	defer ctx.RUnlock()
+
+	for k, v := range ctx.args {
 		f(k, v)
-		return nil
-	})
+	}
+}
+
+func (ctx *Context) has(key string) bool {
+	ctx.RLock()
+	defer ctx.RUnlock()
+
+	return ctx.args.Has(key)
 }
 
 // Has check if the key exists
 func (ctx *Context) Has(key string) bool {
-	return ctx.hasArgs() && ctx.args.Has(key)
+	return ctx.hasArgs() && ctx.has(key)
 }
 
 func (ctx *Context) HasArgs() bool {
@@ -85,6 +112,7 @@ func (ctx *Context) HasArgs() bool {
 func (ctx *Context) Clone() *Context {
 	newCtx := &Context{
 		MetaInput: ctx.MetaInput.Clone(),
+		RWMutex:   ctx.RWMutex,
 		args:      ctx.args,
 		CookieJar: ctx.CookieJar,
 	}

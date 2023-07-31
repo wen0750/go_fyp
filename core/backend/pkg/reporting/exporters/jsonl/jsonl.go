@@ -2,11 +2,10 @@ package jsonl
 
 import (
 	"encoding/json"
+	"github.com/pkg/errors"
 	"go_fyp_test/core/backend/pkg/output"
 	"os"
 	"sync"
-
-	"github.com/pkg/errors"
 )
 
 type Exporter struct {

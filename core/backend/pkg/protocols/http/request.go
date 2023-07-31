@@ -17,6 +17,10 @@ import (
 	"go.uber.org/multierr"
 	"moul.io/http2curl"
 
+	"github.com/projectdiscovery/gologger"
+	"github.com/projectdiscovery/rawhttp"
+	stringsutil "github.com/projectdiscovery/utils/strings"
+	urlutil "github.com/projectdiscovery/utils/url"
 	"go_fyp_test/core/backend/pkg/operators"
 	"go_fyp_test/core/backend/pkg/output"
 	"go_fyp_test/core/backend/pkg/protocols"
@@ -33,11 +37,6 @@ import (
 	"go_fyp_test/core/backend/pkg/protocols/http/signerpool"
 	templateTypes "go_fyp_test/core/backend/pkg/templates/types"
 	"go_fyp_test/core/backend/pkg/types"
-
-	"github.com/projectdiscovery/gologger"
-	"github.com/projectdiscovery/rawhttp"
-	stringsutil "github.com/projectdiscovery/utils/strings"
-	urlutil "github.com/projectdiscovery/utils/url"
 )
 
 const defaultMaxWorkers = 150

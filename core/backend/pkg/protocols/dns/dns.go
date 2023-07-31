@@ -6,15 +6,14 @@ import (
 	"github.com/miekg/dns"
 	"github.com/pkg/errors"
 
+	"github.com/projectdiscovery/retryabledns"
+	fileutil "github.com/projectdiscovery/utils/file"
 	"go_fyp_test/core/backend/pkg/operators"
 	"go_fyp_test/core/backend/pkg/protocols"
 	"go_fyp_test/core/backend/pkg/protocols/common/expressions"
 	"go_fyp_test/core/backend/pkg/protocols/common/generators"
 	"go_fyp_test/core/backend/pkg/protocols/common/replacer"
 	"go_fyp_test/core/backend/pkg/protocols/dns/dnsclientpool"
-
-	"github.com/projectdiscovery/retryabledns"
-	fileutil "github.com/projectdiscovery/utils/file"
 )
 
 // Request contains a DNS protocol request to be made from a template

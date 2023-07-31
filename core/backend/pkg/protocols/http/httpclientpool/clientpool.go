@@ -16,14 +16,13 @@ import (
 	"golang.org/x/net/proxy"
 	"golang.org/x/net/publicsuffix"
 
-	"go_fyp_test/core/backend/pkg/protocols/common/protocolstate"
-	"go_fyp_test/core/backend/pkg/protocols/utils"
-	"go_fyp_test/core/backend/pkg/types"
-
 	"github.com/projectdiscovery/fastdialer/fastdialer"
 	"github.com/projectdiscovery/fastdialer/fastdialer/ja3/impersonate"
 	"github.com/projectdiscovery/rawhttp"
 	"github.com/projectdiscovery/retryablehttp-go"
+	"go_fyp_test/core/backend/pkg/protocols/common/protocolstate"
+	"go_fyp_test/core/backend/pkg/protocols/utils"
+	"go_fyp_test/core/backend/pkg/types"
 )
 
 var (

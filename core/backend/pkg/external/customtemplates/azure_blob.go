@@ -7,13 +7,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	"go_fyp_test/core/backend/pkg/catalog/config"
-	"go_fyp_test/core/backend/pkg/types"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/projectdiscovery/gologger"
 	errorutil "github.com/projectdiscovery/utils/errors"
+	"go_fyp_test/core/backend/pkg/catalog/config"
+	"go_fyp_test/core/backend/pkg/types"
 )
 
 var _ Provider = &customTemplateAzureBlob{}

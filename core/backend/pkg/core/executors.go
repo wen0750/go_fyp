@@ -4,14 +4,13 @@ import (
 	"sync"
 	"sync/atomic"
 
+	"github.com/projectdiscovery/gologger"
+	"github.com/remeh/sizedwaitgroup"
 	"go_fyp_test/core/backend/pkg/output"
 	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
 	"go_fyp_test/core/backend/pkg/templates"
 	"go_fyp_test/core/backend/pkg/templates/types"
 	generalTypes "go_fyp_test/core/backend/pkg/types"
-
-	"github.com/projectdiscovery/gologger"
-	"github.com/remeh/sizedwaitgroup"
 )
 
 // Executors are low level executors that deals with template execution on a target

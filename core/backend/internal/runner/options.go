@@ -12,12 +12,6 @@ import (
 
 	"github.com/go-playground/validator/v10"
 
-	"go_fyp_test/core/backend/pkg/catalog/config"
-	"go_fyp_test/core/backend/pkg/protocols/common/protocolinit"
-	"go_fyp_test/core/backend/pkg/protocols/common/utils/vardump"
-	"go_fyp_test/core/backend/pkg/protocols/headless/engine"
-	"go_fyp_test/core/backend/pkg/types"
-
 	"github.com/projectdiscovery/goflags"
 	"github.com/projectdiscovery/gologger"
 	"github.com/projectdiscovery/gologger/formatter"
@@ -26,6 +20,11 @@ import (
 	"github.com/projectdiscovery/utils/generic"
 	logutil "github.com/projectdiscovery/utils/log"
 	stringsutil "github.com/projectdiscovery/utils/strings"
+	"go_fyp_test/core/backend/pkg/catalog/config"
+	"go_fyp_test/core/backend/pkg/protocols/common/protocolinit"
+	"go_fyp_test/core/backend/pkg/protocols/common/utils/vardump"
+	"go_fyp_test/core/backend/pkg/protocols/headless/engine"
+	"go_fyp_test/core/backend/pkg/types"
 )
 
 func ConfigureOptions() error {
@@ -113,10 +112,6 @@ func validateOptions(options *types.Options) error {
 	}
 	if options.Verbose && options.Silent {
 		return errors.New("both verbose and silent mode specified")
-	}
-
-	if (options.HeadlessOptionalArguments != nil || options.ShowBrowser || options.UseInstalledChrome) && !options.Headless {
-		return errors.New("headless mode (-headless) is required if -ho, -sb, -sc or -lha are set")
 	}
 
 	if options.FollowHostRedirects && options.FollowRedirects {
@@ -412,13 +407,6 @@ func readEnvInputVars(options *types.Options) {
 	options.GitLabTemplateDisableDownload = getBoolEnvValue("DISABLE_NUCLEI_TEMPLATES_GITLAB_DOWNLOAD")
 	options.AwsTemplateDisableDownload = getBoolEnvValue("DISABLE_NUCLEI_TEMPLATES_AWS_DOWNLOAD")
 	options.AzureTemplateDisableDownload = getBoolEnvValue("DISABLE_NUCLEI_TEMPLATES_AZURE_DOWNLOAD")
-
-	// Options to modify the behavior of exporters
-	options.MarkdownExportSortMode = strings.ToLower(os.Getenv("MARKDOWN_EXPORT_SORT_MODE"))
-	// If the user has not specified a valid sort mode, use the default
-	if options.MarkdownExportSortMode != "template" && options.MarkdownExportSortMode != "severity" && options.MarkdownExportSortMode != "host" {
-		options.MarkdownExportSortMode = ""
-	}
 }
 
 func getBoolEnvValue(key string) bool {

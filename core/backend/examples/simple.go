@@ -10,6 +10,9 @@ import (
 
 	"github.com/logrusorgru/aurora"
 
+	"github.com/projectdiscovery/goflags"
+	"github.com/projectdiscovery/httpx/common/httpx"
+	"github.com/projectdiscovery/ratelimit"
 	"go_fyp_test/core/backend/pkg/catalog/config"
 	"go_fyp_test/core/backend/pkg/catalog/disk"
 	"go_fyp_test/core/backend/pkg/catalog/loader"
@@ -26,10 +29,6 @@ import (
 	"go_fyp_test/core/backend/pkg/reporting"
 	"go_fyp_test/core/backend/pkg/testutils"
 	"go_fyp_test/core/backend/pkg/types"
-
-	"github.com/projectdiscovery/goflags"
-	"github.com/projectdiscovery/httpx/common/httpx"
-	"github.com/projectdiscovery/ratelimit"
 )
 
 func main() {

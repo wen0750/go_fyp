@@ -3,9 +3,8 @@ package customtemplates
 import (
 	"context"
 
-	"go_fyp_test/core/backend/pkg/types"
-
 	errorutil "github.com/projectdiscovery/utils/errors"
+	"go_fyp_test/core/backend/pkg/types"
 )
 
 type Provider interface {

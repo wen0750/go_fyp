@@ -7,10 +7,9 @@ import (
 	"os"
 	"runtime"
 
-	"go_fyp_test/core/backend/pkg/catalog/config"
-
 	"github.com/projectdiscovery/retryablehttp-go"
 	updateutils "github.com/projectdiscovery/utils/update"
+	"go_fyp_test/core/backend/pkg/catalog/config"
 )
 
 const (

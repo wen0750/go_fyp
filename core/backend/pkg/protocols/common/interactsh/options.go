@@ -3,12 +3,11 @@ package interactsh
 import (
 	"time"
 
+	"github.com/projectdiscovery/interactsh/pkg/client"
+	"github.com/projectdiscovery/retryablehttp-go"
 	"go_fyp_test/core/backend/pkg/output"
 	"go_fyp_test/core/backend/pkg/progress"
 	"go_fyp_test/core/backend/pkg/reporting"
-
-	"github.com/projectdiscovery/interactsh/pkg/client"
-	"github.com/projectdiscovery/retryablehttp-go"
 )
 
 // Options contains configuration options for interactsh nuclei integration.

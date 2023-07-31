@@ -4,14 +4,14 @@ import (
 	"go_fyp_test/core/backend/pkg/testutils"
 )
 
-var dnsTestCases = []TestCaseInfo{
-	{Path: "dns/basic.yaml", TestCase: &dnsBasic{}},
-	{Path: "dns/ptr.yaml", TestCase: &dnsPtr{}},
-	{Path: "dns/caa.yaml", TestCase: &dnsCAA{}},
-	{Path: "dns/tlsa.yaml", TestCase: &dnsTLSA{}},
-	{Path: "dns/variables.yaml", TestCase: &dnsVariables{}},
-	{Path: "dns/payload.yaml", TestCase: &dnsPayload{}},
-	{Path: "dns/dsl-matcher-variable.yaml", TestCase: &dnsDSLMatcherVariable{}},
+var dnsTestCases = map[string]testutils.TestCase{
+	"dns/basic.yaml":                &dnsBasic{},
+	"dns/ptr.yaml":                  &dnsPtr{},
+	"dns/caa.yaml":                  &dnsCAA{},
+	"dns/tlsa.yaml":                 &dnsTLSA{},
+	"dns/variables.yaml":            &dnsVariables{},
+	"dns/payload.yaml":              &dnsPayload{},
+	"dns/dsl-matcher-variable.yaml": &dnsDSLMatcherVariable{},
 }
 
 type dnsBasic struct{}

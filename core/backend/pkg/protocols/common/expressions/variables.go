@@ -5,9 +5,8 @@ import (
 	"regexp"
 	"strings"
 
-	"go_fyp_test/core/backend/pkg/operators/common/dsl"
-
 	"github.com/Knetic/govaluate"
+	"go_fyp_test/core/backend/pkg/operators/common/dsl"
 )
 
 var (

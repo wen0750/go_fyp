@@ -4,6 +4,8 @@ import (
 	"os"
 	"sort"
 
+	"github.com/pkg/errors"
+	"github.com/projectdiscovery/gologger"
 	"go_fyp_test/core/backend/pkg/catalog"
 	cfg "go_fyp_test/core/backend/pkg/catalog/config"
 	"go_fyp_test/core/backend/pkg/catalog/loader/filter"
@@ -15,9 +17,6 @@ import (
 	"go_fyp_test/core/backend/pkg/types"
 	"go_fyp_test/core/backend/pkg/utils/stats"
 	"go_fyp_test/core/backend/pkg/workflows"
-
-	"github.com/pkg/errors"
-	"github.com/projectdiscovery/gologger"
 )
 
 // Config contains the configuration options for the loader

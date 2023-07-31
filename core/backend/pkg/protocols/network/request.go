@@ -14,6 +14,9 @@ import (
 	"github.com/pkg/errors"
 	"golang.org/x/exp/maps"
 
+	"github.com/projectdiscovery/gologger"
+	errorutil "github.com/projectdiscovery/utils/errors"
+	mapsutil "github.com/projectdiscovery/utils/maps"
 	"go_fyp_test/core/backend/pkg/operators"
 	"go_fyp_test/core/backend/pkg/output"
 	"go_fyp_test/core/backend/pkg/protocols"
@@ -27,10 +30,6 @@ import (
 	"go_fyp_test/core/backend/pkg/protocols/common/utils/vardump"
 	protocolutils "go_fyp_test/core/backend/pkg/protocols/utils"
 	templateTypes "go_fyp_test/core/backend/pkg/templates/types"
-
-	"github.com/projectdiscovery/gologger"
-	errorutil "github.com/projectdiscovery/utils/errors"
-	mapsutil "github.com/projectdiscovery/utils/maps"
 )
 
 var _ protocols.Request = &Request{}

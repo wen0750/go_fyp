@@ -10,6 +10,9 @@ import (
 	"testing"
 	"time"
 
+	"github.com/julienschmidt/httprouter"
+	"github.com/projectdiscovery/ratelimit"
+	"github.com/stretchr/testify/require"
 	"go_fyp_test/core/backend/pkg/catalog/config"
 	"go_fyp_test/core/backend/pkg/catalog/disk"
 	"go_fyp_test/core/backend/pkg/model"
@@ -26,10 +29,6 @@ import (
 	"go_fyp_test/core/backend/pkg/templates"
 	"go_fyp_test/core/backend/pkg/testutils"
 	"go_fyp_test/core/backend/pkg/workflows"
-
-	"github.com/julienschmidt/httprouter"
-	"github.com/projectdiscovery/ratelimit"
-	"github.com/stretchr/testify/require"
 )
 
 var executerOpts protocols.ExecutorOptions

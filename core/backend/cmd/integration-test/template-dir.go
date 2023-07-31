@@ -3,13 +3,12 @@ package main
 import (
 	"os"
 
-	"go_fyp_test/core/backend/pkg/testutils"
-
 	errorutil "github.com/projectdiscovery/utils/errors"
+	"go_fyp_test/core/backend/pkg/testutils"
 )
 
-var templatesDirTestCases = []TestCaseInfo{
-	{Path: "dns/cname-fingerprint.yaml", TestCase: &templateDirWithTargetTest{}},
+var templatesDirTestCases = map[string]testutils.TestCase{
+	"dns/cname-fingerprint.yaml": &templateDirWithTargetTest{},
 }
 
 type templateDirWithTargetTest struct{}

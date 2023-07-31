@@ -11,12 +11,11 @@ import (
 	"github.com/pkg/errors"
 	"golang.org/x/oauth2"
 
+	"github.com/projectdiscovery/retryablehttp-go"
 	"go_fyp_test/core/backend/pkg/output"
 	"go_fyp_test/core/backend/pkg/reporting/exporters/markdown/util"
 	"go_fyp_test/core/backend/pkg/reporting/format"
 	"go_fyp_test/core/backend/pkg/types"
-
-	"github.com/projectdiscovery/retryablehttp-go"
 )
 
 // Integration is a client for an issue tracker integration

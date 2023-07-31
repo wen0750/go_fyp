@@ -5,14 +5,13 @@ import (
 
 	"github.com/pkg/errors"
 
+	"github.com/projectdiscovery/fastdialer/fastdialer"
+	fileutil "github.com/projectdiscovery/utils/file"
 	"go_fyp_test/core/backend/pkg/operators"
 	"go_fyp_test/core/backend/pkg/protocols"
 	"go_fyp_test/core/backend/pkg/protocols/common/expressions"
 	"go_fyp_test/core/backend/pkg/protocols/common/generators"
 	"go_fyp_test/core/backend/pkg/protocols/network/networkclientpool"
-
-	"github.com/projectdiscovery/fastdialer/fastdialer"
-	fileutil "github.com/projectdiscovery/utils/file"
 )
 
 // Request contains a Network protocol request to be made from a template

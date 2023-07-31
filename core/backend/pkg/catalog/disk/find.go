@@ -6,14 +6,13 @@ import (
 	"path/filepath"
 	"strings"
 
-	"go_fyp_test/core/backend/pkg/catalog/config"
-
 	"github.com/logrusorgru/aurora"
 	"github.com/pkg/errors"
 	"github.com/projectdiscovery/gologger"
 	stringsutil "github.com/projectdiscovery/utils/strings"
 	updateutils "github.com/projectdiscovery/utils/update"
 	urlutil "github.com/projectdiscovery/utils/url"
+	"go_fyp_test/core/backend/pkg/catalog/config"
 )
 
 var deprecatedPathsCounter int

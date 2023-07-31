@@ -3,6 +3,7 @@ package core
 import (
 	"testing"
 
+	"github.com/stretchr/testify/require"
 	"go_fyp_test/core/backend/pkg/model/types/stringslice"
 	"go_fyp_test/core/backend/pkg/operators"
 	"go_fyp_test/core/backend/pkg/output"
@@ -11,8 +12,6 @@ import (
 	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
 	"go_fyp_test/core/backend/pkg/types"
 	"go_fyp_test/core/backend/pkg/workflows"
-
-	"github.com/stretchr/testify/require"
 )
 
 func TestWorkflowsSimple(t *testing.T) {

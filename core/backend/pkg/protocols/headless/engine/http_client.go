@@ -11,11 +11,10 @@ import (
 
 	"golang.org/x/net/proxy"
 
+	"github.com/projectdiscovery/fastdialer/fastdialer/ja3/impersonate"
 	"go_fyp_test/core/backend/pkg/protocols/common/protocolstate"
 	"go_fyp_test/core/backend/pkg/protocols/utils"
 	"go_fyp_test/core/backend/pkg/types"
-
-	"github.com/projectdiscovery/fastdialer/fastdialer/ja3/impersonate"
 )
 
 // newHttpClient creates a new http client for headless communication with a timeout

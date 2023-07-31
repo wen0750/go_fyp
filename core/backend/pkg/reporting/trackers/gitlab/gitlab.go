@@ -5,11 +5,10 @@ import (
 
 	"github.com/xanzy/go-gitlab"
 
+	"github.com/projectdiscovery/retryablehttp-go"
 	"go_fyp_test/core/backend/pkg/output"
 	"go_fyp_test/core/backend/pkg/reporting/exporters/markdown/util"
 	"go_fyp_test/core/backend/pkg/reporting/format"
-
-	"github.com/projectdiscovery/retryablehttp-go"
 )
 
 // Integration is a client for an issue tracker integration

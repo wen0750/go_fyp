@@ -6,13 +6,12 @@ import (
 	"runtime"
 	"strings"
 
-	"go_fyp_test/core/backend/pkg/templates"
-
 	"github.com/projectdiscovery/gologger"
 	"github.com/projectdiscovery/uncover"
 	"github.com/projectdiscovery/uncover/sources"
 	mapsutil "github.com/projectdiscovery/utils/maps"
 	stringsutil "github.com/projectdiscovery/utils/strings"
+	"go_fyp_test/core/backend/pkg/templates"
 )
 
 // returns csv string of uncover supported agents

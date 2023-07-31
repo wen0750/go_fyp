@@ -4,6 +4,9 @@ package templates
 import (
 	"encoding/json"
 
+	validate "github.com/go-playground/validator/v10"
+	errorutil "github.com/projectdiscovery/utils/errors"
+	"go.uber.org/multierr"
 	"go_fyp_test/core/backend/pkg/model"
 	"go_fyp_test/core/backend/pkg/protocols"
 	"go_fyp_test/core/backend/pkg/protocols/common/variables"
@@ -17,10 +20,6 @@ import (
 	"go_fyp_test/core/backend/pkg/protocols/whois"
 	"go_fyp_test/core/backend/pkg/templates/types"
 	"go_fyp_test/core/backend/pkg/workflows"
-
-	validate "github.com/go-playground/validator/v10"
-	errorutil "github.com/projectdiscovery/utils/errors"
-	"go.uber.org/multierr"
 	"gopkg.in/yaml.v2"
 )
 

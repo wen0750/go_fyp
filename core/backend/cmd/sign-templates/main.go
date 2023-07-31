@@ -6,12 +6,11 @@ import (
 	"os"
 	"path/filepath"
 
-	"go_fyp_test/core/backend/pkg/templates/extensions"
-	"go_fyp_test/core/backend/pkg/templates/signer"
-
 	"github.com/pkg/errors"
 	"github.com/projectdiscovery/goflags"
 	stringsutil "github.com/projectdiscovery/utils/strings"
+	"go_fyp_test/core/backend/pkg/templates/extensions"
+	"go_fyp_test/core/backend/pkg/templates/signer"
 )
 
 type options struct {

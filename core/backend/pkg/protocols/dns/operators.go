@@ -8,6 +8,7 @@ import (
 
 	"github.com/miekg/dns"
 
+	"github.com/projectdiscovery/retryabledns"
 	"go_fyp_test/core/backend/pkg/model"
 	"go_fyp_test/core/backend/pkg/operators/extractors"
 	"go_fyp_test/core/backend/pkg/operators/matchers"
@@ -15,8 +16,6 @@ import (
 	"go_fyp_test/core/backend/pkg/protocols"
 	"go_fyp_test/core/backend/pkg/protocols/common/generators"
 	"go_fyp_test/core/backend/pkg/types"
-
-	"github.com/projectdiscovery/retryabledns"
 )
 
 // Match matches a generic data response against a given matcher

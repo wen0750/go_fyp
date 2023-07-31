@@ -7,11 +7,10 @@ import (
 
 	"github.com/remeh/sizedwaitgroup"
 
+	"github.com/projectdiscovery/gologger"
 	"go_fyp_test/core/backend/pkg/output"
 	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
 	"go_fyp_test/core/backend/pkg/workflows"
-
-	"github.com/projectdiscovery/gologger"
 )
 
 const workflowStepExecutionError = "[%s] Could not execute workflow step: %s\n"

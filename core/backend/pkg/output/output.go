@@ -15,17 +15,16 @@ import (
 	jsoniter "github.com/json-iterator/go"
 	"github.com/logrusorgru/aurora"
 
+	"github.com/projectdiscovery/gologger"
+	"github.com/projectdiscovery/interactsh/pkg/server"
+	fileutil "github.com/projectdiscovery/utils/file"
+	osutils "github.com/projectdiscovery/utils/os"
 	"go_fyp_test/core/backend/internal/colorizer"
 	"go_fyp_test/core/backend/pkg/model"
 	"go_fyp_test/core/backend/pkg/model/types/severity"
 	"go_fyp_test/core/backend/pkg/operators"
 	"go_fyp_test/core/backend/pkg/types"
 	"go_fyp_test/core/backend/pkg/utils"
-
-	"github.com/projectdiscovery/gologger"
-	"github.com/projectdiscovery/interactsh/pkg/server"
-	fileutil "github.com/projectdiscovery/utils/file"
-	osutils "github.com/projectdiscovery/utils/os"
 )
 
 // Writer is an interface which writes output to somewhere for nuclei events.
@@ -145,7 +144,7 @@ type ResultEvent struct {
 	// MatcherStatus is the status of the match
 	MatcherStatus bool `json:"matcher-status"`
 	// Lines is the line count for the specified match
-	Lines []int `json:"matched-line,omitempty"`
+	Lines []int `json:"matched-line"`
 
 	FileToIndexPosition map[string]int `json:"-"`
 }

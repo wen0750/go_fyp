@@ -6,9 +6,8 @@ import (
 	"path/filepath"
 	"sync"
 
-	"go_fyp_test/core/backend/pkg/catalog/config"
-
 	"github.com/rs/xid"
+	"go_fyp_test/core/backend/pkg/catalog/config"
 )
 
 // Default resume file

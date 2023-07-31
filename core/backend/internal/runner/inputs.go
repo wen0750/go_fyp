@@ -4,15 +4,14 @@ import (
 	"sync/atomic"
 	"time"
 
-	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
-	"go_fyp_test/core/backend/pkg/utils"
-
 	"github.com/pkg/errors"
 	"github.com/projectdiscovery/gologger"
 	"github.com/projectdiscovery/hmap/store/hybrid"
 	"github.com/projectdiscovery/httpx/common/httpx"
 	stringsutil "github.com/projectdiscovery/utils/strings"
 	"github.com/remeh/sizedwaitgroup"
+	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
+	"go_fyp_test/core/backend/pkg/utils"
 )
 
 const probeBulkSize = 50

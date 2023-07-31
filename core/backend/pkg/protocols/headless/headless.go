@@ -4,14 +4,13 @@ import (
 	"github.com/corpix/uarand"
 	"github.com/pkg/errors"
 
+	fileutil "github.com/projectdiscovery/utils/file"
 	useragent "go_fyp_test/core/backend/pkg/model/types/userAgent"
 	"go_fyp_test/core/backend/pkg/operators"
 	"go_fyp_test/core/backend/pkg/protocols"
 	"go_fyp_test/core/backend/pkg/protocols/common/fuzz"
 	"go_fyp_test/core/backend/pkg/protocols/common/generators"
 	"go_fyp_test/core/backend/pkg/protocols/headless/engine"
-
-	fileutil "github.com/projectdiscovery/utils/file"
 )
 
 // Request contains a Headless protocol request to be made from a template

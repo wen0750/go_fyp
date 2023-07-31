@@ -3,10 +3,9 @@ package templates
 import (
 	"testing"
 
+	"github.com/stretchr/testify/require"
 	"go_fyp_test/core/backend/pkg/protocols/dns"
 	"go_fyp_test/core/backend/pkg/protocols/http"
-
-	"github.com/stretchr/testify/require"
 )
 
 func TestClusterTemplates(t *testing.T) {

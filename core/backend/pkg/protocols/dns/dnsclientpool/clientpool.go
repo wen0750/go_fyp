@@ -5,10 +5,9 @@ import (
 	"strings"
 	"sync"
 
-	"go_fyp_test/core/backend/pkg/types"
-
 	"github.com/pkg/errors"
 	"github.com/projectdiscovery/retryabledns"
+	"go_fyp_test/core/backend/pkg/types"
 )
 
 var (

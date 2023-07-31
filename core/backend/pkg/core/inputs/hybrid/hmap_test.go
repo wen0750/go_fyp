@@ -7,13 +7,12 @@ import (
 	"strings"
 	"testing"
 
-	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
-	"go_fyp_test/core/backend/pkg/protocols/common/protocolstate"
-	"go_fyp_test/core/backend/pkg/types"
-
 	"github.com/miekg/dns"
 	"github.com/projectdiscovery/hmap/store/hybrid"
 	"github.com/stretchr/testify/require"
+	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
+	"go_fyp_test/core/backend/pkg/protocols/common/protocolstate"
+	"go_fyp_test/core/backend/pkg/types"
 )
 
 func Test_expandCIDRInputValue(t *testing.T) {

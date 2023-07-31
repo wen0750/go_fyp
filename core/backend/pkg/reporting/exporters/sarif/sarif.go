@@ -7,11 +7,10 @@ import (
 	"path"
 	"sync"
 
-	"go_fyp_test/core/backend/pkg/catalog/config"
-	"go_fyp_test/core/backend/pkg/output"
-
 	"github.com/pkg/errors"
 	"github.com/projectdiscovery/sarif"
+	"go_fyp_test/core/backend/pkg/catalog/config"
+	"go_fyp_test/core/backend/pkg/output"
 )
 
 // Exporter is an exporter for nuclei sarif output format.

@@ -1,10 +1,9 @@
 package rdapclientpool
 
 import (
-	"go_fyp_test/core/backend/pkg/types"
-
 	"github.com/projectdiscovery/gologger"
 	"github.com/projectdiscovery/rdap"
+	"go_fyp_test/core/backend/pkg/types"
 )
 
 var normalClient *rdap.Client
