@@ -36,7 +36,15 @@ export default class ProjectSummary extends React.Component {
     mediaCard = (props) => {
         const { cname, cvalue } = props;
         return (
-            <Card sx={{ maxWidth: 345, width: 250, minWidth: 200, mt: "20px", mr: "20px" }}>
+            <Card
+                sx={{
+                    maxWidth: 345,
+                    width: 250,
+                    minWidth: 200,
+                    mt: "20px",
+                    mr: "20px",
+                }}
+            >
                 <CardMedia
                     sx={{
                         height: 80,
@@ -73,28 +81,40 @@ export default class ProjectSummary extends React.Component {
             <CustScanDetails className="custscandetails">
                 <div>
                     <div>
-                        <img src="vulnerabilities_4.png" alt="" />
+                        <img
+                            src="image/vulnerabilities/vulnerabilities_4.png"
+                            alt=""
+                        />
                         <p>4</p>
                     </div>
                     <h5>Cirtical Vulnerabilities</h5>
                 </div>
                 <div>
                     <div>
-                        <img src="vulnerabilities_3.png" alt="" />
+                        <img
+                            src="image/vulnerabilities/vulnerabilities_3.png"
+                            alt=""
+                        />
                         <p>3</p>
                     </div>
                     <h5>High Vulnerabilities</h5>
                 </div>
                 <div>
                     <div>
-                        <img src="vulnerabilities_2.png" alt="" />
+                        <img
+                            src="image/vulnerabilities/vulnerabilities_2.png"
+                            alt=""
+                        />
                         <p>2</p>
                     </div>
                     <h5>Medium Vulnerabilities</h5>
                 </div>
                 <div>
                     <div>
-                        <img src="vulnerabilities_1.png" alt="" />
+                        <img
+                            src="image/vulnerabilities/vulnerabilities_1.png"
+                            alt=""
+                        />
                         <p>1</p>
                     </div>
                     <h5>Low Vulnerabilities</h5>

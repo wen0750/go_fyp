@@ -71,7 +71,7 @@ class ProjectThreats extends React.Component {
         return (
             <div style={{ display: "flex", marginBlockEnd: "1rem" }}>
                 <img
-                    src="3_star_shield-removebg-preview.png"
+                    src="image/shield/3_star_shield-removebg-preview.png"
                     alt=""
                     width="125"
                     height="125"
