@@ -1,14 +1,10 @@
 package project
 
 import (
-	"context"
 	"go_fyp/core/backend/services/database"
-	"time"
 
 	"log"
 
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -58,26 +54,26 @@ func ProjectCreateHandeler() {
 		poc = []string{"wp"}
 	}
 
-	var newProject = Project(inputData.Name, inputData.Fid, inputData.Host, poc, 1)
+	// var newProject = Project(inputData.Name, inputData.Fid, inputData.Host, poc, 1)
 
-	addProjectToFolder(newProject, inputData.Fid)
+	// // addProjectToFolder(newProject, inputData.Fid)
 }
 
-func addProjectToFolder(projectDetail Project, fid string) (bson.M, error) {
-	var result bson.M
+// func addProjectToFolder(projectDetail Project, fid string) (bson.M, error) {
+// 	var result bson.M
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
+// 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+// 	defer cancel()
 
-	objID, _ := primitive.ObjectIDFromHex(fid)
-	filter := bson.M{"_id": objID}
-	update := bson.M{
-		"$push": bson.M{"project": projectDetail},
-	}
+// 	objID, _ := primitive.ObjectIDFromHex(fid)
+// 	filter := bson.M{"_id": objID}
+// 	update := bson.M{
+// 		"$push": bson.M{"project": projectDetail},
+// 	}
 
-	// result, err := collection.findOneAndUpdate(ctx, filter, update)
-	// return result, err
-}
+// 	// result, err := collection.findOneAndUpdate(ctx, filter, update)
+// 	// return result, err
+// }
 
 func UpDateProjectProfile() {
 
