@@ -5,9 +5,10 @@ import (
 	"net/http"
 	"testing"
 
+	"go_fyp_test/core/backend/pkg/protocols/http/httpclientpool"
+
 	"github.com/projectdiscovery/retryablehttp-go"
 	"github.com/stretchr/testify/require"
-	"go_fyp_test/core/backend/pkg/protocols/http/httpclientpool"
 )
 
 func TestRequestParseAnnotationsTimeout(t *testing.T) {

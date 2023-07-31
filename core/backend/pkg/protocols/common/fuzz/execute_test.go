@@ -3,8 +3,9 @@ package fuzz
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
 	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestRuleIsExecutable(t *testing.T) {

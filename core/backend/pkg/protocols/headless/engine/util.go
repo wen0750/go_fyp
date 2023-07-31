@@ -1,8 +1,9 @@
 package engine
 
 import (
-	"github.com/valyala/fasttemplate"
 	"go_fyp_test/core/backend/pkg/protocols/common/marker"
+
+	"github.com/valyala/fasttemplate"
 )
 
 func replaceWithValues(data string, values map[string]interface{}) string {

@@ -5,10 +5,11 @@ import (
 	"fmt"
 	"strings"
 
+	"go_fyp_test/core/backend/pkg/model/types/stringslice"
+
 	"github.com/alecthomas/jsonschema"
 	"github.com/pkg/errors"
 	"github.com/projectdiscovery/goflags"
-	"go_fyp_test/core/backend/pkg/model/types/stringslice"
 )
 
 // ProtocolType is the type of the request protocol specified

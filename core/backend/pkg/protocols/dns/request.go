@@ -10,9 +10,6 @@ import (
 	"github.com/pkg/errors"
 	"golang.org/x/exp/maps"
 
-	"github.com/projectdiscovery/gologger"
-	"github.com/projectdiscovery/retryabledns"
-	iputil "github.com/projectdiscovery/utils/ip"
 	"go_fyp_test/core/backend/pkg/output"
 	"go_fyp_test/core/backend/pkg/protocols"
 	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
@@ -24,6 +21,10 @@ import (
 	protocolutils "go_fyp_test/core/backend/pkg/protocols/utils"
 	templateTypes "go_fyp_test/core/backend/pkg/templates/types"
 	"go_fyp_test/core/backend/pkg/utils"
+
+	"github.com/projectdiscovery/gologger"
+	"github.com/projectdiscovery/retryabledns"
+	iputil "github.com/projectdiscovery/utils/ip"
 )
 
 var _ protocols.Request = &Request{}

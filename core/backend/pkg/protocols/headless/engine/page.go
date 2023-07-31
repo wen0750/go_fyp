@@ -9,10 +9,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/go-rod/rod"
-	"github.com/go-rod/rod/lib/proto"
 	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
 	"go_fyp_test/core/backend/pkg/protocols/utils"
+
+	"github.com/go-rod/rod"
+	"github.com/go-rod/rod/lib/proto"
 )
 
 // Page is a single page in an isolated browser instance
@@ -134,7 +135,7 @@ func (i *Instance) Run(input *contextargs.Context, actions []*Action, payloads m
 		}
 	}
 
-	data, err := createdPage.ExecuteActions(input, actions)
+	data, err := createdPage.ExecuteActions(input, actions, payloads)
 	if err != nil {
 		return nil, nil, err
 	}

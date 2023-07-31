@@ -4,13 +4,14 @@ import (
 	"fmt"
 	"strings"
 
+	"go_fyp_test/core/backend/pkg/protocols/dns/dnsclientpool"
+	"go_fyp_test/core/backend/pkg/types"
+
 	"github.com/Knetic/govaluate"
 	"github.com/miekg/dns"
 	"github.com/projectdiscovery/dsl"
 	"github.com/projectdiscovery/gologger"
 	sliceutil "github.com/projectdiscovery/utils/slice"
-	"go_fyp_test/core/backend/pkg/protocols/dns/dnsclientpool"
-	"go_fyp_test/core/backend/pkg/types"
 )
 
 var (

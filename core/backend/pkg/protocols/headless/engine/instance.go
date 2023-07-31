@@ -5,9 +5,10 @@ import (
 	"errors"
 	"time"
 
+	"go_fyp_test/core/backend/pkg/protocols/common/interactsh"
+
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/utils"
-	"go_fyp_test/core/backend/pkg/protocols/common/interactsh"
 )
 
 // Instance is an isolated browser instance opened for doing operations with it.
@@ -17,6 +18,7 @@ type Instance struct {
 
 	// redundant due to dependency cycle
 	interactsh *interactsh.Client
+	requestLog map[string]string // contains actual request that was sent
 }
 
 // NewInstance creates a new instance for the current browser.
@@ -35,7 +37,14 @@ func (b *Browser) NewInstance() (*Instance, error) {
 	// We use a custom sleeper that sleeps from 100ms to 500 ms waiting
 	// for an interaction. Used throughout rod for clicking, etc.
 	browser = browser.Sleeper(func() utils.Sleeper { return maxBackoffSleeper(10) })
-	return &Instance{browser: b, engine: browser}, nil
+	return &Instance{browser: b, engine: browser, requestLog: map[string]string{}}, nil
+}
+
+// returns a map of [template-defined-urls] -> [actual-request-sent]
+// Note: this does not include CORS or other requests while rendering that were not explicitly
+// specified in template
+func (i *Instance) GetRequestLog() map[string]string {
+	return i.requestLog
 }
 
 // Close closes all the tabs and pages for a browser instance

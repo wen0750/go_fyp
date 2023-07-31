@@ -8,11 +8,12 @@ import (
 	"github.com/andygrunwald/go-jira"
 	"github.com/trivago/tgo/tcontainer"
 
-	"github.com/projectdiscovery/gologger"
-	"github.com/projectdiscovery/retryablehttp-go"
 	"go_fyp_test/core/backend/pkg/output"
 	"go_fyp_test/core/backend/pkg/reporting/exporters/markdown/util"
 	"go_fyp_test/core/backend/pkg/reporting/format"
+
+	"github.com/projectdiscovery/gologger"
+	"github.com/projectdiscovery/retryablehttp-go"
 )
 
 type Formatter struct {

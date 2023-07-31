@@ -6,15 +6,17 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/alecthomas/chroma/quick"
-	"github.com/logrusorgru/aurora"
 	"go_fyp_test/core/backend/pkg/catalog/config"
 	"go_fyp_test/core/backend/pkg/catalog/loader"
 
-	"github.com/projectdiscovery/gologger"
+	"github.com/alecthomas/chroma/quick"
+	"github.com/logrusorgru/aurora"
+
 	"go_fyp_test/core/backend/pkg/parsers"
 	"go_fyp_test/core/backend/pkg/templates"
 	"go_fyp_test/core/backend/pkg/types"
+
+	"github.com/projectdiscovery/gologger"
 )
 
 // log available templates for verbose (-vv)

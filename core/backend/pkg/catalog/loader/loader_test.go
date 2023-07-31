@@ -4,9 +4,10 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/stretchr/testify/require"
 	"go_fyp_test/core/backend/pkg/catalog/config"
 	"go_fyp_test/core/backend/pkg/catalog/disk"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestLoadTemplates(t *testing.T) {

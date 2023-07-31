@@ -16,9 +16,6 @@ import (
 	"github.com/gobwas/ws/wsutil"
 	"github.com/pkg/errors"
 
-	"github.com/projectdiscovery/fastdialer/fastdialer"
-	"github.com/projectdiscovery/gologger"
-	urlutil "github.com/projectdiscovery/utils/url"
 	"go_fyp_test/core/backend/pkg/operators"
 	"go_fyp_test/core/backend/pkg/operators/extractors"
 	"go_fyp_test/core/backend/pkg/operators/matchers"
@@ -34,6 +31,10 @@ import (
 	protocolutils "go_fyp_test/core/backend/pkg/protocols/utils"
 	templateTypes "go_fyp_test/core/backend/pkg/templates/types"
 	"go_fyp_test/core/backend/pkg/types"
+
+	"github.com/projectdiscovery/fastdialer/fastdialer"
+	"github.com/projectdiscovery/gologger"
+	urlutil "github.com/projectdiscovery/utils/url"
 )
 
 // Request is a request for the Websocket protocol

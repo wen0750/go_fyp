@@ -8,14 +8,15 @@ import (
 	"github.com/pkg/errors"
 	"gopkg.in/yaml.v2"
 
-	"github.com/projectdiscovery/retryablehttp-go"
-	stringsutil "github.com/projectdiscovery/utils/strings"
 	"go_fyp_test/core/backend/pkg/operators"
 	"go_fyp_test/core/backend/pkg/protocols"
 	"go_fyp_test/core/backend/pkg/protocols/common/executer"
 	"go_fyp_test/core/backend/pkg/protocols/offlinehttp"
 	"go_fyp_test/core/backend/pkg/templates/cache"
 	"go_fyp_test/core/backend/pkg/utils"
+
+	"github.com/projectdiscovery/retryablehttp-go"
+	stringsutil "github.com/projectdiscovery/utils/strings"
 )
 
 var (

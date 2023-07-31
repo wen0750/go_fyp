@@ -6,13 +6,14 @@ import (
 	"path/filepath"
 	"strings"
 
+	"go_fyp_test/core/backend/pkg/catalog/config"
+	"go_fyp_test/core/backend/pkg/types"
+
 	"github.com/go-git/go-git/v5"
 	"github.com/google/go-github/github"
 	"github.com/pkg/errors"
 	"github.com/projectdiscovery/gologger"
 	fileutil "github.com/projectdiscovery/utils/file"
-	"go_fyp_test/core/backend/pkg/catalog/config"
-	"go_fyp_test/core/backend/pkg/types"
 	"golang.org/x/oauth2"
 	"gopkg.in/src-d/go-git.v4/plumbing/transport/http"
 )

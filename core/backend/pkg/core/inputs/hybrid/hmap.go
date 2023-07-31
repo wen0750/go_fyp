@@ -14,6 +14,11 @@ import (
 
 	"github.com/pkg/errors"
 
+	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
+	"go_fyp_test/core/backend/pkg/protocols/common/protocolstate"
+	"go_fyp_test/core/backend/pkg/protocols/common/uncover"
+	"go_fyp_test/core/backend/pkg/types"
+
 	"github.com/projectdiscovery/gologger"
 	"github.com/projectdiscovery/hmap/filekv"
 	"github.com/projectdiscovery/hmap/store/hybrid"
@@ -25,10 +30,6 @@ import (
 	readerutil "github.com/projectdiscovery/utils/reader"
 	sliceutil "github.com/projectdiscovery/utils/slice"
 	urlutil "github.com/projectdiscovery/utils/url"
-	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
-	"go_fyp_test/core/backend/pkg/protocols/common/protocolstate"
-	"go_fyp_test/core/backend/pkg/protocols/common/uncover"
-	"go_fyp_test/core/backend/pkg/types"
 )
 
 const DefaultMaxDedupeItemsCount = 10000

@@ -8,15 +8,16 @@ import (
 	json "github.com/json-iterator/go"
 	"github.com/pkg/errors"
 
-	"github.com/projectdiscovery/rawhttp"
-	"github.com/projectdiscovery/retryablehttp-go"
-	fileutil "github.com/projectdiscovery/utils/file"
 	"go_fyp_test/core/backend/pkg/operators"
 	"go_fyp_test/core/backend/pkg/protocols"
 	"go_fyp_test/core/backend/pkg/protocols/common/expressions"
 	"go_fyp_test/core/backend/pkg/protocols/common/fuzz"
 	"go_fyp_test/core/backend/pkg/protocols/common/generators"
 	"go_fyp_test/core/backend/pkg/protocols/http/httpclientpool"
+
+	"github.com/projectdiscovery/rawhttp"
+	"github.com/projectdiscovery/retryablehttp-go"
+	fileutil "github.com/projectdiscovery/utils/file"
 )
 
 // Request contains a http request to be made from a template

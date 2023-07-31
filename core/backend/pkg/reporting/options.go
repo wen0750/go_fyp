@@ -1,7 +1,6 @@
 package reporting
 
 import (
-	"github.com/projectdiscovery/retryablehttp-go"
 	"go_fyp_test/core/backend/pkg/reporting/exporters/es"
 	"go_fyp_test/core/backend/pkg/reporting/exporters/jsonexporter"
 	"go_fyp_test/core/backend/pkg/reporting/exporters/jsonl"
@@ -11,6 +10,8 @@ import (
 	"go_fyp_test/core/backend/pkg/reporting/trackers/github"
 	"go_fyp_test/core/backend/pkg/reporting/trackers/gitlab"
 	"go_fyp_test/core/backend/pkg/reporting/trackers/jira"
+
+	"github.com/projectdiscovery/retryablehttp-go"
 )
 
 // Options is a configuration file for nuclei reporting module

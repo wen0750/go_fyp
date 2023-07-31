@@ -13,9 +13,10 @@ import (
 	"golang.org/x/text/encoding/simplifiedchinese"
 	"golang.org/x/text/transform"
 
+	"go_fyp_test/core/backend/pkg/protocols/common/generators"
+
 	"github.com/projectdiscovery/rawhttp"
 	stringsutil "github.com/projectdiscovery/utils/strings"
-	"go_fyp_test/core/backend/pkg/protocols/common/generators"
 )
 
 type redirectedResponse struct {

@@ -8,10 +8,11 @@ import (
 
 	"github.com/pkg/errors"
 
-	"github.com/projectdiscovery/retryablehttp-go"
-	stringsutil "github.com/projectdiscovery/utils/strings"
 	"go_fyp_test/core/backend/pkg/templates/extensions"
 	"go_fyp_test/core/backend/pkg/utils"
+
+	"github.com/projectdiscovery/retryablehttp-go"
+	stringsutil "github.com/projectdiscovery/utils/strings"
 )
 
 type ContentType string

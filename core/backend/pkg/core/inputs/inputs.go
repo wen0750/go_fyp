@@ -1,9 +1,10 @@
 package inputs
 
 import (
-	"github.com/projectdiscovery/httpx/common/httpx"
 	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
 	"go_fyp_test/core/backend/pkg/utils"
+
+	"github.com/projectdiscovery/httpx/common/httpx"
 )
 
 type SimpleInputProvider struct {

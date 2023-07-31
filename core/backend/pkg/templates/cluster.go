@@ -5,8 +5,6 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/projectdiscovery/gologger"
-	cryptoutil "github.com/projectdiscovery/utils/crypto"
 	"go_fyp_test/core/backend/pkg/model"
 	"go_fyp_test/core/backend/pkg/operators"
 	"go_fyp_test/core/backend/pkg/output"
@@ -14,6 +12,9 @@ import (
 	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
 	"go_fyp_test/core/backend/pkg/protocols/common/helpers/writer"
 	"go_fyp_test/core/backend/pkg/templates/types"
+
+	"github.com/projectdiscovery/gologger"
+	cryptoutil "github.com/projectdiscovery/utils/crypto"
 )
 
 // Cluster clusters a list of templates into a lesser number if possible based

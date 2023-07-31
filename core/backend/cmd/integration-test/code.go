@@ -11,11 +11,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/julienschmidt/httprouter"
-	"github.com/logrusorgru/aurora"
-	"github.com/pkg/errors"
-	"github.com/projectdiscovery/goflags"
-	"github.com/projectdiscovery/ratelimit"
 	"go_fyp_test/core/backend/pkg/catalog/config"
 	"go_fyp_test/core/backend/pkg/catalog/disk"
 	"go_fyp_test/core/backend/pkg/catalog/loader"
@@ -32,11 +27,17 @@ import (
 	"go_fyp_test/core/backend/pkg/reporting"
 	"go_fyp_test/core/backend/pkg/testutils"
 	"go_fyp_test/core/backend/pkg/types"
+
+	"github.com/julienschmidt/httprouter"
+	"github.com/logrusorgru/aurora"
+	"github.com/pkg/errors"
+	"github.com/projectdiscovery/goflags"
+	"github.com/projectdiscovery/ratelimit"
 )
 
-var codeTestcases = map[string]testutils.TestCase{
-	"code/test.yaml": &goIntegrationTest{},
-	"code/test.json": &goIntegrationTest{},
+var codeTestcases = []TestCaseInfo{
+	{Path: "code/test.yaml", TestCase: &goIntegrationTest{}},
+	{Path: "code/test.json", TestCase: &goIntegrationTest{}},
 }
 
 type goIntegrationTest struct{}

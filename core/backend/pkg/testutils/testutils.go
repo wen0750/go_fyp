@@ -8,7 +8,6 @@ import (
 
 	"github.com/logrusorgru/aurora"
 
-	"github.com/projectdiscovery/gologger/levels"
 	"go_fyp_test/core/backend/pkg/catalog/config"
 	"go_fyp_test/core/backend/pkg/catalog/disk"
 	"go_fyp_test/core/backend/pkg/model"
@@ -18,6 +17,8 @@ import (
 	"go_fyp_test/core/backend/pkg/protocols"
 	"go_fyp_test/core/backend/pkg/protocols/common/protocolinit"
 	"go_fyp_test/core/backend/pkg/types"
+
+	"github.com/projectdiscovery/gologger/levels"
 )
 
 // Init initializes the protocols and their configurations

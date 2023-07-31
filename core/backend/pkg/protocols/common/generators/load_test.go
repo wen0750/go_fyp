@@ -5,9 +5,10 @@ import (
 	"path/filepath"
 	"testing"
 
+	"go_fyp_test/core/backend/pkg/catalog/disk"
+
 	osutils "github.com/projectdiscovery/utils/os"
 	"github.com/stretchr/testify/require"
-	"go_fyp_test/core/backend/pkg/catalog/disk"
 )
 
 func TestLoadPayloads(t *testing.T) {

@@ -9,13 +9,14 @@ import (
 	"strconv"
 	"strings"
 
+	"go_fyp_test/core/backend/internal/runner/nucleicloud"
+	"go_fyp_test/core/backend/pkg/output"
+	"go_fyp_test/core/backend/pkg/templates/extensions"
+
 	jsoniter "github.com/json-iterator/go"
 	"github.com/olekukonko/tablewriter"
 	"github.com/pkg/errors"
 	"github.com/projectdiscovery/gologger"
-	"go_fyp_test/core/backend/internal/runner/nucleicloud"
-	"go_fyp_test/core/backend/pkg/output"
-	"go_fyp_test/core/backend/pkg/templates/extensions"
 )
 
 // Get all the scan lists for a user/apikey.

@@ -10,6 +10,16 @@ import (
 	"github.com/corpix/uarand"
 	"github.com/pkg/errors"
 
+	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
+	"go_fyp_test/core/backend/pkg/protocols/common/expressions"
+	"go_fyp_test/core/backend/pkg/protocols/common/generators"
+	"go_fyp_test/core/backend/pkg/protocols/common/utils/vardump"
+	"go_fyp_test/core/backend/pkg/protocols/http/race"
+	"go_fyp_test/core/backend/pkg/protocols/http/raw"
+	protocolutils "go_fyp_test/core/backend/pkg/protocols/utils"
+	httputil "go_fyp_test/core/backend/pkg/protocols/utils/http"
+	"go_fyp_test/core/backend/pkg/types"
+
 	"github.com/projectdiscovery/gologger"
 	"github.com/projectdiscovery/rawhttp"
 	"github.com/projectdiscovery/retryablehttp-go"
@@ -17,15 +27,6 @@ import (
 	readerutil "github.com/projectdiscovery/utils/reader"
 	stringsutil "github.com/projectdiscovery/utils/strings"
 	urlutil "github.com/projectdiscovery/utils/url"
-	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
-	"go_fyp_test/core/backend/pkg/protocols/common/expressions"
-	"go_fyp_test/core/backend/pkg/protocols/common/generators"
-	"go_fyp_test/core/backend/pkg/protocols/common/utils/vardump"
-	"go_fyp_test/core/backend/pkg/protocols/http/race"
-	"go_fyp_test/core/backend/pkg/protocols/http/raw"
-	"go_fyp_test/core/backend/pkg/protocols/http/utils"
-	protocolutils "go_fyp_test/core/backend/pkg/protocols/utils"
-	"go_fyp_test/core/backend/pkg/types"
 )
 
 // ErrEvalExpression
@@ -97,8 +98,8 @@ func (r *requestGenerator) Make(ctx context.Context, input *contextargs.Context,
 	hasTrailingSlash := false
 	if !isRawRequest {
 		// if path contains port ex: {{BaseURL}}:8080 use port specified in reqData
-		parsed, reqData = utils.UpdateURLPortFromPayload(parsed, reqData)
-		hasTrailingSlash = utils.HasTrailingSlash(reqData)
+		parsed, reqData = httputil.UpdateURLPortFromPayload(parsed, reqData)
+		hasTrailingSlash = httputil.HasTrailingSlash(reqData)
 	}
 
 	// defaultreqvars are vars generated from request/input ex: {{baseURL}}, {{Host}} etc
@@ -362,13 +363,13 @@ func (r *requestGenerator) fillRequest(req *retryablehttp.Request, values map[st
 		req.Body = bodyReader
 	}
 	if !r.request.Unsafe {
-		utils.SetHeader(req, "User-Agent", uarand.GetRandom())
+		httputil.SetHeader(req, "User-Agent", uarand.GetRandom())
 	}
 
 	// Only set these headers on non-raw requests
 	if len(r.request.Raw) == 0 && !r.request.Unsafe {
-		utils.SetHeader(req, "Accept", "*/*")
-		utils.SetHeader(req, "Accept-Language", "en")
+		httputil.SetHeader(req, "Accept", "*/*")
+		httputil.SetHeader(req, "Accept-Language", "en")
 	}
 
 	if !LeaveDefaultPorts {

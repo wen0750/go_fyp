@@ -6,9 +6,10 @@ import (
 	"runtime"
 	"strings"
 
-	fileutil "github.com/projectdiscovery/utils/file"
 	"go_fyp_test/core/backend/pkg/catalog/config"
 	"go_fyp_test/core/backend/pkg/types"
+
+	fileutil "github.com/projectdiscovery/utils/file"
 )
 
 // DoHealthCheck performs self-diagnostic checks

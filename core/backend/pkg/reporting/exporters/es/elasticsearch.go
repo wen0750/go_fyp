@@ -6,16 +6,18 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"github.com/corpix/uarand"
 	"io"
 	"net/http"
 	"time"
 
+	"github.com/corpix/uarand"
+
 	"github.com/pkg/errors"
 
-	"github.com/projectdiscovery/retryablehttp-go"
 	"go_fyp_test/core/backend/pkg/output"
 	"go_fyp_test/core/backend/pkg/protocols/common/protocolstate"
+
+	"github.com/projectdiscovery/retryablehttp-go"
 )
 
 // Options contains necessary options required for elasticsearch communication

@@ -5,9 +5,10 @@ import (
 	"strings"
 	"testing"
 
+	"go_fyp_test/core/backend/pkg/types"
+
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/require"
-	"go_fyp_test/core/backend/pkg/types"
 )
 
 func TestStandardWriterRequest(t *testing.T) {

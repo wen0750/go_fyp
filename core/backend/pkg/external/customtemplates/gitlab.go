@@ -6,11 +6,12 @@ import (
 	"os"
 	"path/filepath"
 
+	"go_fyp_test/core/backend/pkg/catalog/config"
+	"go_fyp_test/core/backend/pkg/types"
+
 	"github.com/projectdiscovery/gologger"
 	errorutil "github.com/projectdiscovery/utils/errors"
 	"github.com/xanzy/go-gitlab"
-	"go_fyp_test/core/backend/pkg/catalog/config"
-	"go_fyp_test/core/backend/pkg/types"
 )
 
 var _ Provider = &customTemplateGitLabRepo{}

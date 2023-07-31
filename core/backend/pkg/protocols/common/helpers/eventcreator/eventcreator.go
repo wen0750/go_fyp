@@ -1,11 +1,12 @@
 package eventcreator
 
 import (
-	"github.com/projectdiscovery/gologger"
 	"go_fyp_test/core/backend/pkg/operators"
 	"go_fyp_test/core/backend/pkg/output"
 	"go_fyp_test/core/backend/pkg/protocols"
 	"go_fyp_test/core/backend/pkg/protocols/common/utils/vardump"
+
+	"github.com/projectdiscovery/gologger"
 )
 
 // CreateEvent wraps the outputEvent with the result of the operators defined on the request

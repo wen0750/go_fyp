@@ -1,9 +1,10 @@
 package networkclientpool
 
 import (
-	"github.com/projectdiscovery/fastdialer/fastdialer"
 	"go_fyp_test/core/backend/pkg/protocols/common/protocolstate"
 	"go_fyp_test/core/backend/pkg/types"
+
+	"github.com/projectdiscovery/fastdialer/fastdialer"
 )
 
 var (

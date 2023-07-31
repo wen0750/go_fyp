@@ -7,11 +7,12 @@ import (
 	"os"
 	"strings"
 
+	"go_fyp_test/core/backend/pkg/types"
+
 	"github.com/projectdiscovery/gologger"
 	errorutil "github.com/projectdiscovery/utils/errors"
 	fileutil "github.com/projectdiscovery/utils/file"
 	proxyutils "github.com/projectdiscovery/utils/proxy"
-	"go_fyp_test/core/backend/pkg/types"
 )
 
 // loadProxyServers load list of proxy servers from file or comma seperated

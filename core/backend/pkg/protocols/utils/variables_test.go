@@ -4,9 +4,10 @@ import (
 	"reflect"
 	"testing"
 
+	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
+
 	urlutil "github.com/projectdiscovery/utils/url"
 	"github.com/stretchr/testify/require"
-	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
 )
 
 func TestHTTPVariables(t *testing.T) {

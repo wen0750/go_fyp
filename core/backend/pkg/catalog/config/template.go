@@ -7,10 +7,11 @@ import (
 	"path/filepath"
 	"strings"
 
+	"go_fyp_test/core/backend/pkg/templates/extensions"
+
 	"github.com/projectdiscovery/gologger"
 	fileutil "github.com/projectdiscovery/utils/file"
 	stringsutil "github.com/projectdiscovery/utils/strings"
-	"go_fyp_test/core/backend/pkg/templates/extensions"
 )
 
 var knownConfigFiles = []string{"cves.json", "contributors.json", "TEMPLATES-STATS.json"}

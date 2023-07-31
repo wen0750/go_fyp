@@ -8,8 +8,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/asaskevich/govalidator"
 	"go_fyp_test/core/backend/pkg/model/types/severity"
+
+	"github.com/asaskevich/govalidator"
 )
 
 // JSONScalarToString converts an interface coming from json to string

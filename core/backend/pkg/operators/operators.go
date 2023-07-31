@@ -7,11 +7,12 @@ import (
 
 	"github.com/pkg/errors"
 
-	sliceutil "github.com/projectdiscovery/utils/slice"
 	"go_fyp_test/core/backend/pkg/operators/extractors"
 	"go_fyp_test/core/backend/pkg/operators/matchers"
 	"go_fyp_test/core/backend/pkg/protocols/common/generators"
 	"go_fyp_test/core/backend/pkg/protocols/common/utils/excludematchers"
+
+	sliceutil "github.com/projectdiscovery/utils/slice"
 )
 
 // Operators contains the operators that can be applied on protocols

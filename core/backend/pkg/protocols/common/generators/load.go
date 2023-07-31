@@ -5,9 +5,10 @@ import (
 	"path/filepath"
 	"strings"
 
+	pkgTypes "go_fyp_test/core/backend/pkg/types"
+
 	"github.com/pkg/errors"
 	"github.com/spf13/cast"
-	pkgTypes "go_fyp_test/core/backend/pkg/types"
 )
 
 // loadPayloads loads the input payloads from a map to a data map

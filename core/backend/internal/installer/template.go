@@ -12,14 +12,15 @@ import (
 	"strconv"
 	"strings"
 
+	"go_fyp_test/core/backend/pkg/catalog/config"
+	"go_fyp_test/core/backend/pkg/external/customtemplates"
+
 	"github.com/olekukonko/tablewriter"
 	"github.com/projectdiscovery/gologger"
 	errorutil "github.com/projectdiscovery/utils/errors"
 	fileutil "github.com/projectdiscovery/utils/file"
 	stringsutil "github.com/projectdiscovery/utils/strings"
 	updateutils "github.com/projectdiscovery/utils/update"
-	"go_fyp_test/core/backend/pkg/catalog/config"
-	"go_fyp_test/core/backend/pkg/external/customtemplates"
 )
 
 const (

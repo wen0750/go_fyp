@@ -4,12 +4,13 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/pkg/errors"
-	"github.com/projectdiscovery/retryablehttp-go"
-	urlutil "github.com/projectdiscovery/utils/url"
 	"go_fyp_test/core/backend/pkg/protocols"
 	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
 	"go_fyp_test/core/backend/pkg/protocols/common/generators"
+
+	"github.com/pkg/errors"
+	"github.com/projectdiscovery/retryablehttp-go"
+	urlutil "github.com/projectdiscovery/utils/url"
 )
 
 // ExecuteRuleInput is the input for rule Execute function

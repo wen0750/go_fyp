@@ -6,8 +6,9 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/stretchr/testify/require"
 	"go_fyp_test/core/backend/pkg/catalog/config"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestTemplateInstallation(t *testing.T) {

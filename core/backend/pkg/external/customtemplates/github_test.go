@@ -6,10 +6,11 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/projectdiscovery/gologger"
-	"github.com/stretchr/testify/require"
 	"go_fyp_test/core/backend/pkg/catalog/config"
 	"go_fyp_test/core/backend/pkg/testutils"
+
+	"github.com/projectdiscovery/gologger"
+	"github.com/stretchr/testify/require"
 )
 
 func TestDownloadCustomTemplatesFromGitHub(t *testing.T) {

@@ -15,10 +15,11 @@ import (
 	"strings"
 	"time"
 
+	"go_fyp_test/core/backend/pkg/output"
+
 	jsoniter "github.com/json-iterator/go"
 	"github.com/pkg/errors"
 	"github.com/projectdiscovery/retryablehttp-go"
-	"go_fyp_test/core/backend/pkg/output"
 )
 
 // Client is a client for result retrieval from nuclei-cloud API

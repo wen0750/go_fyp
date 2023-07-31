@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"strings"
 
+	"go_fyp_test/core/backend/pkg/model/types/severity"
+
 	"github.com/logrusorgru/aurora"
 	"github.com/projectdiscovery/gologger"
 	mapsutil "github.com/projectdiscovery/utils/maps"
-	"go_fyp_test/core/backend/pkg/model/types/severity"
 )
 
 var (

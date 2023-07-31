@@ -14,15 +14,16 @@ import (
 
 	"github.com/Mzack9999/gcache"
 
+	"go_fyp_test/core/backend/pkg/operators"
+	"go_fyp_test/core/backend/pkg/output"
+	"go_fyp_test/core/backend/pkg/protocols/common/helpers/responsehighlighter"
+	"go_fyp_test/core/backend/pkg/protocols/common/helpers/writer"
+
 	"github.com/projectdiscovery/gologger"
 	"github.com/projectdiscovery/interactsh/pkg/client"
 	"github.com/projectdiscovery/interactsh/pkg/server"
 	errorutil "github.com/projectdiscovery/utils/errors"
 	stringsutil "github.com/projectdiscovery/utils/strings"
-	"go_fyp_test/core/backend/pkg/operators"
-	"go_fyp_test/core/backend/pkg/output"
-	"go_fyp_test/core/backend/pkg/protocols/common/helpers/responsehighlighter"
-	"go_fyp_test/core/backend/pkg/protocols/common/helpers/writer"
 )
 
 // Client is a wrapped client for interactsh server.

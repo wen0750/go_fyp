@@ -13,8 +13,6 @@ import (
 	"github.com/pkg/errors"
 	"github.com/remeh/sizedwaitgroup"
 
-	"github.com/projectdiscovery/gologger"
-	sliceutil "github.com/projectdiscovery/utils/slice"
 	"go_fyp_test/core/backend/pkg/operators"
 	"go_fyp_test/core/backend/pkg/operators/matchers"
 	"go_fyp_test/core/backend/pkg/output"
@@ -23,6 +21,9 @@ import (
 	"go_fyp_test/core/backend/pkg/protocols/common/helpers/eventcreator"
 	"go_fyp_test/core/backend/pkg/protocols/common/helpers/responsehighlighter"
 	templateTypes "go_fyp_test/core/backend/pkg/templates/types"
+
+	"github.com/projectdiscovery/gologger"
+	sliceutil "github.com/projectdiscovery/utils/slice"
 )
 
 var _ protocols.Request = &Request{}

@@ -3,10 +3,11 @@ package templates
 import (
 	"github.com/pkg/errors"
 
-	"github.com/projectdiscovery/gologger"
 	"go_fyp_test/core/backend/pkg/model"
 	"go_fyp_test/core/backend/pkg/protocols"
 	"go_fyp_test/core/backend/pkg/workflows"
+
+	"github.com/projectdiscovery/gologger"
 )
 
 // compileWorkflow compiles the workflow for execution

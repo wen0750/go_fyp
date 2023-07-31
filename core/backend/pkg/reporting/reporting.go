@@ -12,9 +12,6 @@ import (
 
 	"errors"
 
-	errorutil "github.com/projectdiscovery/utils/errors"
-	fileutil "github.com/projectdiscovery/utils/file"
-	sliceutil "github.com/projectdiscovery/utils/slice"
 	"go_fyp_test/core/backend/pkg/model/types/severity"
 	"go_fyp_test/core/backend/pkg/model/types/stringslice"
 	"go_fyp_test/core/backend/pkg/output"
@@ -26,6 +23,10 @@ import (
 	"go_fyp_test/core/backend/pkg/reporting/trackers/github"
 	"go_fyp_test/core/backend/pkg/reporting/trackers/gitlab"
 	"go_fyp_test/core/backend/pkg/reporting/trackers/jira"
+
+	errorutil "github.com/projectdiscovery/utils/errors"
+	fileutil "github.com/projectdiscovery/utils/file"
+	sliceutil "github.com/projectdiscovery/utils/slice"
 )
 
 // Filter filters the received event and decides whether to perform

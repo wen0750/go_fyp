@@ -9,7 +9,6 @@ import (
 	"github.com/pkg/errors"
 	"github.com/projectdiscovery/rdap"
 
-	"github.com/projectdiscovery/gologger"
 	"go_fyp_test/core/backend/pkg/operators"
 	"go_fyp_test/core/backend/pkg/operators/extractors"
 	"go_fyp_test/core/backend/pkg/operators/matchers"
@@ -24,6 +23,8 @@ import (
 	protocolutils "go_fyp_test/core/backend/pkg/protocols/utils"
 	"go_fyp_test/core/backend/pkg/protocols/whois/rdapclientpool"
 	templateTypes "go_fyp_test/core/backend/pkg/templates/types"
+
+	"github.com/projectdiscovery/gologger"
 
 	"go_fyp_test/core/backend/pkg/types"
 )

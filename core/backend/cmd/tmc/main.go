@@ -12,11 +12,6 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/projectdiscovery/goflags"
-	"github.com/projectdiscovery/gologger"
-	"github.com/projectdiscovery/gologger/levels"
-	"github.com/projectdiscovery/retryablehttp-go"
-	errorutil "github.com/projectdiscovery/utils/errors"
 	"go_fyp_test/core/backend/pkg/catalog"
 	"go_fyp_test/core/backend/pkg/catalog/disk"
 	"go_fyp_test/core/backend/pkg/protocols"
@@ -24,6 +19,12 @@ import (
 	"go_fyp_test/core/backend/pkg/protocols/common/protocolstate"
 	"go_fyp_test/core/backend/pkg/templates"
 	"go_fyp_test/core/backend/pkg/types"
+
+	"github.com/projectdiscovery/goflags"
+	"github.com/projectdiscovery/gologger"
+	"github.com/projectdiscovery/gologger/levels"
+	"github.com/projectdiscovery/retryablehttp-go"
+	errorutil "github.com/projectdiscovery/utils/errors"
 	"gopkg.in/yaml.v3"
 )
 

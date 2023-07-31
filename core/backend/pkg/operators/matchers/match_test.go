@@ -3,9 +3,10 @@ package matchers
 import (
 	"testing"
 
+	"go_fyp_test/core/backend/pkg/operators/common/dsl"
+
 	"github.com/Knetic/govaluate"
 	"github.com/stretchr/testify/require"
-	"go_fyp_test/core/backend/pkg/operators/common/dsl"
 )
 
 func TestWordANDCondition(t *testing.T) {

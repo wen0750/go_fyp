@@ -7,16 +7,17 @@ import (
 	"net/http/httptest"
 	"net/url"
 
-	"github.com/julienschmidt/httprouter"
 	"go_fyp_test/core/backend/pkg/output"
 	"go_fyp_test/core/backend/pkg/testutils"
+
+	"github.com/julienschmidt/httprouter"
 )
 
-var fuzzingTestCases = map[string]testutils.TestCase{
-	"fuzz/fuzz-mode.yaml":     &fuzzModeOverride{},
-	"fuzz/fuzz-type.yaml":     &fuzzTypeOverride{},
-	"fuzz/fuzz-query.yaml":    &httpFuzzQuery{},
-	"fuzz/fuzz-headless.yaml": &HeadlessFuzzingQuery{},
+var fuzzingTestCases = []TestCaseInfo{
+	{Path: "fuzz/fuzz-mode.yaml", TestCase: &fuzzModeOverride{}},
+	{Path: "fuzz/fuzz-type.yaml", TestCase: &fuzzTypeOverride{}},
+	{Path: "fuzz/fuzz-query.yaml", TestCase: &httpFuzzQuery{}},
+	{Path: "fuzz/fuzz-headless.yaml", TestCase: &HeadlessFuzzingQuery{}},
 }
 
 type httpFuzzQuery struct{}

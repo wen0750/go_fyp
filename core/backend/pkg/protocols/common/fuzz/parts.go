@@ -5,13 +5,14 @@ import (
 	"net/http"
 	"strings"
 
+	"go_fyp_test/core/backend/pkg/protocols/common/expressions"
+	"go_fyp_test/core/backend/pkg/protocols/common/generators"
+	"go_fyp_test/core/backend/pkg/types"
+
 	"github.com/corpix/uarand"
 	"github.com/projectdiscovery/retryablehttp-go"
 	sliceutil "github.com/projectdiscovery/utils/slice"
 	urlutil "github.com/projectdiscovery/utils/url"
-	"go_fyp_test/core/backend/pkg/protocols/common/expressions"
-	"go_fyp_test/core/backend/pkg/protocols/common/generators"
-	"go_fyp_test/core/backend/pkg/types"
 )
 
 // executePartRule executes part rules based on type

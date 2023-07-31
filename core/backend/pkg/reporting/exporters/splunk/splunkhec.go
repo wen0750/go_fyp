@@ -10,11 +10,12 @@ import (
 	"net/http"
 	"time"
 
+	"go_fyp_test/core/backend/pkg/output"
+	"go_fyp_test/core/backend/pkg/protocols/common/protocolstate"
+
 	"github.com/corpix/uarand"
 	"github.com/pkg/errors"
 	"github.com/projectdiscovery/retryablehttp-go"
-	"go_fyp_test/core/backend/pkg/output"
-	"go_fyp_test/core/backend/pkg/protocols/common/protocolstate"
 )
 
 // Options contains necessary options required for splunk communication

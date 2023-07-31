@@ -1,10 +1,11 @@
 package writer
 
 import (
-	"github.com/projectdiscovery/gologger"
 	"go_fyp_test/core/backend/pkg/output"
 	"go_fyp_test/core/backend/pkg/progress"
 	"go_fyp_test/core/backend/pkg/reporting"
+
+	"github.com/projectdiscovery/gologger"
 )
 
 // WriteResult is a helper for writing results to the output

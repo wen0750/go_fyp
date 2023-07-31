@@ -14,9 +14,6 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/klauspost/compress/zlib"
-	"github.com/pkg/errors"
-	"github.com/projectdiscovery/gologger"
 	"go_fyp_test/core/backend/internal/runner/nucleicloud"
 	"go_fyp_test/core/backend/pkg/catalog/loader"
 	"go_fyp_test/core/backend/pkg/core"
@@ -24,6 +21,10 @@ import (
 	"go_fyp_test/core/backend/pkg/protocols"
 	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
 	"go_fyp_test/core/backend/pkg/types"
+
+	"github.com/klauspost/compress/zlib"
+	"github.com/pkg/errors"
+	"github.com/projectdiscovery/gologger"
 )
 
 // runStandardEnumeration runs standard enumeration

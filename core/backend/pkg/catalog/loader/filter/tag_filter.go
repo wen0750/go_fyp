@@ -5,17 +5,19 @@ import (
 	"errors"
 	"io"
 	"net/http"
+	"path/filepath"
 	"strings"
 
-	"github.com/Knetic/govaluate"
-	"github.com/projectdiscovery/gologger"
-	sliceutil "github.com/projectdiscovery/utils/slice"
 	"go_fyp_test/core/backend/pkg/model/types/severity"
 	"go_fyp_test/core/backend/pkg/operators/common/dsl"
 	"go_fyp_test/core/backend/pkg/operators/extractors"
 	"go_fyp_test/core/backend/pkg/operators/matchers"
 	"go_fyp_test/core/backend/pkg/templates"
 	"go_fyp_test/core/backend/pkg/templates/types"
+
+	"github.com/Knetic/govaluate"
+	"github.com/projectdiscovery/gologger"
+	sliceutil "github.com/projectdiscovery/utils/slice"
 )
 
 // TagFilter is used to filter nuclei templates for tag based execution
@@ -170,9 +172,18 @@ func isIdMatch(tagFilter *TagFilter, templateId string) bool {
 	if len(tagFilter.excludeIds) == 0 && len(tagFilter.allowedIds) == 0 {
 		return true
 	}
-	included := true
-	if len(tagFilter.allowedIds) > 0 {
-		_, included = tagFilter.allowedIds[templateId]
+
+	included := len(tagFilter.allowedIds) == 0
+	for id := range tagFilter.allowedIds {
+		match, err := filepath.Match(id, templateId)
+		if err != nil {
+			continue
+		}
+
+		if match {
+			included = true
+			break
+		}
 	}
 
 	excluded := false

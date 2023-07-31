@@ -3,7 +3,6 @@ package filter
 import (
 	"testing"
 
-	"github.com/stretchr/testify/require"
 	"go_fyp_test/core/backend/pkg/model"
 	"go_fyp_test/core/backend/pkg/model/types/severity"
 	"go_fyp_test/core/backend/pkg/model/types/stringslice"
@@ -11,6 +10,8 @@ import (
 	"go_fyp_test/core/backend/pkg/protocols/http"
 	"go_fyp_test/core/backend/pkg/templates"
 	"go_fyp_test/core/backend/pkg/templates/types"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestTagBasedFilter(t *testing.T) {

@@ -5,13 +5,14 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/stretchr/testify/require"
 	"go_fyp_test/core/backend/pkg/catalog/disk"
 	"go_fyp_test/core/backend/pkg/catalog/loader/filter"
 	"go_fyp_test/core/backend/pkg/model"
 	"go_fyp_test/core/backend/pkg/model/types/severity"
 	"go_fyp_test/core/backend/pkg/model/types/stringslice"
 	"go_fyp_test/core/backend/pkg/templates"
+
+	"github.com/stretchr/testify/require"
 )
 
 func TestLoadTemplate(t *testing.T) {
