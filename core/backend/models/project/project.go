@@ -54,7 +54,7 @@ func ProjectCreateHandeler() {
 		poc = []string{"wp"}
 	}
 
-	// var newProject = Project(inputData.Name, inputData.Fid, inputData.Host, poc, 1)
+	var newProject = Project(inputData.Name, inputData.Fid, inputData.Host, poc, 1)
 
 	// // addProjectToFolder(newProject, inputData.Fid)
 }
