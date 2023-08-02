@@ -5,21 +5,18 @@ import { DataGrid } from "@mui/x-data-grid";
 import { UnderLineMiniTitle } from "../component/page_style/project_style";
 import "../assets/css/threats.css";
 
-import {
-    ThreatsDetails,
-    MiniTitle,
-} from "../component/page_style/project_style";
-
 class ProjectThreats extends React.Component {
     constructor(props) {
         super(props);
         this.state = {};
         this.columns = [
             {
-                field: "VRP Serverity",
+                field: "Serverity",
                 flex: 1.5,
                 width: 150,
                 headerClassName: "gray-background",
+                align: 'center',
+                headerAlign: 'center',
             },
             {
                 field: "Name",
@@ -34,7 +31,7 @@ class ProjectThreats extends React.Component {
                 headerClassName: "gray-background",
             },
             {
-                field: "VRP Score",
+                field: "Score",
                 flex: 1,
                 width: 150,
                 headerClassName: "gray-background",
@@ -51,18 +48,50 @@ class ProjectThreats extends React.Component {
     rows = [
         {
             id: 1,
-            "VRP Serverity": "LOW",
+            Serverity: 'Info',
             Name: "SSH",
             Reasons: "No recorded events",
-            "VRP Score": "5.5",
+            Score: "5.5",
             Hosts: "4",
         },
         {
             id: 2,
-            "VRP Serverity": "Medium",
+            Serverity: "Low",
             Name: "wordpress",
             Reasons: "No recorded events",
-            "VRP Score": "2.5",
+            Score: "2.5",
+            Hosts: "3",
+        },
+        {
+            id: 3,
+            Serverity: "Medium",
+            Name: "word",
+            Reasons: "No recorded events",
+            Score: "6.5",
+            Hosts: "5",
+        },
+        {
+            id: 4,
+            Serverity: "High",
+            Name: "wordpress",
+            Reasons: "No recorded events",
+            Score: "2.5",
+            Hosts: "3",
+        },
+        {
+            id: 5,
+            Serverity: "Critical",
+            Name: "wordpress",
+            Reasons: "No recorded events",
+            Score: "2.5",
+            Hosts: "3",
+        },
+        {
+            id: 6,
+            Serverity: "Mixed",
+            Name: "wordpress",
+            Reasons: "No recorded events",
+            Score: "2.5",
             Hosts: "3",
         },
     ];
@@ -102,9 +131,20 @@ class ProjectThreats extends React.Component {
                 <DataGrid
                     rows={this.rows}
                     columns={this.columns}
+                    getCellClassName={(params) => {
+                        if (params.field !== 'Serverity' || params.value == null) {
+                          return '';
+                        }
+                        else if (params.value == "Info"){return 'Info';}                        
+                        else if (params.value == "Low"){return 'Low';}
+                        else if (params.value == "Medium"){return 'Medium';}  
+                        else if (params.value == "High"){return 'High';}  
+                        else if (params.value == "Critical"){return 'Critical';}
+                        return params.value = "Mixed" ? 'Mixed' : '';
+                      }}
                     initialState={{
                         pagination: {
-                            paginationModel: { page: 0, pageSize: 5 },
+                            paginationModel: { page: 0, pageSize: 10 },
                         },
                     }}
                     pageSizeOptions={[5, 10]}
@@ -115,6 +155,36 @@ class ProjectThreats extends React.Component {
 
     render() {
         return (
+            <Box
+                sx={{
+                    height: 300,
+                    width: '100%',
+                    '& .Critical': {
+                        backgroundColor: '#990000',
+                        color: '#FFFFFF',
+                    },
+                    '& .High': {
+                        backgroundColor: '#FF9933',
+                        color: '#202020',
+                    },
+                    '& .Medium': {
+                        backgroundColor: '#FFFF99',
+                        color: '#202020',
+                    },
+                    '& .Low': {
+                        backgroundColor: '#CCFF99',
+                        color: '#202020',
+                    },
+                    '& .Info': {
+                        backgroundColor: '#99CCFF',
+                        color: '#202020',
+                    },
+                    '& .Mixed': {
+                        backgroundColor: '#9999FF',
+                        color: '#202020',
+                    },
+                }}
+            >
             <Box component="div" sx={{ display: "flex" }}>
                 <Box sx={{ width: "70%" }}>
                     <this.riskLevel></this.riskLevel>
@@ -155,6 +225,7 @@ class ProjectThreats extends React.Component {
                         </table>
                     </div>
                 </Box>
+            </Box>
             </Box>
         );
     }
