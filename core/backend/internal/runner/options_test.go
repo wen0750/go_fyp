@@ -4,8 +4,9 @@ import (
 	"strings"
 	"testing"
 
+	"go_fyp_test/core/backend/pkg/types"
+
 	"github.com/projectdiscovery/goflags"
-	"github.com/projectdiscovery/nuclei/v2/pkg/types"
 	"github.com/stretchr/testify/require"
 )
 
