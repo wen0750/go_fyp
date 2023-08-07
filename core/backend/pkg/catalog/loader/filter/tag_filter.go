@@ -6,6 +6,7 @@ import (
 	"io"
 	"net/http"
 	"strings"
+	"path/filepath"
 
 	"github.com/Knetic/govaluate"
 	"github.com/projectdiscovery/gologger"
