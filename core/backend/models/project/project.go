@@ -29,7 +29,7 @@ type Project struct {
 	Pid      string   `json:"pid"`
 	Host     []string `json:"host"`
 	Poc      []string `json:"poc"`
-	LastScan int16    `json:"lastscan"`
+	LastScan int      `json:"lastscan"`
 }
 
 var collection *mongo.Collection

@@ -3,6 +3,7 @@ package runner
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	_ "net/http/pprof"
 	"os"
@@ -12,18 +13,16 @@ import (
 	"sync/atomic"
 	"time"
 
-	uncoverlib "github.com/projectdiscovery/uncover"
-	updateutils "github.com/projectdiscovery/utils/update"
 	"go_fyp_test/core/backend/internal/installer"
 	"go_fyp_test/core/backend/internal/runner/nucleicloud"
+
+	uncoverlib "github.com/projectdiscovery/uncover"
+	updateutils "github.com/projectdiscovery/utils/update"
 
 	"github.com/logrusorgru/aurora"
 	"github.com/pkg/errors"
 	"github.com/projectdiscovery/ratelimit"
 
-	"github.com/projectdiscovery/gologger"
-	"github.com/projectdiscovery/retryablehttp-go"
-	ptrutil "github.com/projectdiscovery/utils/ptr"
 	"go_fyp_test/core/backend/internal/colorizer"
 	"go_fyp_test/core/backend/pkg/catalog"
 	"go_fyp_test/core/backend/pkg/catalog/config"
@@ -57,6 +56,10 @@ import (
 	"go_fyp_test/core/backend/pkg/utils"
 	"go_fyp_test/core/backend/pkg/utils/stats"
 	"go_fyp_test/core/backend/pkg/utils/yaml"
+
+	"github.com/projectdiscovery/gologger"
+	"github.com/projectdiscovery/retryablehttp-go"
+	ptrutil "github.com/projectdiscovery/utils/ptr"
 )
 
 // Runner is a client for running the enumeration process.
@@ -469,6 +472,7 @@ func (r *Runner) RunEnumeration() error {
 	executorOpts.WorkflowLoader = workflowLoader
 
 	store, err := loader.New(loader.NewConfig(r.options, r.catalog, executorOpts))
+	fmt.Printf("%v", store)
 	if err != nil {
 		return errors.Wrap(err, "could not load templates from config")
 	}
