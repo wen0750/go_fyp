@@ -7,8 +7,8 @@ import (
 	"go_fyp_test/core/backend/pkg/testutils"
 )
 
-var templatesDirTestCases = map[string]testutils.TestCase{
-	"dns/cname-fingerprint.yaml": &templateDirWithTargetTest{},
+var templatesDirTestCases = []TestCaseInfo{
+	{Path: "dns/cname-fingerprint.yaml", TestCase: &templateDirWithTargetTest{}},
 }
 
 type templateDirWithTargetTest struct{}

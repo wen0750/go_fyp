@@ -185,10 +185,8 @@ func (matcher *Matcher) MatchDSL(data map[string]interface{}) bool {
 			if matcher.condition == ANDCondition {
 				return false
 			}
-			if strings.Contains(err.Error(), "No parameter") {
+			if !matcher.ignoreErr(err) {
 				gologger.Warning().Msgf("[%s] %s", data["template-id"], err.Error())
-			} else {
-				gologger.Error().Label("WRN").Msgf("[%s] %s", data["template-id"], err.Error())
 			}
 			continue
 		}
@@ -216,6 +214,18 @@ func (matcher *Matcher) MatchDSL(data map[string]interface{}) bool {
 		if len(matcher.dslCompiled)-1 == i {
 			return true
 		}
+	}
+	return false
+}
+
+// ignoreErr checks if the error is to be ignored or not
+// Reference: https://github.com/projectdiscovery/nuclei/issues/3950
+func (m *Matcher) ignoreErr(err error) bool {
+	if showDSLErr {
+		return false
+	}
+	if stringsutil.ContainsAny(err.Error(), "No parameter", dslRepo.ErrParsingArg.Error()) {
+		return true
 	}
 	return false
 }

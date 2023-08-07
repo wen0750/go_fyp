@@ -119,21 +119,31 @@ func (request *Request) executeRequestWithPayloads(input *contextargs.Context, p
 	}
 	defer page.Close()
 
+	reqLog := instance.GetRequestLog()
+	navigatedURL := request.getLastNavigationURLWithLog(reqLog) // also known as matchedURL if there is a match
+
 	request.options.Output.Request(request.options.TemplatePath, input.MetaInput.Input, request.Type().String(), nil)
 	request.options.Progress.IncrementRequests()
-	gologger.Verbose().Msgf("Sent Headless request to %s", input.MetaInput.Input)
+	gologger.Verbose().Msgf("Sent Headless request to %s", navigatedURL)
 
 	reqBuilder := &strings.Builder{}
 	if request.options.Options.Debug || request.options.Options.DebugRequests || request.options.Options.DebugResponse {
-		gologger.Info().Msgf("[%s] Dumped Headless request for %s", request.options.TemplateID, input.MetaInput.Input)
+		gologger.Info().Msgf("[%s] Dumped Headless request for %s", request.options.TemplateID, navigatedURL)
 
 		for _, act := range request.Steps {
-			actStepStr := act.String()
-			actStepStr = strings.ReplaceAll(actStepStr, "{{BaseURL}}", input.MetaInput.Input)
-			reqBuilder.WriteString("\t" + actStepStr + "\n")
+			if act.ActionType.ActionType == engine.ActionNavigate {
+				value := act.GetArg("url")
+				if reqLog[value] != "" {
+					reqBuilder.WriteString(fmt.Sprintf("\tnavigate => %v\n", reqLog[value]))
+				} else {
+					reqBuilder.WriteString(fmt.Sprintf("%v not found in %v\n", value, reqLog))
+				}
+			} else {
+				actStepStr := act.String()
+				reqBuilder.WriteString("\t" + actStepStr + "\n")
+			}
 		}
 		gologger.Debug().Msgf(reqBuilder.String())
-
 	}
 
 	var responseBody string
