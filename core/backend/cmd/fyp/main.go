@@ -110,11 +110,6 @@ func main() {
 }
 
 func readConfig() *goflags.FlagSet {
-	flagSet := goflags.NewFlagSet()
-	flagSet.CaseSensitive = true
-	flagSet.SetDescription(`Nuclei is a fast, template based vulnerability scanner focusing
-	n extensive configurability, massive extensibility and ease of use.`)
-
 	options.RateLimitMinute = 0
 	options.Retries = 1
 	options.InteractionsPollDuration = 5
@@ -270,6 +265,9 @@ func readConfig() *goflags.FlagSet {
 	options.ScanStrategy = goflags.EnumVariable(0)
 
 	flagSet := goflags.NewFlagSet()
+	flagSet.CaseSensitive = true
+	flagSet.SetDescription(`Nuclei is a fast, template based vulnerability scanner focusing
+	n extensive configurability, massive extensibility and ease of use.`)
 
 	_ = flagSet.Parse()
 
