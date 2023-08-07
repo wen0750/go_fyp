@@ -4,6 +4,7 @@ import (
 	"net"
 
 	"go_fyp_test/core/backend/pkg/testutils"
+	osutils "github.com/projectdiscovery/utils/os"
 )
 
 var networkTestcases = []TestCaseInfo{

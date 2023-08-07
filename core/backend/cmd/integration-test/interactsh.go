@@ -1,6 +1,6 @@
 package main
 
-import "go_fyp_test/core/backend/pkg/testutils"
+import osutils "github.com/projectdiscovery/utils/os"
 
 // All Interactsh related testcases
 var interactshTestCases = []TestCaseInfo{

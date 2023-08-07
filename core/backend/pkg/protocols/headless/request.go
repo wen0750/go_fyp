@@ -1,6 +1,7 @@
 package headless
 
 import (
+	"fmt"
 	"net/url"
 	"strings"
 	"time"
@@ -152,7 +153,7 @@ func (request *Request) executeRequestWithPayloads(input *contextargs.Context, p
 		responseBody, _ = html.HTML()
 	}
 
-	outputEvent := request.responseToDSLMap(responseBody, out["header"], out["status_code"], reqBuilder.String(), input.MetaInput.Input, input.MetaInput.Input, page.DumpHistory())
+	outputEvent := request.responseToDSLMap(responseBody, out["header"], out["status_code"], reqBuilder.String(), input.MetaInput.Input, navigatedURL, page.DumpHistory())
 	for k, v := range out {
 		outputEvent[k] = v
 	}
@@ -224,4 +225,17 @@ func (request *Request) executeFuzzingRule(input *contextargs.Context, payloads 
 		}
 	}
 	return nil
+}
+
+// getLastNaviationURL returns last successfully navigated URL
+func (request *Request) getLastNavigationURLWithLog(reqLog map[string]string) string {
+	for i := len(request.Steps) - 1; i >= 0; i-- {
+		if request.Steps[i].ActionType.ActionType == engine.ActionNavigate {
+			templateURL := request.Steps[i].GetArg("url")
+			if reqLog[templateURL] != "" {
+				return reqLog[templateURL]
+			}
+		}
+	}
+	return ""
 }

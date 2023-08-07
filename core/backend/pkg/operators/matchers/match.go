@@ -1,13 +1,21 @@
 package matchers
 
 import (
+	"os"
 	"strings"
 
 	"github.com/Knetic/govaluate"
 
+	dslRepo "github.com/projectdiscovery/dsl"
 	"github.com/projectdiscovery/gologger"
 	"go_fyp_test/core/backend/pkg/operators/common/dsl"
 	"go_fyp_test/core/backend/pkg/protocols/common/expressions"
+	stringsutil "github.com/projectdiscovery/utils/strings"
+)
+
+var (
+	// showDSLErr controls whether to show hidden DSL errors or not
+	showDSLErr = strings.EqualFold(os.Getenv("SHOW_DSL_ERRORS"), "true")
 )
 
 // MatchStatusCode matches a status code check against a corpus

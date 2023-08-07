@@ -3,7 +3,6 @@ package runner
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	_ "net/http/pprof"
 	"os"
@@ -349,12 +348,14 @@ func createReportingOptions(options *types.Options) (*reporting.Options, error) 
 			reportingOptions.MarkdownExporter = &markdown.Options{
 				Directory:         options.MarkdownExportDirectory,
 				IncludeRawPayload: !options.OmitRawRequests,
+				SortMode:          options.MarkdownExportSortMode,
 			}
 		} else {
 			reportingOptions = &reporting.Options{}
 			reportingOptions.MarkdownExporter = &markdown.Options{
 				Directory:         options.MarkdownExportDirectory,
 				IncludeRawPayload: !options.OmitRawRequests,
+				SortMode:          options.MarkdownExportSortMode,
 			}
 		}
 	}
@@ -472,7 +473,6 @@ func (r *Runner) RunEnumeration() error {
 	executorOpts.WorkflowLoader = workflowLoader
 
 	store, err := loader.New(loader.NewConfig(r.options, r.catalog, executorOpts))
-	fmt.Printf("%v", store)
 	if err != nil {
 		return errors.Wrap(err, "could not load templates from config")
 	}

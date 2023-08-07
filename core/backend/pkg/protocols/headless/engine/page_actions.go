@@ -2,11 +2,8 @@ package engine
 
 import (
 	"context"
-	"net"
-	"net/url"
 	"os"
 	"path/filepath"
-	"regexp"
 	"strconv"
 	"strings"
 	"sync"
@@ -18,13 +15,18 @@ import (
 	"github.com/go-rod/rod/lib/utils"
 	"github.com/pkg/errors"
 	"github.com/projectdiscovery/gologger"
+	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
+	"go_fyp_test/core/backend/pkg/protocols/common/expressions"
+	"go_fyp_test/core/backend/pkg/protocols/common/generators"
+	"go_fyp_test/core/backend/pkg/protocols/common/utils/vardump"
+	protocolutils "go_fyp_test/core/backend/pkg/protocols/utils"
+	httputil "go_fyp_test/core/backend/pkg/protocols/utils/http"
 	errorutil "github.com/projectdiscovery/utils/errors"
 	fileutil "github.com/projectdiscovery/utils/file"
 	folderutil "github.com/projectdiscovery/utils/folder"
 	stringsutil "github.com/projectdiscovery/utils/strings"
+	urlutil "github.com/projectdiscovery/utils/url"
 	"github.com/segmentio/ksuid"
-	"go_fyp_test/core/backend/pkg/protocols/common/contextargs"
-	"go_fyp_test/core/backend/pkg/protocols/common/generators"
 )
 
 var (

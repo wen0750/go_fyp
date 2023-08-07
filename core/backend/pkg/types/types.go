@@ -2,6 +2,7 @@ package types
 
 import (
 	"io"
+	"strings"
 	"time"
 
 	"github.com/projectdiscovery/goflags"

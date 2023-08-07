@@ -1,9 +1,10 @@
 package format
 
 import (
-	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 
 	"go_fyp_test/core/backend/pkg/model"
 	"go_fyp_test/core/backend/pkg/model/types/severity"

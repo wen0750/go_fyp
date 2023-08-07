@@ -2,9 +2,8 @@ package contextargs
 
 import (
 	"net/http/cookiejar"
-	"sync"
 
-	"golang.org/x/exp/maps"
+	mapsutil "github.com/projectdiscovery/utils/maps"
 )
 
 // Context implements a shared context struct to share information across multiple templates within a workflow

@@ -6,6 +6,9 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/projectdiscovery/gologger"
+
+	fileutil "github.com/projectdiscovery/utils/file"
 	stringsutil "github.com/projectdiscovery/utils/strings"
 	"go_fyp_test/core/backend/pkg/output"
 	"go_fyp_test/core/backend/pkg/reporting/exporters/markdown/util"
