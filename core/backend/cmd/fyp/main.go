@@ -258,6 +258,7 @@ func readConfig() *goflags.FlagSet {
 	options.UncoverEngine = nil
 	options.TrackError = nil
 	options.Proxy = nil
+	options.HeadlessOptionalArguments = nil
 	options.ProjectPath = os.TempDir()
 	options.StoreResponseDir = runner.DefaultDumpTrafficOutputFolder
 	options.InputReadTimeout = time.Duration(3 * time.Minute)
