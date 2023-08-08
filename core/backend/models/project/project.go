@@ -95,7 +95,6 @@ func addProjectToFolder(projectDetail ProjectItem, fid string) (bson.M, error) {
 	update := bson.M{
 		"$push": bson.M{"project": projectDetail},
 	}
-	opts := bson.M{"returnNewDocument": true}
 
 	err := collection.FindOneAndUpdate(ctx, filter, update).Decode(&result)
 	return result, err
