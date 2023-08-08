@@ -3,10 +3,12 @@ package project
 import (
 	"context"
 	"go_fyp/core/backend/services/database"
+	"net/http"
 	"time"
 
 	"log"
 
+	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -28,12 +30,12 @@ type Folder struct {
 	Ownerid  int      `json:"ownerid"`
 }
 
-type Project struct {
+type ProjectItem struct {
 	Name     string   `json:"name"`
 	Pid      string   `json:"pid"`
 	Host     []string `json:"host"`
 	Poc      []string `json:"poc"`
-	LastScan int16    `json:"lastscan"`
+	LastScan int      `json:"lastscan"`
 }
 
 var collection *mongo.Collection
@@ -48,8 +50,15 @@ func init() {
 	}
 }
 
-func ProjectCreateHandeler() {
+func ProjectCreateHandeler(c *gin.Context) {
 	var inputData InputCreateProject
+
+	if err := c.ShouldBindJSON(&inputData); err != nil {
+		// c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
 	var poc []string
 	switch inputData.Template {
 	case "customs":
@@ -58,12 +67,24 @@ func ProjectCreateHandeler() {
 		poc = []string{"wp"}
 	}
 
-	var newProject = Project(inputData.Name, inputData.Fid, inputData.Host, poc, 1)
+	var newProject = ProjectItem{inputData.Name, inputData.Fid, inputData.Host, poc, 1000}
 
-	addProjectToFolder(newProject, inputData.Fid)
+	result, err := addProjectToFolder(newProject, inputData.Fid)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			//Template updated successfully
+			"action": "success",
+			"result": result,
+		})
+		return
+	}
+
 }
 
-func addProjectToFolder(projectDetail Project, fid string) (bson.M, error) {
+func addProjectToFolder(projectDetail ProjectItem, fid string) (bson.M, error) {
 	var result bson.M
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -74,9 +95,10 @@ func addProjectToFolder(projectDetail Project, fid string) (bson.M, error) {
 	update := bson.M{
 		"$push": bson.M{"project": projectDetail},
 	}
+	opts := bson.M{"returnNewDocument": true}
 
-	// result, err := collection.findOneAndUpdate(ctx, filter, update)
-	// return result, err
+	err := collection.FindOneAndUpdate(ctx, filter, update).Decode(&result)
+	return result, err
 }
 
 func UpDateProjectProfile() {
