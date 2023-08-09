@@ -18,7 +18,10 @@ import SendIcon from "@mui/icons-material/Send";
 class ProjectFolder extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { newScanModalIsOpen: false };
+        this.state = {
+            newScanModalIsOpen: false,
+            createFolderModalIsOpen: false,
+        };
         this.newScanModalStyle = {
             position: "absolute",
             top: "50%",
@@ -144,6 +147,13 @@ class ProjectFolder extends React.Component {
     closeNewScanModal = () => {
         this.setState({ newScanModalIsOpen: false });
     };
+    openCreateFolderModal = () => {
+        this.setState({ createFolderModalIsOpen: true });
+    };
+
+    closeCreateFolderModal = () => {
+        this.setState({ createFolderModalIsOpen: false });
+    };
 
     newScanModal = () => {
         var pocs = [];
@@ -229,6 +239,74 @@ class ProjectFolder extends React.Component {
             </div>
         );
     };
+    newScanModal = () => {
+        var pocs = [];
+        pocs = this.rows;
+        return (
+            <div>
+                <Modal
+                    open={this.state.createFolderModalIsOpen}
+                    onClose={this.closeCreateFolderModal}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={this.newScanModalStyle}>
+                        <Typography
+                            id="modal-modal-title"
+                            variant="h6"
+                            component="h2"
+                        >
+                            Text in a modal
+                        </Typography>
+                        <Stack spacing={3} sx={{ width: 1, marginBlock: 1 }}>
+                            <TextField
+                                id="outlined-basic"
+                                label="Outlined"
+                                variant="outlined"
+                            />
+                        </Stack>
+                        <Grid
+                            container
+                            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+                            sx={{ mt: 3, marginLeft: 0, width: 1 }}
+                        >
+                            <Grid
+                                item
+                                display="flex"
+                                justifyContent="center"
+                                alignItems="center"
+                                xs={6}
+                            >
+                                <Button
+                                    variant="outlined"
+                                    startIcon={<DeleteIcon />}
+                                    onClick={this.closeCreateFolderModal}
+                                    color="error"
+                                >
+                                    Cancel
+                                </Button>
+                            </Grid>
+                            <Grid
+                                item
+                                display="flex"
+                                justifyContent="center"
+                                alignItems="center"
+                                xs={6}
+                            >
+                                <Button
+                                    variant="contained"
+                                    endIcon={<SendIcon />}
+                                    onEnded
+                                >
+                                    Send
+                                </Button>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                </Modal>
+            </div>
+        );
+    };
 
     projectHeader = () => {
         return (
@@ -247,7 +325,11 @@ class ProjectFolder extends React.Component {
                         <Button variant="outlined" sx={{ mx: 1 }}>
                             Import
                         </Button>
-                        <Button variant="outlined" sx={{ mx: 1 }}>
+                        <Button
+                            variant="outlined"
+                            sx={{ mx: 1 }}
+                            onClick={this.openCreateFolderModal}
+                        >
                             New Folder
                         </Button>
                         <Button
