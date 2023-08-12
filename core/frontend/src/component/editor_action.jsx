@@ -1,5 +1,8 @@
 import * as React from "react";
 import { Button, Box, Container } from "@mui/material";
+
+import globeVar from "../../GlobalVar";
+
 import "../assets/css/editor.css";
 
 export default class EditorAction extends React.Component {
@@ -44,19 +47,22 @@ export default class EditorAction extends React.Component {
     ondatasubmit = () => {
         //change ip & port, should be set to server-side IP
         //this is hard-coded
-        fetch("http://127.0.0.1:8888/editor/download", {
-            method: "POST",
-            body: JSON.stringify({
-                ID: "Test",
-                Info: {
-                    Name: "abc",
-                    Author: "FYP",
+        fetch(
+            `${globeVar.backendprotocol}://${globeVar.backendhost}/editor/download`,
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    ID: "Test",
+                    Info: {
+                        Name: "abc",
+                        Author: "FYP",
+                    },
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
                 },
-            }),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8",
-            },
-        })
+            }
+        )
             .then((response) => {
                 if (response.ok) {
                     // If the response is successful, create a button to download file
@@ -84,16 +90,19 @@ export default class EditorAction extends React.Component {
         //change ip & port, should be set to server-side IP
         //this is hard-coded
         console.log(this.props.input);
-        fetch("http://127.0.0.1:8888/editor/save", {
-            method: "POST",
-            body: JSON.stringify({
-                id: "Test12",
-                info: this.props.input.information,
-            }),
-            headers: {
-                "Content-type": "application/json; charset=UTF-8",
-            },
-        })
+        fetch(
+            `${globeVar.backendprotocol}://${globeVar.backendhost}/editor/save`,
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    id: "Test12",
+                    info: this.props.input.information,
+                }),
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8",
+                },
+            }
+        )
             .then((response) => {
                 if (response.ok) {
                     return response.json();

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import { Card, CardHeader, CardContent, Container } from "@mui/material";
 
+import globeVar from "../../GlobalVar";
+
 import Grid from "@mui/material/Unstable_Grid2";
 import "../assets/css/editor.css";
 
@@ -100,10 +102,13 @@ const DropZone = (props) => {
 
         //change ip & port, should be set to server-side IP
 
-        fetch("http://127.0.0.1:8888/editor/submit", {
-            method: "POST",
-            body: data,
-        })
+        fetch(
+            `${globeVar.backendprotocol}://${globeVar.backendhost}/editor/submit`,
+            {
+                method: "POST",
+                body: data,
+            }
+        )
             .then((response) => {
                 if (response.ok) {
                     return response.json();

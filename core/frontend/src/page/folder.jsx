@@ -1,17 +1,20 @@
 import * as React from "react";
 import { Box, Button, Typography, Modal } from "@mui/material";
 import { Chip, Autocomplete, TextField, Stack } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import { DataGrid } from "@mui/x-data-grid";
 import Grid from "@mui/material/Grid";
 import { OutlinedInput, InputAdornment, FormControl } from "@mui/material";
 
+import { green } from "@mui/material/colors";
 import { FolderHeader } from "../component/page_style/folder_style";
+
 import InputTags from "../component/ext_chips_input";
+import globeVar from "../../GlobalVar";
 
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 
@@ -21,6 +24,8 @@ class ProjectFolder extends React.Component {
         this.state = {
             newScanModalIsOpen: false,
             createFolderModalIsOpen: false,
+            modalLoading: false,
+            modalSuccess: false,
         };
         this.newScanModalStyle = {
             position: "absolute",
@@ -33,6 +38,14 @@ class ProjectFolder extends React.Component {
             // border: "2px solid #000",
             boxShadow: 24,
             p: 4,
+        };
+        this.modalButtonSx = {
+            ...(success && {
+                bgcolor: green[500],
+                "&:hover": {
+                    bgcolor: green[700],
+                },
+            }),
         };
         this.columns = [
             {
@@ -140,6 +153,77 @@ class ProjectFolder extends React.Component {
         },
     ];
 
+    //
+    // ┏┓  ┓┓  ┏┓  •
+    // ┃ ┏┓┃┃  ┣┫┏┓┓
+    // ┗┛┗┻┗┗  ┛┗┣┛┗
+    //           ┛
+    //
+
+    fetchFoldersDetail = () => {
+        fetch(
+            `${globeVar.backendprotocol}://${globeVar.backendhost}/folder/list`,
+            {
+                method: "POST",
+            }
+        )
+            // Converting to JSON
+            .then((response) => response.json())
+
+            // Displaying results to console
+            .then((json) => console.log(json));
+    };
+
+    createNewFolder = () => {
+        fetch(
+            `${globeVar.backendprotocol}://${globeVar.backendhost}/folder/create`,
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    name: "Folder H",
+                }),
+            }
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                // Handle data
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    };
+
+    createNewProject = () => {
+        fetch(
+            `${globeVar.backendprotocol}://${globeVar.backendhost}/project/create`,
+            {
+                method: "POST",
+                body: JSON.stringify({
+                    name: "test3",
+                    fid: "64bf73043cf5c58b00658727",
+                    host: ["127.0.0.1", "123.45.67.30"],
+                    poc: ["20231123001"],
+                    template: "customs",
+                }),
+            }
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                // Handle data
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    };
+
+    //
+    // ┳┳  •    ┳┓   •
+    // ┃┃  ┓    ┃┃┏┓┏┓┏┓┏┓
+    // ┗┛  ┗    ┻┛┗ ┛┗┗┫┛┗
+    //                 ┛
+
     openNewScanModal = () => {
         this.setState({ newScanModalIsOpen: true });
     };
@@ -147,6 +231,7 @@ class ProjectFolder extends React.Component {
     closeNewScanModal = () => {
         this.setState({ newScanModalIsOpen: false });
     };
+
     openCreateFolderModal = () => {
         this.setState({ createFolderModalIsOpen: true });
     };
@@ -239,7 +324,8 @@ class ProjectFolder extends React.Component {
             </div>
         );
     };
-    newScanModal = () => {
+
+    createProjectModal = () => {
         var pocs = [];
         pocs = this.rows;
         return (
@@ -306,6 +392,17 @@ class ProjectFolder extends React.Component {
                 </Modal>
             </div>
         );
+    };
+
+    handleModalButtonClick = () => {
+        // this.closeNewScanModal();
+        if (!this.state.modalLoading) {
+            this.setState({ modalLoading: true });
+            timer.current = window.setTimeout(() => {
+                this.setState({ modalLoading: true });
+                this.setState({ modalSuccess: false });
+            }, 2000);
+        }
     };
 
     projectHeader = () => {
@@ -392,6 +489,7 @@ class ProjectFolder extends React.Component {
                     <this.projectTable />
                 </div>
                 <this.newScanModal />
+                <this.createProjectModal />
             </div>
         );
     }

@@ -71,6 +71,7 @@ export default function InputTags() {
                     inputRef={tagRef}
                     variant="outlined"
                     label="Enter tags"
+                    placeholder={tags.length < 5 ? "Enter tags" : ""}
                     InputProps={{
                         startAdornment: (
                             <Box

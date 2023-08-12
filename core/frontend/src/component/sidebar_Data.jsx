@@ -4,6 +4,8 @@ import {
     DrawRoundedIcon,
 } from "./sidebar_icon";
 
+import globeVar from "../../GlobalVar";
+
 const hardData = [
     {
         id: 1,
@@ -37,9 +39,12 @@ const dataFetch = async () => {
     var list = [];
     try {
         const data = await (
-            await fetch("http://127.0.0.1:8888/folder/list", {
-                method: "POST",
-            })
+            await fetch(
+                `${globeVar.backendprotocol}://${globeVar.backendhost}/folder/list`,
+                {
+                    method: "POST",
+                }
+            )
         ).json();
 
         if (data) {
