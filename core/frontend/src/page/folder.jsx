@@ -228,31 +228,6 @@ class ProjectFolder extends React.Component {
             });
     };
 
-    handleSend = () => {
-        const tids = this.state.selectedTIDs;
-
-        fetch("http://127.0.0.1:8888/folder/newScan", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ tids }),
-        })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    throw new Error("Server Error");
-                }
-            })
-            .then((data) => {
-                console.log("Data received from backend:", data);
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-            });
-    };
-
     //
     // ┳┳  •    ┳┓   •
     // ┃┃  ┓    ┃┃┏┓┏┓┏┓┏┓
@@ -356,7 +331,7 @@ class ProjectFolder extends React.Component {
                                 <Button
                                     variant="contained"
                                     endIcon={<SendIcon />}
-                                    onClick={this.handleSend}
+                                    onClick={this.createNewProject}
                                 >
                                     Send
                                 </Button>
