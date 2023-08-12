@@ -34,6 +34,14 @@ type Project struct {
 	History []string `json:"history"`
 }
 
+type CVE struct {
+	ID        int    `bson:"id"`
+	LastName  string `bson:"lastName"`
+	FirstName string `bson:"firstName"`
+	Age       string `bson:"age"`
+	Tid       string `bson:"tid"`
+}
+
 var collection *mongo.Collection
 
 func init() {
@@ -151,4 +159,23 @@ func RemoveFolder(c *gin.Context) {
 
 func ViewFolderItem() {
 	//a function that show the Folder content
+}
+
+func NewScan(c *gin.Context) {
+	tid := c.Param("tid")
+
+	var cve CVE
+
+	err := collection.FindOne(context.TODO(), bson.M{"tid": tid}).Decode(&cve)
+
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			c.JSON(http.StatusNotFound, gin.H{"error": "No record found"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Error finding record"})
+		}
+		return
+	}
+	c.JSON(http.StatusOK, cve)
+
 }

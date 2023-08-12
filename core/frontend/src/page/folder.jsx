@@ -26,7 +26,7 @@ class ProjectFolder extends React.Component {
             createFolderModalIsOpen: false,
             modalLoading: false,
             modalSuccess: false,
-        };
+            selectedTIDs: [],
         this.newScanModalStyle = {
             position: "absolute",
             top: "50%",
@@ -102,54 +102,63 @@ class ProjectFolder extends React.Component {
             lastName: "CVE-2020-26067",
             firstName: "CVE-2020-26067",
             age: "2020-8-12 3:12:02",
+            tid:"64b8f5bb922b684322bd3e81",
         },
         {
             id: 2,
             lastName: "CVE-2021-26119",
             firstName: "CVE-2021-26119",
             age: "2021-5-04 12:03:18",
+            tid:"",
         },
         {
             id: 3,
             lastName: "api_endpoints",
             firstName: "api_endpoints",
             age: "2020-3-24 9:35:23",
+            tid:"",
         },
         {
             id: 4,
             lastName: "CVE-2017-7504",
             firstName: "CVE-2017-7504",
             age: "2017-8-26 1:25:09",
+            tid:"",
         },
         {
             id: 5,
             lastName: "CVE-2017-12636",
             firstName: "CVE-2017-12636",
             age: "2017-11-04 3:47:06",
+            tid:"",
         },
         {
             id: 6,
             lastName: "CVE-2020-1147",
             firstName: "CVE-2020-1147",
             age: "2020-1-9 11:17:11",
+            tid:"",
         },
         {
             id: 7,
             lastName: "CVE-2021-22123",
             firstName: "CVE-2021-22123",
             age: "2021-9-19 2:53:20",
+            tid:"",
         },
         {
             id: 8,
             lastName: "CVE-2021-36580",
             firstName: "CVE-2021-36580",
             age: "2021-6-8 8:43:03",
+            tid:"",
         },
         {
             id: 9,
             lastName: "CVE-2022-23642",
             firstName: "CVE-2022-23642",
             age: "2022-3-14 2:08:16",
+            tid:"",
         },
     ];
 
@@ -240,6 +249,31 @@ class ProjectFolder extends React.Component {
         this.setState({ createFolderModalIsOpen: false });
     };
 
+    handleSend = () => {
+        const tids = this.state.selectedTIDs;
+
+        fetch("http://127.0.0.1:8888/folder/newScan", {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ tids }),
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error("Server Error");
+        }
+    })
+    .then((data) => {
+        console.log("Data received from backend:", data);
+    })
+    .catch((error) => {
+        console.error("Error:", error);
+    });
+    };
+
     newScanModal = () => {
         var pocs = [];
         pocs = this.rows;
@@ -273,6 +307,13 @@ class ProjectFolder extends React.Component {
                                 getOptionLabel={(option) => option.lastName}
                                 defaultValue={[this.rows[1]]}
                                 filterSelectedOptions
+                                onChange={(event, newValue) => {
+                                    console.log(newValue); // log the new value
+                                    this.setState({
+                                        selectedTIDs: newValue.filter(item => item.tid).map(item => item.tid)
+                                    });
+                                }}
+
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}
@@ -313,7 +354,7 @@ class ProjectFolder extends React.Component {
                                 <Button
                                     variant="contained"
                                     endIcon={<SendIcon />}
-                                    onEnded
+                                    onClick={this.handleSend}
                                 >
                                     Send
                                 </Button>

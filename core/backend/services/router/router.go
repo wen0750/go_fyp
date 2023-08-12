@@ -38,7 +38,10 @@ func routing(router *gin.Engine) {
 			folder.RemoveFolder(c)
 		case "list":
 			folder.GetFolderList(c)
+		case "newScan":
+			folder.NewScan(c)
 		}
+		
 	})
 
 	router.POST("/project/:action", func(c *gin.Context) {
