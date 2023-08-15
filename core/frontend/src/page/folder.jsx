@@ -71,31 +71,44 @@ class ProjectFolder extends React.Component {
                 maxWidth: 400,
             },
             {
-                field: "fullName",
+                field: "action",
                 headerName: "Action",
                 sortable: false,
                 width: 100,
                 minWidth: 50,
                 maxWidth: 200,
-                valueGetter: (params) =>
-                    `${params.row.firstName || ""} ${
-                        params.row.lastName || ""
-                    }`,
+                renderCell: (params) => (
+                    <Button variant="contained" color="primary" onClick={() => this.actionScan(params.row.id)}>
+                      Action
+                    </Button>
+                  ),
             },
             {
-                field: "lastName",
+                field: "remove",
                 headerName: "Remove",
                 sortable: false,
                 width: 100,
                 minWidth: 50,
                 maxWidth: 200,
-                valueGetter: (params) =>
-                    `${params.row.firstName || ""} ${
-                        params.row.lastName || ""
-                    }`,
+                renderCell: (params) => (
+                    <Button variant="contained" color="secondary" onClick={() => this.Remove(params.row.id)}>
+                      Remove
+                    </Button>
+                  ),
             },
         ];
     }
+
+    handleAction = (id) => {
+        // Handle action here
+        console.log(`Action button clicked for id: ${id}`);
+    }
+    
+    handleRemove = (id) => {
+        // Handle remove here
+        console.log(`Remove button clicked for id: ${id}`);
+    }
+    
 
     rows = [
         {
