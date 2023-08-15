@@ -453,7 +453,7 @@ class ProjectFolder extends React.Component {
                             onClick={this.openNewScanModal}
                             sx={{ mx: 1 }}
                         >
-                            New Scan
+                            Create Template
                         </Button>
                     </div>
                 </FolderHeader>
