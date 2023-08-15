@@ -56,13 +56,13 @@ export default class ProjectHosts extends React.Component {
                 id: "name",
                 numeric: false,
                 disablePadding: true,
-                label: "Dessert (100g serving)",
+                label: "Host",
             },
             {
                 id: "calories",
-                numeric: true,
+                numeric: false,
                 disablePadding: false,
-                label: "Calories",
+                label: "Vulnerabilities",
             },
         ];
 
@@ -169,7 +169,7 @@ export default class ProjectHosts extends React.Component {
                             checked={rowCount > 0 && numSelected === rowCount}
                             onChange={onSelectAllClick}
                             inputProps={{
-                                "aria-label": "select all desserts",
+                                "aria-label": "select all hosts",
                             }}
                         />
                     </TableCell>
@@ -240,7 +240,7 @@ export default class ProjectHosts extends React.Component {
                         id="tableTitle"
                         component="div"
                     >
-                        Nutrition
+                        Vulnerabilities
                     </Typography>
                 )}
 
