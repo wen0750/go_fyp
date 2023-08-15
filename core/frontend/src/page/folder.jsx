@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Button, Typography, Modal } from "@mui/material";
+import { Box, Button, IconButton, Typography, Modal } from "@mui/material";
 import { Chip, Autocomplete, TextField, Stack } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 
@@ -13,8 +13,13 @@ import { FolderHeader } from "../component/page_style/folder_style";
 import InputTags from "../component/ext_chips_input";
 import globeVar from "../../GlobalVar";
 
+// Icon
 import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import ReplayIcon from "@mui/icons-material/Replay";
+import PauseIcon from "@mui/icons-material/Pause";
+import StopIcon from "@mui/icons-material/Stop";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 
@@ -71,44 +76,32 @@ class ProjectFolder extends React.Component {
                 maxWidth: 400,
             },
             {
-                field: "action",
+                field: "status",
                 headerName: "Action",
                 sortable: false,
-                width: 100,
+                width: 150,
                 minWidth: 50,
-                maxWidth: 200,
-                renderCell: (params) => (
-                    <Button variant="contained" color="primary" onClick={() => this.actionScan(params.row.id)}>
-                      Action
-                    </Button>
-                  ),
+                maxWidth: 300,
+                renderCell: (params) => this.renderActionButton(params),
             },
             {
-                field: "remove",
+                field: "",
                 headerName: "Remove",
                 sortable: false,
                 width: 100,
                 minWidth: 50,
                 maxWidth: 200,
                 renderCell: (params) => (
-                    <Button variant="contained" color="secondary" onClick={() => this.Remove(params.row.id)}>
-                      Remove
-                    </Button>
-                  ),
+                    <IconButton
+                        aria-label="remove this project from project"
+                        onClick={() => this.handleRemove(params.row.id)}
+                    >
+                        <DeleteIcon />
+                    </IconButton>
+                ),
             },
         ];
     }
-
-    handleAction = (id) => {
-        // Handle action here
-        console.log(`Action button clicked for id: ${id}`);
-    }
-    
-    handleRemove = (id) => {
-        // Handle remove here
-        console.log(`Remove button clicked for id: ${id}`);
-    }
-    
 
     rows = [
         {
@@ -117,6 +110,7 @@ class ProjectFolder extends React.Component {
             firstName: "CVE-2020-26067",
             age: "2020-8-12 3:12:02",
             tid: "64b8f5bb922b684322bd3e81",
+            status: "scanning",
         },
         {
             id: 2,
@@ -124,6 +118,7 @@ class ProjectFolder extends React.Component {
             firstName: "CVE-2021-26119",
             age: "2021-5-04 12:03:18",
             tid: "",
+            status: "paused",
         },
         {
             id: 3,
@@ -131,6 +126,7 @@ class ProjectFolder extends React.Component {
             firstName: "api_endpoints",
             age: "2020-3-24 9:35:23",
             tid: "",
+            status: "stoped",
         },
         {
             id: 4,
@@ -138,6 +134,7 @@ class ProjectFolder extends React.Component {
             firstName: "CVE-2017-7504",
             age: "2017-8-26 1:25:09",
             tid: "",
+            status: "idle",
         },
         {
             id: 5,
@@ -145,6 +142,7 @@ class ProjectFolder extends React.Component {
             firstName: "CVE-2017-12636",
             age: "2017-11-04 3:47:06",
             tid: "",
+            status: { PlayArrowIcon },
         },
         {
             id: 6,
@@ -152,6 +150,7 @@ class ProjectFolder extends React.Component {
             firstName: "CVE-2020-1147",
             age: "2020-1-9 11:17:11",
             tid: "",
+            status: { PlayArrowIcon },
         },
         {
             id: 7,
@@ -159,6 +158,7 @@ class ProjectFolder extends React.Component {
             firstName: "CVE-2021-22123",
             age: "2021-9-19 2:53:20",
             tid: "",
+            status: { PlayArrowIcon },
         },
         {
             id: 8,
@@ -166,6 +166,7 @@ class ProjectFolder extends React.Component {
             firstName: "CVE-2021-36580",
             age: "2021-6-8 8:43:03",
             tid: "",
+            status: { PlayArrowIcon },
         },
         {
             id: 9,
@@ -173,6 +174,7 @@ class ProjectFolder extends React.Component {
             firstName: "CVE-2022-23642",
             age: "2022-3-14 2:08:16",
             tid: "",
+            status: { PlayArrowIcon },
         },
     ];
 
@@ -246,6 +248,84 @@ class ProjectFolder extends React.Component {
     // ┃┃  ┓    ┃┃┏┓┏┓┏┓┏┓
     // ┗┛  ┗    ┻┛┗ ┛┗┗┫┛┗
     //                 ┛
+    renderActionButton = (param) => {
+        switch (param.row.status) {
+            case "scanning":
+                return (
+                    <div>
+                        <IconButton
+                            aria-label="take action for this project"
+                            onClick={() => this.handleAction(params.row.id)}
+                        >
+                            <PauseIcon />
+                        </IconButton>
+                        <IconButton
+                            aria-label="take action for this project"
+                            onClick={() => this.handleAction(params.row.id)}
+                        >
+                            <StopIcon />
+                        </IconButton>
+                        <IconButton
+                            aria-label="take action for this project"
+                            onClick={() => this.handleAction(params.row.id)}
+                        >
+                            <ReplayIcon />
+                        </IconButton>
+                    </div>
+                );
+            case "paused":
+                return (
+                    <div>
+                        <IconButton
+                            aria-label="take action for this project"
+                            onClick={() => this.handleAction(params.row.id)}
+                        >
+                            <PlayArrowIcon />
+                        </IconButton>
+                        <IconButton
+                            aria-label="take action for this project"
+                            onClick={() => this.handleAction(params.row.id)}
+                        >
+                            <StopIcon />
+                        </IconButton>
+                        <IconButton
+                            aria-label="take action for this project"
+                            onClick={() => this.handleAction(params.row.id)}
+                        >
+                            <ReplayIcon />
+                        </IconButton>
+                    </div>
+                );
+            case "idle":
+                return (
+                    <IconButton
+                        aria-label="take action for this project"
+                        onClick={() => this.handleAction(params.row.id)}
+                    >
+                        <PlayArrowIcon />
+                    </IconButton>
+                );
+            default:
+                return (
+                    <IconButton
+                        aria-label="take action for this project"
+                        onClick={() => this.handleAction(params.row.id)}
+                    >
+                        <PlayArrowIcon />
+                    </IconButton>
+                );
+        }
+    };
+
+    handleAction = (id) => {
+        // Handle action here
+        console.log(`Action button clicked for id: ${id}`);
+    };
+
+    handleRemove = (id) => {
+        // Handle remove here
+        console.log(`Remove button clicked for id: ${id}`);
+    };
 
     openNewScanModal = () => {
         this.setState({ newScanModalIsOpen: true });
