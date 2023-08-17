@@ -1,9 +1,9 @@
 import React from "react";
 import Chart from "react-apexcharts";
 
-const App = () => {
+const App = (props) => {
     // Defined default value
-    const list = { info: 25, low: 25, medium: 25, high: 25, critical: 25 };
+    const list = { info: 20, low: 20, medium: 20, high: 20, critical: 20 };
     let series = [];
     let colorsGapChart = [];
 
@@ -97,17 +97,21 @@ const App = () => {
         },
     };
 
-    return (
-        <div style={{ width: "100%" }}>
-            <Chart
-                options={options}
-                series={series}
-                type="bar"
-                width="100%"
-                height="80"
-            />
-        </div>
-    );
+    if (props.isOpen) {
+        return (
+            <div style={{ width: "100%" }}>
+                <Chart
+                    options={options}
+                    series={series}
+                    type="bar"
+                    width="100%"
+                    height="80"
+                />
+            </div>
+        );
+    } else {
+        return <div style={{ width: "100%" }}></div>;
+    }
 };
 
 export default App;

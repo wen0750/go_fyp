@@ -49,6 +49,7 @@ export default class ProjectHosts extends React.Component {
             page: 0,
             dense: false,
             rowsPerPage: 10,
+            showStackedBar: false,
         };
 
         this.headCells = [
@@ -428,7 +429,12 @@ export default class ProjectHosts extends React.Component {
                                                     padding: 0,
                                                 }}
                                             >
-                                                <StackedBar></StackedBar>
+                                                <StackedBar
+                                                    isOpen={
+                                                        this.state
+                                                            .showStackedBar
+                                                    }
+                                                ></StackedBar>
                                             </TableCell>
                                         </TableRow>
                                     );
@@ -503,6 +509,29 @@ export default class ProjectHosts extends React.Component {
             </div>
         );
     };
+    componentDidMount() {
+        this.setState({
+            showStackedBar: true,
+        });
+    }
+
+    // componentWillUpdate() {
+    //     if (this.state.showStackedBar == false) {
+    //         this.setState({
+    //             showStackedBar: true,
+    //         });
+    //     }
+    // }
+
+    componentDidUpdate() {
+        if (this.state.showStackedBar) {
+            setTimeout(() => {
+                this.setState({
+                    showStackedBar: true,
+                });
+            }, 1000);
+        }
+    }
 
     render() {
         return (
