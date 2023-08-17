@@ -1,5 +1,12 @@
 import * as React from "react";
-import { Box, Button, IconButton, Typography, Modal } from "@mui/material";
+import {
+    Box,
+    Button,
+    IconButton,
+    Tooltip,
+    Typography,
+    Modal,
+} from "@mui/material";
 import { Chip, Autocomplete, TextField, Stack } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 
@@ -92,12 +99,14 @@ class ProjectFolder extends React.Component {
                 minWidth: 50,
                 maxWidth: 200,
                 renderCell: (params) => (
-                    <IconButton
-                        aria-label="remove this project from project"
-                        onClick={() => this.handleRemove(params.row.id)}
-                    >
-                        <DeleteIcon />
-                    </IconButton>
+                    <Tooltip title="Delete" placement="right">
+                        <IconButton
+                            aria-label="remove this project from project"
+                            onClick={() => this.handleRemove(params.row.id)}
+                        >
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip>
                 ),
             },
         ];
@@ -253,66 +262,82 @@ class ProjectFolder extends React.Component {
             case "scanning":
                 return (
                     <div>
-                        <IconButton
-                            aria-label="take action for this project"
-                            onClick={() => this.handleAction(params.row.id)}
-                        >
-                            <PauseIcon />
-                        </IconButton>
-                        <IconButton
-                            aria-label="take action for this project"
-                            onClick={() => this.handleAction(params.row.id)}
-                        >
-                            <StopIcon />
-                        </IconButton>
-                        <IconButton
-                            aria-label="take action for this project"
-                            onClick={() => this.handleAction(params.row.id)}
-                        >
-                            <ReplayIcon />
-                        </IconButton>
+                        <Tooltip title="Pause">
+                            <IconButton
+                                aria-label="take action for this project"
+                                onClick={() => this.handleAction(params.row.id)}
+                            >
+                                <PauseIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Stop">
+                            <IconButton
+                                aria-label="take action for this project"
+                                onClick={() => this.handleAction(params.row.id)}
+                            >
+                                <StopIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Rescan">
+                            <IconButton
+                                aria-label="take action for this project"
+                                onClick={() => this.handleAction(params.row.id)}
+                            >
+                                <ReplayIcon />
+                            </IconButton>
+                        </Tooltip>
                     </div>
                 );
             case "paused":
                 return (
                     <div>
+                        <Tooltip title="Resume">
+                            <IconButton
+                                aria-label="take action for this project"
+                                onClick={() => this.handleAction(params.row.id)}
+                            >
+                                <PlayArrowIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Stop">
+                            <IconButton
+                                aria-label="take action for this project"
+                                onClick={() => this.handleAction(params.row.id)}
+                            >
+                                <StopIcon />
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Rescan">
+                            <IconButton
+                                aria-label="take action for this project"
+                                onClick={() => this.handleAction(params.row.id)}
+                            >
+                                <ReplayIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </div>
+                );
+            case "idle":
+                return (
+                    <Tooltip title="Scan Now">
                         <IconButton
                             aria-label="take action for this project"
                             onClick={() => this.handleAction(params.row.id)}
                         >
                             <PlayArrowIcon />
                         </IconButton>
-                        <IconButton
-                            aria-label="take action for this project"
-                            onClick={() => this.handleAction(params.row.id)}
-                        >
-                            <StopIcon />
-                        </IconButton>
-                        <IconButton
-                            aria-label="take action for this project"
-                            onClick={() => this.handleAction(params.row.id)}
-                        >
-                            <ReplayIcon />
-                        </IconButton>
-                    </div>
-                );
-            case "idle":
-                return (
-                    <IconButton
-                        aria-label="take action for this project"
-                        onClick={() => this.handleAction(params.row.id)}
-                    >
-                        <PlayArrowIcon />
-                    </IconButton>
+                    </Tooltip>
                 );
             default:
                 return (
-                    <IconButton
-                        aria-label="take action for this project"
-                        onClick={() => this.handleAction(params.row.id)}
-                    >
-                        <PlayArrowIcon />
-                    </IconButton>
+                    <Tooltip title="Scan Now">
+                        <IconButton
+                            aria-label="take action for this project"
+                            onClick={() => this.handleAction(params.row.id)}
+                        >
+                            <PlayArrowIcon />
+                        </IconButton>
+                    </Tooltip>
                 );
         }
     };
