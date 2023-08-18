@@ -62,28 +62,28 @@ class ProjectFolder extends React.Component {
         };
         this.columns = [
             {
-                field: "firstName",
+                field: "name",
                 headerName: "Name",
                 width: 250,
                 minWidth: 150,
                 maxWidth: 400,
             },
             {
-                field: "lastName",
+                field: "schedule",
                 headerName: "Schedule",
                 width: 250,
                 minWidth: 150,
                 maxWidth: 400,
             },
             {
-                field: "age",
+                field: "lastscanned",
                 headerName: "Last Scanned",
                 width: 250,
                 minWidth: 150,
                 maxWidth: 400,
             },
             {
-                field: "status",
+                field: "action",
                 headerName: "Action",
                 sortable: false,
                 width: 150,
@@ -115,75 +115,75 @@ class ProjectFolder extends React.Component {
     rows = [
         {
             id: 1,
-            lastName: "CVE-2020-26067",
-            firstName: "CVE-2020-26067",
-            age: "2020-8-12 3:12:02",
+            name: "CVE-2020-26067",
+            schedule: "CVE-2020-26067",
+            lastscanned: "2020-8-12 3:12:02",
             tid: "64b8f5bb922b684322bd3e81",
-            status: "scanning",
+            action: "scanning",
         },
         {
             id: 2,
-            lastName: "CVE-2021-26119",
-            firstName: "CVE-2021-26119",
-            age: "2021-5-04 12:03:18",
+            name: "CVE-2021-26119",
+            schedule: "CVE-2021-26119",
+            lastscanned: "2021-5-04 12:03:18",
             tid: "",
-            status: "paused",
+            action: "paused",
         },
         {
             id: 3,
-            lastName: "api_endpoints",
-            firstName: "api_endpoints",
-            age: "2020-3-24 9:35:23",
+            name: "api_endpoints",
+            schedule: "api_endpoints",
+            lastscanned: "2020-3-24 9:35:23",
             tid: "",
-            status: "stoped",
+            action: "stoped",
         },
         {
             id: 4,
-            lastName: "CVE-2017-7504",
-            firstName: "CVE-2017-7504",
-            age: "2017-8-26 1:25:09",
+            name: "CVE-2017-7504",
+            schedule: "CVE-2017-7504",
+            lastscanned: "2017-8-26 1:25:09",
             tid: "",
-            status: "idle",
+            action: "idle",
         },
         {
             id: 5,
-            lastName: "CVE-2017-12636",
-            firstName: "CVE-2017-12636",
-            age: "2017-11-04 3:47:06",
+            name: "CVE-2017-12636",
+            schedule: "CVE-2017-12636",
+            lastscanned: "2017-11-04 3:47:06",
             tid: "",
-            status: { PlayArrowIcon },
+            action: { PlayArrowIcon },
         },
         {
             id: 6,
-            lastName: "CVE-2020-1147",
-            firstName: "CVE-2020-1147",
-            age: "2020-1-9 11:17:11",
+            name: "CVE-2020-1147",
+            schedule: "CVE-2020-1147",
+            lastscanned: "2020-1-9 11:17:11",
             tid: "",
-            status: { PlayArrowIcon },
+            action: { PlayArrowIcon },
         },
         {
             id: 7,
-            lastName: "CVE-2021-22123",
-            firstName: "CVE-2021-22123",
-            age: "2021-9-19 2:53:20",
+            name: "CVE-2021-22123",
+            schedule: "CVE-2021-22123",
+            lastscanned: "2021-9-19 2:53:20",
             tid: "",
-            status: { PlayArrowIcon },
+            action: { PlayArrowIcon },
         },
         {
             id: 8,
-            lastName: "CVE-2021-36580",
-            firstName: "CVE-2021-36580",
-            age: "2021-6-8 8:43:03",
+            name: "CVE-2021-36580",
+            schedule: "CVE-2021-36580",
+            lastscanned: "2021-6-8 8:43:03",
             tid: "",
-            status: { PlayArrowIcon },
+            action: { PlayArrowIcon },
         },
         {
             id: 9,
-            lastName: "CVE-2022-23642",
-            firstName: "CVE-2022-23642",
-            age: "2022-3-14 2:08:16",
+            name: "CVE-2022-23642",
+            schedule: "CVE-2022-23642",
+            lastscanned: "2022-3-14 2:08:16",
             tid: "",
-            status: { PlayArrowIcon },
+            action: { PlayArrowIcon },
         },
     ];
 
@@ -258,7 +258,7 @@ class ProjectFolder extends React.Component {
     // ┗┛  ┗    ┻┛┗ ┛┗┗┫┛┗
     //                 ┛
     renderActionButton = (param) => {
-        switch (param.row.status) {
+        switch (param.row.action) {
             case "scanning":
                 return (
                     <div>
@@ -343,7 +343,19 @@ class ProjectFolder extends React.Component {
     };
 
     handleAction = (id) => {
-        // Handle action here
+        // Find the index of the row with the given id
+        const rowIndex = this.state.rows.findIndex(row => row.id === id);
+        if (rowIndex === -1) return; // If row not found, don't do anything
+    
+        // Copy the current state's rows
+        const newRows = [...this.state.rows];
+    
+        // Change the action of the row with the given id to "scanning"
+        newRows[rowIndex].action = "scanning";
+    
+        // Update the state with the new rows
+        this.setState({ rows: newRows });
+    
         console.log(`Action button clicked for id: ${id}`);
     };
 
