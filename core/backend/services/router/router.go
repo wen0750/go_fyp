@@ -46,6 +46,8 @@ func routing(router *gin.Engine) {
 		switch action {
 		case "create":
 			project.ProjectCreateHandeler(c)
+		case "scantest":
+			// default scan
 		}
 	})
 }
