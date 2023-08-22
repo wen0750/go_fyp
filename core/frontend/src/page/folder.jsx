@@ -33,87 +33,12 @@ import SendIcon from "@mui/icons-material/Send";
 class ProjectFolder extends React.Component {
     constructor(props) {
         super(props);
-        this.rows = [
-            {
-                id: 1,
-                name: "CVE-2020-26067",
-                schedule: "CVE-2020-26067",
-                lastscanned: "2020-8-12 3:12:02",
-                tid: "64b8f5bb922b684322bd3e81",
-                action: "scanning",
-            },
-            {
-                id: 2,
-                name: "CVE-2021-26119",
-                schedule: "CVE-2021-26119",
-                lastscanned: "2021-5-04 12:03:18",
-                tid: "",
-                action: "paused",
-            },
-            {
-                id: 3,
-                name: "api_endpoints",
-                schedule: "api_endpoints",
-                lastscanned: "2020-3-24 9:35:23",
-                tid: "",
-                action: "stoped",
-            },
-            {
-                id: 4,
-                name: "CVE-2017-7504",
-                schedule: "CVE-2017-7504",
-                lastscanned: "2017-8-26 1:25:09",
-                tid: "",
-                action: "idle",
-            },
-            {
-                id: 5,
-                name: "CVE-2017-12636",
-                schedule: "CVE-2017-12636",
-                lastscanned: "2017-11-04 3:47:06",
-                tid: "",
-                action: { PlayArrowIcon },
-            },
-            {
-                id: 6,
-                name: "CVE-2020-1147",
-                schedule: "CVE-2020-1147",
-                lastscanned: "2020-1-9 11:17:11",
-                tid: "",
-                action: { PlayArrowIcon },
-            },
-            {
-                id: 7,
-                name: "CVE-2021-22123",
-                schedule: "CVE-2021-22123",
-                lastscanned: "2021-9-19 2:53:20",
-                tid: "",
-                action: { PlayArrowIcon },
-            },
-            {
-                id: 8,
-                name: "CVE-2021-36580",
-                schedule: "CVE-2021-36580",
-                lastscanned: "2021-6-8 8:43:03",
-                tid: "",
-                action: { PlayArrowIcon },
-            },
-            {
-                id: 9,
-                name: "CVE-2022-23642",
-                schedule: "CVE-2022-23642",
-                lastscanned: "2022-3-14 2:08:16",
-                tid: "",
-                action: { PlayArrowIcon },
-            },
-        ];
         this.state = {
             newScanModalIsOpen: false,
             createFolderModalIsOpen: false,
             modalLoading: false,
             modalSuccess: false,
             selectedTIDs: [],
-            rows: this.rows,
         };
         this.newScanModalStyle = {
             position: "absolute",
@@ -186,6 +111,81 @@ class ProjectFolder extends React.Component {
             },
         ];
     }
+
+    rows = [
+        {
+            id: 1,
+            name: "CVE-2020-26067",
+            schedule: "CVE-2020-26067",
+            lastscanned: "2020-8-12 3:12:02",
+            tid: "64b8f5bb922b684322bd3e81",
+            action: "scanning",
+        },
+        {
+            id: 2,
+            name: "CVE-2021-26119",
+            schedule: "CVE-2021-26119",
+            lastscanned: "2021-5-04 12:03:18",
+            tid: "",
+            action: "paused",
+        },
+        {
+            id: 3,
+            name: "api_endpoints",
+            schedule: "api_endpoints",
+            lastscanned: "2020-3-24 9:35:23",
+            tid: "",
+            action: "stoped",
+        },
+        {
+            id: 4,
+            name: "CVE-2017-7504",
+            schedule: "CVE-2017-7504",
+            lastscanned: "2017-8-26 1:25:09",
+            tid: "",
+            action: "idle",
+        },
+        {
+            id: 5,
+            name: "CVE-2017-12636",
+            schedule: "CVE-2017-12636",
+            lastscanned: "2017-11-04 3:47:06",
+            tid: "",
+            action: { PlayArrowIcon },
+        },
+        {
+            id: 6,
+            name: "CVE-2020-1147",
+            schedule: "CVE-2020-1147",
+            lastscanned: "2020-1-9 11:17:11",
+            tid: "",
+            action: { PlayArrowIcon },
+        },
+        {
+            id: 7,
+            name: "CVE-2021-22123",
+            schedule: "CVE-2021-22123",
+            lastscanned: "2021-9-19 2:53:20",
+            tid: "",
+            action: { PlayArrowIcon },
+        },
+        {
+            id: 8,
+            name: "CVE-2021-36580",
+            schedule: "CVE-2021-36580",
+            lastscanned: "2021-6-8 8:43:03",
+            tid: "",
+            action: { PlayArrowIcon },
+        },
+        {
+            id: 9,
+            name: "CVE-2022-23642",
+            schedule: "CVE-2022-23642",
+            lastscanned: "2022-3-14 2:08:16",
+            tid: "",
+            action: { PlayArrowIcon },
+        },
+    ];
 
     //
     // ┏┓  ┓┓  ┏┓  •
@@ -265,9 +265,7 @@ class ProjectFolder extends React.Component {
                         <Tooltip title="Pause">
                             <IconButton
                                 aria-label="take action for this project"
-                                onClick={() =>
-                                    this.handleAction(param.row.id, "Pause")
-                                }
+                                onClick={() => this.handleAction(params.row.id)}
                             >
                                 <PauseIcon />
                             </IconButton>
@@ -275,9 +273,7 @@ class ProjectFolder extends React.Component {
                         <Tooltip title="Stop">
                             <IconButton
                                 aria-label="take action for this project"
-                                onClick={() =>
-                                    this.handleAction(param.row.id, "Stop")
-                                }
+                                onClick={() => this.handleAction(params.row.id)}
                             >
                                 <StopIcon />
                             </IconButton>
@@ -285,9 +281,7 @@ class ProjectFolder extends React.Component {
                         <Tooltip title="Rescan">
                             <IconButton
                                 aria-label="take action for this project"
-                                onClick={() =>
-                                    this.handleAction(param.row.id, "Restart")
-                                }
+                                onClick={() => this.handleAction(params.row.id)}
                             >
                                 <ReplayIcon />
                             </IconButton>
@@ -300,9 +294,7 @@ class ProjectFolder extends React.Component {
                         <Tooltip title="Resume">
                             <IconButton
                                 aria-label="take action for this project"
-                                onClick={() =>
-                                    this.handleAction(param.row.id, "Resume")
-                                }
+                                onClick={() => this.handleAction(params.row.id)}
                             >
                                 <PlayArrowIcon />
                             </IconButton>
@@ -310,9 +302,7 @@ class ProjectFolder extends React.Component {
                         <Tooltip title="Stop">
                             <IconButton
                                 aria-label="take action for this project"
-                                onClick={() =>
-                                    this.handleAction(param.row.id, "Stop")
-                                }
+                                onClick={() => this.handleAction(params.row.id)}
                             >
                                 <StopIcon />
                             </IconButton>
@@ -320,9 +310,7 @@ class ProjectFolder extends React.Component {
                         <Tooltip title="Rescan">
                             <IconButton
                                 aria-label="take action for this project"
-                                onClick={() =>
-                                    this.handleAction(param.row.id, "Restart")
-                                }
+                                onClick={() => this.handleAction(params.row.id)}
                             >
                                 <ReplayIcon />
                             </IconButton>
@@ -334,9 +322,7 @@ class ProjectFolder extends React.Component {
                     <Tooltip title="Scan Now">
                         <IconButton
                             aria-label="take action for this project"
-                            onClick={() =>
-                                this.handleAction(param.row.id, "Scan")
-                            }
+                            onClick={() => this.handleAction(params.row.id)}
                         >
                             <PlayArrowIcon />
                         </IconButton>
@@ -347,9 +333,7 @@ class ProjectFolder extends React.Component {
                     <Tooltip title="Scan Now">
                         <IconButton
                             aria-label="take action for this project"
-                            onClick={() =>
-                                this.handleAction(param.row.id, "Scan")
-                            }
+                            onClick={() => this.handleAction(params.row.id)}
                         >
                             <PlayArrowIcon />
                         </IconButton>
@@ -358,54 +342,22 @@ class ProjectFolder extends React.Component {
         }
     };
 
-    handleAction = (id, action) => {
+    handleAction = (id) => {
         // Find the index of the row with the given id
-        const rowIndex = this.state.rows.findIndex((object) => {
-            return object.id === id;
-        });
-
+        const rowIndex = this.state.rows.findIndex(row => row.id === id);
         if (rowIndex === -1) return; // If row not found, don't do anything
-
+    
         // Copy the current state's rows
         const newRows = [...this.state.rows];
-
-        // Action control &&
+    
         // Change the action of the row with the given id to "scanning"
-
-        switch (action) {
-            case "Scan":
-                newRows[rowIndex].action = "scanning";
-                // this.projectActionScan(id);
-                break;
-            case "Pause":
-                newRows[rowIndex].action = "paused";
-                // this.projectActionPause(id);
-                break;
-            case "Stop":
-                newRows[rowIndex].action = "idle";
-                // this.projectActionStop(id);
-                break;
-            case "Resume":
-                newRows[rowIndex].action = "scanning";
-                // this.projectActionResume(id);
-                break;
-            case "Restart":
-                newRows[rowIndex].action = "scanning";
-                // this.projectActionRestart(id);
-                break;
-        }
-
+        newRows[rowIndex].action = "scanning";
+    
         // Update the state with the new rows
         this.setState({ rows: newRows });
-
+    
         console.log(`Action button clicked for id: ${id}`);
     };
-
-    projectActionScan = () => {};
-    projectActionPause = () => {};
-    projectActionStop = () => {};
-    projectActionResume = () => {};
-    projectActionRestart = () => {};
 
     handleRemove = (id) => {
         // Handle remove here
