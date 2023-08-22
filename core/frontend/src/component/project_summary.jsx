@@ -82,7 +82,7 @@ export default class ProjectSummary extends React.Component {
                 <div>
                     <div>
                         <img
-                            src="image/vulnerabilities/vulnerabilities_4.png"
+                            src="../image/vulnerabilities/vulnerabilities_4.png"
                             alt=""
                         />
                         <p>4</p>
@@ -92,7 +92,7 @@ export default class ProjectSummary extends React.Component {
                 <div>
                     <div>
                         <img
-                            src="image/vulnerabilities/vulnerabilities_3.png"
+                            src="../image/vulnerabilities/vulnerabilities_3.png"
                             alt=""
                         />
                         <p>3</p>
@@ -102,7 +102,7 @@ export default class ProjectSummary extends React.Component {
                 <div>
                     <div>
                         <img
-                            src="image/vulnerabilities/vulnerabilities_2.png"
+                            src="../image/vulnerabilities/vulnerabilities_2.png"
                             alt=""
                         />
                         <p>2</p>
@@ -112,7 +112,7 @@ export default class ProjectSummary extends React.Component {
                 <div>
                     <div>
                         <img
-                            src="image/vulnerabilities/vulnerabilities_1.png"
+                            src="../image/vulnerabilities/vulnerabilities_1.png"
                             alt=""
                         />
                         <p>1</p>

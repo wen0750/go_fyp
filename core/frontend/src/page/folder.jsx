@@ -177,7 +177,9 @@ class ProjectFolder extends React.Component {
                     <Tooltip title="Delete" placement="right">
                         <IconButton
                             aria-label="remove this project from project"
-                            onClick={() => this.handleRemove(params.row.id)}
+                            onClick={() =>
+                                this.handleRemoveProject(params.row.id)
+                            }
                         >
                             <DeleteIcon />
                         </IconButton>
@@ -193,7 +195,6 @@ class ProjectFolder extends React.Component {
     // ┗┛┗┻┗┗  ┛┗┣┛┗
     //           ┛
     //
-
     fetchFoldersDetail = () => {
         fetch(
             `${globeVar.backendprotocol}://${globeVar.backendhost}/folder/list`,
@@ -371,7 +372,6 @@ class ProjectFolder extends React.Component {
 
         // Action control &&
         // Change the action of the row with the given id to "scanning"
-
         switch (action) {
             case "Scan":
                 newRows[rowIndex].action = "scanning";
@@ -394,10 +394,8 @@ class ProjectFolder extends React.Component {
                 // this.projectActionRestart(id);
                 break;
         }
-
         // Update the state with the new rows
         this.setState({ rows: newRows });
-
         console.log(`Action button clicked for id: ${id}`);
     };
 
@@ -407,7 +405,7 @@ class ProjectFolder extends React.Component {
     projectActionResume = () => {};
     projectActionRestart = () => {};
 
-    handleRemove = (id) => {
+    handleRemoveProject = (id) => {
         // Handle remove here
         console.log(`Remove button clicked for id: ${id}`);
     };

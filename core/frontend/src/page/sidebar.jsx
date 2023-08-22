@@ -16,12 +16,12 @@ function App() {
                         dummyData.map((item, index) => (
                             <Route
                                 key={index}
-                                path={item.path}
+                                path={item.path + "/" + item.id}
                                 displayName={item.name}
                                 element={
                                     <DynamicItem
-                                        page={item.name}
-                                        path={item.path}
+                                        page={item.path}
+                                        fid={item.id}
                                     />
                                 }
                             />

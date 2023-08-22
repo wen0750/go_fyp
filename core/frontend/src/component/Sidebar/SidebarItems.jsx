@@ -21,7 +21,7 @@ const SidebarItems = ({ displaySidebar }) => {
                     className={itemData.id === activeItem ? "active" : ""}
                 >
                     <Link
-                        to={itemData.path}
+                        to={itemData.path + "/" + itemData.id}
                         style={{ padding: "0.5rem 0.25rem", width: "100%" }}
                     >
                         <ItemWrapper>

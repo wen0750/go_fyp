@@ -3,11 +3,12 @@ import ProjectFolder from "../../page/folder";
 import ProjectItem from "../../page/project";
 
 const Item = (props) => {
-    const { page, path, index } = props;
-
-    switch (path) {
+    const { page } = props;
+    console.log(props);
+    switch (page) {
         case "folder":
-            return <ProjectFolder pid={index} />;
+            const { fid } = props;
+            return <ProjectFolder fid={fid} />;
         case "project":
             return <ProjectItem />;
         case "editor":
