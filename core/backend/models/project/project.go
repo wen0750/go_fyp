@@ -3,6 +3,7 @@ package project
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"go_fyp/core/backend/services/database"
 	"net/http"
 	"os"
@@ -226,8 +227,9 @@ func FastScan(c *gin.Context) {
 	}
 
 	// Use nuclei to scan the target by filename
-	cmd := exec.Command("nuclei", "-t", filename, "-u", "target website", "-json")
+	cmd := exec.Command("nuclei", "-t", filename, "-u", "wp1.wen0750.club", "-debug", "-je")
 	output, err := cmd.CombinedOutput()
+	fmt.Println(string(output))
 	if err != nil {
 		c.JSON(500, gin.H{"error": "Error running Nuclei scan: " + err.Error()})
 		return
@@ -254,7 +256,7 @@ func createYAMLFile(template Template) (string, error) {
 	}
 
 	// Create a temp file
-	tempFile, err := os.CreateTemp("", "template.yaml")
+	tempFile, err := os.CreateTemp("", "template*.yaml")
 	if err != nil {
 		log.Fatal(err)
 	}
