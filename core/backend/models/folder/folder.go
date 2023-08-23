@@ -19,6 +19,9 @@ type InputCreateFolder struct {
 type InputRemoveFolder struct {
 	ID string `json:"id"`
 }
+type InputGetFolder struct {
+	Fid string `json:"fid"`
+}
 
 type Folder struct {
 	Name     string   `json:"name"`
@@ -55,8 +58,32 @@ func init() {
 }
 
 func GetFolder(c *gin.Context) {
+	var inputData InputGetFolder
+
+	// ---> 绑定数据
+	if err := c.ShouldBindJSON(&inputData); err != nil {
+		// c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body"})
+		c.AbortWithStatusJSON(
+			http.StatusInternalServerError,
+			gin.H{"error": err.Error()})
+		return
+	}
+
+	if inputData.Fid == "" {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "empty input"})
+		return
+	}
+
+	// Convert the string ID to an ObjectID
+	objectID, err := primitive.ObjectIDFromHex(inputData.Fid)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
+		return
+	}
+
 	// Retrieve all documents from the collection
-	cursor, err := collection.Find(context.Background(), bson.D{})
+
+	cursor, err := collection.Find(context.Background(), bson.M{"_id": objectID})
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error listing folder"})
 		return
@@ -125,7 +152,6 @@ func CreateFolder(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Folder created successfully"})
-	return
 }
 
 func RemoveFolder(c *gin.Context) {
@@ -160,4 +186,3 @@ func RemoveFolder(c *gin.Context) {
 func ViewFolderItem() {
 	//a function that show the Folder content
 }
-
