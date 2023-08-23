@@ -108,14 +108,13 @@ class ProjectFolder extends React.Component {
             },
         ];
         this.state = {
-            fid: props.fid,
             newScanModalIsOpen: false,
             createFolderModalIsOpen: false,
             modalLoading: false,
             modalSuccess: false,
             selectedTIDs: [],
             rows: this.rows,
-            tableData: this.rows,
+            folderContent: this.rows,
         };
         this.newScanModalStyle = {
             position: "absolute",
@@ -213,13 +212,16 @@ class ProjectFolder extends React.Component {
 
             // Displaying results to console
             .then((json) => {
-                console.log(json);
                 if (json[0].project.length > 0) {
-                    json[0].forEach((item, i) => {
+                    json[0].project.forEach((item, i) => {
                         item.id = i + 1;
                     });
+                    this.setState({ folderContent: json[0].project });
+                } else {
+                    if (this.state.folderContent !== this.rows) {
+                        this.setState({ folderContent: this.rows });
+                    }
                 }
-                this.setState({ tableData: json[0].project });
             });
     };
 
@@ -674,7 +676,7 @@ class ProjectFolder extends React.Component {
         return (
             <div style={{ height: "100%", width: "100%" }}>
                 <DataGrid
-                    rows={this.state.tableData}
+                    rows={this.state.folderContent}
                     columns={this.columns}
                     initialState={{
                         pagination: {
@@ -688,29 +690,15 @@ class ProjectFolder extends React.Component {
         );
     };
     componentDidMount() {
-        this.fetchFoldersDetail(this.state.fid);
-        console.log(this.state.rows);
+        this.fetchFoldersDetail(this.props.fid);
     }
-
-    componentWillMount() {
-        console.log("Will Mount");
-        console.log(this.state.fid);
-        console.log(this.props.fid);
-    }
-    componentWillReceiveProps() {
-        console.log("Will Receive Props");
-        console.log(this.state.fid);
-        console.log(this.props.fid);
-    }
-    componentWillUpdate() {
-        console.log("Will Update");
-        console.log(this.state.fid);
-        console.log(this.props.fid);
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.fid !== this.props.fid) {
+            this.fetchFoldersDetail(nextProps.fid);
+        }
     }
     render() {
-        console.log("render");
-        console.log(this.state.fid);
-        console.log(this.props.fid);
+        console.log(this.state.folderContent);
         return (
             <div>
                 <this.projectHeader />
