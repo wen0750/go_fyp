@@ -49,7 +49,7 @@ export default class ProjectHosts extends React.Component {
             page: 0,
             dense: false,
             rowsPerPage: 10,
-            showStackedBar: false,
+            showStackedBar: 0,
         };
 
         this.headCells = [
@@ -340,6 +340,7 @@ export default class ProjectHosts extends React.Component {
 
         const handleChangePage = (event, newPage) => {
             setPage(newPage);
+            this.setState({ showStackedBar: 1 });
         };
 
         const handleChangeRowsPerPage = (event) => {
@@ -511,27 +512,21 @@ export default class ProjectHosts extends React.Component {
     };
     componentDidMount() {
         this.setState({
-            showStackedBar: true,
+            showStackedBar: 3,
         });
     }
 
-    // componentWillUpdate() {
-    //     if (this.state.showStackedBar == false) {
-    //         this.setState({
-    //             showStackedBar: true,
-    //         });
+    // componentDidUpdate() {
+    //     console.log("Done Update");
+
+    //     if (this.state.showStackedBar < 3) {
+    //         setTimeout(() => {
+    //             this.setState({
+    //                 showStackedBar: this.state.showStackedBar + 1,
+    //             });
+    //         }, 100);
     //     }
     // }
-
-    componentDidUpdate() {
-        if (this.state.showStackedBar) {
-            setTimeout(() => {
-                this.setState({
-                    showStackedBar: true,
-                });
-            }, 1000);
-        }
-    }
 
     render() {
         return (
