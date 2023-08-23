@@ -108,12 +108,14 @@ class ProjectFolder extends React.Component {
             },
         ];
         this.state = {
+            fid: props.fid,
             newScanModalIsOpen: false,
             createFolderModalIsOpen: false,
             modalLoading: false,
             modalSuccess: false,
             selectedTIDs: [],
             rows: this.rows,
+            tableData: this.rows,
         };
         this.newScanModalStyle = {
             position: "absolute",
@@ -195,18 +197,30 @@ class ProjectFolder extends React.Component {
     // ┗┛┗┻┗┗  ┛┗┣┛┗
     //           ┛
     //
-    fetchFoldersDetail = () => {
+    fetchFoldersDetail = (fid) => {
+        var result;
         fetch(
-            `${globeVar.backendprotocol}://${globeVar.backendhost}/folder/list`,
+            `${globeVar.backendprotocol}://${globeVar.backendhost}/folder/details`,
             {
                 method: "POST",
+                body: JSON.stringify({
+                    fid: fid,
+                }),
             }
         )
             // Converting to JSON
             .then((response) => response.json())
 
             // Displaying results to console
-            .then((json) => console.log(json));
+            .then((json) => {
+                console.log(json);
+                if (json[0].project.length > 0) {
+                    json[0].forEach((item, i) => {
+                        item.id = i + 1;
+                    });
+                }
+                this.setState({ tableData: json[0].project });
+            });
     };
 
     createNewFolder = () => {
@@ -660,14 +674,14 @@ class ProjectFolder extends React.Component {
         return (
             <div style={{ height: "100%", width: "100%" }}>
                 <DataGrid
-                    rows={this.rows}
+                    rows={this.state.tableData}
                     columns={this.columns}
                     initialState={{
                         pagination: {
-                            paginationModel: { page: 0, pageSize: 5 },
+                            paginationModel: { page: 0, pageSize: 10 },
                         },
                     }}
-                    pageSizeOptions={[5, 10]}
+                    pageSizeOptions={[10, 25, 50]}
                     checkboxSelection
                 />
             </div>
