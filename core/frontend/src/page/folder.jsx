@@ -687,8 +687,30 @@ class ProjectFolder extends React.Component {
             </div>
         );
     };
+    componentDidMount() {
+        this.fetchFoldersDetail(this.state.fid);
+        console.log(this.state.rows);
+    }
 
+    componentWillMount() {
+        console.log("Will Mount");
+        console.log(this.state.fid);
+        console.log(this.props.fid);
+    }
+    componentWillReceiveProps() {
+        console.log("Will Receive Props");
+        console.log(this.state.fid);
+        console.log(this.props.fid);
+    }
+    componentWillUpdate() {
+        console.log("Will Update");
+        console.log(this.state.fid);
+        console.log(this.props.fid);
+    }
     render() {
+        console.log("render");
+        console.log(this.state.fid);
+        console.log(this.props.fid);
         return (
             <div>
                 <this.projectHeader />
