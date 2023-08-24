@@ -36,17 +36,20 @@ type Folder struct {
 }
 
 type ProjectItem struct {
-	Name     string   `json:"name"`
-	Pid      string   `json:"pid"`
-	Host     []string `json:"host"`
-	Poc      []string `json:"poc"`
-	LastScan int      `json:"lastscan"`
+	Pid      primitive.ObjectID `json:"pid"`
+	Name     string             `json:"name"`
+	Host     []string           `json:"host"`
+	Poc      []string           `json:"poc"`
+	LastScan int                `json:"lastscan"`
+	Schedule string             `json:"schedule"`
+	Status   string             `json:"status"`
 }
 
 // From 127.0.0.1:8888/project/fastScan
 type ScanRequest struct {
 	ID string `json:"_id"`
 }
+
 // For find
 type Template struct {
 	ID   string `json:"id"`
@@ -148,7 +151,8 @@ func ProjectCreateHandeler(c *gin.Context) {
 		poc = []string{"wp"}
 	}
 
-	var newProject = ProjectItem{inputData.Name, inputData.Fid, inputData.Host, poc, 1000}
+	var primary_id = primitive.NewObjectID()
+	var newProject = ProjectItem{primary_id, inputData.Name, inputData.Host, poc, 1000, "onDemand", "idle"}
 
 	result, err := addProjectToFolder(newProject, inputData.Fid)
 	if err != nil {
@@ -235,12 +239,10 @@ func FastScan(c *gin.Context) {
 		return
 	}
 
-
 	c.JSON(200, gin.H{"data": result, "file": filename, "scan_output": string(output)})
 	// Delete the file after scanning
 	defer os.Remove(filename)
 }
-
 
 func createYAMLFile(template Template) (string, error) {
 	// Convert the Template object to JSON
