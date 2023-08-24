@@ -7,16 +7,14 @@ import {
     Typography,
     Modal,
 } from "@mui/material";
-import { Chip, Autocomplete, TextField, Stack } from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
-
-import { DataGrid } from "@mui/x-data-grid";
 import Grid from "@mui/material/Grid";
+import { Autocomplete, TextField, Stack } from "@mui/material";
 import { OutlinedInput, InputAdornment, FormControl } from "@mui/material";
 
-import { green } from "@mui/material/colors";
-import { FolderHeader } from "../component/page_style/folder_style";
+import LoadingButton from "@mui/lab/LoadingButton";
+import { DataGrid } from "@mui/x-data-grid";
 
+import { FolderHeader } from "../component/page_style/folder_style";
 import InputTags from "../component/ext_chips_input";
 import globeVar from "../../GlobalVar";
 
@@ -108,15 +106,18 @@ class ProjectFolder extends React.Component {
             },
         ];
         this.state = {
-            newScanModalIsOpen: false,
+            createProjectModalIsOpen: false,
             createFolderModalIsOpen: false,
             modalLoading: false,
-            modalSuccess: false,
             selectedTIDs: [],
             rows: this.rows,
             folderContent: this.rows,
+            f_folder_name: "",
+            f_project_name: "",
+            f_project_host: [],
+            f_project_pocs: [],
         };
-        this.newScanModalStyle = {
+        this.CreateProjectModalStyle = {
             position: "absolute",
             top: "50%",
             left: "50%",
@@ -127,14 +128,6 @@ class ProjectFolder extends React.Component {
             // border: "2px solid #000",
             boxShadow: 24,
             p: 4,
-        };
-        this.modalButtonSx = {
-            ...(this.modalSuccess && {
-                bgcolor: green[500],
-                "&:hover": {
-                    bgcolor: green[700],
-                },
-            }),
         };
         this.columns = [
             {
@@ -159,7 +152,7 @@ class ProjectFolder extends React.Component {
                 maxWidth: 400,
             },
             {
-                field: "action",
+                field: "status",
                 headerName: "Action",
                 sortable: false,
                 width: 150,
@@ -226,47 +219,53 @@ class ProjectFolder extends React.Component {
     };
 
     createNewFolder = () => {
-        fetch(
-            `${globeVar.backendprotocol}://${globeVar.backendhost}/folder/create`,
-            {
-                method: "POST",
-                body: JSON.stringify({
-                    name: "Folder H",
-                }),
-            }
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                // Handle data
-            })
-            .catch((err) => {
-                console.log(err.message);
-            });
+        if (this.state.f_folder_name) {
+            fetch(
+                `${globeVar.backendprotocol}://${globeVar.backendhost}/folder/create`,
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        name: this.state.f_folder_name,
+                    }),
+                }
+            )
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    // Handle data
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                });
+        }
     };
 
     createNewProject = () => {
-        fetch(
-            `${globeVar.backendprotocol}://${globeVar.backendhost}/project/create`,
-            {
-                method: "POST",
-                body: JSON.stringify({
-                    name: "test3",
-                    fid: "64bf73043cf5c58b00658727",
-                    host: ["127.0.0.1", "123.45.67.30"],
-                    poc: ["20231123001"],
-                    template: "customs",
-                }),
-            }
-        )
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                // Handle data
-            })
-            .catch((err) => {
-                console.log(err.message);
-            });
+        console.log("tttttttttttttttt");
+        if (this.state.f_project_name && this.state.f_project_host) {
+            console.log("ttttttttttttttttt");
+            fetch(
+                `${globeVar.backendprotocol}://${globeVar.backendhost}/project/create`,
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        name: this.state.f_project_name,
+                        fid: this.props.fid,
+                        host: this.state.f_project_host,
+                        poc: this.state.f_project_pocs,
+                        template: "customs",
+                    }),
+                }
+            )
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    // Handle data
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                });
+        }
     };
 
     //
@@ -275,7 +274,7 @@ class ProjectFolder extends React.Component {
     // ┗┛  ┗    ┻┛┗ ┛┗┗┫┛┗
     //                 ┛
     renderActionButton = (param) => {
-        switch (param.row.action) {
+        switch (param.row.status) {
             case "scanning":
                 return (
                     <div>
@@ -283,7 +282,7 @@ class ProjectFolder extends React.Component {
                             <IconButton
                                 aria-label="take action for this project"
                                 onClick={() =>
-                                    this.handleAction(param.row.id, "Pause")
+                                    this.handleAction(param.row.pid, "Pause")
                                 }
                             >
                                 <PauseIcon />
@@ -293,7 +292,7 @@ class ProjectFolder extends React.Component {
                             <IconButton
                                 aria-label="take action for this project"
                                 onClick={() =>
-                                    this.handleAction(param.row.id, "Stop")
+                                    this.handleAction(param.row.pid, "Stop")
                                 }
                             >
                                 <StopIcon />
@@ -303,7 +302,7 @@ class ProjectFolder extends React.Component {
                             <IconButton
                                 aria-label="take action for this project"
                                 onClick={() =>
-                                    this.handleAction(param.row.id, "Restart")
+                                    this.handleAction(param.row.pid, "Restart")
                                 }
                             >
                                 <ReplayIcon />
@@ -318,7 +317,7 @@ class ProjectFolder extends React.Component {
                             <IconButton
                                 aria-label="take action for this project"
                                 onClick={() =>
-                                    this.handleAction(param.row.id, "Resume")
+                                    this.handleAction(param.row.pid, "Resume")
                                 }
                             >
                                 <PlayArrowIcon />
@@ -328,7 +327,7 @@ class ProjectFolder extends React.Component {
                             <IconButton
                                 aria-label="take action for this project"
                                 onClick={() =>
-                                    this.handleAction(param.row.id, "Stop")
+                                    this.handleAction(param.row.pid, "Stop")
                                 }
                             >
                                 <StopIcon />
@@ -338,7 +337,7 @@ class ProjectFolder extends React.Component {
                             <IconButton
                                 aria-label="take action for this project"
                                 onClick={() =>
-                                    this.handleAction(param.row.id, "Restart")
+                                    this.handleAction(param.row.pid, "Restart")
                                 }
                             >
                                 <ReplayIcon />
@@ -352,7 +351,7 @@ class ProjectFolder extends React.Component {
                         <IconButton
                             aria-label="take action for this project"
                             onClick={() =>
-                                this.handleAction(param.row.id, "Scan")
+                                this.handleAction(param.row.pid, "Scan")
                             }
                         >
                             <PlayArrowIcon />
@@ -365,7 +364,7 @@ class ProjectFolder extends React.Component {
                         <IconButton
                             aria-label="take action for this project"
                             onClick={() =>
-                                this.handleAction(param.row.id, "Scan")
+                                this.handleAction(param.row.pid, "Scan")
                             }
                         >
                             <PlayArrowIcon />
@@ -377,36 +376,37 @@ class ProjectFolder extends React.Component {
 
     handleAction = (id, action) => {
         // Find the index of the row with the given id
-        const rowIndex = this.state.rows.findIndex((object) => {
-            return object.id === id;
+        console.log(this.state.folderContent);
+        const rowIndex = this.state.folderContent.findIndex((object) => {
+            return object.pid === id;
         });
 
         if (rowIndex === -1) return; // If row not found, don't do anything
 
         // Copy the current state's rows
-        const newRows = [...this.state.rows];
+        const newRows = [...this.state.folderContent];
 
         // Action control &&
         // Change the action of the row with the given id to "scanning"
         switch (action) {
             case "Scan":
-                newRows[rowIndex].action = "scanning";
+                newRows[rowIndex].status = "scanning";
                 // this.projectActionScan(id);
                 break;
             case "Pause":
-                newRows[rowIndex].action = "paused";
+                newRows[rowIndex].status = "paused";
                 // this.projectActionPause(id);
                 break;
             case "Stop":
-                newRows[rowIndex].action = "idle";
+                newRows[rowIndex].status = "idle";
                 // this.projectActionStop(id);
                 break;
             case "Resume":
-                newRows[rowIndex].action = "scanning";
+                newRows[rowIndex].status = "scanning";
                 // this.projectActionResume(id);
                 break;
             case "Restart":
-                newRows[rowIndex].action = "scanning";
+                newRows[rowIndex].status = "scanning";
                 // this.projectActionRestart(id);
                 break;
         }
@@ -426,34 +426,54 @@ class ProjectFolder extends React.Component {
         console.log(`Remove button clicked for id: ${id}`);
     };
 
-    openNewScanModal = () => {
-        this.setState({ newScanModalIsOpen: true });
+    //   _____
+    //  |  __ \
+    //  | |__) |__  _ __  _   _ _ __
+    //  |  ___/ _ \| '_ \| | | | '_ \
+    //  | |  | (_) | |_) | |_| | |_) |
+    //  |_|   \___/| .__/ \__,_| .__/
+    //             | |         | |
+    //             |_|         |_|
+
+    // project
+    changeProjectFormInput_name = (e) => {
+        this.setState({ f_project_name: e.target.value });
+    };
+    changeProjectFormInput_host = (d) => {
+        this.setState({ f_project_host: d });
+    };
+    changeProjectFormInput_pocs = (e) => {
+        console.log(e.target.value);
+        this.setState({ f_project_pocs: e.target.value });
     };
 
-    closeNewScanModal = () => {
-        this.setState({ newScanModalIsOpen: false });
+    openCreateProjectModal = () => {
+        this.setState({ createProjectModalIsOpen: true });
+    };
+    closeCreateProjectModal = () => {
+        this.setState({ createProjectModalIsOpen: false });
     };
 
-    openCreateFolderModal = () => {
-        this.setState({ createFolderModalIsOpen: true });
+    handleCreateProjectModalSend = () => {
+        this.setState({ modalLoading: true });
+        this.createNewProject();
+        setTimeout(() => {
+            this.setState({ modalLoading: false });
+            this.closeCreateProjectModal();
+        }, 1000);
     };
-
-    closeCreateFolderModal = () => {
-        this.setState({ createFolderModalIsOpen: false });
-    };
-
-    newScanModal = () => {
+    CreateProjectModal = () => {
         var pocs = [];
         pocs = this.rows;
         return (
             <div>
                 <Modal
-                    open={this.state.newScanModalIsOpen}
-                    onClose={this.closeNewScanModal}
+                    open={this.state.createProjectModalIsOpen}
+                    onClose={this.closeCreateProjectModal}
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                 >
-                    <Box sx={this.newScanModalStyle}>
+                    <Box sx={this.CreateProjectModalStyle}>
                         <Typography
                             id="modal-modal-title"
                             variant="h6"
@@ -466,8 +486,11 @@ class ProjectFolder extends React.Component {
                                 id="outlined-basic"
                                 label="Template_Names"
                                 variant="outlined"
+                                onChange={this.changeProjectFormInput_name}
                             />
-                            <InputTags></InputTags>
+                            <InputTags
+                                cbFunc={this.changeProjectFormInput_host}
+                            ></InputTags>
                             <Autocomplete
                                 multiple
                                 id="tags-outlined"
@@ -507,7 +530,7 @@ class ProjectFolder extends React.Component {
                                 <Button
                                     variant="outlined"
                                     startIcon={<DeleteIcon />}
-                                    onClick={this.closeNewScanModal}
+                                    onClick={this.closeCreateProjectModal}
                                     color="error"
                                 >
                                     Cancel
@@ -520,13 +543,15 @@ class ProjectFolder extends React.Component {
                                 alignItems="center"
                                 xs={6}
                             >
-                                <Button
-                                    variant="contained"
+                                <LoadingButton
+                                    onClick={this.handleCreateProjectModalSend}
                                     endIcon={<SendIcon />}
-                                    onClick={this.createNewProject}
+                                    loading={this.state.modalLoading}
+                                    loadingPosition="end"
+                                    variant="contained"
                                 >
-                                    Send
-                                </Button>
+                                    <span>Send</span>
+                                </LoadingButton>
                             </Grid>
                         </Grid>
                     </Box>
@@ -535,7 +560,29 @@ class ProjectFolder extends React.Component {
         );
     };
 
-    createProjectModal = () => {
+    // folder
+    changeFolderFormInput_name = (e) => {
+        console.log(e.target.value);
+        this.setState({ f_folder_name: e.target.value });
+    };
+
+    openCreateFolderModal = () => {
+        this.setState({ createFolderModalIsOpen: true });
+    };
+    closeCreateFolderModal = () => {
+        this.setState({ createFolderModalIsOpen: false });
+    };
+
+    handleCreateFolderModalSend = () => {
+        this.setState({ modalLoading: true });
+        this.createNewFolder();
+        setTimeout(() => {
+            this.setState({ modalLoading: false });
+            this.closeCreateFolderModal();
+        }, 1000);
+    };
+
+    createFolderModal = () => {
         var pocs = [];
         pocs = this.rows;
         return (
@@ -546,7 +593,7 @@ class ProjectFolder extends React.Component {
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                 >
-                    <Box sx={this.newScanModalStyle}>
+                    <Box sx={this.CreateProjectModalStyle}>
                         <Typography
                             id="modal-modal-title"
                             variant="h6"
@@ -559,6 +606,7 @@ class ProjectFolder extends React.Component {
                                 id="outlined-basic"
                                 label="Folder_Names"
                                 variant="outlined"
+                                onChange={this.changeFolderFormInput_name}
                             />
                         </Stack>
                         <Grid
@@ -589,13 +637,15 @@ class ProjectFolder extends React.Component {
                                 alignItems="center"
                                 xs={6}
                             >
-                                <Button
-                                    variant="contained"
+                                <LoadingButton
+                                    onClick={this.handleCreateFolderModalSend}
                                     endIcon={<SendIcon />}
-                                    onEnded
+                                    loading={this.state.modalLoading}
+                                    loadingPosition="end"
+                                    variant="contained"
                                 >
-                                    Send
-                                </Button>
+                                    <span>Send</span>
+                                </LoadingButton>
                             </Grid>
                         </Grid>
                     </Box>
@@ -604,16 +654,14 @@ class ProjectFolder extends React.Component {
         );
     };
 
-    handleModalButtonClick = () => {
-        // this.closeNewScanModal();
-        if (!this.state.modalLoading) {
-            this.setState({ modalLoading: true });
-            timer.current = window.setTimeout(() => {
-                this.setState({ modalLoading: true });
-                this.setState({ modalSuccess: false });
-            }, 2000);
-        }
-    };
+    //   ____            _
+    //  |  _ \          | |
+    //  | |_) | ___   __| |_   _
+    //  |  _ < / _ \ / _` | | | |
+    //  | |_) | (_) | (_| | |_| |
+    //  |____/ \___/ \__,_|\__, |
+    //                      __/ |
+    //                     |___/
 
     projectHeader = () => {
         return (
@@ -642,7 +690,7 @@ class ProjectFolder extends React.Component {
                         <Button
                             variant="contained"
                             startIcon={<ControlPointRoundedIcon />}
-                            onClick={this.openNewScanModal}
+                            onClick={this.openCreateProjectModal}
                             sx={{ mx: 1 }}
                         >
                             Create Project
@@ -690,6 +738,7 @@ class ProjectFolder extends React.Component {
             </div>
         );
     };
+
     componentDidMount() {
         this.fetchFoldersDetail(this.props.fid);
     }
@@ -707,8 +756,8 @@ class ProjectFolder extends React.Component {
                     <this.projectBody />
                     <this.projectTable />
                 </div>
-                <this.newScanModal />
-                <this.createProjectModal />
+                <this.CreateProjectModal />
+                <this.createFolderModal />
             </div>
         );
     }

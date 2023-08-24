@@ -45,13 +45,14 @@ const classes = (theme) => ({
     },
 });
 
-export default function InputTags() {
+export default function InputTags(props) {
     const [tags, SetTags] = useState([]);
     const tagRef = useRef();
 
     const handleDelete = (value) => {
         const newtags = tags.filter((val) => val !== value);
         SetTags(newtags);
+        props.cbFunc(newtags);
     };
     const handleOnSubmit = (e) => {
         e.preventDefault();
@@ -60,6 +61,7 @@ export default function InputTags() {
             !tags.includes(tagRef.current.value)
         ) {
             SetTags([...tags, tagRef.current.value]);
+            props.cbFunc([...tags, tagRef.current.value]);
             tagRef.current.value = "";
         }
     };
@@ -70,8 +72,10 @@ export default function InputTags() {
                     sx={{ height: 1, display: "grid" }}
                     inputRef={tagRef}
                     variant="outlined"
-                    label="Enter tags"
-                    placeholder={tags.length < 5 ? "Enter tags" : ""}
+                    label="Enter Hosts"
+                    placeholder={
+                        tags.length < 5 ? "Enter host(s) (eg. 8.8.8.8)" : ""
+                    }
                     InputProps={{
                         startAdornment: (
                             <Box
