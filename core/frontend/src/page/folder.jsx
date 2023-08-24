@@ -487,7 +487,7 @@ class ProjectFolder extends React.Component {
                                     <TextField
                                         {...params}
                                         label="Select POCs of this project"
-                                        placeholder="POCs"
+                                        placeholder="POCs (ex. CVE-2013-2621.yaml)"
                                     />
                                 )}
                             />
@@ -645,7 +645,8 @@ class ProjectFolder extends React.Component {
                             onClick={this.openNewScanModal}
                             sx={{ mx: 1 }}
                         >
-                            Create Template
+                            Create Project
+                            {/* this was a template */}
                         </Button>
                     </div>
                 </FolderHeader>
