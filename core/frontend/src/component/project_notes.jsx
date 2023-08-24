@@ -35,7 +35,6 @@ import { alpha } from "@mui/material/styles";
 import CanvasJSReact from "@canvasjs/react-charts";
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-
 import StackedBar from "./project_ext_stackedBar";
 
 export default class ProjectNotes extends React.Component {
