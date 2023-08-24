@@ -459,12 +459,12 @@ class ProjectFolder extends React.Component {
                             variant="h6"
                             component="h2"
                         >
-                            Text in a modal
+                            Create a New Template
                         </Typography>
                         <Stack spacing={3} sx={{ width: 1, marginBlock: 1 }}>
                             <TextField
                                 id="outlined-basic"
-                                label="Outlined"
+                                label="Template_Names"
                                 variant="outlined"
                             />
                             <InputTags></InputTags>
@@ -552,12 +552,12 @@ class ProjectFolder extends React.Component {
                             variant="h6"
                             component="h2"
                         >
-                            Text in a modal
+                            Create a New Folder
                         </Typography>
                         <Stack spacing={3} sx={{ width: 1, marginBlock: 1 }}>
                             <TextField
                                 id="outlined-basic"
-                                label="Outlined"
+                                label="Folder_Names"
                                 variant="outlined"
                             />
                         </Stack>

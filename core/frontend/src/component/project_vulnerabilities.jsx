@@ -92,14 +92,6 @@ class ProjectVulnerabilities extends React.Component {
             Family: "General",
             Count: "3",
         },
-        {
-            id: 6,
-            Serverity: "Mixed",
-            Score: "5.5",
-            Name: "wordpress",
-            Family: "Misc",
-            Count: "3",
-        },
     ];
 
     threatslist = () => {
@@ -115,9 +107,8 @@ class ProjectVulnerabilities extends React.Component {
                         else if (params.value == "Info"){return 'Info';}                        
                         else if (params.value == "Low"){return 'Low';}
                         else if (params.value == "Medium"){return 'Medium';}  
-                        else if (params.value == "High"){return 'High';}  
-                        else if (params.value == "Critical"){return 'Critical';}
-                        return params.value = "Mixed" ? 'Mixed' : '';
+                        else if (params.value == "High"){return 'High';} 
+                        return params.value = "Critical" ? 'Critical' : ''; 
                       }}
                     initialState={{
                         pagination: {
@@ -192,10 +183,6 @@ class ProjectVulnerabilities extends React.Component {
                     },
                     '& .Info': {
                         backgroundColor: '#99CCFF',
-                        color: '#202020',
-                    },
-                    '& .Mixed': {
-                        backgroundColor: '#9999FF',
                         color: '#202020',
                     },
                 }}
