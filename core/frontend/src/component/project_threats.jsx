@@ -86,6 +86,14 @@ class ProjectThreats extends React.Component {
             Score: "2.5",
             Hosts: "3",
         },
+        {
+            id: 6,
+            Serverity: "Mixed",
+            Name: "wordpress",
+            Reasons: "No recorded events",
+            Score: "2.5",
+            Hosts: "3",
+        },
     ];
 
     riskLevel = () => {
@@ -131,7 +139,8 @@ class ProjectThreats extends React.Component {
                         else if (params.value == "Low"){return 'Low';}
                         else if (params.value == "Medium"){return 'Medium';}  
                         else if (params.value == "High"){return 'High';}  
-                        return params.value = "Critical" ? 'Critical' : '';  
+                        else if (params.value == "Critical"){return 'Critical';}
+                        return params.value = "Mixed" ? 'Mixed' : '';
                       }}
                     initialState={{
                         pagination: {
@@ -168,6 +177,10 @@ class ProjectThreats extends React.Component {
                     },
                     '& .Info': {
                         backgroundColor: '#99CCFF',
+                        color: '#202020',
+                    },
+                    '& .Mixed': {
+                        backgroundColor: '#9999FF',
                         color: '#202020',
                     },
                 }}
