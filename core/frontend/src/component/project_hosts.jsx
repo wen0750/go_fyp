@@ -516,17 +516,15 @@ export default class ProjectHosts extends React.Component {
         });
     }
 
-    // componentDidUpdate() {
-    //     console.log("Done Update");
-
-    //     if (this.state.showStackedBar < 3) {
-    //         setTimeout(() => {
-    //             this.setState({
-    //                 showStackedBar: this.state.showStackedBar + 1,
-    //             });
-    //         }, 100);
-    //     }
-    // }
+    componentDidUpdate() {
+        if (this.state.showStackedBar < 3) {
+            setTimeout(() => {
+                this.setState({
+                    showStackedBar: this.state.showStackedBar + 1,
+                });
+            }, 100);
+        }
+    }
 
     render() {
         return (
