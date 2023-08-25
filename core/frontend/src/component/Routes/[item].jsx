@@ -1,3 +1,5 @@
+import { useParams } from "react-router-dom";
+
 import Editor from "../../page/editor";
 import ProjectFolder from "../../page/folder";
 import ProjectItem from "../../page/project";
@@ -7,10 +9,15 @@ const Item = (props) => {
     console.log(props);
     switch (page) {
         case "folder":
-            const { fid } = props;
+            let { fid } = useParams();
+            if (typeof fid == "undefined") {
+                fid = "";
+            }
+
             return <ProjectFolder fid={fid} />;
         case "project":
-            return <ProjectItem />;
+            let { pid } = useParams();
+            return <ProjectItem pid={pid} />;
         case "editor":
             return <Editor />;
         default:

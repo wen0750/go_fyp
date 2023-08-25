@@ -2,6 +2,7 @@ import {
     FolderCopyRoundedIcon,
     LayoutIcon,
     DrawRoundedIcon,
+    TerminalIcon,
 } from "./sidebar_icon";
 
 import globeVar from "../../GlobalVar";
@@ -20,19 +21,17 @@ const hardData = [
         icon: <LayoutIcon />,
     },
     {
-        id: 3,
-        name: "template editor",
-        path: "editor",
-        icon: <DrawRoundedIcon />,
-    },
-    /* 
-    {
         id: 4,
         name: "terminal",
         path: "editor",
         icon: <TerminalIcon />,
     },
-    */
+    {
+        id: 3,
+        name: "template editor",
+        path: "editor",
+        icon: <DrawRoundedIcon />,
+    },
 ];
 
 const dataFetch = async () => {
@@ -57,7 +56,7 @@ const dataFetch = async () => {
                 })
             );
         }
-        return list.concat(hardData);
+        return hardData.concat(list);
     } catch (error) {
         console.log("backend server error");
         return hardData;

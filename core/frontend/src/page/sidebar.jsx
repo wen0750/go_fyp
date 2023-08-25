@@ -8,24 +8,19 @@ function App() {
         <div id="main">
             <Sidebar>
                 <Routes>
+                    <Route path="/" element={<DynamicItem page="folder" />} />
                     <Route
-                        path="/"
-                        element={<DynamicItem page="" path="folder" />}
+                        path={"/folder/:fid"}
+                        element={<DynamicItem page="folder" />}
                     />
-                    {dummyData &&
-                        dummyData.map((item, index) => (
-                            <Route
-                                key={index}
-                                path={item.path + "/" + item.id}
-                                displayName={item.name}
-                                element={
-                                    <DynamicItem
-                                        page={item.path}
-                                        fid={item.id}
-                                    />
-                                }
-                            />
-                        ))}
+                    <Route
+                        path={"/project/:pid"}
+                        element={<DynamicItem page="project" />}
+                    />
+                    <Route
+                        path={"/editor/:eid"}
+                        element={<DynamicItem page="editor" />}
+                    />
                 </Routes>
             </Sidebar>
         </div>

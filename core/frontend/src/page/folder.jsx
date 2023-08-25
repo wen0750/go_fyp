@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 import {
     Box,
     Button,
@@ -7,6 +8,7 @@ import {
     Typography,
     Modal,
 } from "@mui/material";
+
 import Grid from "@mui/material/Grid";
 import { Autocomplete, TextField, Stack } from "@mui/material";
 import { OutlinedInput, InputAdornment, FormControl } from "@mui/material";
@@ -136,6 +138,7 @@ class ProjectFolder extends React.Component {
                 width: 250,
                 minWidth: 150,
                 maxWidth: 400,
+                renderCell: (params) => this.renderTablePorjectName(params),
             },
             {
                 field: "schedule",
@@ -190,32 +193,35 @@ class ProjectFolder extends React.Component {
     //           ┛
     //
     fetchFoldersDetail = (fid) => {
-        var result;
-        fetch(
-            `${globeVar.backendprotocol}://${globeVar.backendhost}/folder/details`,
-            {
-                method: "POST",
-                body: JSON.stringify({
-                    fid: fid,
-                }),
-            }
-        )
-            // Converting to JSON
-            .then((response) => response.json())
-
-            // Displaying results to console
-            .then((json) => {
-                if (json[0].project.length > 0) {
-                    json[0].project.forEach((item, i) => {
-                        item.id = i + 1;
-                    });
-                    this.setState({ folderContent: json[0].project });
-                } else {
-                    if (this.state.folderContent !== this.rows) {
-                        this.setState({ folderContent: this.rows });
-                    }
+        if (fid.length > 5) {
+            var result;
+            fetch(
+                `${globeVar.backendprotocol}://${globeVar.backendhost}/folder/details`,
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        fid: fid,
+                    }),
                 }
-            });
+            )
+                // Converting to JSON
+                .then((response) => response.json())
+
+                // Displaying results to console
+                .then((json) => {
+                    if (json[0].project.length > 0) {
+                        console.log("tta1");
+                        json[0].project.forEach((item, i) => {
+                            item.id = i + 1;
+                        });
+                        this.setState({ folderContent: json[0].project });
+                        return;
+                    }
+                });
+        }
+        if (this.state.folderContent !== this.rows) {
+            this.setState({ folderContent: this.rows });
+        }
     };
 
     createNewFolder = () => {
@@ -273,6 +279,21 @@ class ProjectFolder extends React.Component {
     // ┃┃  ┓    ┃┃┏┓┏┓┏┓┏┓
     // ┗┛  ┗    ┻┛┗ ┛┗┗┫┛┗
     //                 ┛
+    renderTablePorjectName = (param) => {
+        return (
+            <Link
+                to={"../project/" + param.row.pid}
+                style={{
+                    width: "100%",
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                }}
+            >
+                {param.row.name}
+            </Link>
+        );
+    };
     renderActionButton = (param) => {
         switch (param.row.status) {
             case "scanning":
@@ -458,6 +479,7 @@ class ProjectFolder extends React.Component {
         this.setState({ modalLoading: true });
         this.createNewProject();
         setTimeout(() => {
+            this.fetchFoldersDetail(this.props.fid);
             this.setState({ modalLoading: false });
             this.closeCreateProjectModal();
         }, 1000);
@@ -734,6 +756,7 @@ class ProjectFolder extends React.Component {
                     }}
                     pageSizeOptions={[10, 25, 50]}
                     checkboxSelection
+                    disableRowSelectionOnClick
                 />
             </div>
         );
