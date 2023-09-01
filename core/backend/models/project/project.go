@@ -197,7 +197,7 @@ func GetPOEList() {
 
 }
 
-func FastScan(c *gin.Context) {
+func StartScan(c *gin.Context) {
 	var req ScanRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {

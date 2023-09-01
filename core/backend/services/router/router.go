@@ -48,8 +48,8 @@ func routing(router *gin.Engine) {
 		switch action {
 		case "create":
 			project.ProjectCreateHandeler(c)
-		case "fastScan":
-			project.FastScan(c)
+		case "startScan":
+			project.StartScan(c)
 		}
 	})
 }
