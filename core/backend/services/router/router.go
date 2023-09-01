@@ -51,5 +51,6 @@ func routing(router *gin.Engine) {
 		case "startScan":
 			project.StartScan(c)
 		}
+		
 	})
 }
