@@ -53,7 +53,7 @@ export default class ProjectNotes extends React.Component {
             {
                 id: "Scan Notes",
                 numeric: false,
-                disablePadding: true,
+                disablePadding: false,
                 label: "Scan Notes",
             },
         ];
@@ -69,8 +69,8 @@ export default class ProjectNotes extends React.Component {
         };
 
         this.rows = [
-            this.createData("google.com", 1),
-            this.createData("facebook.com", 452),
+            this.createData("DNS lssue", "Unable to resolve log4shell-generic-3PsFeAUq2HWWrkuYrflL.r.nessus.org,please check your DNS configuration or retry the scan later"),
+            this.createData("Log4j DNS Failed Request", "Unable to resolve DNS r.nessus.org to check Log4j Vunlnerability"),
             this.createData("amazon.com", 262),
             this.createData("imdb.com", 159),
             this.createData("apple.com", 356),
@@ -313,7 +313,7 @@ export default class ProjectNotes extends React.Component {
                                                 </Typography>
                                                 <Typography
                                                     variant="subtitle2"
-                                                    sx={{ color: "red" }}
+                                                    sx={{ color: "black" }}
                                                     gutterBottom
                                                 >
                                                     {row.calories}
