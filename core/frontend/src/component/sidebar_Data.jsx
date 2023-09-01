@@ -41,6 +41,7 @@ const dataFetch = async () => {
             await fetch(
                 `${globeVar.backendprotocol}://${globeVar.backendhost}/folder/list`,
                 {
+                    signal: AbortSignal.timeout(8000),
                     method: "POST",
                 }
             )

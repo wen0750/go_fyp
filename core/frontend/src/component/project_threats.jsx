@@ -15,8 +15,8 @@ class ProjectThreats extends React.Component {
                 flex: 1.5,
                 width: 150,
                 headerClassName: "gray-background",
-                align: 'center',
-                headerAlign: 'center',
+                align: "center",
+                headerAlign: "center",
             },
             {
                 field: "Name",
@@ -48,7 +48,7 @@ class ProjectThreats extends React.Component {
     rows = [
         {
             id: 1,
-            Serverity: 'Info',
+            Serverity: "Info",
             Name: "SSH",
             Reasons: "No recorded events",
             Score: "5.5",
@@ -92,7 +92,7 @@ class ProjectThreats extends React.Component {
         return (
             <div style={{ display: "flex", marginBlockEnd: "1rem" }}>
                 <img
-                    src="image/shield/3_star_shield-removebg-preview.png"
+                    src="../image/shield/3_star_shield-removebg-preview.png"
                     alt=""
                     width="125"
                     height="125"
@@ -124,15 +124,22 @@ class ProjectThreats extends React.Component {
                     rows={this.rows}
                     columns={this.columns}
                     getCellClassName={(params) => {
-                        if (params.field !== 'Serverity' || params.value == null) {
-                          return '';
+                        if (
+                            params.field !== "Serverity" ||
+                            params.value == null
+                        ) {
+                            return "";
+                        } else if (params.value == "Info") {
+                            return "Info";
+                        } else if (params.value == "Low") {
+                            return "Low";
+                        } else if (params.value == "Medium") {
+                            return "Medium";
+                        } else if (params.value == "High") {
+                            return "High";
                         }
-                        else if (params.value == "Info"){return 'Info';}                        
-                        else if (params.value == "Low"){return 'Low';}
-                        else if (params.value == "Medium"){return 'Medium';}  
-                        else if (params.value == "High"){return 'High';}  
-                        return params.value = "Critical" ? 'Critical' : '';
-                      }}
+                        return (params.value = "Critical" ? "Critical" : "");
+                    }}
                     initialState={{
                         pagination: {
                             paginationModel: { page: 0, pageSize: 10 },
@@ -149,70 +156,72 @@ class ProjectThreats extends React.Component {
             <Box
                 sx={{
                     height: 300,
-                    width: '100%',
-                    '& .Critical': {
-                        backgroundColor: '#990000',
-                        color: '#FFFFFF',
+                    width: "100%",
+                    "& .Critical": {
+                        backgroundColor: "#990000",
+                        color: "#FFFFFF",
                     },
-                    '& .High': {
-                        backgroundColor: '#FF9933',
-                        color: '#202020',
+                    "& .High": {
+                        backgroundColor: "#FF9933",
+                        color: "#202020",
                     },
-                    '& .Medium': {
-                        backgroundColor: '#FFFF99',
-                        color: '#202020',
+                    "& .Medium": {
+                        backgroundColor: "#FFFF99",
+                        color: "#202020",
                     },
-                    '& .Low': {
-                        backgroundColor: '#CCFF99',
-                        color: '#202020',
+                    "& .Low": {
+                        backgroundColor: "#CCFF99",
+                        color: "#202020",
                     },
-                    '& .Info': {
-                        backgroundColor: '#99CCFF',
-                        color: '#202020',
+                    "& .Info": {
+                        backgroundColor: "#99CCFF",
+                        color: "#202020",
                     },
                 }}
             >
-            <Box component="div" sx={{ display: "flex" }}>
-                <Box sx={{ width: "70%" }}>
-                    <this.riskLevel></this.riskLevel>
-                    <this.threatslist></this.threatslist>
+                <Box component="div" sx={{ display: "flex" }}>
+                    <Box sx={{ width: "70%" }}>
+                        <this.riskLevel></this.riskLevel>
+                        <this.threatslist></this.threatslist>
+                    </Box>
+                    <Box sx={{ width: "30%", padding: "25px" }}>
+                        <div style={{ marginBottom: "1rem" }}>
+                            <UnderLineMiniTitle>
+                                Scan Durations
+                            </UnderLineMiniTitle>
+                            <table>
+                                <tr>
+                                    <td width="5%">Policy:</td>
+                                    <td width="20%">Basic Network Scan</td>
+                                </tr>
+                                <tr>
+                                    <td>Status:</td>
+                                    <td>Completed</td>
+                                </tr>
+                                <tr>
+                                    <td>Severity Base:</td>
+                                    <td>CVSS v3.0</td>
+                                </tr>
+                                <tr>
+                                    <td>Scanner:</td>
+                                    <td>Local Scanner</td>
+                                </tr>
+                                <tr>
+                                    <td>Start:</td>
+                                    <td>January 16 at 5:30 PM</td>
+                                </tr>
+                                <tr>
+                                    <td>End:</td>
+                                    <td>January 16 at 6:28 PM</td>
+                                </tr>
+                                <tr>
+                                    <td>Elapsed:</td>
+                                    <td>an hour</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </Box>
                 </Box>
-                <Box sx={{ width: "30%", padding: "25px" }}>
-                    <div style={{ marginBottom: "1rem" }}>
-                        <UnderLineMiniTitle>Scan Durations</UnderLineMiniTitle>
-                        <table>
-                            <tr>
-                                <td width="5%">Policy:</td>
-                                <td width="20%">Basic Network Scan</td>
-                            </tr>
-                            <tr>
-                                <td>Status:</td>
-                                <td>Completed</td>
-                            </tr>
-                            <tr>
-                                <td>Severity Base:</td>
-                                <td>CVSS v3.0</td>
-                            </tr>
-                            <tr>
-                                <td>Scanner:</td>
-                                <td>Local Scanner</td>
-                            </tr>
-                            <tr>
-                                <td>Start:</td>
-                                <td>January 16 at 5:30 PM</td>
-                            </tr>
-                            <tr>
-                                <td>End:</td>
-                                <td>January 16 at 6:28 PM</td>
-                            </tr>
-                            <tr>
-                                <td>Elapsed:</td>
-                                <td>an hour</td>
-                            </tr>
-                        </table>
-                    </div>
-                </Box>
-            </Box>
             </Box>
         );
     }
