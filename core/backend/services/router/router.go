@@ -50,7 +50,10 @@ func routing(router *gin.Engine) {
 			project.ProjectCreateHandeler(c)
 		case "startScan":
 			project.StartScan(c)
+		case "getScanResult":
+			project.GetScanResult(c)  // Fetches the results of the scan and returns them to the client
 		}
+		
 		
 	})
 }

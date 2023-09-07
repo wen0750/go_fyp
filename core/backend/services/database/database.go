@@ -143,7 +143,7 @@ func InitializeMongoDB(collectionName string) (*mongo.Collection, error) {
 		}
 		log.Println("Collection created")
 	} else {
-		log.Println("Collection already exist")
+		log.Println("Collection found")
 	}
 
 	// err = EnsureUniqueIndex(client, collectionName)

@@ -3,7 +3,6 @@ package project
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"go_fyp/core/backend/services/database"
 	"net/http"
 	"os"
@@ -18,6 +17,17 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
+
+//for scan result
+type History struct {
+	ID        primitive.ObjectID `bson:"_id,omitempty"`
+	PID       string             `bson:"pid"`
+	StartTime int64                `bson:"startTime"`
+	EndTime   int64                `bson:"endTime"`
+	Result    []string           `bson:"result"`
+	Status    string             `bson:"status"`
+	CVECount  []string           `bson:"cvecount"`
+}
 
 type InputCreateProject struct {
 	Name     string   `json:"name"`
@@ -115,6 +125,7 @@ type Template struct {
 
 var templatesCollection *mongo.Collection
 var folderCollection *mongo.Collection
+var scanResultsCollection *mongo.Collection
 
 func init() {
 	var err error
@@ -131,6 +142,13 @@ func init() {
 		log.Fatalf("Error initializing MongoDB Folder collection: %v\n", err)
 	} else {
 		log.Println("MongoDB (Folder) initialized successfully")
+	}
+
+	scanResultsCollection, err = database.InitializeMongoDB("History")
+	if err != nil {
+		log.Fatalf("Error initializing MongoDB History collection: %v\n", err)
+	} else {
+		log.Println("MongoDB (History) initialized successfully")
 	}
 }
 
@@ -230,18 +248,46 @@ func StartScan(c *gin.Context) {
 		return
 	}
 
-	// Use nuclei to scan the target by filename
-	cmd := exec.Command("nuclei", "-t", filename, "-u", "wp1.wen0750.club", "-debug", "-je")
-	output, err := cmd.CombinedOutput()
-	fmt.Println(string(output))
-	if err != nil {
-		c.JSON(500, gin.H{"error": "Error running Nuclei scan: " + err.Error()})
-		return
-	}
+	go func() {
+		// Record the start time of the scan
+		startTime := time.Now().Unix()
 
-	c.JSON(200, gin.H{"data": result, "file": filename, "scan_output": string(output)})
-	// Delete the file after scanning
-	defer os.Remove(filename)
+		cmd := exec.Command("nuclei", "-t", filename, "-u", "wp1.wen0750.club", "-debug", "-je")
+		output, err := cmd.CombinedOutput()
+
+		// Record the end time of the scan
+		endTime := time.Now().Unix()
+
+		// Delete the file after scanning
+		os.Remove(filename)
+
+		status := "Complete"
+
+		if err != nil {
+			log.Printf("Error running Nuclei scan: %s", err.Error())
+			status = "Failed"
+		}
+
+		// Parse the output to get the CVE counts
+		//cveCount := parseOutputToGetCVEs(output)  // You need to implement this function
+
+		// Store the results in MongoDB
+		history := History{
+			PID:       "project_id",  // front should pass the pid
+			StartTime: startTime,       //  time stamp start 
+			EndTime:   endTime,       //  time stamp end
+			Result:    []string{string(output)},
+			Status:    status,
+			CVECount:  []string{"CVE-2021-1234"}, // for testing
+		}
+		
+		_, err = scanResultsCollection.InsertOne(context.Background(), history)
+		if err != nil {
+			log.Printf("Error saving scan result: %s", err.Error())
+		}
+	}()
+
+	c.JSON(200, gin.H{"data": result, "file": filename, "message": "Scan started"})
 }
 
 func createYAMLFile(template Template) (string, error) {
@@ -274,4 +320,8 @@ func createYAMLFile(template Template) (string, error) {
 	}
 
 	return tempFile.Name(), nil
+}
+
+func GetScanResult(c *gin.Context) {
+
 }
