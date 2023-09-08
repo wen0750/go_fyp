@@ -51,9 +51,15 @@ func routing(router *gin.Engine) {
 		case "startScan":
 			project.StartScan(c)
 		case "getScanResult":
-			project.GetScanResult(c)  // Fetches the results of the scan and returns them to the client
+			project.GetScanResult(c) // Fetches the results of the scan and returns them to the client
 		}
-		
-		
+	})
+
+	router.POST("/history/:action", func(c *gin.Context) {
+		action := c.Param("action")
+		switch action {
+		case "getRecord":
+			project.GetScanResult(c) // Fetches the results of the scan and returns them to the client
+		}
 	})
 }
