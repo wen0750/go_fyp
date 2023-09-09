@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"regexp"
 	"time"
 
 	"log"
@@ -253,7 +254,10 @@ func StartScan(c *gin.Context) {
 		startTime := time.Now().Unix()
 
 		cmd := exec.Command("nuclei", "-t", filename, "-u", "wp1.wen0750.club", "-j")
-		output, err := cmd.CombinedOutput()
+		rawOutput, err := cmd.CombinedOutput()
+
+		// Remove all ANSI escape sequences from the output
+        output := removeANSISequences(string(rawOutput))
 
 		// Record the end time of the scan
 		endTime := time.Now().Unix()
@@ -274,7 +278,7 @@ func StartScan(c *gin.Context) {
 			PID:       "project_id",  // front should pass the pid
 			StartTime: startTime,       //  time stamp start 
 			EndTime:   endTime,       //  time stamp end
-			Result:    []string{string(output)},
+			Result:    []string{output},
 			Status:    status,
 			CVECount:  []string{"CVE-2021-1234"}, // for testing
 		}
@@ -320,6 +324,11 @@ func createYAMLFile(template Template) (string, error) {
 	}
 
 	return tempFile.Name(), nil
+}
+
+func removeANSISequences(str string) string {
+	re := regexp.MustCompile(`\x1B\[[0-?]*[ -/]*[@-~]`)
+	return re.ReplaceAllString(str, "")
 }
 
 func GetScanResult(c *gin.Context) {
