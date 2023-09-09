@@ -36,10 +36,10 @@ class ProjectFolder extends React.Component {
         this.rows = [
             {
                 id: 1,
-                name: "CVE-2020-26067",
+                name: "version",
                 schedule: "CVE-2020-26067",
                 lastscanned: "2020-8-12 3:12:02",
-                tid: "64b8f5bb922b684322bd3e81",
+                tid: "64fbe26d40cbb5017185afe3",
                 action: "scanning",
             },
             {

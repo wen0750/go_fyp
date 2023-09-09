@@ -55,9 +55,9 @@ type ProjectItem struct {
 	Status   string             `json:"status"`
 }
 
-// From 127.0.0.1:8888/project/fastScan
+// From 127.0.0.1:8888/project/startScan
 type ScanRequest struct {
-	ID string `json:"_id"`
+	ID string `json:"ID"`
 }
 
 // For find
@@ -252,22 +252,20 @@ func StartScan(c *gin.Context) {
 		// Record the start time of the scan
 		startTime := time.Now().Unix()
 
-		cmd := exec.Command("nuclei", "-t", filename, "-u", "wp1.wen0750.club", "-debug", "-je")
+		cmd := exec.Command("nuclei", "-t", filename, "-u", "wp1.wen0750.club", "-j")
 		output, err := cmd.CombinedOutput()
 
 		// Record the end time of the scan
 		endTime := time.Now().Unix()
 
-		// Delete the file after scanning
-		os.Remove(filename)
-
 		status := "Complete"
 
 		if err != nil {
 			log.Printf("Error running Nuclei scan: %s", err.Error())
+			log.Printf("Nuclei output: %s", output)
 			status = "Failed"
 		}
-
+		log.Printf("%s", output)
 		// Parse the output to get the CVE counts
 		//cveCount := parseOutputToGetCVEs(output)  // You need to implement this function
 
@@ -285,6 +283,8 @@ func StartScan(c *gin.Context) {
 		if err != nil {
 			log.Printf("Error saving scan result: %s", err.Error())
 		}
+		// Delete the file after scanning
+		os.Remove(filename)
 	}()
 
 	c.JSON(200, gin.H{"data": result, "file": filename, "message": "Scan started"})

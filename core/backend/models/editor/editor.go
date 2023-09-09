@@ -338,7 +338,14 @@ func SubmitToDB(c *gin.Context) {
 				"id":     data.ID,
 			})
 		}
+		
 	}
+	err = os.RemoveAll(tmpDir)
+	if err != nil {
+		log.Printf("Error deleting the temp-uploads directory: %v", err)
+		// Handle the error as needed, e.g., return an error response
+	}
+	
 }
 
 //return ture if the data is the same
