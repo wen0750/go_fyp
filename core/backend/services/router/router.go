@@ -40,18 +40,19 @@ func routing(router *gin.Engine) {
 			folder.GetFolderList(c)
 		case "details":
 			folder.GetFolder(c)
+		// retrieve all templates from database for button "Create Project"
+		case "getTemplates":
+			folder.GetTemplates(c)
 		}
 	})
 
 	router.POST("/project/:action", func(c *gin.Context) {
 		action := c.Param("action")
 		switch action {
-		case "create":
+		case "createProject":
 			project.ProjectCreateHandeler(c)
 		case "startScan":
 			project.StartScan(c)
-		case "getScanResult":
-			project.GetScanResult(c) // Fetches the results of the scan and returns them to the client
 		}
 	})
 

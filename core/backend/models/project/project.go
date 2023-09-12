@@ -334,3 +334,4 @@ func removeANSISequences(str string) string {
 func GetScanResult(c *gin.Context) {
 
 }
+

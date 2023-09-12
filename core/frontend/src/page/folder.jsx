@@ -118,6 +118,7 @@ class ProjectFolder extends React.Component {
             f_project_name: "",
             f_project_host: [],
             f_project_pocs: [],
+            f_templates:[],
         };
         this.CreateProjectModalStyle = {
             position: "absolute",
@@ -224,6 +225,30 @@ class ProjectFolder extends React.Component {
         }
     };
 
+    getTemplates = () => {
+        // Fetch the templates
+        fetch(
+            `${globeVar.backendprotocol}://${globeVar.backendhost}/folder/getTemplates`,
+            {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            this.setState({ f_templates: data }); // Update the state with the fetched templates
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+    }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.fid !== this.props.fid) {
+            this.fetchFoldersDetail(nextProps.fid);
+        }
+    }
+
     createNewFolder = () => {
         if (this.state.f_folder_name) {
             fetch(
@@ -248,17 +273,21 @@ class ProjectFolder extends React.Component {
 
     createNewProject = () => {
         console.log("tttttttttttttttt");
-        if (this.state.f_project_name && this.state.f_project_host) {
+        if (this.state.f_project_name && this.state.f_project_host && this.state.selectedTIDs) {
             console.log("ttttttttttttttttt");
             fetch(
-                `${globeVar.backendprotocol}://${globeVar.backendhost}/project/create`,
+                `${globeVar.backendprotocol}://${globeVar.backendhost}/project/createProject`,
                 {
                     method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
                     body: JSON.stringify({
                         name: this.state.f_project_name,
                         fid: this.props.fid,
                         host: this.state.f_project_host,
-                        poc: this.state.f_project_pocs,
+                        //poc: this.state.f_project_pocs,
+                        poc: this.state.selectedTIDs,
                         template: "customs",
                     }),
                 }
@@ -516,16 +545,16 @@ class ProjectFolder extends React.Component {
                             <Autocomplete
                                 multiple
                                 id="tags-outlined"
-                                options={pocs}
-                                getOptionLabel={(option) => option.lastName}
-                                defaultValue={[this.rows[1]]}
+                                options={this.state.f_templates}
+                                getOptionLabel={(option) => option.id || "Unnamed Template"}
                                 filterSelectedOptions
                                 onChange={(event, newValue) => {
                                     console.log(newValue); // log the new value
                                     this.setState({
                                         selectedTIDs: newValue
-                                            .filter((item) => item.tid)
-                                            .map((item) => item.tid),
+                                            //.filter((item) => item.tid)
+                                            //.map((item) => item.tid),
+                                            .filter((item) => item.info) // Filter out options with no `name` property
                                     });
                                 }}
                                 renderInput={(params) => (
@@ -764,14 +793,12 @@ class ProjectFolder extends React.Component {
 
     componentDidMount() {
         this.fetchFoldersDetail(this.props.fid);
-    }
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.fid !== this.props.fid) {
-            this.fetchFoldersDetail(nextProps.fid);
-        }
+        this.getTemplates();
+        
     }
     render() {
         console.log(this.state.folderContent);
+        console.log(this.state.f_templates);
         return (
             <div>
                 <this.projectHeader />
