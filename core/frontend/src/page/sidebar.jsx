@@ -21,6 +21,10 @@ function App() {
                         path={"/editor/:eid"}
                         element={<DynamicItem page="editor" />}
                     />
+                    <Route
+                        path={"/terminal/:id"}
+                        element={<DynamicItem page="terminal" />}
+                    />
                 </Routes>
             </Sidebar>
         </div>

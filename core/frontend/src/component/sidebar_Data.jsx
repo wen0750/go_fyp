@@ -23,7 +23,7 @@ const hardData = [
     {
         id: 4,
         name: "terminal",
-        path: "editor",
+        path: "terminal",
         icon: <TerminalIcon />,
     },
     {

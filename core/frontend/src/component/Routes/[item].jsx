@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import Editor from "../../page/editor";
 import ProjectFolder from "../../page/folder";
 import ProjectItem from "../../page/project";
+import TerminalBody from "../../page/terminal";
 
 const Item = (props) => {
     const { page } = props;
@@ -20,6 +21,8 @@ const Item = (props) => {
             return <ProjectItem pid={pid} />;
         case "editor":
             return <Editor />;
+        case "terminal":
+            return <TerminalBody />;
         default:
             return <div id="page">{page}</div>;
     }
