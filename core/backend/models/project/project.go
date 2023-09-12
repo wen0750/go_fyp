@@ -253,7 +253,7 @@ func StartScan(c *gin.Context) {
 		// Record the start time of the scan
 		startTime := time.Now().Unix()
 
-		cmd := exec.Command("nuclei", "-t", filename, "-u", "wp1.wen0750.club", "-j")
+		cmd := exec.Command("nuclei", "-t", filename, "-u", "wp1.wen0750.club", "-j", "-silent")
 		rawOutput, err := cmd.CombinedOutput()
 
 		// Remove all ANSI escape sequences from the output
