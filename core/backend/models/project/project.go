@@ -61,9 +61,12 @@ type ScanRequest struct {
 	ID string `json:"ID"`
 }
 
+// for delete
 type InputDeleteProject struct {
 	Fid string `json:"fid"`
-	RowId string  `json:"rowId"`
+	//RowId string  `json:"rowId"`
+	Pid string `json:"pid"`
+
 }
 
 // For find
@@ -240,7 +243,7 @@ func RemoveProjectFromFolder(c *gin.Context) {
 
 	newProjects := []ProjectItem{}
 	for _, project := range folder.Project {
-		if project.Pid.Hex() != reqBody.RowId {
+		if project.Pid.Hex() != reqBody.Pid {
 			newProjects = append(newProjects, project)
 		}
 	}
