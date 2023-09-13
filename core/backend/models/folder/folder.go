@@ -260,7 +260,7 @@ func ViewFolderItem() {
 }
 
 func GetTemplates(c *gin.Context) {
-	var templates []Template
+	var templates []bson.M
 
 	// Fetch all documents from the "templates" collection
 	cursor, err := templatesCollection.Find(context.Background(), bson.M{})
@@ -270,6 +270,7 @@ func GetTemplates(c *gin.Context) {
     }
 	defer cursor.Close(context.Background())
 
+	
 	// Decode documents into `templates`
     if err := cursor.All(context.Background(), &templates); err != nil {
         c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

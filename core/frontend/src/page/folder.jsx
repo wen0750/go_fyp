@@ -249,6 +249,28 @@ class ProjectFolder extends React.Component {
         }
     }
 
+    removeProject = () => {
+        if (this.state.f_folder_name) {
+            fetch(
+                `${globeVar.backendprotocol}://${globeVar.backendhost}/folder/remove`,
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        name: this.state.f_folder_name,
+                    }),
+                }
+            )
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log(data);
+                    // Handle data
+                })
+                .catch((err) => {
+                    console.log(err.message);
+                });
+        }
+    };
+
     createNewFolder = () => {
         if (this.state.f_folder_name) {
             fetch(
@@ -551,10 +573,10 @@ class ProjectFolder extends React.Component {
                                 onChange={(event, newValue) => {
                                     console.log(newValue); // log the new value
                                     this.setState({
-                                        selectedTIDs: newValue
+                                        selectedTIDs: newValue.map(item => item._id)
                                             //.filter((item) => item.tid)
                                             //.map((item) => item.tid),
-                                            .filter((item) => item.info) // Filter out options with no `name` property
+                                            .filter((item) => item) // Filter out options with no `name` property
                                     });
                                 }}
                                 renderInput={(params) => (
