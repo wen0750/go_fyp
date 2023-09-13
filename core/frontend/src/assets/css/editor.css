@@ -71,5 +71,5 @@ li span {
 }
 
 .cardContent {
-  font-family: Consolas, 'Fira Code', 'Courier New', monospace;
+  font-family: 'Consolas', 'Fira Code', 'Courier New', monospace , 'JetBrains Mono';
 }
