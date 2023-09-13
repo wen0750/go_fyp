@@ -176,8 +176,9 @@ class ProjectFolder extends React.Component {
                         <IconButton
                             aria-label="remove this project from project"
                             onClick={() =>
-                                this.handleRemoveProject(this.props.fid,params.row.id)
+                                this.handleRemoveProject(this.props.fid,params.row.pid)
                             }
+                            
                         >
                             <DeleteIcon />
                         </IconButton>
@@ -473,7 +474,7 @@ class ProjectFolder extends React.Component {
     projectActionResume = () => {};
     projectActionRestart = () => {};
    
-    handleRemoveProject = (fid,rowId) => {
+    handleRemoveProject = (fid,pid) => {
         fetch(
             `${globeVar.backendprotocol}://${globeVar.backendhost}/project/remove`,
             {
@@ -483,12 +484,12 @@ class ProjectFolder extends React.Component {
                 },
                 body: JSON.stringify({
                     fid: fid,
-                    rowId: rowId.toString(),
+                    pid: pid.toString(),
                 }),
             }
         )
         
-        console.log(`Remove button clicked for id: ${id}`);
+        console.log(`Remove button clicked for id: ${pid}`);
     };
 
     //   _____
