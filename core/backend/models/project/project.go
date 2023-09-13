@@ -40,7 +40,7 @@ type InputCreateProject struct {
 
 type Folder struct {
 	Name     string   `json:"name"`
-	Project  []string `json:"project"`
+	Project  []ProjectItem  `json:"project"`
 	Status   string   `json:"status"`
 	Lastscan int      `json:"lastscan"`
 	Ownerid  int      `json:"ownerid"`
@@ -59,6 +59,11 @@ type ProjectItem struct {
 // From 127.0.0.1:8888/project/startScan
 type ScanRequest struct {
 	ID string `json:"ID"`
+}
+
+type InputDeleteProject struct {
+	Fid string `json:"fid"`
+	RowId string  `json:"rowId"`
 }
 
 // For find
@@ -151,6 +156,8 @@ func init() {
 	} else {
 		log.Println("MongoDB (History) initialized successfully")
 	}
+
+	
 }
 
 func ProjectCreateHandeler(c *gin.Context) {
@@ -208,9 +215,62 @@ func UpDateProjectProfile() {
 
 }
 
-func RemoveProjectFromFolder() {
+func RemoveProjectFromFolder(c *gin.Context) {
+	var reqBody InputDeleteProject
+	if err := c.ShouldBindJSON(&reqBody); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
+	folderID, err := primitive.ObjectIDFromHex(reqBody.Fid)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid folder ID format"})
+		return
+	}
+
+	var folder Folder
+	err = folderCollection.FindOne(
+		context.TODO(),
+		bson.M{"_id": folderID},
+	).Decode(&folder)
+	if err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error":  err.Error()})
+		return
+	}
+
+	newProjects := []ProjectItem{}
+	for _, project := range folder.Project {
+		if project.Pid.Hex() != reqBody.RowId {
+			newProjects = append(newProjects, project)
+		}
+	}
+
+	if len(newProjects) == len(folder.Project) {
+		c.JSON(http.StatusOK, gin.H{"message": "No project to delete"})
+		return
+	}
+
+	updateResult, err := folderCollection.UpdateOne(
+		context.TODO(),
+		bson.M{"_id": folderID},
+		bson.M{"$set": bson.M{"project": newProjects}},
+	)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	if updateResult.ModifiedCount == 0 {
+		c.JSON(http.StatusOK, gin.H{"message": "No changes made to the folder"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Successfully deleted project"})
 }
+
+
+
+
 
 func GetPOEList() {
 

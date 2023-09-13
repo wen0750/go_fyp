@@ -45,6 +45,8 @@ type CVE struct {
 	Tid       string `bson:"tid"`
 }
 
+
+
 // For find
 type Template struct {
 	ID   string `json:"id"`

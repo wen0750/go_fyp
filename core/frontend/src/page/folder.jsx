@@ -176,7 +176,7 @@ class ProjectFolder extends React.Component {
                         <IconButton
                             aria-label="remove this project from project"
                             onClick={() =>
-                                this.handleRemoveProject(params.row.id)
+                                this.handleRemoveProject(this.props.fid,params.row.id)
                             }
                         >
                             <DeleteIcon />
@@ -249,27 +249,7 @@ class ProjectFolder extends React.Component {
         }
     }
 
-    removeProject = () => {
-        if (this.state.f_folder_name) {
-            fetch(
-                `${globeVar.backendprotocol}://${globeVar.backendhost}/folder/remove`,
-                {
-                    method: "POST",
-                    body: JSON.stringify({
-                        name: this.state.f_folder_name,
-                    }),
-                }
-            )
-                .then((response) => response.json())
-                .then((data) => {
-                    console.log(data);
-                    // Handle data
-                })
-                .catch((err) => {
-                    console.log(err.message);
-                });
-        }
-    };
+    
 
     createNewFolder = () => {
         if (this.state.f_folder_name) {
@@ -492,9 +472,22 @@ class ProjectFolder extends React.Component {
     projectActionStop = () => {};
     projectActionResume = () => {};
     projectActionRestart = () => {};
-
-    handleRemoveProject = (id) => {
-        // Handle remove here
+   
+    handleRemoveProject = (fid,rowId) => {
+        fetch(
+            `${globeVar.backendprotocol}://${globeVar.backendhost}/project/remove`,
+            {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    fid: fid,
+                    rowId: rowId.toString(),
+                }),
+            }
+        )
+        
         console.log(`Remove button clicked for id: ${id}`);
     };
 
