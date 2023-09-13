@@ -9,6 +9,7 @@ import EditorAction from "../component/editor_action";
 import EditorVariables from "../component/editor_variables";
 import EditorWorkflow from "../component/editor_workflow";
 import EditorUpload from "../component/editor_upload";
+import EditorEdit from "../component/editor_edit";
 
 class Editor extends React.Component {
     constructor(props) {
@@ -69,6 +70,7 @@ class Editor extends React.Component {
                         <Tab label="Workflow" {...this.a11yProps(1)} />
                         <Tab label="Variable" {...this.a11yProps(2)} />
                         <Tab label="Upload" {...this.a11yProps(3)} />
+                        <Tab label="editor" {...this.a11yProps(4)} />
                     </Tabs>
                 </Box>
                 <this.TabPanel value={this.state.curTab} index={0}>
@@ -85,6 +87,9 @@ class Editor extends React.Component {
                 </this.TabPanel>
                 <this.TabPanel value={this.state.curTab} index={3}>
                     <EditorUpload dataChange={this.setInput} />
+                </this.TabPanel>
+                <this.TabPanel value={this.state.curTab} index={4}>
+                    <EditorEdit dataChange={this.setInput} />
                 </this.TabPanel>
             </Box>
         );
