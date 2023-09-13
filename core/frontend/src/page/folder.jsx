@@ -494,6 +494,7 @@ class ProjectFolder extends React.Component {
             }
         );
 
+        this.fetchFoldersDetail(this.props.fid);
         console.log(`Remove button clicked for id: ${id}`);
     };
 
