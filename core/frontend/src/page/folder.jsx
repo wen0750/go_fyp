@@ -118,7 +118,7 @@ class ProjectFolder extends React.Component {
             f_project_name: "",
             f_project_host: [],
             f_project_pocs: [],
-            f_templates:[],
+            f_templates: [],
         };
         this.CreateProjectModalStyle = {
             position: "absolute",
@@ -176,7 +176,10 @@ class ProjectFolder extends React.Component {
                         <IconButton
                             aria-label="remove this project from project"
                             onClick={() =>
-                                this.handleRemoveProject(this.props.fid,params.row.pid)
+                                this.handleRemoveProject(
+                                    this.props.fid,
+                                    params.row.pid
+                                )
                             }
                             
                         >
@@ -231,26 +234,25 @@ class ProjectFolder extends React.Component {
         fetch(
             `${globeVar.backendprotocol}://${globeVar.backendhost}/folder/getTemplates`,
             {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-        .then(response => response.json())
-        .then(data => {
-            this.setState({ f_templates: data }); // Update the state with the fetched templates
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-    }
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                this.setState({ f_templates: data }); // Update the state with the fetched templates
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    };
     componentWillReceiveProps(nextProps) {
         if (nextProps.fid !== this.props.fid) {
             this.fetchFoldersDetail(nextProps.fid);
         }
     }
-
-    
 
     createNewFolder = () => {
         if (this.state.f_folder_name) {
@@ -276,14 +278,18 @@ class ProjectFolder extends React.Component {
 
     createNewProject = () => {
         console.log("tttttttttttttttt");
-        if (this.state.f_project_name && this.state.f_project_host && this.state.selectedTIDs) {
+        if (
+            this.state.f_project_name &&
+            this.state.f_project_host &&
+            this.state.selectedTIDs
+        ) {
             console.log("ttttttttttttttttt");
             fetch(
                 `${globeVar.backendprotocol}://${globeVar.backendhost}/project/createProject`,
                 {
                     method: "POST",
                     headers: {
-                        'Content-Type': 'application/json'
+                        "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
                         name: this.state.f_project_name,
@@ -473,6 +479,8 @@ class ProjectFolder extends React.Component {
     projectActionStop = () => {};
     projectActionResume = () => {};
     projectActionRestart = () => {};
+
+    handleRemoveProject = (fid, rowId) => {
    
     handleRemoveProject = (fid,pid) => {
         fetch(
@@ -480,7 +488,7 @@ class ProjectFolder extends React.Component {
             {
                 method: "POST",
                 headers: {
-                    'Content-Type': 'application/json'
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
                     fid: fid,
@@ -489,7 +497,7 @@ class ProjectFolder extends React.Component {
             }
         )
         
-        console.log(`Remove button clicked for id: ${pid}`);
+        console.log(`Remove button clicked for id: ${id}`);
     };
 
     //   _____
@@ -562,15 +570,18 @@ class ProjectFolder extends React.Component {
                                 multiple
                                 id="tags-outlined"
                                 options={this.state.f_templates}
-                                getOptionLabel={(option) => option.id || "Unnamed Template"}
+                                getOptionLabel={(option) =>
+                                    option.id || "Unnamed Template"
+                                }
                                 filterSelectedOptions
                                 onChange={(event, newValue) => {
                                     console.log(newValue); // log the new value
                                     this.setState({
-                                        selectedTIDs: newValue.map(item => item._id)
+                                        selectedTIDs: newValue
+                                            .map((item) => item._id)
                                             //.filter((item) => item.tid)
                                             //.map((item) => item.tid),
-                                            .filter((item) => item) // Filter out options with no `name` property
+                                            .filter((item) => item), // Filter out options with no `name` property
                                     });
                                 }}
                                 renderInput={(params) => (
@@ -810,7 +821,6 @@ class ProjectFolder extends React.Component {
     componentDidMount() {
         this.fetchFoldersDetail(this.props.fid);
         this.getTemplates();
-        
     }
     render() {
         console.log(this.state.folderContent);
@@ -829,4 +839,4 @@ class ProjectFolder extends React.Component {
     }
 }
 
-export default ProjectFolder;
+//export default ProjectFolder;
