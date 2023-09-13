@@ -822,6 +822,7 @@ class ProjectFolder extends React.Component {
         this.fetchFoldersDetail(this.props.fid);
         this.getTemplates();
     }
+
     render() {
         console.log(this.state.folderContent);
         console.log(this.state.f_templates);
