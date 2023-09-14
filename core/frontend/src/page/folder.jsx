@@ -181,7 +181,6 @@ class ProjectFolder extends React.Component {
                                     params.row.pid
                                 )
                             }
-                            
                         >
                             <DeleteIcon />
                         </IconButton>
@@ -480,9 +479,7 @@ class ProjectFolder extends React.Component {
     projectActionResume = () => {};
     projectActionRestart = () => {};
 
-    handleRemoveProject = (fid, rowId) => {
-   
-    handleRemoveProject = (fid,pid) => {
+    handleRemoveProject = (fid, pid) => {
         fetch(
             `${globeVar.backendprotocol}://${globeVar.backendhost}/project/remove`,
             {
@@ -495,8 +492,9 @@ class ProjectFolder extends React.Component {
                     pid: pid.toString(),
                 }),
             }
-        )
-        
+        );
+
+        this.fetchFoldersDetail(this.props.fid);
         console.log(`Remove button clicked for id: ${id}`);
     };
 
@@ -822,7 +820,11 @@ class ProjectFolder extends React.Component {
         this.fetchFoldersDetail(this.props.fid);
         this.getTemplates();
     }
-
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.fid !== this.props.fid) {
+            this.fetchFoldersDetail(nextProps.fid);
+        }
+    }
     render() {
         console.log(this.state.folderContent);
         console.log(this.state.f_templates);
@@ -840,4 +842,4 @@ class ProjectFolder extends React.Component {
     }
 }
 
-//export default ProjectFolder;
+export default ProjectFolder;
