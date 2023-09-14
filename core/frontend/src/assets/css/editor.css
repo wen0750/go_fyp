@@ -73,3 +73,8 @@ li span {
 .cardContent {
   font-family: 'Consolas', 'Fira Code', 'Courier New', monospace , 'JetBrains Mono';
 }
+
+.ace_editor * {
+  font-size:12px !important;
+  font-family: monospace !important;
+}
