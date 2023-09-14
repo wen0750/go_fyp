@@ -35,11 +35,37 @@ type Template struct {
 		Metadata struct {
 			Verified    bool   `json:"verified,omitempty"`
 			ShodanQuery string `json:"shodan-query,omitempty"`
+			MaxRequest int `json:"max-request,omitempty"`
 		} `json:"metadata,omitempty"`
 		//
 		Tags string `json:"tags,omitempty"`
 	} `json:"info,omitempty"`
-	//
+	HTTP []struct {
+		Method            string `json:"method,omitempty"`
+		Path              []string `json:"path,omitempty"`
+		Raw               []string `json:"raw,omitempty"`
+		Payloads          map[string]string `json:"payloads,omitempty"`
+		Threads           int               `json:"threads,omitempty"`
+		StopAtFirstMatch  bool `json:"stop-at-first-match,omitempty"`
+		MatchersCondition string `json:"matchers-condition,omitempty"`
+		//
+		Matchers []struct {
+			Type      string   `json:"type,omitempty"`
+			Part      string   `json:"part,omitempty"`
+			Words     []string `json:"words,omitempty"`
+			Dsl       []string `json:"dsl,omitempty"`
+			Regex     []string `json:"regex,omitempty"`
+			Condition string   `json:"condition,omitempty"`
+			Status    []int    `json:"status,omitempty"`
+		} `json:"matchers,omitempty"`
+		//
+		Extractors []struct {
+			Type  string   `json:"type,omitempty"`
+			Name  string   `json:"name,omitempty"`
+			Json  []string `json:"json,omitempty"`
+			Part  string   `json:"part,omitempty"`
+		} `json:"extractors,omitempty"`
+	} `json:"http,omitempty"`
 	Requests []struct {
 		Raw               []string `json:"raw,omitempty"`
 		CookieReuse       bool     `json:"cookie-reuse,omitempty"`

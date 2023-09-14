@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"regexp"
+	"strings"
 	"time"
 
 	"log"
@@ -69,6 +70,14 @@ type InputDeleteProject struct {
 
 }
 
+type ScanOutput struct {
+    TemplateID string
+    Protocol   string
+    Severity   string
+    URL        string
+}
+
+
 // For find
 type Template struct {
 	ID   string `json:"id"`
@@ -90,11 +99,37 @@ type Template struct {
 		Metadata struct {
 			Verified    bool   `json:"verified,omitempty"`
 			ShodanQuery string `json:"shodan-query,omitempty"`
+			MaxRequest int `json:"max-request,omitempty"`
 		} `json:"metadata,omitempty"`
 		//
 		Tags string `json:"tags,omitempty"`
 	} `json:"info,omitempty"`
-	//
+	HTTP []struct {
+		Method            string `json:"method,omitempty"`
+		Path              []string `json:"path,omitempty"`
+		Raw               []string `json:"raw,omitempty"`
+		Payloads          map[string]string `json:"payloads,omitempty"`
+		Threads           int               `json:"threads,omitempty"`
+		StopAtFirstMatch  bool `json:"stop-at-first-match,omitempty"`
+		MatchersCondition string `json:"matchers-condition,omitempty"`
+		//
+		Matchers []struct {
+			Type      string   `json:"type,omitempty"`
+			Part      string   `json:"part,omitempty"`
+			Words     []string `json:"words,omitempty"`
+			Dsl       []string `json:"dsl,omitempty"`
+			Regex     []string `json:"regex,omitempty"`
+			Condition string   `json:"condition,omitempty"`
+			Status    []int    `json:"status,omitempty"`
+		} `json:"matchers,omitempty"`
+		//
+		Extractors []struct {
+			Type  string   `json:"type,omitempty"`
+			Name  string   `json:"name,omitempty"`
+			Json  []string `json:"json,omitempty"`
+			Part  string   `json:"part,omitempty"`
+		} `json:"extractors,omitempty"`
+	} `json:"http,omitempty"`
 	Requests []struct {
 		Raw               []string `json:"raw,omitempty"`
 		CookieReuse       bool     `json:"cookie-reuse,omitempty"`
@@ -279,6 +314,11 @@ func GetPOEList() {
 
 }
 
+func removeANSISequences(str string) string {
+	re := regexp.MustCompile(`\x1B\[[0-?]*[ -/]*[@-~]\\`)
+	return re.ReplaceAllString(str, "")
+}
+
 func StartScan(c *gin.Context) {
 	var req ScanRequest
 
@@ -316,11 +356,10 @@ func StartScan(c *gin.Context) {
 		// Record the start time of the scan
 		startTime := time.Now().Unix()
 
-		cmd := exec.Command("nuclei", "-t", filename, "-u", "wp1.wen0750.club", "-j", "-silent")
+		cmd := exec.Command("nuclei", "-t", filename, "-u", "wp1.wen0750.club", "-silent")
 		rawOutput, err := cmd.CombinedOutput()
+		output := removeANSISequences(string(rawOutput))
 
-		// Remove all ANSI escape sequences from the output
-        output := removeANSISequences(string(rawOutput))
 
 		// Record the end time of the scan
 		endTime := time.Now().Unix()
@@ -329,9 +368,16 @@ func StartScan(c *gin.Context) {
 
 		if err != nil {
 			log.Printf("Error running Nuclei scan: %s", err.Error())
-			log.Printf("Nuclei output: %s", output)
+			log.Printf("Nuclei output: %s", rawOutput)
 			status = "Failed"
 		}
+		
+		outputs := parseNucleiOutput(output)
+		for _, output := range outputs {
+			log.Printf("URL: %s\n", output.URL)
+		}
+
+
 		log.Printf("%s", output)
 		// Parse the output to get the CVE counts
 		//cveCount := parseOutputToGetCVEs(output)  // You need to implement this function
@@ -353,7 +399,6 @@ func StartScan(c *gin.Context) {
 		// Delete the file after scanning
 		os.Remove(filename)
 	}()
-
 	c.JSON(200, gin.H{"data": result, "file": filename, "message": "Scan started"})
 }
 
@@ -389,10 +434,39 @@ func createYAMLFile(template Template) (string, error) {
 	return tempFile.Name(), nil
 }
 
-func removeANSISequences(str string) string {
-	re := regexp.MustCompile(`\x1B\[[0-?]*[ -/]*[@-~]`)
-	return re.ReplaceAllString(str, "")
+func parseNucleiOutput(output string) []ScanOutput {
+    // A slice to hold the parsed results
+    var results []ScanOutput
+
+    // Split the output into lines
+    lines := strings.Split(output, "\n")
+
+    // Iterate over each line
+    for _, line := range lines {
+        // Skip empty lines
+        if len(line) == 0 {
+            continue
+        }
+
+        // Split the line into parts
+        parts := strings.Split(line, " ")
+
+        // Create a new ScanOutput struct and populate it with data from the line
+        result := ScanOutput{
+            TemplateID: strings.Trim(parts[0], "[]"),
+            Protocol:   parts[1],
+            Severity:   parts[2],
+            URL:        parts[3],
+        }
+
+        // Add the new ScanOutput struct to the results slice
+        results = append(results, result)
+    }
+
+    // Return the slice of results
+    return results
 }
+
 
 func GetScanResult(c *gin.Context) {
 

@@ -449,7 +449,7 @@ class ProjectFolder extends React.Component {
         switch (action) {
             case "Scan":
                 newRows[rowIndex].status = "scanning";
-                // this.projectActionScan(id);
+                this.projectActionScan(id);
                 break;
             case "Pause":
                 newRows[rowIndex].status = "paused";
