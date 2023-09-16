@@ -59,7 +59,7 @@ type ProjectItem struct {
 
 // From 127.0.0.1:8888/project/startScan
 type ScanRequest struct {
-	ID string `json:"ID"`
+	ID []string `json:"ID"`
 	Host string `json:"host"`
 }
 

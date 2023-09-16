@@ -489,8 +489,6 @@ class ProjectFolder extends React.Component {
         );
 
         this.fetchFoldersDetail(this.props.fid);
-        console.log(`scan button clicked for id: ${id}`);
-        console.log(`Host: ${host}`);
     };
 
     projectActionPause = () => {};
