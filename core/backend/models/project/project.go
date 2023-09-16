@@ -60,6 +60,7 @@ type ProjectItem struct {
 // From 127.0.0.1:8888/project/startScan
 type ScanRequest struct {
 	ID string `json:"ID"`
+	Host string `json:"host"`
 }
 
 // for delete
@@ -266,32 +267,22 @@ func RemoveProjectFromFolder(c *gin.Context) {
 		return
 	}
 
-	var folder Folder
-	err = folderCollection.FindOne(
-		context.TODO(),
-		bson.M{"_id": folderID},
-	).Decode(&folder)
+	projectID, err := primitive.ObjectIDFromHex(reqBody.Pid)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error":  err.Error()})
-		return
-	}
-
-	newProjects := []ProjectItem{}
-	for _, project := range folder.Project {
-		if project.Pid.Hex() != reqBody.Pid {
-			newProjects = append(newProjects, project)
-		}
-	}
-
-	if len(newProjects) == len(folder.Project) {
-		c.JSON(http.StatusOK, gin.H{"message": "No project to delete"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid project ID format"})
 		return
 	}
 
 	updateResult, err := folderCollection.UpdateOne(
 		context.TODO(),
 		bson.M{"_id": folderID},
-		bson.M{"$set": bson.M{"project": newProjects}},
+		bson.M{
+			"$pull": bson.M{
+				"project": bson.M{
+					"pid": projectID,
+				},
+			},
+		},
 	)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

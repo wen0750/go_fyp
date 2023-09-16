@@ -409,7 +409,7 @@ class ProjectFolder extends React.Component {
                         <IconButton
                             aria-label="take action for this project"
                             onClick={() =>
-                                this.handleAction(param.row.pid, "Scan")
+                                this.handleAction(param.row.poc, "Scan", param.row.host)
                             }
                         >
                             <PlayArrowIcon />
@@ -422,7 +422,7 @@ class ProjectFolder extends React.Component {
                         <IconButton
                             aria-label="take action for this project"
                             onClick={() =>
-                                this.handleAction(param.row.pid, "Scan")
+                                this.handleAction(param.row.pid, "Scan", param.row.host)
                             }
                         >
                             <PlayArrowIcon />
@@ -432,11 +432,11 @@ class ProjectFolder extends React.Component {
         }
     };
 
-    handleAction = (id, action) => {
+    handleAction = (poc, action, host) => {
         // Find the index of the row with the given id
         console.log(this.state.folderContent);
         const rowIndex = this.state.folderContent.findIndex((object) => {
-            return object.pid === id;
+            return object.poc === poc;
         });
 
         if (rowIndex === -1) return; // If row not found, don't do anything
@@ -449,7 +449,7 @@ class ProjectFolder extends React.Component {
         switch (action) {
             case "Scan":
                 newRows[rowIndex].status = "scanning";
-                this.projectActionScan(id);
+                this.projectActionScan(poc, host);
                 break;
             case "Pause":
                 newRows[rowIndex].status = "paused";
@@ -470,10 +470,29 @@ class ProjectFolder extends React.Component {
         }
         // Update the state with the new rows
         this.setState({ rows: newRows });
-        console.log(`Action button clicked for id: ${id}`);
+        console.log(`Action button clicked for id: ${poc}`);
     };
 
-    projectActionScan = () => {};
+    projectActionScan = (poc, host) => {
+        fetch(
+            `${globeVar.backendprotocol}://${globeVar.backendhost}/project/startScan`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id: poc,
+                    host: host
+                }),
+            }
+        );
+
+        this.fetchFoldersDetail(this.props.fid);
+        console.log(`scan button clicked for id: ${id}`);
+        console.log(`Host: ${host}`);
+    };
+
     projectActionPause = () => {};
     projectActionStop = () => {};
     projectActionResume = () => {};
