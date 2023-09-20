@@ -313,84 +313,95 @@ func removeANSISequences(str string) string {
 func StartScan(c *gin.Context) {
 	var req ScanRequest
 
+	// Bind JSON body to ScanRequest struct
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
 
-	// Convert string ID to ObjectID
-	objID, err := primitive.ObjectIDFromHex(req.ID)
-	if err != nil {
-		c.JSON(400, gin.H{"error": "Invalid ID format"})
-		return
+	// Iterate over IDs
+	for i := range req.ID {
+		go func(index int) {
+			defer func() {
+				if r := recover(); r != nil {
+					log.Printf("Recovered from panic while processing ID %s: %v", req.ID[index], r)
+				}
+			}()
+
+			// Convert string ID to ObjectID
+			objID, err := primitive.ObjectIDFromHex(req.ID[index])
+			if err != nil {
+				log.Printf("Invalid ID format for ID %s\n", req.ID[index])
+				return
+			}
+
+			var result Template
+			err = templatesCollection.FindOne(context.Background(), bson.M{"_id": objID}).Decode(&result)
+			if err != nil {
+				if err == mongo.ErrNoDocuments {
+					log.Printf("Document not found for ID %s\n", req.ID[index])
+					return
+				} else {
+					log.Printf("Error fetching document for ID %s: %s\n", req.ID[index], err.Error())
+					return
+				}
+			}
+
+			filename, err := createYAMLFile(result)
+			if err != nil {
+				log.Printf("Error creating YAML file for ID %s: %s\n", req.ID[index], err.Error())
+				return
+			}
+
+			// Record the start time of the scan
+			startTime := time.Now().Unix()
+
+			// Run the Nuclei scan - using req.Host directly without index
+			cmd := exec.Command("nuclei", "-t", filename, "-u", req.Host, "-silent")
+			output, err := cmd.CombinedOutput()
+			outputStr := string(output)
+
+			// Record the end time of the scan
+			endTime := time.Now().Unix()
+
+			status := "Complete"
+
+			if err != nil {
+				log.Printf("Error running Nuclei scan for ID %s: %s", req.ID[index], err.Error())
+				log.Printf("Nuclei output: %s", outputStr)
+				status = "Failed"
+			}
+
+			outputs := parseNucleiOutput(outputStr)
+
+			for _, output := range outputs {
+				log.Printf("URL: %s\n", output.URL)
+			}
+
+			// Parse the output to get the CVE counts
+			//cveCount := parseOutputToGetCVEs(output)  // You need to implement this function
+
+			// Store the results in MongoDB
+			history := History{
+				PID:       "project_id",  // front should pass the pid
+				StartTime: startTime,     //  time stamp start 
+				EndTime:   endTime,       //  time stamp end
+				Result:    []string{outputStr},
+				Status:    status,
+				CVECount:  []string{"CVE-2021-1234"}, // for testing
+			}
+
+			_, err = scanResultsCollection.InsertOne(context.Background(), history)
+			if err != nil {
+				log.Printf("Error saving scan result for ID %s: %s", req.ID[index], err.Error())
+			}
+
+			// Delete the file after scanning
+			os.Remove(filename)
+		}(i)
 	}
 
-	var result Template
-	err = templatesCollection.FindOne(context.Background(), bson.M{"_id": objID}).Decode(&result)
-	if err != nil {
-		if err == mongo.ErrNoDocuments {
-			c.JSON(404, gin.H{"exists": false})
-			return
-		} else {
-			c.JSON(500, gin.H{"error": err.Error()})
-			return
-		}
-	}
-	// Create a temp file, Write the template to it for scanning, delete it after finish scanning
-	filename, err := createYAMLFile(result)
-	if err != nil {
-		c.JSON(500, gin.H{"error": err.Error()})
-		return
-	}
-
-	go func() {
-		// Record the start time of the scan
-		startTime := time.Now().Unix()
-
-		cmd := exec.Command("nuclei", "-t", filename, "-u", "wp1.wen0750.club", "-silent")
-		rawOutput, err := cmd.CombinedOutput()
-		output := removeANSISequences(string(rawOutput))
-
-
-		// Record the end time of the scan
-		endTime := time.Now().Unix()
-
-		status := "Complete"
-
-		if err != nil {
-			log.Printf("Error running Nuclei scan: %s", err.Error())
-			log.Printf("Nuclei output: %s", rawOutput)
-			status = "Failed"
-		}
-		
-		outputs := parseNucleiOutput(output)
-		for _, output := range outputs {
-			log.Printf("URL: %s\n", output.URL)
-		}
-
-
-		log.Printf("%s", output)
-		// Parse the output to get the CVE counts
-		//cveCount := parseOutputToGetCVEs(output)  // You need to implement this function
-
-		// Store the results in MongoDB
-		history := History{
-			PID:       "project_id",  // front should pass the pid
-			StartTime: startTime,       //  time stamp start 
-			EndTime:   endTime,       //  time stamp end
-			Result:    []string{output},
-			Status:    status,
-			CVECount:  []string{"CVE-2021-1234"}, // for testing
-		}
-		
-		_, err = scanResultsCollection.InsertOne(context.Background(), history)
-		if err != nil {
-			log.Printf("Error saving scan result: %s", err.Error())
-		}
-		// Delete the file after scanning
-		os.Remove(filename)
-	}()
-	c.JSON(200, gin.H{"data": result, "file": filename, "message": "Scan started"})
+	c.JSON(200, gin.H{"message": "Scan started"})
 }
 
 func createYAMLFile(template Template) (string, error) {
