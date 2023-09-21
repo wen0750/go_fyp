@@ -125,9 +125,10 @@ class ProjectFolder extends React.Component {
             folderContent: this.rows,
             f_folder_name: "",
             f_project_name: "",
-            f_project_host: [],
+            f_project_host: "",
             f_project_pocs: [],
             f_templates: [],
+            f_severities: [], 
         };
         this.CreateProjectModalStyle = {
             position: "absolute",
