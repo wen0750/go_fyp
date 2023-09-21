@@ -61,6 +61,7 @@ type ProjectItem struct {
 type ScanRequest struct {
 	ID []string `json:"ID"`
 	Host string `json:"host"`
+	Severity []string `json:"severity"`
 }
 
 // for delete
