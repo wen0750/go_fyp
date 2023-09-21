@@ -28,7 +28,7 @@ type History struct {
 	EndTime   int64                `bson:"endTime"`
 	Result    []string           `bson:"result"`
 	Status    string             `bson:"status"`
-	CVECount  []string           `bson:"cvecount"`
+	CVECount  map[string]int           `bson:"cvecount"`
 }
 
 type InputCreateProject struct {
@@ -364,6 +364,8 @@ func StartScan(c *gin.Context) {
 				cmd := exec.Command("nuclei", "-t", filename, "-u", req.Host[hostIndex], "-silent")
 				output, err := cmd.CombinedOutput()
 				outputStr := parseNucleiOutput(string(output))
+
+				CVECount := parseCVECount(string(output))
 				
 
 				// Record the end time of the scan
@@ -387,7 +389,7 @@ func StartScan(c *gin.Context) {
 					EndTime:   endTime,      //  time stamp end
 					Result:    outputStr,
 					Status:    status,
-					CVECount:  []string{"CVE-2021-1234"}, // for testing
+					CVECount:  CVECount,
 				}
 
 				_, err = scanResultsCollection.InsertOne(context.Background(), history)
@@ -458,10 +460,15 @@ func parseNucleiOutput(output string) []string {
 
         // Check if the line has at least 4 parts
         if len(parts) >= 5 {
-            // Add the 4th and 5th parts to the results slice
-            results = append(results, parts[3]+" "+parts[4])
-            found = true
-        }
+			// Add the 4th and 5th parts to the results slice
+			results = append(results, parts[3]+" "+parts[4])
+			found = true
+		} else if len(parts) >= 4 {
+			// Add the 4th part to the results slice
+			results = append(results, parts[3])
+			found = true
+		}
+		
     }
 
     // Check if any result is found. If not, add "No results found."
@@ -470,6 +477,40 @@ func parseNucleiOutput(output string) []string {
     }
 
     // Return the slice of results
+    return results
+}
+
+func parseCVECount(output string) map[string]int {
+    // risk level
+    results := map[string]int{
+        "info": 0,
+        "low": 0,
+        "medium": 0,
+        "high": 0,
+        "critical": 0,
+    }
+
+    // Split the output into lines
+    lines := strings.Split(output, "\n")
+
+    for _, line := range lines {
+        // Skip empty lines
+        if len(line) == 0 {
+            continue
+        }
+
+        parts := strings.Split(line, " ")
+
+        // Check if the line has at least 3 parts
+        if len(parts) >= 3 {
+            // Increase the count of the third part in the map
+            if _, ok := results[parts[2]]; ok {
+                results[parts[2]]++
+            }
+        }
+    }
+
+    // Return the map of results
     return results
 }
 
