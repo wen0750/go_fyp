@@ -376,7 +376,7 @@ func StartScan(c *gin.Context) {
 			outputs := parseNucleiOutput(outputStr)
 
 			for _, output := range outputs {
-				log.Printf("URL: %s\n", output.URL)
+				log.Printf("%s\n", output)
 			}
 
 			// Parse the output to get the CVE counts
