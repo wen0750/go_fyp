@@ -41,7 +41,6 @@ class ProjectFolder extends React.Component {
                 lastscanned: "2020-8-12 3:12:02",
                 tid: "64fbe26d40cbb5017185afe3",
                 action: "scanning",
-                severity: "info",
             },
             {
                 id: 2,
@@ -50,7 +49,6 @@ class ProjectFolder extends React.Component {
                 lastscanned: "2021-5-04 12:03:18",
                 tid: "",
                 action: "paused",
-                severity: "low",
             },
             {
                 id: 3,
@@ -59,7 +57,6 @@ class ProjectFolder extends React.Component {
                 lastscanned: "2020-3-24 9:35:23",
                 tid: "",
                 action: "stoped",
-                severity: "medium",
             },
             {
                 id: 4,
@@ -68,7 +65,6 @@ class ProjectFolder extends React.Component {
                 lastscanned: "2017-8-26 1:25:09",
                 tid: "",
                 action: "idle",
-                severity: "high",
             },
             {
                 id: 5,
@@ -77,7 +73,6 @@ class ProjectFolder extends React.Component {
                 lastscanned: "2017-11-04 3:47:06",
                 tid: "",
                 action: { PlayArrowIcon },
-                severity: "critical",
             },
             {
                 id: 6,
@@ -86,7 +81,6 @@ class ProjectFolder extends React.Component {
                 lastscanned: "2020-1-9 11:17:11",
                 tid: "",
                 action: { PlayArrowIcon },
-                severity: "info",
             },
             {
                 id: 7,
@@ -95,7 +89,6 @@ class ProjectFolder extends React.Component {
                 lastscanned: "2021-9-19 2:53:20",
                 tid: "",
                 action: { PlayArrowIcon },
-                severity: "info",
             },
             {
                 id: 8,
@@ -104,7 +97,6 @@ class ProjectFolder extends React.Component {
                 lastscanned: "2021-6-8 8:43:03",
                 tid: "",
                 action: { PlayArrowIcon },
-                severity: "info",
             },
             {
                 id: 9,
@@ -113,7 +105,6 @@ class ProjectFolder extends React.Component {
                 lastscanned: "2022-3-14 2:08:16",
                 tid: "",
                 action: { PlayArrowIcon },
-                severity: "info",
             },
         ];
         this.state = {
@@ -125,10 +116,9 @@ class ProjectFolder extends React.Component {
             folderContent: this.rows,
             f_folder_name: "",
             f_project_name: "",
-            f_project_host: "",
+            f_project_host: [],
             f_project_pocs: [],
             f_templates: [],
-            f_severities: [], 
         };
         this.CreateProjectModalStyle = {
             position: "absolute",
@@ -385,7 +375,7 @@ class ProjectFolder extends React.Component {
                             <IconButton
                                 aria-label="take action for this project"
                                 onClick={() =>
-                                    this.handleAction(param.row.pid, "Resume", param.row.host)
+                                    this.handleAction(param.row.pid, "Resume")
                                 }
                             >
                                 <PlayArrowIcon />
@@ -395,7 +385,7 @@ class ProjectFolder extends React.Component {
                             <IconButton
                                 aria-label="take action for this project"
                                 onClick={() =>
-                                    this.handleAction(param.row.pid, "Stop", param.row.host)
+                                    this.handleAction(param.row.pid, "Stop")
                                 }
                             >
                                 <StopIcon />
@@ -405,7 +395,7 @@ class ProjectFolder extends React.Component {
                             <IconButton
                                 aria-label="take action for this project"
                                 onClick={() =>
-                                    this.handleAction(param.row.pid, "Restart", param.row.host)
+                                    this.handleAction(param.row.pid, "Restart")
                                 }
                             >
                                 <ReplayIcon />
@@ -419,7 +409,11 @@ class ProjectFolder extends React.Component {
                         <IconButton
                             aria-label="take action for this project"
                             onClick={() =>
-                                this.handleAction(param.row.poc, "Scan", param.row.host)
+                                this.handleAction(
+                                    param.row.poc,
+                                    "Scan",
+                                    param.row.host
+                                )
                             }
                         >
                             <PlayArrowIcon />
@@ -432,7 +426,11 @@ class ProjectFolder extends React.Component {
                         <IconButton
                             aria-label="take action for this project"
                             onClick={() =>
-                                this.handleAction(param.row.poc, "Scan", param.row.host)
+                                this.handleAction(
+                                    param.row.pid,
+                                    "Scan",
+                                    param.row.host
+                                )
                             }
                         >
                             <PlayArrowIcon />
@@ -493,7 +491,7 @@ class ProjectFolder extends React.Component {
                 },
                 body: JSON.stringify({
                     id: poc,
-                    host: host
+                    host: host,
                 }),
             }
         );
