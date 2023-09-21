@@ -60,6 +60,7 @@ type ProjectItem struct {
 // From 127.0.0.1:8888/project/startScan
 type ScanRequest struct {
 	ID []string `json:"ID"`
+	PID string `json:"PID"`
 	Host []string `json:"host"`
 }
 
@@ -362,7 +363,8 @@ func StartScan(c *gin.Context) {
 				// Run the Nuclei scan - using req.Host[hostIndex]
 				cmd := exec.Command("nuclei", "-t", filename, "-u", req.Host[hostIndex], "-silent")
 				output, err := cmd.CombinedOutput()
-				outputStr := string(output)
+				outputStr := parseNucleiOutput(string(output))
+				
 
 				// Record the end time of the scan
 				endTime := time.Now().Unix()
@@ -383,7 +385,7 @@ func StartScan(c *gin.Context) {
 					PID:       "project_id", // front should pass the pid
 					StartTime: startTime,    //  time stamp start
 					EndTime:   endTime,      //  time stamp end
-					Result:    []string{outputStr},
+					Result:    outputStr,
 					Status:    status,
 					CVECount:  []string{"CVE-2021-1234"}, // for testing
 				}
@@ -434,12 +436,15 @@ func createYAMLFile(template Template) (string, error) {
 	return tempFile.Name(), nil
 }
 
-func parseNucleiOutput(output string) []ScanOutput {
+func parseNucleiOutput(output string) []string {
     // A slice to hold the parsed results
-    var results []ScanOutput
+    var results []string
 
     // Split the output into lines
     lines := strings.Split(output, "\n")
+
+    // Flag to check if any result is found
+    var found bool
 
     // Iterate over each line
     for _, line := range lines {
@@ -451,16 +456,17 @@ func parseNucleiOutput(output string) []ScanOutput {
         // Split the line into parts
         parts := strings.Split(line, " ")
 
-        // Create a new ScanOutput struct and populate it with data from the line
-        result := ScanOutput{
-            TemplateID: strings.Trim(parts[0], "[]"),
-            Protocol:   parts[1],
-            Severity:   parts[2],
-            URL:        parts[3],
+        // Check if the line has at least 4 parts
+        if len(parts) >= 4 {
+            // Add the 4th and 5th parts to the results slice
+            results = append(results, parts[3]+" "+parts[4])
+            found = true
         }
+    }
 
-        // Add the new ScanOutput struct to the results slice
-        results = append(results, result)
+    // Check if any result is found. If not, add "No results found."
+    if !found {
+        results = append(results, "No results found.")
     }
 
     // Return the slice of results
