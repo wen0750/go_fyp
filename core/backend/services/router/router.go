@@ -55,6 +55,8 @@ func routing(router *gin.Engine) {
 			project.StartScan(c)
 		case "remove":
 			project.RemoveProjectFromFolder(c)
+		case "scanSummary":
+			project.ScanSummary(c)
 		}
 	})
 

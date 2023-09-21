@@ -515,7 +515,10 @@ func parseCVECount(output string) map[string]int {
 }
 
 
-func GetScanResult(c *gin.Context) {
+func ScanSummary(c *gin.Context) {
 
 }
 
+func GetScanResult(c *gin.Context) {
+
+}
