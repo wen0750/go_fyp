@@ -385,7 +385,7 @@ class ProjectFolder extends React.Component {
                             <IconButton
                                 aria-label="take action for this project"
                                 onClick={() =>
-                                    this.handleAction(param.row.pid, "Resume", param.row.host, param.row.severity)
+                                    this.handleAction(param.row.pid, "Resume", param.row.host)
                                 }
                             >
                                 <PlayArrowIcon />
@@ -395,7 +395,7 @@ class ProjectFolder extends React.Component {
                             <IconButton
                                 aria-label="take action for this project"
                                 onClick={() =>
-                                    this.handleAction(param.row.pid, "Stop", param.row.host, param.row.severity)
+                                    this.handleAction(param.row.pid, "Stop", param.row.host)
                                 }
                             >
                                 <StopIcon />
@@ -405,7 +405,7 @@ class ProjectFolder extends React.Component {
                             <IconButton
                                 aria-label="take action for this project"
                                 onClick={() =>
-                                    this.handleAction(param.row.pid, "Restart", param.row.host, param.row.severity)
+                                    this.handleAction(param.row.pid, "Restart", param.row.host)
                                 }
                             >
                                 <ReplayIcon />
@@ -419,7 +419,7 @@ class ProjectFolder extends React.Component {
                         <IconButton
                             aria-label="take action for this project"
                             onClick={() =>
-                                this.handleAction(param.row.poc, "Scan", param.row.host, param.row.severity)
+                                this.handleAction(param.row.poc, "Scan", param.row.host)
                             }
                         >
                             <PlayArrowIcon />
@@ -432,7 +432,7 @@ class ProjectFolder extends React.Component {
                         <IconButton
                             aria-label="take action for this project"
                             onClick={() =>
-                                this.handleAction(param.row.poc, "Scan", param.row.host, param.row.severity)
+                                this.handleAction(param.row.poc, "Scan", param.row.host)
                             }
                         >
                             <PlayArrowIcon />
@@ -442,7 +442,7 @@ class ProjectFolder extends React.Component {
         }
     };
 
-    handleAction = (poc, action, host, severity) => {
+    handleAction = (poc, action, host) => {
         // Find the index of the row with the given id
         console.log(this.state.folderContent);
         const rowIndex = this.state.folderContent.findIndex((object) => {
@@ -459,7 +459,7 @@ class ProjectFolder extends React.Component {
         switch (action) {
             case "Scan":
                 newRows[rowIndex].status = "scanning";
-                this.projectActionScan(poc, host, severity);
+                this.projectActionScan(poc, host);
                 break;
             case "Pause":
                 newRows[rowIndex].status = "paused";
@@ -483,7 +483,7 @@ class ProjectFolder extends React.Component {
         console.log(`Action button clicked for id: ${poc}`);
     };
 
-    projectActionScan = (poc, host, severity) => {
+    projectActionScan = (poc, host) => {
         fetch(
             `${globeVar.backendprotocol}://${globeVar.backendhost}/project/startScan`,
             {
@@ -493,8 +493,7 @@ class ProjectFolder extends React.Component {
                 },
                 body: JSON.stringify({
                     id: poc,
-                    host: host,
-                    severity: severity
+                    host: host
                 }),
             }
         );
