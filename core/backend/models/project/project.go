@@ -384,7 +384,7 @@ func StartScan(c *gin.Context) {
 
 				// Store the results in MongoDB
 				history := History{
-					PID:       "project_id", // front should pass the pid
+					PID:       req.PID, // front should pass the pid
 					StartTime: startTime,    //  time stamp start
 					EndTime:   endTime,      //  time stamp end
 					Result:    outputStr,
