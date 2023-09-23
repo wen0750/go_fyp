@@ -46,9 +46,8 @@ func routing(router *gin.Engine) {
 		}
 	})
 
-	router.POST("/project/:action/:pid", func(c *gin.Context) {
+	router.POST("/project/:action", func(c *gin.Context) {
 		action := c.Param("action")
-		pid := c.Param("pid")
 
 		switch action {
 		case "createProject":
@@ -57,8 +56,6 @@ func routing(router *gin.Engine) {
 			project.StartScan(c)
 		case "remove":
 			project.RemoveProjectFromFolder(c)
-		case "scanSummary":
-			project.ScanSummary(c, pid)
 		}
 	})
 
