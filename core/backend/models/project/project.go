@@ -18,6 +18,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 //for scan result
@@ -515,8 +516,29 @@ func parseCVECount(output string) map[string]int {
 }
 
 
-func ScanSummary(c *gin.Context) {
+func ScanSummary(c *gin.Context, pid string) {
+    filter := bson.M{"pid": pid}
+    options := options.FindOne().SetSort(bson.M{"endtime": -1}) // sorts in descending order by endtime
 
+    var result History // replace with your actual History struct
+
+    err := scanResultsCollection.FindOne(context.Background(), filter, options).Decode(&result)
+    if err != nil {
+        if err == mongo.ErrNoDocuments {
+            // Handle no document found
+            log.Printf("No document was found with pid: %v", pid)
+            c.JSON(404, gin.H{"message": "No document found"})
+            return
+        } else {
+            // Handle other errors
+            log.Printf("An error occurred: %v", err)
+            c.JSON(500, gin.H{"message": "Internal server error"})
+            return
+        }
+    }
+
+    // Send the result back to the client
+    c.JSON(200, result)
 }
 
 func GetScanResult(c *gin.Context) {
