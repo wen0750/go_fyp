@@ -80,6 +80,15 @@ type ScanOutput struct {
     URL        string
 }
 
+// For parseCVECount in startScan
+type CVECount struct {
+    Info     int
+    Low      int
+    Medium   int
+    High     int
+    Critical int
+}
+
 
 // For find
 type Template struct {
@@ -365,8 +374,15 @@ func StartScan(c *gin.Context) {
 				cmd := exec.Command("nuclei", "-t", filename, "-u", req.Host[hostIndex], "-silent")
 				output, err := cmd.CombinedOutput()
 				outputStr := parseNucleiOutput(string(output))
-
 				CVECount := parseCVECount(string(output))
+
+				// Convert CVECount struct to map[string]int
+				cveCountMap := make(map[string]int)
+				cveCountMap["info"] = CVECount.Info
+				cveCountMap["low"] = CVECount.Low
+				cveCountMap["medium"] = CVECount.Medium
+				cveCountMap["high"] = CVECount.High
+				cveCountMap["critical"] = CVECount.Critical
 				
 
 				// Record the end time of the scan
@@ -390,7 +406,7 @@ func StartScan(c *gin.Context) {
 					EndTime:   endTime,      //  time stamp end
 					Result:    outputStr,
 					Status:    status,
-					CVECount:  CVECount,
+					CVECount:  cveCountMap,
 				}
 
 				_, err = scanResultsCollection.InsertOne(context.Background(), history)
@@ -481,39 +497,48 @@ func parseNucleiOutput(output string) []string {
     return results
 }
 
-func parseCVECount(output string) map[string]int {
-    // risk level
-    results := map[string]int{
-        "info": 0,
-        "low": 0,
-        "medium": 0,
-        "high": 0,
-        "critical": 0,
-    }
+func parseCVECount(output string) CVECount {
+    re := regexp.MustCompile("\x1b\\[[0-9;]*m")
+    cleanOutput := re.ReplaceAllString(output, "")
 
-    // Split the output into lines
-    lines := strings.Split(output, "\n")
+    var cveCount CVECount
+
+    lines := strings.Split(cleanOutput, "\n")
 
     for _, line := range lines {
-        // Skip empty lines
         if len(line) == 0 {
             continue
         }
 
         parts := strings.Split(line, " ")
 
-        // Check if the line has at least 3 parts
-        if len(parts) >= 3 {
-            // Increase the count of the third part in the map
-            if _, ok := results[parts[2]]; ok {
-                results[parts[2]]++
-            }
+        // Skip lines that don't have enough parts to hold the severity level
+        if len(parts) < 4 {
+            continue
+        }
+
+        // The severity level is the fourth part in the line
+        severity := parts[2]
+
+        // Increment the corresponding severity level count in the CVECount object
+        switch severity {
+        case "[info]":
+            cveCount.Info++
+        case "[low]":
+            cveCount.Low++
+        case "[medium]":
+            cveCount.Medium++
+        case "[high]":
+            cveCount.High++
+        case "[critical]":
+            cveCount.Critical++
         }
     }
 
-    // Return the map of results
-    return results
+    return cveCount
 }
+
+
 
 
 func ScanSummary(c *gin.Context, pid string) {
