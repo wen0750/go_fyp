@@ -316,11 +316,6 @@ func GetPOEList() {
 
 }
 
-func removeANSISequences(str string) string {
-	re := regexp.MustCompile(`\x1B\[[0-?]*[ -/]*[@-~]\\`)
-	return re.ReplaceAllString(str, "")
-}
-
 
 func StartScan(c *gin.Context) {
 	var req ScanRequest
