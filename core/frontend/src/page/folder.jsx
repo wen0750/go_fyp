@@ -412,7 +412,8 @@ class ProjectFolder extends React.Component {
                                 this.handleAction(
                                     param.row.poc,
                                     "Scan",
-                                    param.row.host
+                                    param.row.host,
+                                    param.row.pid
                                 )
                             }
                         >
@@ -427,9 +428,10 @@ class ProjectFolder extends React.Component {
                             aria-label="take action for this project"
                             onClick={() =>
                                 this.handleAction(
-                                    param.row.pid,
+                                    param.row.poc,
                                     "Scan",
-                                    param.row.host
+                                    param.row.host,
+                                    param.row.pid
                                 )
                             }
                         >
@@ -440,7 +442,7 @@ class ProjectFolder extends React.Component {
         }
     };
 
-    handleAction = (poc, action, host) => {
+    handleAction = (poc, action, host, pid) => {
         // Find the index of the row with the given id
         console.log(this.state.folderContent);
         const rowIndex = this.state.folderContent.findIndex((object) => {
@@ -457,7 +459,7 @@ class ProjectFolder extends React.Component {
         switch (action) {
             case "Scan":
                 newRows[rowIndex].status = "scanning";
-                this.projectActionScan(poc, host);
+                this.projectActionScan(poc, host, pid);
                 break;
             case "Pause":
                 newRows[rowIndex].status = "paused";
@@ -481,7 +483,7 @@ class ProjectFolder extends React.Component {
         console.log(`Action button clicked for id: ${poc}`);
     };
 
-    projectActionScan = (poc, host) => {
+    projectActionScan = (poc, host, pid) => {
         fetch(
             `${globeVar.backendprotocol}://${globeVar.backendhost}/project/startScan`,
             {
@@ -492,6 +494,7 @@ class ProjectFolder extends React.Component {
                 body: JSON.stringify({
                     id: poc,
                     host: host,
+                    pid: pid
                 }),
             }
         );
