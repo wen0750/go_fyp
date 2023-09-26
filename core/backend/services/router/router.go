@@ -7,9 +7,11 @@ import (
 	"go_fyp/core/backend/models/editor"
 	"go_fyp/core/backend/models/folder"
 	"go_fyp/core/backend/models/project"
+	"go_fyp/core/backend/services/tagWordlist"
 )
 
 func Initialize() {
+	tagWordlist.GetWordlist()
 	router := gin.Default()
 	router.Use(cors.Default())
 	routing(router)
