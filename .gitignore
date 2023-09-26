@@ -3,4 +3,3 @@ node_modules
 package-lock.json
 package.json
 core/frontend/GlobalVar.js
-core/backend/services/tagWordlist/nuclei-templates/
