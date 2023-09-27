@@ -581,7 +581,7 @@ class ProjectFolder extends React.Component {
                             variant="h6"
                             component="h2"
                         >
-                            Create a New Template
+                            Create a New Project
                         </Typography>
                         <Stack spacing={3} sx={{ width: 1, marginBlock: 1 }}>
                             <TextField
