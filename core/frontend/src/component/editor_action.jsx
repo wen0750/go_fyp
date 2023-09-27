@@ -173,7 +173,7 @@ export default class EditorAction extends React.Component {
                             component="label"
                             size="medium"
                         >
-                            Import
+                            Import & Edit
                             <input type="file" hidden />
                         </Button>
                         <Button variant="contained" size="medium">
