@@ -4,6 +4,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
+	cve "go_fyp/core/backend/handler/hdcve"
 	"go_fyp/core/backend/models/editor"
 	"go_fyp/core/backend/models/folder"
 	"go_fyp/core/backend/models/project"
@@ -66,6 +67,29 @@ func routing(router *gin.Engine) {
 		switch action {
 		case "getRecord":
 			project.GetScanResult(c) // Fetches the results of the scan and returns them to the client
+		}
+	})
+
+	router.POST("/cve/:action", func(c *gin.Context) {
+		action := c.Param("action")
+		switch action {
+		case "list":
+			cve.Action_ListOne(c)
+		case "lists":
+			cve.Action_ListAll(c)
+		case "search":
+			cve.Action_Search(c)
+		}
+	})
+	router.POST("/cwe/:action", func(c *gin.Context) {
+		action := c.Param("action")
+		switch action {
+		case "list":
+			cve.Action_ListOne(c)
+		case "lists":
+			cve.Action_ListAll(c)
+		case "search":
+			cve.Action_Search(c)
 		}
 	})
 }
