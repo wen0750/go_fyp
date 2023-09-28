@@ -368,6 +368,10 @@ func StartScan(c *gin.Context) {
 				// Run the Nuclei scan - using req.Host[hostIndex]
 				cmd := exec.Command("nuclei", "-t", filename, "-u", req.Host[hostIndex], "-silent")
 				output, err := cmd.CombinedOutput()
+				if err != nil {
+					log.Printf("Error running Nuclei scan: %v", err)
+					log.Printf(req.Host[hostIndex])
+				}
 				outputStr := parseNucleiOutput(string(output))
 				CVECount := parseCVECount(string(output))
 
@@ -454,8 +458,11 @@ func parseNucleiOutput(output string) []string {
     // A slice to hold the parsed results
     var results []string
 
+	re := regexp.MustCompile("\x1b\\[[0-9;]*m")
+	cleanOutput := re.ReplaceAllString(output, "")
+
     // Split the output into lines
-    lines := strings.Split(output, "\n")
+    lines := strings.Split(cleanOutput, "\n")
 
     // Flag to check if any result is found
     var found bool
@@ -473,11 +480,11 @@ func parseNucleiOutput(output string) []string {
         // Check if the line has at least 4 parts
         if len(parts) >= 5 {
 			// Add the 4th and 5th parts to the results slice
-			results = append(results, parts[3]+" "+parts[4])
+			results = append(results, parts[0]+" "+parts[1]+" "+parts[2]+" "+parts[3]+" "+parts[4])
 			found = true
 		} else if len(parts) >= 4 {
 			// Add the 4th part to the results slice
-			results = append(results, parts[3])
+			results = append(results, parts[0]+" "+parts[1]+" "+parts[2]+" "+parts[3])
 			found = true
 		}
 		
