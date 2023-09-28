@@ -8,6 +8,7 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/gin-gonic/gin"
 	"gopkg.in/yaml.v2"
 )
 
@@ -530,5 +531,9 @@ func GetWordlist() {
 			fmt.Println("Error walking through directory:", err)
 		}
 	}
+}
+
+func Action_Search (c *gin.Context){
+
 }
 

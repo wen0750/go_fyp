@@ -69,6 +69,32 @@ export default class FormTableFormat extends React.Component {
     }
 
     // fatch data
+    fetchTagData = async () => {
+        try {
+            const response = await fetch(
+                `${globeVar.backendprotocol}://${globeVar.backendhost}/tag/file`,
+                {
+                    signal: AbortSignal.timeout(8000),
+                    method: "POST",
+                }
+            )
+        } catch (error) {
+            console.log("backend server error");
+            return [];
+        }
+    }
+
+    searchCveData = async (indata) => {
+        if (indata.length < 1) {
+            this.fetchCveData();
+        } else {
+            try {
+            } catch (error) {
+            }
+        }
+    };
+
+
     fetchCveData = async () => {
         try {
             const data = await (
@@ -304,7 +330,7 @@ export default class FormTableFormat extends React.Component {
                                         rows={9}
                                     />
                                 );
-                            } else if (data.type === "CVE") {
+                            }else if (data.type === "CVE") {
                                 defwidth = 1;
 
                                 if (this.state.cveOpt.length == 0) {
@@ -375,7 +401,79 @@ export default class FormTableFormat extends React.Component {
                                         filterOptions={(x) => x}
                                     />
                                 );
+                            }else if (data.type === "Tags") {
+                                defwidth = 1;
+
+                                if (this.state.cveOpt.length == 0) {
+                                    this.fetchTagData();
+                                }
+                                console.log(this.state.cveOpt);
+
+                                element = (
+                                    <Autocomplete
+                                        id="country-select-demo"
+                                        sx={{ width: 300 }}
+                                        options={this.state.cveOpt}
+                                        autoHighlight
+                                        getOptionLabel={(option) =>
+                                            option.CveMetadata.CveID
+                                        }
+                                        renderOption={(props, option) => (
+                                            <Box
+                                                component="div"
+                                                sx={{
+                                                    display: "flex",
+                                                    flexDirection: "column",
+                                                    alignContent: "flexStart",
+                                                }}
+                                                {...props}
+                                            >
+                                                <Typography
+                                                    variant="button"
+                                                    display="block"
+                                                    gutterBottom
+                                                >
+                                                    {option.CveMetadata.CveID}
+                                                </Typography>
+                                                <Typography
+                                                    variant="body2"
+                                                    gutterBottom
+                                                >
+                                                    {option.Containers.Cna
+                                                        .Descriptions[0]
+                                                        .Value <= 69
+                                                        ? option.Containers.Cna
+                                                              .Descriptions[0]
+                                                              .Value
+                                                        : option.Containers.Cna.Descriptions[0].Value.substr(
+                                                              0,
+                                                              69
+                                                          ) + "..."}
+                                                </Typography>
+                                            </Box>
+                                        )}
+                                        onInputChange={(
+                                            event,
+                                            newInputValue
+                                        ) => {
+                                            this.searchTagData(newInputValue);
+                                        }}
+                                        renderInput={(params) => (
+                                            <TextField
+                                                {...params}
+                                                label={data.label}
+                                                inputProps={{
+                                                    ...params.inputProps,
+                                                    autoComplete:
+                                                        "new-password", // disable autocomplete and autofill
+                                                }}
+                                            />
+                                        )}
+                                        filterOptions={(x) => x}
+                                    />
+                                );
                             }
+                            
                             return (
                                 <Grid
                                     data-key={data.key}

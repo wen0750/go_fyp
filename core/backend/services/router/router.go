@@ -8,6 +8,7 @@ import (
 	"go_fyp/core/backend/models/editor"
 	"go_fyp/core/backend/models/folder"
 	"go_fyp/core/backend/models/project"
+	"go_fyp/core/backend/services/tagWordlist"
 )
 
 func Initialize() {
@@ -90,5 +91,15 @@ func routing(router *gin.Engine) {
 		case "search":
 			cve.Action_Search(c)
 		}
+	})
+	router.POST("/tag/:action", func(c *gin.Context) {
+		action := c.Param("action")
+		switch action {
+		case "file":
+			c.File("../services/tagList.txt")
+		case "search":
+			tagWordlist.Action_Search(c)
+		}
+		
 	})
 }

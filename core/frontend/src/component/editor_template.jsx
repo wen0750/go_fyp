@@ -66,7 +66,7 @@ export default class EditorTemplate extends React.Component {
             {
                 key: 2,
                 label: "cve-id",
-                type: "TextField",
+                type: "CVE",
                 visible: true,
                 removable: false,
             },
@@ -118,9 +118,9 @@ export default class EditorTemplate extends React.Component {
             {
                 key: 5,
                 label: "tags",
-                type: "TextField",
-                visible: false,
-                removable: true,
+                type: "Tags",
+                visible: true,
+                removable: false,
             },
         ];
         this.requestOptionList = [
