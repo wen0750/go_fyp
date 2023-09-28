@@ -304,7 +304,7 @@ export default class FormTableFormat extends React.Component {
                                         rows={9}
                                     />
                                 );
-                            } else if (data.type === "Autocomplete") {
+                            } else if (data.type === "CVE") {
                                 defwidth = 1;
 
                                 if (this.state.cveOpt.length == 0) {
