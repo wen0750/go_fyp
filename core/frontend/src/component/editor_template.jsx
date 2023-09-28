@@ -110,8 +110,8 @@ export default class EditorTemplate extends React.Component {
             },
             {
                 key: 4,
-                label: "cve-id",
-                type: "Autocomplete",
+                label: "remediation",
+                type: "multiline",
                 visible: true,
                 removable: false,
             },
