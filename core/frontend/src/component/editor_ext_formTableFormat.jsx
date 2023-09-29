@@ -77,23 +77,21 @@ export default class FormTableFormat extends React.Component {
                     signal: AbortSignal.timeout(8000),
                     method: "POST",
                 }
-            )
+            );
         } catch (error) {
             console.log("backend server error");
             return [];
         }
-    }
+    };
 
     searchCveData = async (indata) => {
         if (indata.length < 1) {
             this.fetchCveData();
         } else {
             try {
-            } catch (error) {
-            }
+            } catch (error) {}
         }
     };
-
 
     fetchCveData = async () => {
         try {
@@ -330,7 +328,7 @@ export default class FormTableFormat extends React.Component {
                                         rows={9}
                                     />
                                 );
-                            }else if (data.type === "CVE") {
+                            } else if (data.type === "CVE") {
                                 defwidth = 1;
 
                                 if (this.state.cveOpt.length == 0) {
@@ -347,40 +345,67 @@ export default class FormTableFormat extends React.Component {
                                         getOptionLabel={(option) =>
                                             option.CveMetadata.CveID
                                         }
-                                        renderOption={(props, option) => (
-                                            <Box
-                                                component="div"
-                                                sx={{
-                                                    display: "flex",
-                                                    flexDirection: "column",
-                                                    alignContent: "flexStart",
-                                                }}
-                                                {...props}
-                                            >
-                                                <Typography
-                                                    variant="button"
-                                                    display="block"
-                                                    gutterBottom
-                                                >
-                                                    {option.CveMetadata.CveID}
-                                                </Typography>
-                                                <Typography
-                                                    variant="body2"
-                                                    gutterBottom
-                                                >
-                                                    {option.Containers.Cna
-                                                        .Descriptions[0]
-                                                        .Value <= 69
-                                                        ? option.Containers.Cna
-                                                              .Descriptions[0]
-                                                              .Value
-                                                        : option.Containers.Cna.Descriptions[0].Value.substr(
-                                                              0,
-                                                              69
-                                                          ) + "..."}
-                                                </Typography>
-                                            </Box>
-                                        )}
+                                        renderOption={(props, option) => {
+                                            if (option != null) {
+                                                console.log(
+                                                    option.Containers.Cna
+                                                );
+                                                if (
+                                                    option.Containers.Cna
+                                                        .Descriptions == null
+                                                ) {
+                                                    option.Containers.Cna.Descriptions =
+                                                        [];
+                                                    option.Containers.Cna.Descriptions[0] =
+                                                        {
+                                                            Value: "no descriptions ...",
+                                                        };
+                                                }
+                                                return (
+                                                    <Box
+                                                        component="div"
+                                                        sx={{
+                                                            display: "flex",
+                                                            flexDirection:
+                                                                "column",
+                                                            alignContent:
+                                                                "flexStart",
+                                                        }}
+                                                        {...props}
+                                                    >
+                                                        <Typography
+                                                            variant="button"
+                                                            display="block"
+                                                            gutterBottom
+                                                        >
+                                                            {
+                                                                option
+                                                                    .CveMetadata
+                                                                    .CveID
+                                                            }
+                                                        </Typography>
+                                                        <Typography
+                                                            variant="body2"
+                                                            gutterBottom
+                                                        >
+                                                            {option.Containers
+                                                                .Cna
+                                                                .Descriptions[0]
+                                                                .Value <= 69
+                                                                ? option
+                                                                      .Containers
+                                                                      .Cna
+                                                                      .Descriptions[0]
+                                                                      .Value
+                                                                : option.Containers.Cna.Descriptions[0].Value.substr(
+                                                                      0,
+                                                                      69
+                                                                  ) + "..."}
+                                                        </Typography>
+                                                    </Box>
+                                                );
+                                            }
+                                        }}
                                         onInputChange={(
                                             event,
                                             newInputValue
@@ -401,7 +426,7 @@ export default class FormTableFormat extends React.Component {
                                         filterOptions={(x) => x}
                                     />
                                 );
-                            }else if (data.type === "Tags") {
+                            } else if (data.type === "Tags") {
                                 defwidth = 1;
 
                                 if (this.state.cveOpt.length == 0) {
@@ -418,40 +443,67 @@ export default class FormTableFormat extends React.Component {
                                         getOptionLabel={(option) =>
                                             option.CveMetadata.CveID
                                         }
-                                        renderOption={(props, option) => (
-                                            <Box
-                                                component="div"
-                                                sx={{
-                                                    display: "flex",
-                                                    flexDirection: "column",
-                                                    alignContent: "flexStart",
-                                                }}
-                                                {...props}
-                                            >
-                                                <Typography
-                                                    variant="button"
-                                                    display="block"
-                                                    gutterBottom
-                                                >
-                                                    {option.CveMetadata.CveID}
-                                                </Typography>
-                                                <Typography
-                                                    variant="body2"
-                                                    gutterBottom
-                                                >
-                                                    {option.Containers.Cna
-                                                        .Descriptions[0]
-                                                        .Value <= 69
-                                                        ? option.Containers.Cna
-                                                              .Descriptions[0]
-                                                              .Value
-                                                        : option.Containers.Cna.Descriptions[0].Value.substr(
-                                                              0,
-                                                              69
-                                                          ) + "..."}
-                                                </Typography>
-                                            </Box>
-                                        )}
+                                        renderOption={(props, option) => {
+                                            if (option != null) {
+                                                console.log(
+                                                    option.Containers.Cna
+                                                );
+                                                if (
+                                                    option.Containers.Cna
+                                                        .Descriptions == null
+                                                ) {
+                                                    option.Containers.Cna.Descriptions =
+                                                        [];
+                                                    option.Containers.Cna.Descriptions[0] =
+                                                        {
+                                                            Value: "no descriptions ...",
+                                                        };
+                                                }
+                                                return (
+                                                    <Box
+                                                        component="div"
+                                                        sx={{
+                                                            display: "flex",
+                                                            flexDirection:
+                                                                "column",
+                                                            alignContent:
+                                                                "flexStart",
+                                                        }}
+                                                        {...props}
+                                                    >
+                                                        <Typography
+                                                            variant="button"
+                                                            display="block"
+                                                            gutterBottom
+                                                        >
+                                                            {
+                                                                option
+                                                                    .CveMetadata
+                                                                    .CveID
+                                                            }
+                                                        </Typography>
+                                                        <Typography
+                                                            variant="body2"
+                                                            gutterBottom
+                                                        >
+                                                            {option.Containers
+                                                                .Cna
+                                                                .Descriptions[0]
+                                                                .Value <= 69
+                                                                ? option
+                                                                      .Containers
+                                                                      .Cna
+                                                                      .Descriptions[0]
+                                                                      .Value
+                                                                : option.Containers.Cna.Descriptions[0].Value.substr(
+                                                                      0,
+                                                                      69
+                                                                  ) + "..."}
+                                                        </Typography>
+                                                    </Box>
+                                                );
+                                            }
+                                        }}
                                         onInputChange={(
                                             event,
                                             newInputValue
@@ -473,7 +525,7 @@ export default class FormTableFormat extends React.Component {
                                     />
                                 );
                             }
-                            
+
                             return (
                                 <Grid
                                     data-key={data.key}
