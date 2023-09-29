@@ -480,11 +480,11 @@ func parseNucleiOutput(output string) []string {
         // Check if the line has at least 4 parts
         if len(parts) >= 5 {
 			// Add the 4th and 5th parts to the results slice
-			results = append(results, parts[0]+" "+parts[1]+" "+parts[2]+" "+parts[3]+" "+parts[4])
+			results = append(results, parts[3]+" "+parts[4])
 			found = true
 		} else if len(parts) >= 4 {
 			// Add the 4th part to the results slice
-			results = append(results, parts[0]+" "+parts[1]+" "+parts[2]+" "+parts[3])
+			results = append(results, parts[3])
 			found = true
 		}
 		
