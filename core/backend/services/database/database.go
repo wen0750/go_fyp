@@ -10,9 +10,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var mongoURI string = "mongodb+srv://sam1916:ue6aE6jfXGtBvwS@cluster0.981q5hl.mongodb.net/?retryWrites=true&w=majority"
+var mongoURI string = "mongodb+srv://sam1916:ue6aE6jfXGtBvwS@cluster1.mrkha9f.mongodb.net/?retryWrites=true&w=majority"
 var dbName string = "FYP"
-var collection *mongo.Collection
 
 // create a template structure
 type Template struct {
