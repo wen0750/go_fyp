@@ -105,6 +105,9 @@ export default class FormTableFormat extends React.Component {
                 )
             ).json();
             console.log(data.result);
+            if (data.result == null) {
+                data.result = [];
+            }
             this.setState({ cveOpt: data.result });
             return data.result;
         } catch (error) {
