@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"regexp"
 	"strings"
 	"time"
@@ -381,10 +382,22 @@ func StartScan(c *gin.Context) {
 					log.Printf("Error creating scan result for ID %s: %s", req.ID[idIndex], err.Error())
 				}
 
-				log.Printf("Nuclei output: %s", id)
+				log.Printf("history ID: %s", id.InsertedID.(primitive.ObjectID).Hex())
+
+				currentDir, err := os.Getwd() 
+				if err != nil {
+					log.Fatalf("Error getting current directory: %v", err)
+				}
+
+				nucleiPath := filepath.Join(currentDir, "core", "backend", "services", "nuclei", "nuclei.exe")
+
+				_, err = os.Stat(nucleiPath)
+				if err != nil {
+					log.Fatalf("Error checking file existence: %v", err)
+				}
 
 				// Run the Nuclei scan - using req.Host[hostIndex]
-				cmd := exec.Command("./core/backend/services/nuclei/nuclei.exe", "-t", filename, "-u", req.Host[hostIndex], "-silent")
+				cmd := exec.Command(nucleiPath, "-t", filename, "-u", req.Host[hostIndex], "-silent -hid", id.InsertedID.(primitive.ObjectID).Hex() )
 				output, err := cmd.CombinedOutput()
 				
 				if err != nil {
