@@ -118,7 +118,7 @@ export default class EditorTemplate extends React.Component {
             {
                 key: 5,
                 label: "tags",
-                type: "Tags",
+                type: "TextField", //Tags
                 visible: true,
                 removable: false,
             },
