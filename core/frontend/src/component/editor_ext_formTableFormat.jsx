@@ -34,7 +34,7 @@ export default class FormTableFormat extends React.Component {
             anchorEl: null,
             open: false,
             cveOpen: false,
-            cveOpt: [],
+            cveOpt: false,
             removableBtn: null,
             optionalItemList: this.props.opts.filter(function (item) {
                 return item.visible == false && item.removable == true;
@@ -334,7 +334,7 @@ export default class FormTableFormat extends React.Component {
                             } else if (data.type === "CVE") {
                                 defwidth = 1;
 
-                                if (this.state.cveOpt.length == 0) {
+                                if (this.state.cveOpt == false) {
                                     this.fetchCveData();
                                 }
                                 console.log(this.state.cveOpt);
@@ -432,7 +432,7 @@ export default class FormTableFormat extends React.Component {
                             } else if (data.type === "Tags") {
                                 defwidth = 1;
 
-                                if (this.state.cveOpt.length == 0) {
+                                if (!this.state.cveOpt) {
                                     this.fetchTagData();
                                 }
                                 console.log(this.state.cveOpt);
