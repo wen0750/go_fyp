@@ -364,10 +364,29 @@ func StartScan(c *gin.Context) {
 
 				// Record the start time of the scan
 				startTime := time.Now().Unix()
+				cveCountMap := make(map[string]int)
+				
+				// Convert CVECount struct to map[string]int
+				history := History{
+					PID:       req.PID, // front should pass the pid
+					StartTime: startTime,    //  time stamp start
+					EndTime:   int64(0),      //  time stamp end
+					Result:    []string{},
+					Status:    "status",
+					CVECount:  cveCountMap,
+				}
+
+				id, err := scanResultsCollection.InsertOne(context.Background(), history)
+				if err != nil {
+					log.Printf("Error creating scan result for ID %s: %s", req.ID[idIndex], err.Error())
+				}
+
+				log.Printf("Nuclei output: %s", id)
 
 				// Run the Nuclei scan - using req.Host[hostIndex]
-				cmd := exec.Command("nuclei", "-t", filename, "-u", req.Host[hostIndex], "-silent")
+				cmd := exec.Command("./core/backend/services/nuclei/nuclei.exe", "-t", filename, "-u", req.Host[hostIndex], "-silent")
 				output, err := cmd.CombinedOutput()
+				
 				if err != nil {
 					log.Printf("Error running Nuclei scan: %v", err)
 					log.Printf(req.Host[hostIndex])
@@ -375,8 +394,6 @@ func StartScan(c *gin.Context) {
 				outputStr := parseNucleiOutput(string(output))
 				CVECount := parseCVECount(string(output))
 
-				// Convert CVECount struct to map[string]int
-				cveCountMap := make(map[string]int)
 				cveCountMap["info"] = CVECount.Info
 				cveCountMap["low"] = CVECount.Low
 				cveCountMap["medium"] = CVECount.Medium
@@ -399,7 +416,7 @@ func StartScan(c *gin.Context) {
 				//cveCount := parseOutputToGetCVEs(output)  // You need to implement this function
 
 				// Store the results in MongoDB
-				history := History{
+				history = History{
 					PID:       req.PID, // front should pass the pid
 					StartTime: startTime,    //  time stamp start
 					EndTime:   endTime,      //  time stamp end
@@ -407,8 +424,18 @@ func StartScan(c *gin.Context) {
 					Status:    status,
 					CVECount:  cveCountMap,
 				}
-
-				_, err = scanResultsCollection.InsertOne(context.Background(), history)
+				
+				filter := bson.M{"pid": history.PID}
+				update := bson.M{
+					"$set": bson.M{
+						"endTime":  history.EndTime,
+						"result":   history.Result,
+						"status":   history.Status,
+						"cvecount": history.CVECount,
+					},
+				}
+				
+				_, err = scanResultsCollection.UpdateOne(context.Background(), filter, update)
 				if err != nil {
 					log.Printf("Error saving scan result for ID %s: %s", req.ID[idIndex], err.Error())
 				}
