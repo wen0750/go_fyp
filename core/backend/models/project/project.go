@@ -389,7 +389,7 @@ func StartScan(c *gin.Context) {
 					log.Fatalf("Error getting current directory: %v", err)
 				}
 
-				nucleiPath := filepath.Join(currentDir, "core", "backend", "services", "nuclei", "nuclei.exe")
+				nucleiPath := filepath.Join(currentDir, "services", "nuclei", "nuclei.exe")
 
 				_, err = os.Stat(nucleiPath)
 				if err != nil {
@@ -397,7 +397,7 @@ func StartScan(c *gin.Context) {
 				}
 
 				// Run the Nuclei scan - using req.Host[hostIndex]
-				cmd := exec.Command(nucleiPath, "-t", filename, "-u", req.Host[hostIndex], "-silent -hid", id.InsertedID.(primitive.ObjectID).Hex() )
+				cmd := exec.Command(nucleiPath, "-t", filename, "-u", req.Host[hostIndex], "-hid", id.InsertedID.(primitive.ObjectID).Hex(), "-silent", "-j")
 				output, err := cmd.CombinedOutput()
 				
 				if err != nil {
@@ -421,7 +421,6 @@ func StartScan(c *gin.Context) {
 
 				if err != nil {
 					log.Printf("Error running Nuclei scan for ID %s: %s", req.ID[idIndex], err.Error())
-					log.Printf("Nuclei output: %s", outputStr)
 					status = "Failed"
 				}
 
