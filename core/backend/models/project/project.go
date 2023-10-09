@@ -10,6 +10,7 @@ import (
 	"path/filepath"
 	"regexp"
 	"strings"
+	"sync"
 	"time"
 
 	"log"
@@ -326,139 +327,167 @@ func StartScan(c *gin.Context) {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return
 	}
+	hostFilePath := "hosts.txt"
+    hostFile, err := os.Create(hostFilePath)
+    if err != nil {
+        log.Fatalf("Failed to create file: %s", err)
+    }
+    defer hostFile.Close()
+
+
+	var filenames []string // To collect filenames
+	var mu sync.Mutex // To make appending to filenames slice thread-safe
+	var wg sync.WaitGroup // To wait for all goroutines to finish
 
 	// Iterate over IDs
 	for i := range req.ID {
-		// Iterate over hosts for each ID
-		for j := range req.Host {
-			go func(idIndex int, hostIndex int) {
-				defer func() {
-					if r := recover(); r != nil {
-						log.Printf("Recovered from panic while processing ID %s: %v", req.ID[idIndex], r)
-					}
-				}()
+		wg.Add(1) // Increment the WaitGroup counter
 
-				// Convert string ID to ObjectID
-				objID, err := primitive.ObjectIDFromHex(req.ID[idIndex])
-				if err != nil {
-					log.Printf("Invalid ID format for ID %s\n", req.ID[idIndex])
+		go func(idIndex int) {
+			defer wg.Done() // Decrement the WaitGroup counter when the goroutine finishes
+
+			defer func() {
+				if r := recover(); r != nil {
+					log.Printf("Recovered from panic while processing ID %s: %v", req.ID[idIndex], r)
+				}
+			}()
+			objID, err := primitive.ObjectIDFromHex(req.ID[idIndex])
+			if err != nil {
+				log.Printf("Invalid ID format for ID %s\n", req.ID[idIndex])
+				return
+			}
+
+			var result Template
+			err = templatesCollection.FindOne(context.Background(), bson.M{"_id": objID}).Decode(&result)
+			if err != nil {
+				if err == mongo.ErrNoDocuments {
+					log.Printf("Document not found for ID %s\n", req.ID[idIndex])
+					return
+				} else {
+					log.Printf("Error fetching document for ID %s: %s\n", req.ID[idIndex], err.Error())
 					return
 				}
+			}
+			filename, err := createYAMLFile(result)
+			if err != nil {
+				log.Printf("Error creating YAML file for ID %s: %s\n", req.ID[idIndex], err.Error())
+				return
+			}
 
-				var result Template
-				err = templatesCollection.FindOne(context.Background(), bson.M{"_id": objID}).Decode(&result)
-				if err != nil {
-					if err == mongo.ErrNoDocuments {
-						log.Printf("Document not found for ID %s\n", req.ID[idIndex])
-						return
-					} else {
-						log.Printf("Error fetching document for ID %s: %s\n", req.ID[idIndex], err.Error())
-						return
-					}
-				}
-
-				filename, err := createYAMLFile(result)
-				if err != nil {
-					log.Printf("Error creating YAML file for ID %s: %s\n", req.ID[idIndex], err.Error())
-					return
-				}
-
-				// Record the start time of the scan
-				startTime := time.Now().Unix()
-				cveCountMap := make(map[string]int)
-				
-				// Convert CVECount struct to map[string]int
-				history := History{
-					PID:       req.PID, // front should pass the pid
-					StartTime: startTime,    //  time stamp start
-					EndTime:   int64(0),      //  time stamp end
-					Result:    []string{},
-					Status:    "status",
-					CVECount:  cveCountMap,
-				}
-
-				id, err := scanResultsCollection.InsertOne(context.Background(), history)
-				if err != nil {
-					log.Printf("Error creating scan result for ID %s: %s", req.ID[idIndex], err.Error())
-				}
-
-				log.Printf("history ID: %s", id.InsertedID.(primitive.ObjectID).Hex())
-
-				currentDir, err := os.Getwd() 
-				if err != nil {
-					log.Fatalf("Error getting current directory: %v", err)
-				}
-
-				nucleiPath := filepath.Join(currentDir, "services", "nuclei", "nuclei.exe")
-
-				_, err = os.Stat(nucleiPath)
-				if err != nil {
-					log.Fatalf("Error checking file existence: %v", err)
-				}
-
-				// Run the Nuclei scan - using req.Host[hostIndex]
-				cmd := exec.Command(nucleiPath, "-t", filename, "-u", req.Host[hostIndex], "-hid", id.InsertedID.(primitive.ObjectID).Hex(), "-silent", "-j")
-				output, err := cmd.CombinedOutput()
-				
-				if err != nil {
-					log.Printf("Error running Nuclei scan: %v", err)
-					log.Printf(req.Host[hostIndex])
-				}
-				outputStr := parseNucleiOutput(string(output))
-				CVECount := parseCVECount(string(output))
-
-				cveCountMap["info"] = CVECount.Info
-				cveCountMap["low"] = CVECount.Low
-				cveCountMap["medium"] = CVECount.Medium
-				cveCountMap["high"] = CVECount.High
-				cveCountMap["critical"] = CVECount.Critical
-				
-
-				// Record the end time of the scan
-				endTime := time.Now().Unix()
-
-				status := "Complete"
-
-				if err != nil {
-					log.Printf("Error running Nuclei scan for ID %s: %s", req.ID[idIndex], err.Error())
-					status = "Failed"
-				}
-
-				// Parse the output to get the CVE counts
-				//cveCount := parseOutputToGetCVEs(output)  // You need to implement this function
-
-				// Store the results in MongoDB
-				history = History{
-					PID:       req.PID, // front should pass the pid
-					StartTime: startTime,    //  time stamp start
-					EndTime:   endTime,      //  time stamp end
-					Result:    outputStr,
-					Status:    status,
-					CVECount:  cveCountMap,
-				}
-				
-				filter := bson.M{"pid": history.PID}
-				update := bson.M{
-					"$set": bson.M{
-						"endTime":  history.EndTime,
-						"result":   history.Result,
-						"status":   history.Status,
-						"cvecount": history.CVECount,
-					},
-				}
-				
-				_, err = scanResultsCollection.UpdateOne(context.Background(), filter, update)
-				if err != nil {
-					log.Printf("Error saving scan result for ID %s: %s", req.ID[idIndex], err.Error())
-				}
-
-				// Delete the file after scanning
-				os.Remove(filename)
-			}(i, j)
-		}
+			mu.Lock() // Lock to prevent concurrent write to the slice
+			filenames = append(filenames, filename) // Add filename to slice
+			mu.Unlock() // Unlock after writing to the slice
+		}(i)
 	}
 
+	wg.Wait() // Wait for all goroutines to finish
+
+	// Join all filenames with comma
+	templates := strings.Join(filenames, ",")
+
+	for _, host := range req.Host {
+		_, err := hostFile.WriteString(host + "\n")
+		if err != nil {
+			log.Fatalf("Failed to write to file: %s", err)
+		}
+	}
+	go func() {
+		startTime := time.Now().Unix()
+		cveCountMap := make(map[string]int)
+
+		history := History{
+			PID:       req.PID, // front should pass the pid
+			StartTime: startTime,    //  time stamp start
+			EndTime:   int64(0),      //  time stamp end
+			Result:    []string{},
+			Status:    "status",
+			CVECount:  cveCountMap,
+		}
+		id, err := scanResultsCollection.InsertOne(context.Background(), history)
+		if err != nil {
+			log.Printf("Error creating scan result for ID %s: %s", id, err.Error())
+		}
+
+		log.Printf("history ID: %s", id.InsertedID.(primitive.ObjectID).Hex())
+
+		currentDir, err := os.Getwd() 
+		if err != nil {
+			log.Fatalf("Error getting current directory: %v", err)
+		}
+
+		nucleiPath := filepath.Join(currentDir, "services", "nuclei", "nuclei.exe")
+
+		_, err = os.Stat(nucleiPath)
+		if err != nil {
+			if os.IsNotExist(err) {
+				log.Fatalf("Nuclei executable does not exist at path: %s", nucleiPath)
+			} else {
+				log.Fatalf("Error checking file existence: %v", err)
+			}
+		}
+		cmd := exec.Command(nucleiPath, "-t", templates, "-l", hostFilePath, "-hid", id.InsertedID.(primitive.ObjectID).Hex(), "-silent", "-j")
+		output, err := cmd.CombinedOutput()
+
+		if err != nil {
+			log.Printf("Error running Nuclei scan: %v", err)
+		}
+		outputStr := parseNucleiOutput(string(output))
+		CVECount := parseCVECount(string(output))
+
+		cveCountMap["info"] = CVECount.Info
+		cveCountMap["low"] = CVECount.Low
+		cveCountMap["medium"] = CVECount.Medium
+		cveCountMap["high"] = CVECount.High
+		cveCountMap["critical"] = CVECount.Critical
+		
+
+		// Record the end time of the scan
+		endTime := time.Now().Unix()
+
+		status := "Complete"
+
+		if err != nil {
+			log.Printf("Error running Nuclei scan for ID %s: %s", id, err.Error())
+			status = "Failed"
+		}
+
+		// Parse the output to get the CVE counts
+		//cveCount := parseOutputToGetCVEs(output)  // You need to implement this function
+
+		// Store the results in MongoDB
+		history = History{
+			PID:       req.PID, // front should pass the pid
+			StartTime: startTime,    //  time stamp start
+			EndTime:   endTime,      //  time stamp end
+			Result:    outputStr,
+			Status:    status,
+			CVECount:  cveCountMap,
+		}
+		
+		filter := bson.M{"pid": history.PID}
+		update := bson.M{
+			"$set": bson.M{
+				"endTime":  history.EndTime,
+				"result":   history.Result,
+				"status":   history.Status,
+				"cvecount": history.CVECount,
+			},
+		}
+		
+		_, err = scanResultsCollection.UpdateOne(context.Background(), filter, update)
+		if err != nil {
+			log.Printf("Error saving scan result for ID %s: %s", id, err.Error())
+		}
+		os.Remove(hostFilePath)
+		for _, filename := range filenames {
+			err := os.Remove(filename)
+			if err != nil {
+				log.Printf("Failed to remove file %s: %s\n", filename, err)
+			}
+		}
+	}()
 	c.JSON(200, gin.H{"message": "Scan started"})
+
 }
 
 func createYAMLFile(template Template) (string, error) {
