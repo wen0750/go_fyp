@@ -157,7 +157,7 @@ func init() {
 	}
 }
 
-func GetFolder(c *gin.Context) {
+func GetFolderDetail(c *gin.Context) {
 	var inputData InputGetFolder
 
 	// ---> 绑定数据

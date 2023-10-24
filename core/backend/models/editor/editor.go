@@ -249,7 +249,7 @@ func SaveToDB(c *gin.Context) {
 }
 
 //upload page
-func SubmitToDB(c *gin.Context) {
+func UploadToDB(c *gin.Context) {
 	// Read the file from the request
 	_, header, err := c.Request.FormFile("file")
 	if err != nil {
