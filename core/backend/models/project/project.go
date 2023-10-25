@@ -212,7 +212,7 @@ func init() {
 	
 }
 
-func ProjectCreateHandeler(c *gin.Context) {
+func ProjectCreateHandler(c *gin.Context) {
 	var inputData InputCreateProject
 
 	if err := c.ShouldBindJSON(&inputData); err != nil {
