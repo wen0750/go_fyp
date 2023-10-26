@@ -1,6 +1,7 @@
-const phantom = require('phantom');
+// const phantom = require('');
+import phantom from 'phantom';
 
-async function GetNetlog(url) {
+export default async function GetNetlog(url) {
     function createHAR(address, title, startTime, resources, html) {
         var entries = [];
 
@@ -79,6 +80,8 @@ async function GetNetlog(url) {
     var address = url;
     var resources = [];
     var startTime;
+
+    page.setting('userAgent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36');
 
     await page.on('onLoadStarted', function () {
         startTime = new Date();
