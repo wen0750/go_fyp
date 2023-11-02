@@ -62,12 +62,9 @@ func routing(router *gin.Engine) {
 		}
 	})
 
-	router.POST("/history/:action", func(c *gin.Context) {
-		action := c.Param("action")
-		switch action {
-		case "getRecord":
-			project.GetScanResult(c) // Fetches the results of the scan and returns them to the client
-		}
+	router.GET("/project/:scanResult", func(c *gin.Context) {
+		pid := c.Param("scanResult")
+		project.GetScanResult(c, pid)
 	})
 
 	router.POST("/cve/:action", func(c *gin.Context) {

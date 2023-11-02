@@ -55,6 +55,7 @@ type ProjectItem struct {
 	Name     string             `json:"name"`
 	Host     []string           `json:"host"`
 	Poc      []string           `json:"poc"`
+	History  []string			`json:"history"`
 	LastScan int                `json:"lastscan"`
 	Schedule string             `json:"schedule"`
 	Status   string             `json:"status"`
@@ -191,6 +192,7 @@ func ProjectCreateHandler(c *gin.Context) {
 	}
 
 	var poc []string
+	var history []string
 	switch inputData.Template {
 	case "customs":
 		poc = inputData.Poc
@@ -199,7 +201,7 @@ func ProjectCreateHandler(c *gin.Context) {
 	}
 
 	var primary_id = primitive.NewObjectID()
-	var newProject = ProjectItem{primary_id, inputData.Name, inputData.Host, poc, 1000, "onDemand", "idle"}
+	var newProject = ProjectItem{primary_id, inputData.Name, inputData.Host, poc, history, 1000, "onDemand", "idle"}
 
 	result, err := addProjectToFolder(newProject, inputData.Fid)
 	if err != nil {
@@ -224,6 +226,22 @@ func addProjectToFolder(projectDetail ProjectItem, fid string) (bson.M, error) {
 
 	objID, _ := primitive.ObjectIDFromHex(fid)
 	filter := bson.M{"_id": objID}
+	update := bson.M{
+		"$push": bson.M{"project": projectDetail},
+	}
+
+	err := folderCollection.FindOneAndUpdate(ctx, filter, update).Decode(&result)
+	return result, err
+}
+
+func addHIDToFolder(projectDetail ProjectItem, pid string) (bson.M, error) {
+	var result bson.M
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	objID, _ := primitive.ObjectIDFromHex(pid)
+	filter := bson.M{"pid": objID}
 	update := bson.M{
 		"$push": bson.M{"project": projectDetail},
 	}
@@ -377,6 +395,11 @@ func StartScan(c *gin.Context) {
 			log.Printf("Error creating scan result for ID %s: %s", id, err.Error())
 		}
 
+		//_, err = folderCollection.InsertOne(context.Background(), id.InsertedID.(primitive.ObjectID))
+		//if err != nil {
+		//	log.Printf("Error creating scan result for ID %s: %s", id, err.Error())
+		//}
+		
 
 		currentDir, err := os.Getwd() 
 		if err != nil {
@@ -606,6 +629,6 @@ func ScanSummary(c *gin.Context, pid string) {
     c.JSON(200, result)
 }
 
-func GetScanResult(c *gin.Context) {
+func GetScanResult(c *gin.Context, pid string) {
 
 }
