@@ -102,22 +102,25 @@ type Template struct {
 		Description string   `json:"description,omitempty"`
 		Remediation string   `json:"remediation,omitempty"`
 		Reference   []string `json:"reference,omitempty"`
-		//
+		
 		Classification struct {
 			CvssMetrics string  `json:"cvss-metrics,omitempty"`
 			CvssScore   float64 `json:"cvss-score,omitempty"`
 			CveID       string  `json:"cve-id,omitempty"`
 			CweID       string  `json:"cwe-id,omitempty"`
 		} `json:"classification,omitempty"`
-		//
+		
 		Metadata struct {
 			Verified    bool   `json:"verified,omitempty"`
 			ShodanQuery string `json:"shodan-query,omitempty"`
 			MaxRequest int `json:"max-request,omitempty"`
 		} `json:"metadata,omitempty"`
-		//
+		
 		Tags string `json:"tags,omitempty"`
 	} `json:"info,omitempty"`
+
+	Variables map[string]interface{} `json:"variables,omitempty"`
+
 	HTTP []struct {
 		Method            string `json:"method,omitempty"`
 		Path              []string `json:"path,omitempty"`
@@ -136,7 +139,7 @@ type Template struct {
 			Condition string   `json:"condition,omitempty"`
 			Status    []int    `json:"status,omitempty"`
 		} `json:"matchers,omitempty"`
-		//
+		
 		Extractors []struct {
 			Type  string   `json:"type,omitempty"`
 			Name  string   `json:"name,omitempty"`
@@ -144,41 +147,7 @@ type Template struct {
 			Part  string   `json:"part,omitempty"`
 		} `json:"extractors,omitempty"`
 	} `json:"http,omitempty"`
-	Requests []struct {
-		Raw               []string `json:"raw,omitempty"`
-		CookieReuse       bool     `json:"cookie-reuse,omitempty"`
-		Method            string   `json:"method,omitempty"`
-		Path              []string `json:"path,omitempty"`
-		Redirects         bool     `json:"redirects,omitempty"`
-		MaxRedirects      int      `json:"max-redirects,omitempty"`
-		StopAtFirstMatch  bool     `json:"stop-at-first-match,omitempty"`
-		MatchersCondition string   `json:"matchers-condition,omitempty"`
-		//
-		Matchers []struct {
-			Type      string   `json:"type,omitempty"`
-			Part      string   `json:"part,omitempty"`
-			Words     []string `json:"words,omitempty"`
-			Dsl       []string `json:"dsl,omitempty"`
-			Regex     []string `json:"regex,omitempty"`
-			Condition string   `json:"condition,omitempty"`
-			Status    []int    `json:"status,omitempty"`
-		} `json:"matchers,omitempty"`
-		//
-		Extractors []struct {
-			Type  string   `json:"type,omitempty"`
-			Name  string   `json:"name,omitempty"`
-			Group int      `json:"group,omitempty"`
-			Regex []string `json:"regex,omitempty"`
-		} `json:"extractors,omitempty"`
-	} `json:"requests,omitempty"`
-	//
-	Workflows []struct {
-		Template string `json:"template,omitempty"`
-		//
-		Subtemplates []struct {
-			Tags string `json:"tags,omitempty"`
-		} `json:"subtemplates,omitempty"`
-	} `json:"workflows,omitempty"`
+	
 }
 
 var templatesCollection *mongo.Collection
@@ -408,7 +377,6 @@ func StartScan(c *gin.Context) {
 			log.Printf("Error creating scan result for ID %s: %s", id, err.Error())
 		}
 
-		log.Printf("history ID: %s", id.InsertedID.(primitive.ObjectID).Hex())
 
 		currentDir, err := os.Getwd() 
 		if err != nil {
@@ -455,7 +423,7 @@ func StartScan(c *gin.Context) {
 		//cveCount := parseOutputToGetCVEs(output)  // You need to implement this function
 
 		// Store the results in MongoDB
-		history = History{
+		after_scan := History{
 			PID:       req.PID, // front should pass the pid
 			StartTime: startTime,    //  time stamp start
 			EndTime:   endTime,      //  time stamp end
@@ -467,12 +435,14 @@ func StartScan(c *gin.Context) {
 		filter := bson.M{"pid": history.PID}
 		update := bson.M{
 			"$set": bson.M{
-				"endTime":  history.EndTime,
-				"result":   history.Result,
-				"status":   history.Status,
-				"cvecount": history.CVECount,
+				"endTime":  after_scan.EndTime,
+				"result":   after_scan.Result,
+				"status":   after_scan.Status,
+				"cvecount": after_scan.CVECount,
 			},
 		}
+		
+		log.Printf("status: %s", status)
 		
 		_, err = scanResultsCollection.UpdateOne(context.Background(), filter, update)
 		if err != nil {

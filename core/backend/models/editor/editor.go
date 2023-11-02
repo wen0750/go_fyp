@@ -46,6 +46,9 @@ type Template struct {
 		
 		Tags string `json:"tags,omitempty"`
 	} `json:"info,omitempty"`
+
+	Variables map[string]interface{} `json:"variables,omitempty"`
+
 	HTTP []struct {
 		Method            string `json:"method,omitempty"`
 		Path              []string `json:"path,omitempty"`
@@ -72,41 +75,7 @@ type Template struct {
 			Part  string   `json:"part,omitempty"`
 		} `json:"extractors,omitempty"`
 	} `json:"http,omitempty"`
-	Requests []struct {
-		Raw               []string `json:"raw,omitempty"`
-		CookieReuse       bool     `json:"cookie-reuse,omitempty"`
-		Method            string   `json:"method,omitempty"`
-		Path              []string `json:"path,omitempty"`
-		Redirects         bool     `json:"redirects,omitempty"`
-		MaxRedirects      int      `json:"max-redirects,omitempty"`
-		StopAtFirstMatch  bool     `json:"stop-at-first-match,omitempty"`
-		MatchersCondition string   `json:"matchers-condition,omitempty"`
-		
-		Matchers []struct {
-			Type      string   `json:"type,omitempty"`
-			Part      string   `json:"part,omitempty"`
-			Words     []string `json:"words,omitempty"`
-			Dsl       []string `json:"dsl,omitempty"`
-			Regex     []string `json:"regex,omitempty"`
-			Condition string   `json:"condition,omitempty"`
-			Status    []int    `json:"status,omitempty"`
-		} `json:"matchers,omitempty"`
-		
-		Extractors []struct {
-			Type  string   `json:"type,omitempty"`
-			Name  string   `json:"name,omitempty"`
-			Group int      `json:"group,omitempty"`
-			Regex []string `json:"regex,omitempty"`
-		} `json:"extractors,omitempty"`
-	} `json:"requests,omitempty"`
 	
-	Workflows []struct {
-		Template string `json:"template,omitempty"`
-		
-		Subtemplates []struct {
-			Tags string `json:"tags,omitempty"`
-		} `json:"subtemplates,omitempty"`
-	} `json:"workflows,omitempty"`
 }
 
 var collection *mongo.Collection
@@ -130,8 +99,6 @@ func Download(c *gin.Context) {
 	fmt.Printf("JSON data: %v\n", gin.H{
 		"id":          jsonData.ID,
 		"\ninfo":      jsonData.Info,
-		"\nrequests":  jsonData.Requests,
-		"\nworkflows": jsonData.Workflows,
 	})
 
 	//Convert the data to yaml format
@@ -390,7 +357,5 @@ func (t Template) Equal(other Template) bool {
 		t.Info.Classification.CweID == other.Info.Classification.CweID &&
 		t.Info.Metadata.Verified == other.Info.Metadata.Verified &&
 		t.Info.Metadata.ShodanQuery == other.Info.Metadata.ShodanQuery &&
-		t.Info.Tags == other.Info.Tags &&
-		reflect.DeepEqual(t.Requests, other.Requests) &&
-		reflect.DeepEqual(t.Workflows, other.Workflows)
+		t.Info.Tags == other.Info.Tags
 }
