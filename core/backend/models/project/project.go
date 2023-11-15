@@ -422,6 +422,9 @@ func StartScan(c *gin.Context) {
 			log.Printf("Error running Nuclei scan: %v", err)
 		}
 		outputStr := parseNucleiOutput(string(output))
+
+		log.Printf("nuclei Output:%s", output)
+
 		CVECount := parseCVECount(string(output))
 
 		cveCountMap["info"] = CVECount.Info
@@ -547,8 +550,8 @@ func parseNucleiOutput(output string) []string {
     // A slice to hold the parsed results
     var results []string
 
-	re := regexp.MustCompile("\x1b\\[[0-9;]*m")
-	cleanOutput := re.ReplaceAllString(output, "")
+    re := regexp.MustCompile("\x1b\\[[0-9;]*m")
+    cleanOutput := re.ReplaceAllString(output, "")
 
     // Split the output into lines
     lines := strings.Split(cleanOutput, "\n")
@@ -556,10 +559,13 @@ func parseNucleiOutput(output string) []string {
     // Flag to check if any result is found
     var found bool
 
+    // Regular expression to match timestamp at the beginning of a line
+    timeRe := regexp.MustCompile(`^\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2}`)
+
     // Iterate over each line
     for _, line := range lines {
-        // Skip empty lines
-        if len(line) == 0 {
+        // Skip empty lines and lines starting with a timestamp
+        if len(line) == 0 || timeRe.MatchString(line) {
             continue
         }
 
@@ -568,15 +574,14 @@ func parseNucleiOutput(output string) []string {
 
         // Check if the line has at least 4 parts
         if len(parts) >= 5 {
-			// Add the 4th and 5th parts to the results slice
-			results = append(results, parts[3]+" "+parts[4])
-			found = true
-		} else if len(parts) >= 4 {
-			// Add the 4th part to the results slice
-			results = append(results, parts[3])
-			found = true
-		}
-		
+            // Add the 4th and 5th parts to the results slice
+            results = append(results, parts[3]+" "+parts[4])
+            found = true
+        } else if len(parts) >= 4 {
+            // Add the 4th part to the results slice
+            results = append(results, parts[3])
+            found = true
+        }
     }
 
     // Check if any result is found. If not, add "No results found."
@@ -658,5 +663,49 @@ func ScanSummary(c *gin.Context, pid string) {
 }
 
 func GetScanResult(c *gin.Context, pid string) {
+    // Convert the pid string to an ObjectID
+    pidOid, err := primitive.ObjectIDFromHex(pid)
+    if err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid pid format"})
+        return
+    }
 
+    // Create a pipeline to extract the history IDs for the given pid
+    pipeline := mongo.Pipeline{
+        bson.D{{Key: "$unwind", Value: "$project"}},
+        bson.D{{Key: "$match", Value: bson.D{{Key: "project.pid", Value: pidOid}}}},
+        bson.D{{Key: "$project", Value: bson.D{{Key: "history", Value: "$project.history"}}}},
+    }
+
+    // Run the pipeline
+    cur, err := folderCollection.Aggregate(context.Background(), pipeline)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error executing pipeline"})
+        return
+    }
+    defer cur.Close(context.Background())
+
+    // Parse the results
+    var results []bson.M
+    if err := cur.All(context.Background(), &results); err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error reading pipeline results"})
+        return
+    }
+
+    // For each history ID, fetch the corresponding document from the scanResultsCollection
+    var histories []bson.M
+    for _, result := range results {
+        for _, historyOid := range result["history"].(primitive.A) {
+            var historyDoc bson.M
+            err = scanResultsCollection.FindOne(context.Background(), bson.M{"_id": historyOid}).Decode(&historyDoc)
+            if err != nil {
+                c.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching history document"})
+                return
+            }
+            histories = append(histories, historyDoc)
+        }
+    }
+
+    // Return the histories as JSON
+    c.JSON(http.StatusOK, histories)
 }

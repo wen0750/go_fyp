@@ -1,6 +1,8 @@
 package router
 
 import (
+	"log"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
@@ -65,6 +67,7 @@ func routing(router *gin.Engine) {
 	router.GET("/project/:scanResult", func(c *gin.Context) {
 		pid := c.Param("scanResult")
 		project.GetScanResult(c, pid)
+		log.Printf("%s",pid)
 	})
 
 	router.POST("/cve/:action", func(c *gin.Context) {
