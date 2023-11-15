@@ -75,7 +75,7 @@ class Editor extends React.Component {
                 </Box>
                 <this.TabPanel value={this.state.curTab} index={0}>
                     <EditorTemplate dataChange={this.setInput} />
-                    <EditorAction input={this.state.input} />
+                    
                 </this.TabPanel>
                 <this.TabPanel value={this.state.curTab} index={1}>
                     <EditorWorkflow dataChange={this.setInput} />
