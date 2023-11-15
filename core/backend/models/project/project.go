@@ -192,7 +192,6 @@ func ProjectCreateHandler(c *gin.Context) {
 	}
 
 	var poc []string
-	var history []string
 	switch inputData.Template {
 	case "customs":
 		poc = inputData.Poc
@@ -201,7 +200,7 @@ func ProjectCreateHandler(c *gin.Context) {
 	}
 
 	var primary_id = primitive.NewObjectID()
-	var newProject = ProjectItem{primary_id, inputData.Name, inputData.Host, poc, history, 1000, "onDemand", "idle"}
+	var newProject = ProjectItem{primary_id, inputData.Name, inputData.Host, poc, []string{}, 1000, "onDemand", "idle"}
 
 	result, err := addProjectToFolder(newProject, inputData.Fid)
 	if err != nil {
@@ -471,6 +470,35 @@ func StartScan(c *gin.Context) {
 		if err != nil {
 			log.Printf("Error saving scan result for ID %s: %s", id, err.Error())
 		}
+		pidObjectID, err := primitive.ObjectIDFromHex(req.PID)
+		if err != nil {
+			log.Printf("Error converting PID to ObjectID: %s", err.Error())
+			return
+		}
+
+		filter = bson.M{"project.pid": pidObjectID, "project.history": nil}
+		update = bson.M{
+			"$set": bson.M{
+				"project.$[].history": []string{},
+			},
+		}
+		_, err = folderCollection.UpdateOne(context.Background(), filter, update)
+
+		filter = bson.M{"project": bson.M{"$elemMatch": bson.M{"pid": pidObjectID}}} // req.PID is the PID from FYP.History
+		update = bson.M{
+			"$push": bson.M{
+				"project.$.history": id.InsertedID.(primitive.ObjectID),
+			},
+		}
+		result, err := folderCollection.UpdateOne(context.Background(), filter, update)
+		if err != nil {
+			log.Printf("Error updating folder collection for ID %s: %s", id, err.Error())
+		} else {
+			log.Printf("Filter used in update: %v", filter)
+			log.Printf("Update applied: %v", update)
+			log.Printf("UpdateOne Result: Matched Count = %v, Modified Count = %v", result.MatchedCount, result.ModifiedCount)
+		}
+
 		os.Remove(hostFilePath)
 		for _, filename := range filenames {
 			err := os.Remove(filename)
