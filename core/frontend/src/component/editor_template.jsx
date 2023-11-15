@@ -14,6 +14,7 @@ import {
 import Grid from "@mui/material/Unstable_Grid2";
 import "../assets/css/editor.css";
 import FormTableFormat from "./editor_ext_formTableFormat";
+import EditorAction from "../component/editor_action";
 
 export default class EditorTemplate extends React.Component {
     constructor(props) {
@@ -256,9 +257,34 @@ export default class EditorTemplate extends React.Component {
         );
     };
 
+    RequestPage = () => {
+        return (
+            <Card sx={{ my: 2 }}>
+                <CardContent>
+                    <Grid
+                        container="container"
+                        spacing={2}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                    >
+                    </Grid>
+                </CardContent>
+            </Card>
+        );
+    };
+
     render() {
         return (
             <Container maxWidth="lg">
+                <Grid container spacing={2}>
+                    <Grid item xs={6}>
+                        <this.PartInformation />
+                        <this.PartRequest />
+                        <EditorAction input={this.state.input} />
+                    </Grid>
+                    <Grid item xs={6}>
+                        <this.RequestPage />
+                    </Grid>
+                </Grid>
                 {/* <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <this.PartRequest />
@@ -274,9 +300,6 @@ export default class EditorTemplate extends React.Component {
                         <this.ActionButton />
                     </Grid>
                 </Grid> */}
-
-                <this.PartInformation />
-                <this.PartRequest />
             </Container>
         );
     }
