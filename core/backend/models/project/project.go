@@ -709,3 +709,36 @@ func GetScanResult(c *gin.Context, pid string) {
     // Return the histories as JSON
     c.JSON(http.StatusOK, histories)
 }
+
+func GetScanHistory(c *gin.Context) {
+    // Create a pipeline to extract all unique pids
+    pipeline := mongo.Pipeline{
+        bson.D{{Key: "$group", Value: bson.D{{Key: "_id", Value: "$pid"}}}},
+    }
+
+    // Run the pipeline
+    cur, err := scanResultsCollection.Aggregate(context.Background(), pipeline)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error executing pipeline"})
+        return
+    }
+    defer cur.Close(context.Background())
+
+    // Parse the results
+    var results []bson.M
+    if err := cur.All(context.Background(), &results); err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error reading pipeline results"})
+        return
+    }
+
+    // Extract the pids into a slice
+    var pids []primitive.ObjectID
+    for _, result := range results {
+        if pid, ok := result["_id"].(primitive.ObjectID); ok {
+            pids = append(pids, pid)
+        }
+    }
+
+    // Return the pids as JSON
+    c.JSON(http.StatusOK, pids)
+}

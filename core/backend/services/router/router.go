@@ -68,6 +68,7 @@ func routing(router *gin.Engine) {
 		pid := c.Param("scanResult")
 		project.GetScanResult(c, pid)
 		log.Printf("%s",pid)
+		
 	})
 
 	router.POST("/cve/:action", func(c *gin.Context) {
