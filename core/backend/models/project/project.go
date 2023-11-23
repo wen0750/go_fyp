@@ -662,7 +662,8 @@ func ScanSummary(c *gin.Context, pid string) {
     c.JSON(200, result)
 }
 
-func GetScanResult(c *gin.Context, pid string) {
+//
+func GetScanResultSummary(c *gin.Context, pid string) {
     // Convert the pid string to an ObjectID
     pidOid, err := primitive.ObjectIDFromHex(pid)
     if err != nil {
@@ -694,20 +695,48 @@ func GetScanResult(c *gin.Context, pid string) {
 
     // For each history ID, fetch the corresponding document from the scanResultsCollection
     var histories []bson.M
-    for _, result := range results {
-        for _, historyOid := range result["history"].(primitive.A) {
-            var historyDoc bson.M
-            err = scanResultsCollection.FindOne(context.Background(), bson.M{"_id": historyOid}).Decode(&historyDoc)
-            if err != nil {
-                c.JSON(http.StatusInternalServerError, gin.H{"error": "Error fetching history document"})
-                return
-            }
-            histories = append(histories, historyDoc)
-        }
-    }
+for _, result := range results {
+    for _, historyOid := range result["history"].(primitive.A) {
+        var historyDoc bson.M
 
-    // Return the histories as JSON
-    c.JSON(http.StatusOK, histories)
+        // Create a pipeline to extract only the desired fields
+        historyPipeline := mongo.Pipeline{
+            bson.D{{Key: "$match", Value: bson.D{{Key: "_id", Value: historyOid}}}},
+            bson.D{{Key: "$project", Value: bson.D{
+                {Key: "result.info.name", Value: 1},
+                {Key: "result.info.severityholder", Value: 1},
+                {Key: "result.matchername", Value: 1},
+                {Key: "result.extractorname", Value: 1},
+                {Key: "result.host", Value: 1},
+                {Key: "result.matched", Value: 1},
+                {Key: "result.extractedresults", Value: 1},
+                {Key: "result.ip", Value: 1},
+                {Key: "result.timestamp", Value: 1},
+                {Key: "status", Value: 1},
+                {Key: "cvecount", Value: 1},
+            }}},
+        }
+
+        // Run the pipeline
+        historyCur, err := scanResultsCollection.Aggregate(context.Background(), historyPipeline)
+        if err != nil {
+            c.JSON(http.StatusInternalServerError, gin.H{"error": "Error executing history pipeline"})
+            return
+        }
+        defer historyCur.Close(context.Background())
+
+        // Parse the result
+        if err := historyCur.All(context.Background(), &historyDoc); err != nil {
+            c.JSON(http.StatusInternalServerError, gin.H{"error": "Error reading history pipeline results"})
+            return
+        }
+
+        histories = append(histories, historyDoc)
+    }
+}
+
+// Return the histories as JSON
+c.JSON(http.StatusOK, histories)
 }
 
 func GetScanHistory(c *gin.Context) {
