@@ -15,6 +15,9 @@ import Grid from "@mui/material/Unstable_Grid2";
 import "../assets/css/editor.css";
 import FormTableFormat from "./editor_ext_formTableFormat";
 import EditorAction from "../component/editor_action";
+import Chip from '@mui/material/Chip';
+import Paper from '@mui/material/Paper';
+import TagFacesIcon from '@mui/icons-material/TagFaces';
 
 export default class EditorTemplate extends React.Component {
     constructor(props) {
@@ -26,6 +29,16 @@ export default class EditorTemplate extends React.Component {
 
         const ITEM_HEIGHT = 40;
         const ITEM_PADDING_TOP = 8;
+
+        const ListItem = styled('li')(({ theme }) => ({
+            margin: theme.spacing(0.5),
+        }));
+
+        const handleDelete = (chipToDelete) => () => {
+            setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
+        };
+
+        
 
         this.menuProps = {
             PaperProps: {
@@ -124,71 +137,6 @@ export default class EditorTemplate extends React.Component {
                 removable: false,
             },
         ];
-        this.requestOptionList = [
-            {
-                key: 0,
-                label: "path",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 1,
-                label: "redirects",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 2,
-                label: "max-redirects",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 3,
-                label: "stop-at-first-match",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 4,
-                label: "headers",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 5,
-                label: "User-Agent",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 6,
-                label: "Origin",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 7,
-                label: "Content-Type",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 8,
-                label: "cmd",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-        ];
     }
 
     PartInformation = () => {
@@ -235,25 +183,37 @@ export default class EditorTemplate extends React.Component {
         );
     };
 
-    PartRequest = () => {
+    PartTags= () => {
         return (
-            <Card sx={{ my: 2 }}>
-                <CardHeader title="Request" />
-                <hr />
-                <CardContent>
-                    <Grid
-                        container="container"
-                        spacing={2}
-                        columns={{ xs: 4, sm: 8, md: 12 }}
-                    >
-                        <FormTableFormat
-                            catalog="request"
-                            opts={this.requestOptionList}
-                            callback={this.changeFormData}
-                        ></FormTableFormat>
-                    </Grid>
-                </CardContent>
-            </Card>
+            <Paper
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    flexWrap: 'wrap',
+                    listStyle: 'none',
+                    p: 0.5,
+                    m: 0,
+                }}
+                component="ul"
+                >
+                {chipData.map((data) => {
+                    let icon;
+
+                    if (data.label === 'React') {
+                    icon = <TagFacesIcon />;
+                    }
+
+                    return (
+                    <ListItem key={data.key}>
+                        <Chip
+                        icon={icon}
+                        label={data.label}
+                        onDelete={data.label === 'React' ? undefined : handleDelete(data)}
+                        />
+                    </ListItem>
+                    );
+                })}
+            </Paper>
         );
     };
 
@@ -278,7 +238,7 @@ export default class EditorTemplate extends React.Component {
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <this.PartInformation />
-                        <this.PartRequest />
+                        <this.PartTags />
                         <EditorAction input={this.state.input} />
                     </Grid>
                     <Grid item xs={6}>
