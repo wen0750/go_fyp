@@ -238,7 +238,7 @@ export default class EditorTemplate extends React.Component {
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <this.PartInformation />
-                        <this.PartTags />
+                        
                         <EditorAction input={this.state.input} />
                     </Grid>
                     <Grid item xs={6}>
