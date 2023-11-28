@@ -3,6 +3,7 @@ package project
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"go_fyp/core/backend/services/database"
 	"net/http"
 	"os"
@@ -697,7 +698,8 @@ func GetScanResultSummary(c *gin.Context, pid string) {
     var histories []bson.M
 for _, result := range results {
     for _, historyOid := range result["history"].(primitive.A) {
-        var historyDoc bson.M
+        // Create a slice of maps to hold multiple documents
+        var historyDocs []bson.M
 
         // Create a pipeline to extract only the desired fields
         historyPipeline := mongo.Pipeline{
@@ -726,18 +728,20 @@ for _, result := range results {
         defer historyCur.Close(context.Background())
 
         // Parse the result
-        if err := historyCur.All(context.Background(), &historyDoc); err != nil {
-            c.JSON(http.StatusInternalServerError, gin.H{"error": "Error reading history pipeline results"})
+        if err := historyCur.All(context.Background(), &historyDocs); err != nil {
+            c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Error reading history pipeline results: %v", err)})
             return
         }
 
-        histories = append(histories, historyDoc)
+        // Append the history documents to the histories slice
+        histories = append(histories, historyDocs...)
     }
 }
 
 // Return the histories as JSON
 c.JSON(http.StatusOK, histories)
 }
+
 
 func GetScanHistory(c *gin.Context) {
     // Create a pipeline to extract all unique pids
