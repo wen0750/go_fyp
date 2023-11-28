@@ -416,15 +416,13 @@ func StartScan(c *gin.Context) {
 				log.Fatalf("Error checking file existence: %v", err)
 			}
 		}
-		cmd := exec.Command(nucleiPath, "-t", templates, "-l", hostFilePath, "-hid", id.InsertedID.(primitive.ObjectID).Hex(), "-silent", "-j")
+		cmd := exec.Command(nucleiPath, "-t", templates, "-l", hostFilePath, "-hid", id.InsertedID.(primitive.ObjectID).Hex(), "-silent", "-j", "-nc")
 		output, err := cmd.CombinedOutput()
 
 		if err != nil {
 			log.Printf("Error running Nuclei scan: %v", err)
 		}
 		outputStr := parseNucleiOutput(string(output))
-
-		log.Printf("nuclei Output:%s", output)
 
 		CVECount := parseCVECount(string(output))
 
@@ -458,7 +456,7 @@ func StartScan(c *gin.Context) {
 			CVECount:  cveCountMap,
 		}
 		
-		filter := bson.M{"pid": history.PID}
+		filter := bson.M{"_id": id.InsertedID}
 		update := bson.M{
 			"$set": bson.M{
 				"endTime":  after_scan.EndTime,
@@ -468,12 +466,14 @@ func StartScan(c *gin.Context) {
 			},
 		}
 		
-		log.Printf("status: %s", status)
 		
-		_, err = scanResultsCollection.UpdateOne(context.Background(), filter, update)
+		updateResult, err := scanResultsCollection.UpdateOne(context.Background(), filter, update)
 		if err != nil {
 			log.Printf("Error saving scan result for ID %s: %s", id, err.Error())
+		} else {
+			log.Printf("Update Result: Matched Count = %d, Modified Count = %d", updateResult.MatchedCount, updateResult.ModifiedCount)
 		}
+
 		pidObjectID, err := primitive.ObjectIDFromHex(req.PID)
 		if err != nil {
 			log.Printf("Error converting PID to ObjectID: %s", err.Error())
