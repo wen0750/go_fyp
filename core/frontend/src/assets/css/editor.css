@@ -78,3 +78,7 @@ li span {
   font-size:12px !important;
   font-family: monospace !important;
 }
+
+.horizontal-line {
+  border:  1px solid black;
+}
