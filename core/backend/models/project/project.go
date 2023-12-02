@@ -825,6 +825,49 @@ func GetLatestScanResultSummary(c *gin.Context, pid string) {
 }
 
 
+func GetScanResultByHistoryId(c *gin.Context, hid string) {
+	historyObjID, err := primitive.ObjectIDFromHex(hid)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid History ID format"})
+		return
+	}
+
+	// Define the projection for the history record
+	projection := bson.D{
+		{Key: "result.info.name", Value: 1},
+		{Key: "result.info.severityholder.severity", Value: 1},
+		{Key: "result.matchername", Value: 1},
+		{Key: "result.extractorname", Value: 1},
+		{Key: "result.host", Value: 1},
+		{Key: "result.matched", Value: 1},
+		{Key: "result.extractedresults", Value: 1},
+		{Key: "result.ip", Value: 1},
+		{Key: "result.request", Value: 1},
+		{Key: "result.response", Value: 1},
+		{Key: "result.metadata", Value: 1},
+		{Key: "result.matcherstatus", Value: 1},
+		{Key: "status", Value: 1},
+		{Key: "cvecount", Value: 1},
+	}
+
+	// Fetch the scan result from the 'History' collection with the selected fields
+	var historyRecord bson.M
+	if err := scanResultsCollection.FindOne(
+		context.Background(),
+		bson.M{"_id": historyObjID},
+		options.FindOne().SetProjection(projection),
+	).Decode(&historyRecord); err != nil {
+		if err == mongo.ErrNoDocuments {
+			c.JSON(http.StatusNotFound, gin.H{"error": "History record not found"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+		return
+	}
+
+	c.JSON(http.StatusOK, historyRecord)
+}
+
 
 
 func GetScanHistory(c *gin.Context) {
