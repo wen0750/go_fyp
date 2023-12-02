@@ -66,7 +66,7 @@ func routing(router *gin.Engine) {
 
 	router.GET("/project/:scanResult", func(c *gin.Context) {
 		pid := c.Param("scanResult")
-		project.GetScanResultSummary(c, pid)
+		project.GetLatestScanResultSummary(c, pid)
 		log.Printf("%s",pid)
 		
 	})

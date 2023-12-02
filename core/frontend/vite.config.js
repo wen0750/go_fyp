@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 export default defineConfig({
   plugins: [react()],
   server: {
-    host: 0,
+    host: '0.0.0.0',
     port: 8000,
   },
 })

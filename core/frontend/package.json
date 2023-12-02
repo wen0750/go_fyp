@@ -39,12 +39,16 @@
     "react-table": "^7.8.0",
     "styled-components": "^5.3.10",
     "sweetalert2": "^11.4.8",
+    "vite": "^5.0.4",
     "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
-    "@vitejs/plugin-react": "^3.1.0",
-    "vite": "^4.3.9"
-  }
+    "@vitejs/plugin-react": "^4.2.0"
+  },
+  "main": "GlobalVar.js",
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
