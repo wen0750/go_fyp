@@ -745,7 +745,7 @@ for _, result := range results {
 c.JSON(http.StatusOK, histories)
 }
 
-
+/**
 func GetLatestScanResultSummary(c *gin.Context, pid string) {
     // Convert the pid string to an ObjectID
     pidOid, err := primitive.ObjectIDFromHex(pid)
@@ -807,6 +807,7 @@ func GetLatestScanResultSummary(c *gin.Context, pid string) {
 
     c.JSON(http.StatusOK, gin.H{"latestScanResult": result})
 }
+**/
 
 func GetScanHistory(c *gin.Context) {
     // Create a pipeline to extract all unique pids
