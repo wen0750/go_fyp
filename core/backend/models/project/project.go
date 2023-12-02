@@ -754,14 +754,14 @@ func GetLatestScanResultSummary(c *gin.Context, pid string) {
 	}
 
 	// Define the aggregation pipeline to get the latest history item
-	pipeline := []bson.M{
-		{"$match": bson.M{"project.pid": objID}},
-		{"$unwind": "$project"},
-		{"$match": bson.M{"project.pid": objID}},
-		{"$unwind": "$project.history"},
-		{"$sort": bson.M{"project.history": -1}},
-		{"$limit": 1},
-		{"$project": bson.M{"latestHistoryId": "$project.history"}},
+	pipeline := mongo.Pipeline{
+		bson.D{{"$match", bson.M{"project.pid": objID}}},
+		bson.D{{"$unwind", "$project"}},
+		bson.D{{"$match", bson.M{"project.pid": objID}}},
+		bson.D{{"$unwind", "$project.history"}},
+		bson.D{{"$sort", bson.M{"project.history": -1}}},
+		bson.D{{"$limit", 1}},
+		bson.D{{"$project", bson.M{"latestHistoryId": "$project.history"}}},
 	}
 
 	cursor, err := folderCollection.Aggregate(context.Background(), pipeline)
@@ -778,11 +778,12 @@ func GetLatestScanResultSummary(c *gin.Context, pid string) {
 		c.JSON(http.StatusNotFound, gin.H{"error": "No history record found"})
 		return
 	}
+
+	// Extract the latestHistoryId
 	var latestHistoryId primitive.ObjectID
-	if historyIdMap, ok := results[0]["latestHistoryId"].(primitive.M); ok {
-		latestHistoryId = historyIdMap["_id"].(primitive.ObjectID)
+	if idDoc, ok := results[0]["latestHistoryId"].(primitive.D); ok {
+		latestHistoryId = idDoc.Map()["_id"].(primitive.ObjectID)
 	} else {
-		// Handle the case where the type is directly 'primitive.ObjectID'
 		latestHistoryId, ok = results[0]["latestHistoryId"].(primitive.ObjectID)
 		if !ok {
 			c.JSON(http.StatusInternalServerError, gin.H{"error": "Unexpected type for latestHistoryId"})
@@ -790,15 +791,40 @@ func GetLatestScanResultSummary(c *gin.Context, pid string) {
 		}
 	}
 
-	// Fetch the latest scan result from the 'History' collection
+	// Define the projection for the history record
+	projection := bson.D{
+		{Key: "result.info.name", Value: 1},
+		{Key: "result.info.severityholder.severity", Value: 1},
+		{Key: "result.matchername", Value: 1},
+		{Key: "result.extractorname", Value: 1},
+		{Key: "result.host", Value: 1},
+		{Key: "result.matched", Value: 1},
+		{Key: "result.extractedresults", Value: 1},
+		{Key: "result.ip", Value: 1},
+		{Key: "result.request", Value: 1},
+		{Key: "result.response", Value: 1},
+		{Key: "result.metadata", Value: 1},
+		{Key: "result.matcherstatus", Value: 1},
+		{Key: "status", Value: 1},
+		{Key: "cvecount", Value: 1},
+	}
+
+
+	// Fetch the latest scan result from the 'History' collection with the selected fields
 	var historyRecord bson.M
-	if err := scanResultsCollection.FindOne(context.Background(), bson.M{"_id": latestHistoryId}).Decode(&historyRecord); err != nil {
+	if err := scanResultsCollection.FindOne(
+		context.Background(),
+		bson.M{"_id": latestHistoryId},
+		options.FindOne().SetProjection(projection),
+	).Decode(&historyRecord); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
 	c.JSON(http.StatusOK, historyRecord)
 }
+
+
 
 
 func GetScanHistory(c *gin.Context) {
