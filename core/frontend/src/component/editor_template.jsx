@@ -15,9 +15,16 @@ import Grid from "@mui/material/Unstable_Grid2";
 import "../assets/css/editor.css";
 import FormTableFormat from "./editor_ext_formTableFormat";
 import EditorAction from "../component/editor_action";
-import Chip from '@mui/material/Chip';
-import Paper from '@mui/material/Paper';
-import TagFacesIcon from '@mui/icons-material/TagFaces';
+import Chip from "@mui/material/Chip";
+import Paper from "@mui/material/Paper";
+import { MuiChipsInput } from 'mui-chips-input'
+
+import Tab from "@mui/material/Tab";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
+
+
 
 export default class EditorTemplate extends React.Component {
     constructor(props) {
@@ -25,20 +32,23 @@ export default class EditorTemplate extends React.Component {
         this.state = {
             option: "",
             FormData: {},
+            responseViwerType: 1,
         };
 
         const ITEM_HEIGHT = 40;
         const ITEM_PADDING_TOP = 8;
 
-        const ListItem = styled('li')(({ theme }) => ({
-            margin: theme.spacing(0.5),
-        }));
-
-        const handleDelete = (chipToDelete) => () => {
-            setChipData((chips) => chips.filter((chip) => chip.key !== chipToDelete.key));
-        };
-
-        
+        this.MyComponent = () => {
+            const [chips, setChips] = React.useState([])
+          
+            const handleChange = (newChips) => {
+              setChips(newChips)
+            }
+          
+            return (
+              <MuiChipsInput value={chips} onChange={handleChange} />
+            )
+        }
 
         this.menuProps = {
             PaperProps: {
@@ -92,7 +102,7 @@ export default class EditorTemplate extends React.Component {
                 removable: false,
             },
         ];
-        this.infoOptionList = [
+        this.infomationList = [
             {
                 key: 0,
                 label: "name",
@@ -137,6 +147,15 @@ export default class EditorTemplate extends React.Component {
                 removable: false,
             },
         ];
+        this.infoOptionList = [
+            {
+                key: 0,
+                label: "Method(Auto)",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+        ];
     }
 
     PartInformation = () => {
@@ -152,72 +171,78 @@ export default class EditorTemplate extends React.Component {
                     >
                         <FormTableFormat
                             catalog="information"
-                            opts={this.infoOptionList}
-                            callback={this.changeFormData}
+                            opts={this.infomationList}
                         ></FormTableFormat>
                     </Grid>
-                    <h3>classification</h3>
-                    <Box
-                        sx={{
-                            flexGrow: 1,
-                            borderRadius: "16px",
-                            border: 1,
-                            p: 3,
-                            my: 2,
-                        }}
-                    >
-                        <Grid
-                            container
-                            spacing={{ xs: 2, md: 3 }}
-                            columns={{ xs: 4, sm: 8, md: 12 }}
-                        >
-                            <FormTableFormat
-                                catalog="classification"
-                                opts={this.classificationOptionList}
-                                callback={this.changeFormData}
-                            ></FormTableFormat>
-                        </Grid>
-                    </Box>
                 </CardContent>
             </Card>
         );
     };
 
-    PartTags= () => {
+    Partclassification= () => {
         return (
-            <Paper
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    flexWrap: 'wrap',
-                    listStyle: 'none',
-                    p: 0.5,
-                    m: 0,
-                }}
-                component="ul"
-                >
-                {chipData.map((data) => {
-                    let icon;
-
-                    if (data.label === 'React') {
-                    icon = <TagFacesIcon />;
-                    }
-
-                    return (
-                    <ListItem key={data.key}>
-                        <Chip
-                        icon={icon}
-                        label={data.label}
-                        onDelete={data.label === 'React' ? undefined : handleDelete(data)}
-                        />
-                    </ListItem>
-                    );
-                })}
-            </Paper>
+            <Card sx={{ my: 2 }}>
+                <CardHeader title="Classification" />
+                <hr />
+                <CardContent>
+                        <Grid
+                            container="container"
+                            spacing={2}
+                            columns={{ xs: 4, sm: 8, md: 12 }}
+                        >
+                            <FormTableFormat
+                                catalog="classification"
+                                opts={this.classificationOptionList}
+                            ></FormTableFormat>
+                        </Grid>
+                </CardContent>
+            </Card>
         );
     };
 
-    RequestPage = () => {
+    PartTags = () => {
+        return (
+            <Card sx={{ my: 2 }}>
+                <CardHeader title="Tags" />
+                <hr />
+                <CardContent>
+                    <Grid
+                        container="container"
+                        spacing={2}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                    ></Grid>
+                    <this.MyComponent/>
+                </CardContent>
+            </Card>
+        );
+    };
+
+    PartOptions= () => {
+        return (
+            <Card sx={{ my: 2 }}>
+                <CardHeader title="Options" />
+                <hr />
+                <CardContent>
+                        <Grid
+                            container="container"
+                            spacing={2}
+                            columns={{ xs: 4, sm: 8, md: 12 }}
+                        >
+                            <FormTableFormat
+                                catalog="Options"
+                                opts={this.infoOptionList}
+                            ></FormTableFormat>
+                        </Grid>
+                </CardContent>
+            </Card>
+        );
+    };
+
+    // Respone View
+    Right_ResponseViwer_Type_Change = (event, newValue) => {
+        this.setState({ responseViwerType: newValue });
+    };
+    RightPart = () => {
         return (
             <Card sx={{ my: 2 }}>
                 <CardContent>
@@ -226,6 +251,23 @@ export default class EditorTemplate extends React.Component {
                         spacing={2}
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     >
+                        <TabContext value={this.state.responseViwerType}>
+                            <Box
+                                sx={{ borderBottom: 1, borderColor: "divider" }}
+                            >
+                                <TabList
+                                    onChange={
+                                        this.Right_ResponseViwer_Type_Change
+                                    }
+                                    aria-label="lab API tabs example"
+                                >
+                                    <Tab label="Item One" value="1" />
+                                    <Tab label="Item Two" value="2" />
+                                </TabList>
+                            </Box>
+                            <TabPanel value="1">Item One</TabPanel>
+                            <TabPanel value="2">Item Two</TabPanel>
+                        </TabContext>
                     </Grid>
                 </CardContent>
             </Card>
@@ -238,11 +280,13 @@ export default class EditorTemplate extends React.Component {
                 <Grid container spacing={2}>
                     <Grid item xs={6}>
                         <this.PartInformation />
-                        
+                        <this.Partclassification />
+                        <this.PartTags />
+                        <this.PartOptions />
                         <EditorAction input={this.state.input} />
                     </Grid>
                     <Grid item xs={6}>
-                        <this.RequestPage />
+                        <this.RightPart />
                     </Grid>
                 </Grid>
                 {/* <Grid container spacing={2}>
