@@ -247,6 +247,7 @@ export default class EditorTemplate extends React.Component {
                 <CardHeader title="Options" />
                 <hr />
                 <CardContent>
+                        <div className="horizontal-line"></div>
                         <Grid
                             spacing={2}
                             columns={{ xs: 4, sm: 8, md: 12 }}
@@ -277,9 +278,24 @@ export default class EditorTemplate extends React.Component {
                                     ></FormTableFormat>
                                 </TabPanel>
                             </TabContext>
-                            
                         </Grid>
-                        
+                </CardContent>
+            </Card>
+        );
+    };
+
+    Partpayloads= () => {
+        return (
+            <Card sx={{ my: 2 }}>
+                <CardHeader title="Tags" />
+                <hr />
+                <CardContent>
+                    <Grid
+                        container="container"
+                        spacing={2}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                    ></Grid>
+                    <this.MyComponent/>
                 </CardContent>
             </Card>
         );
@@ -313,7 +329,7 @@ export default class EditorTemplate extends React.Component {
                                 </TabList>
                             </Box>
                             <TabPanel value="1">Item One</TabPanel>
-                            <TabPanel value="2">Item Two</TabPanel>s
+                            <TabPanel value="2">Item Two</TabPanel>
                         </TabContext>
                     </Grid>
                 </CardContent>
@@ -330,6 +346,7 @@ export default class EditorTemplate extends React.Component {
                         <this.Partclassification />
                         <this.PartTags />
                         <this.PartOptions />
+                        <this.Partpayloads />
                         <EditorAction input={this.state.input} />
                     </Grid>
                     <Grid item xs={6}>
