@@ -102,7 +102,7 @@ export default class EditorTemplate extends React.Component {
                 removable: false,
             },
         ];
-        this.infoOptionList = [
+        this.infomationList = [
             {
                 key: 0,
                 label: "name",
@@ -147,6 +147,15 @@ export default class EditorTemplate extends React.Component {
                 removable: false,
             },
         ];
+        this.infoOptionList = [
+            {
+                key: 0,
+                label: "Method(Auto)",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+        ];
     }
 
     PartInformation = () => {
@@ -162,8 +171,7 @@ export default class EditorTemplate extends React.Component {
                     >
                         <FormTableFormat
                             catalog="information"
-                            opts={this.infoOptionList}
-                            callback={this.changeFormData}
+                            opts={this.infomationList}
                         ></FormTableFormat>
                     </Grid>
                 </CardContent>
@@ -178,14 +186,13 @@ export default class EditorTemplate extends React.Component {
                 <hr />
                 <CardContent>
                         <Grid
-                            container
+                            container="container"
                             spacing={2}
                             columns={{ xs: 4, sm: 8, md: 12 }}
                         >
                             <FormTableFormat
                                 catalog="classification"
                                 opts={this.classificationOptionList}
-                                callback={this.changeFormData}
                             ></FormTableFormat>
                         </Grid>
                 </CardContent>
@@ -205,6 +212,27 @@ export default class EditorTemplate extends React.Component {
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     ></Grid>
                     <this.MyComponent/>
+                </CardContent>
+            </Card>
+        );
+    };
+
+    PartOptions= () => {
+        return (
+            <Card sx={{ my: 2 }}>
+                <CardHeader title="Options" />
+                <hr />
+                <CardContent>
+                        <Grid
+                            container="container"
+                            spacing={2}
+                            columns={{ xs: 4, sm: 8, md: 12 }}
+                        >
+                            <FormTableFormat
+                                catalog="Options"
+                                opts={this.infoOptionList}
+                            ></FormTableFormat>
+                        </Grid>
                 </CardContent>
             </Card>
         );
@@ -254,6 +282,7 @@ export default class EditorTemplate extends React.Component {
                         <this.PartInformation />
                         <this.Partclassification />
                         <this.PartTags />
+                        <this.PartOptions />
                         <EditorAction input={this.state.input} />
                     </Grid>
                     <Grid item xs={6}>
