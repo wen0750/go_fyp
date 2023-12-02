@@ -34,6 +34,12 @@ type History struct {
 	Status    string             `bson:"status"`
 	CVECount  map[string]int           `bson:"cvecount"`
 }
+type HistoryEntry struct {
+    ID        string `json:"_id" bson:"_id,omitempty"`
+    StartTime int64  `json:"startTime" bson:"startTime,omitempty"`
+    EndTime   int64  `json:"endTime" bson:"endTime,omitempty"`
+    Status    string `json:"status" bson:"status,omitempty"`
+}
 
 type InputCreateProject struct {
 	Name     string   `json:"name"`
@@ -869,36 +875,78 @@ func GetScanResultByHistoryId(c *gin.Context, hid string) {
 }
 
 
-
-func GetScanHistory(c *gin.Context) {
-    // Create a pipeline to extract all unique pids
-    pipeline := mongo.Pipeline{
-        bson.D{{Key: "$group", Value: bson.D{{Key: "_id", Value: "$pid"}}}},
-    }
-
-    // Run the pipeline
-    cur, err := scanResultsCollection.Aggregate(context.Background(), pipeline)
+func GetScanHistoryList(c *gin.Context, pid string) {
+    // Convert pid to ObjectID
+    pidObjID, err := primitive.ObjectIDFromHex(pid)
     if err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error executing pipeline"})
-        return
-    }
-    defer cur.Close(context.Background())
-
-    // Parse the results
-    var results []bson.M
-    if err := cur.All(context.Background(), &results); err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error reading pipeline results"})
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid PID"})
         return
     }
 
-    // Extract the pids into a slice
-    var pids []primitive.ObjectID
-    for _, result := range results {
-        if pid, ok := result["_id"].(primitive.ObjectID); ok {
-            pids = append(pids, pid)
+    // Define the fields to be returned
+    projection := bson.D{
+        {"_id", 1},
+        {"startTime", 1},
+        {"endTime", 1},
+        {"status", 1},
+    }
+
+    // Query the database to get the "history" list
+    var folder struct {
+        Project []struct {
+            PID     primitive.ObjectID `bson:"pid"`
+            History []primitive.ObjectID `bson:"history"`
+        } `bson:"project"`
+    }
+
+    err = folderCollection.FindOne(
+        context.TODO(),
+        bson.M{"project.pid": pidObjID},
+    ).Decode(&folder)
+
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error querying database for pid"})
+        return
+    }
+
+    // Iterate over the projects and collect history IDs if pid matches
+    var historyIDs []primitive.ObjectID
+    for _, project := range folder.Project {
+        if project.PID == pidObjID {
+            historyIDs = append(historyIDs, project.History...)
         }
     }
 
-    // Return the pids as JSON
-    c.JSON(http.StatusOK, pids)
+    // Query the database for history records
+    cursor, err := scanResultsCollection.Find(
+        context.TODO(),
+        bson.M{"_id": bson.M{"$in": historyIDs}},
+        options.Find().SetProjection(projection),
+    )
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error querying database for history"})
+        return
+    }
+    defer cursor.Close(context.TODO())
+
+    // Iterate the cursor and decode each item into a History struct
+    var results []*HistoryEntry
+	for cursor.Next(context.TODO()) {
+		var elem HistoryEntry
+		err := cursor.Decode(&elem)
+		if err != nil {
+			log.Println(err)
+		}
+		results = append(results, &elem)
+	}
+
+    if err := cursor.Err(); err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error iterating cursor"})
+        return
+    }
+
+    // Return the results
+    c.JSON(http.StatusOK, results)
 }
+
+
