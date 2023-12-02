@@ -755,13 +755,13 @@ func GetLatestScanResultSummary(c *gin.Context, pid string) {
 
 	// Define the aggregation pipeline to get the latest history item
 	pipeline := mongo.Pipeline{
-		bson.D{{"$match", bson.M{"project.pid": objID}}},
-		bson.D{{"$unwind", "$project"}},
-		bson.D{{"$match", bson.M{"project.pid": objID}}},
-		bson.D{{"$unwind", "$project.history"}},
-		bson.D{{"$sort", bson.M{"project.history": -1}}},
-		bson.D{{"$limit", 1}},
-		bson.D{{"$project", bson.M{"latestHistoryId": "$project.history"}}},
+		{{Key: "$match", Value: bson.M{"project.pid": objID}}},
+		{{Key: "$unwind", Value: "$project"}},
+		{{Key: "$match", Value: bson.M{"project.pid": objID}}},
+		{{Key: "$unwind", Value: "$project.history"}},
+		{{Key: "$sort", Value: bson.M{"project.history": -1}}},
+		{{Key: "$limit", Value: 1}},
+		{{Key: "$project", Value: bson.M{"latestHistoryId": "$project.history"}}},
 	}
 
 	cursor, err := folderCollection.Aggregate(context.Background(), pipeline)
