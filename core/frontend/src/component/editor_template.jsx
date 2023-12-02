@@ -239,6 +239,22 @@ export default class EditorTemplate extends React.Component {
     };
 
     // Respone View
+    // fatch data
+    componentDidMount() {
+        this.fetchData();
+      }
+    
+    fetchData = async () => {
+        try {
+            const response = await fetch('https://www.npmjs.com/package/react-syntax-highlighter');
+            const jsonData = await response.text();
+            this.setState({ tmpdata: jsonData });
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+
     Right_ResponseViwer_Type_Change = (event, newValue) => {
         this.setState({ responseViwerType: newValue });
     };
@@ -246,29 +262,23 @@ export default class EditorTemplate extends React.Component {
         return (
             <Card sx={{ my: 2 }}>
                 <CardContent>
-                    <Grid
-                        container="container"
-                        spacing={2}
-                        columns={{ xs: 4, sm: 8, md: 12 }}
-                    >
-                        <TabContext value={this.state.responseViwerType}>
-                            <Box
-                                sx={{ borderBottom: 1, borderColor: "divider" }}
+                    <TabContext value={this.state.responseViwerType}>
+                        <Box
+                            sx={{ borderBottom: 1, borderColor: "divider" }}
+                        >
+                            <TabList
+                                onChange={
+                                    this.Right_ResponseViwer_Type_Change
+                                }
+                                aria-label="lab API tabs example"
                             >
-                                <TabList
-                                    onChange={
-                                        this.Right_ResponseViwer_Type_Change
-                                    }
-                                    aria-label="lab API tabs example"
-                                >
-                                    <Tab label="Item One" value="1" />
-                                    <Tab label="Item Two" value="2" />
-                                </TabList>
-                            </Box>
-                            <TabPanel value="1">Item One</TabPanel>
-                            <TabPanel value="2">Item Two</TabPanel>
-                        </TabContext>
-                    </Grid>
+                                <Tab label="HTML Code" value="1" />
+                                <Tab label="Page Review" value="2" />
+                            </TabList>
+                        </Box>
+                        <TabPanel value="1" sx={{padding:0,height:"50%", maxHeight: "500px" , overflow: "scroll"}} > {this.state.tmpdata} </TabPanel>
+                        <TabPanel value="2" sx={{padding:0,height:"50%", maxHeight: "500px", overflowY: "scroll"}} ><div dangerouslySetInnerHTML={{__html: this.state.tmpdata}} ></div></TabPanel>
+                    </TabContext>
                 </CardContent>
             </Card>
         );
