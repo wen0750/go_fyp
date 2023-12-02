@@ -333,6 +333,16 @@ export default class FormTableFormat extends React.Component {
                                         rows={9}
                                     />
                                 );
+                            } else if (data.type === "filled") {
+                                defwidth = 1;
+                                element = (
+                                    <TextField
+                                        name={data.label}
+                                        label={data.label}
+                                        onChange={this.handleOnChange}
+                                        id="fullWidth"
+                                    />
+                                );
                             } else if (data.type === "CVE") {
                                 defwidth = 1;
 

@@ -34,6 +34,12 @@ type History struct {
 	Status    string             `bson:"status"`
 	CVECount  map[string]int           `bson:"cvecount"`
 }
+type HistoryEntry struct {
+    ID        string `json:"_id" bson:"_id,omitempty"`
+    StartTime int64  `json:"startTime" bson:"startTime,omitempty"`
+    EndTime   int64  `json:"endTime" bson:"endTime,omitempty"`
+    Status    string `json:"status" bson:"status,omitempty"`
+}
 
 type InputCreateProject struct {
 	Name     string   `json:"name"`
@@ -745,99 +751,202 @@ for _, result := range results {
 c.JSON(http.StatusOK, histories)
 }
 
-/**
+
 func GetLatestScanResultSummary(c *gin.Context, pid string) {
-    // Convert the pid string to an ObjectID
-    pidOid, err := primitive.ObjectIDFromHex(pid)
-    if err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid pid format"})
-        return
-    }
+	objID, err := primitive.ObjectIDFromHex(pid)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid PID format"})
+		return
+	}
 
-    // Create a pipeline to extract the latest history ID for the given pid
-    pipeline := mongo.Pipeline{
-		bson.D{{Key: "$unwind", Value: "$project"}},
-		bson.D{{Key: "$match", Value: bson.D{{Key: "project.pid", Value: pidOid}}}},
-		bson.D{{Key: "$addFields", Value: bson.D{{Key: "latest_scan_id", Value: bson.D{{Key: "$arrayElemAt", Value: bson.A{"$project.history", -1}}}}}},
-		bson.D{{Key: "$lookup", Value: bson.D{
-			{Key: "from", Value: "ScanRecord"},  // replace with your actual ScanRecord collection name
-			{Key: "localField", Value: "latest_scan_id"},
-			{Key: "foreignField", Value: "_id"},
-			{Key: "as", Value: "latest_scan"},
-		}}},
-		bson.D{{Key: "$unwind", Value: "$latest_scan"}},
-		bson.D{{Key: "$project", Value: bson.D{ // Project only the required fields
-			{Key: "latest_scan.result.info.name", Value: 1},
-			{Key: "latest_scan.result.info.severityholder.severity", Value: 1}, 
-			{Key: "latest_scan.result.matchername", Value: 1},
-			{Key: "latest_scan.result.extractorname", Value: 1},
-			{Key: "latest_scan.result.host", Value: 1},
-			{Key: "latest_scan.result.matched", Value: 1},
-			{Key: "latest_scan.result.extractedresults", Value: 1},
-			{Key: "latest_scan.result.ip", Value: 1},
-			{Key: "latest_scan.result.request", Value: 1}, 
-			{Key: "latest_scan.result.response", Value: 1},
-			{Key: "latest_scan.result.metadata", Value: 1}, 
-			{Key: "latest_scan.result.matcherstatus", Value: 1}, 
-			{Key: "latest_scan.status", Value: 1},
-			{Key: "latest_scan.cvecount", Value: 1},
-		}}},
-	}}
+	// Define the aggregation pipeline to get the latest history item
+	pipeline := mongo.Pipeline{
+		{{Key: "$match", Value: bson.M{"project.pid": objID}}},
+		{{Key: "$unwind", Value: "$project"}},
+		{{Key: "$match", Value: bson.M{"project.pid": objID}}},
+		{{Key: "$unwind", Value: "$project.history"}},
+		{{Key: "$sort", Value: bson.M{"project.history": -1}}},
+		{{Key: "$limit", Value: 1}},
+		{{Key: "$project", Value: bson.M{"latestHistoryId": "$project.history"}}},
+	}
 
-    // Run the pipeline
-    cur, err := folderCollection.Aggregate(context.Background(), pipeline)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error executing pipeline"})
-        return
-    }
-    defer cur.Close(context.Background())
+	cursor, err := folderCollection.Aggregate(context.Background(), pipeline)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	var results []bson.M
+	if err = cursor.All(context.Background(), &results); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	if len(results) == 0 {
+		c.JSON(http.StatusNotFound, gin.H{"error": "No history record found"})
+		return
+	}
 
-    // Check if there are any documents in the result
-    if !cur.Next(context.Background()) {
-        c.JSON(http.StatusOK, gin.H{"message": "No records found"})
-        return
-    }
+	// Extract the latestHistoryId
+	var latestHistoryId primitive.ObjectID
+	if idDoc, ok := results[0]["latestHistoryId"].(primitive.D); ok {
+		latestHistoryId = idDoc.Map()["_id"].(primitive.ObjectID)
+	} else {
+		latestHistoryId, ok = results[0]["latestHistoryId"].(primitive.ObjectID)
+		if !ok {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": "Unexpected type for latestHistoryId"})
+			return
+		}
+	}
 
-    // Parse the result
-    var result bson.M
-    if err := cur.Decode(&result); err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Error reading pipeline result: %v", err)})
-        return
-    }
+	// Define the projection for the history record
+	projection := bson.D{
+		{Key: "result.info.name", Value: 1},
+		{Key: "result.info.severityholder.severity", Value: 1},
+		{Key: "result.matchername", Value: 1},
+		{Key: "result.extractorname", Value: 1},
+		{Key: "result.host", Value: 1},
+		{Key: "result.matched", Value: 1},
+		{Key: "result.extractedresults", Value: 1},
+		{Key: "result.ip", Value: 1},
+		{Key: "result.request", Value: 1},
+		{Key: "result.response", Value: 1},
+		{Key: "result.metadata", Value: 1},
+		{Key: "result.matcherstatus", Value: 1},
+		{Key: "status", Value: 1},
+		{Key: "cvecount", Value: 1},
+	}
 
-    c.JSON(http.StatusOK, gin.H{"latestScanResult": result})
+
+	// Fetch the latest scan result from the 'History' collection with the selected fields
+	var historyRecord bson.M
+	if err := scanResultsCollection.FindOne(
+		context.Background(),
+		bson.M{"_id": latestHistoryId},
+		options.FindOne().SetProjection(projection),
+	).Decode(&historyRecord); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, historyRecord)
 }
-**/
 
-func GetScanHistory(c *gin.Context) {
-    // Create a pipeline to extract all unique pids
-    pipeline := mongo.Pipeline{
-        bson.D{{Key: "$group", Value: bson.D{{Key: "_id", Value: "$pid"}}}},
-    }
 
-    // Run the pipeline
-    cur, err := scanResultsCollection.Aggregate(context.Background(), pipeline)
+func GetScanResultByHistoryId(c *gin.Context, hid string) {
+	historyObjID, err := primitive.ObjectIDFromHex(hid)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid History ID format"})
+		return
+	}
+
+	// Define the projection for the history record
+	projection := bson.D{
+		{Key: "result.info.name", Value: 1},
+		{Key: "result.info.severityholder.severity", Value: 1},
+		{Key: "result.matchername", Value: 1},
+		{Key: "result.extractorname", Value: 1},
+		{Key: "result.host", Value: 1},
+		{Key: "result.matched", Value: 1},
+		{Key: "result.extractedresults", Value: 1},
+		{Key: "result.ip", Value: 1},
+		{Key: "result.request", Value: 1},
+		{Key: "result.response", Value: 1},
+		{Key: "result.metadata", Value: 1},
+		{Key: "result.matcherstatus", Value: 1},
+		{Key: "status", Value: 1},
+		{Key: "cvecount", Value: 1},
+	}
+
+	// Fetch the scan result from the 'History' collection with the selected fields
+	var historyRecord bson.M
+	if err := scanResultsCollection.FindOne(
+		context.Background(),
+		bson.M{"_id": historyObjID},
+		options.FindOne().SetProjection(projection),
+	).Decode(&historyRecord); err != nil {
+		if err == mongo.ErrNoDocuments {
+			c.JSON(http.StatusNotFound, gin.H{"error": "History record not found"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+		return
+	}
+
+	c.JSON(http.StatusOK, historyRecord)
+}
+
+
+func GetScanHistoryList(c *gin.Context, pid string) {
+    // Convert pid to ObjectID
+    pidObjID, err := primitive.ObjectIDFromHex(pid)
     if err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error executing pipeline"})
-        return
-    }
-    defer cur.Close(context.Background())
-
-    // Parse the results
-    var results []bson.M
-    if err := cur.All(context.Background(), &results); err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error reading pipeline results"})
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid PID"})
         return
     }
 
-    // Extract the pids into a slice
-    var pids []primitive.ObjectID
-    for _, result := range results {
-        if pid, ok := result["_id"].(primitive.ObjectID); ok {
-            pids = append(pids, pid)
+    // Define the fields to be returned
+    projection := bson.D{
+        {"_id", 1},
+        {"startTime", 1},
+        {"endTime", 1},
+        {"status", 1},
+    }
+
+    // Query the database to get the "history" list
+    var folder struct {
+        Project []struct {
+            PID     primitive.ObjectID `bson:"pid"`
+            History []primitive.ObjectID `bson:"history"`
+        } `bson:"project"`
+    }
+
+    err = folderCollection.FindOne(
+        context.TODO(),
+        bson.M{"project.pid": pidObjID},
+    ).Decode(&folder)
+
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error querying database for pid"})
+        return
+    }
+
+    // Iterate over the projects and collect history IDs if pid matches
+    var historyIDs []primitive.ObjectID
+    for _, project := range folder.Project {
+        if project.PID == pidObjID {
+            historyIDs = append(historyIDs, project.History...)
         }
     }
 
-    // Return the pids as JSON
-    c.JSON(http.StatusOK, pids)
+    // Query the database for history records
+    cursor, err := scanResultsCollection.Find(
+        context.TODO(),
+        bson.M{"_id": bson.M{"$in": historyIDs}},
+        options.Find().SetProjection(projection),
+    )
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error querying database for history"})
+        return
+    }
+    defer cursor.Close(context.TODO())
+
+    // Iterate the cursor and decode each item into a History struct
+    var results []*HistoryEntry
+	for cursor.Next(context.TODO()) {
+		var elem HistoryEntry
+		err := cursor.Decode(&elem)
+		if err != nil {
+			log.Println(err)
+		}
+		results = append(results, &elem)
+	}
+
+    if err := cursor.Err(); err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error iterating cursor"})
+        return
+    }
+
+    // Return the results
+    c.JSON(http.StatusOK, results)
 }
+
+

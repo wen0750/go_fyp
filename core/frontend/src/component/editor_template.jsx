@@ -38,6 +38,7 @@ export default class EditorTemplate extends React.Component {
         const ITEM_HEIGHT = 40;
         const ITEM_PADDING_TOP = 8;
 
+
         this.MyComponent = () => {
             const [chips, setChips] = React.useState([])
           
@@ -147,11 +148,34 @@ export default class EditorTemplate extends React.Component {
                 removable: false,
             },
         ];
-        this.infoOptionList = [
+        this.httpinfoOptionList = [
             {
                 key: 0,
                 label: "Method(Auto)",
                 type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 1,
+                label: "Paths: {{BaseURL}}/login",
+                type: "filled",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 2,
+                label: "Headers:",
+                type: "multiline",
+                visible: true,
+                removable: false,
+            },
+        ];
+        this.RawinfoOptionList = [
+            {
+                key: 0,
+                label: "Raw:",
+                type: "multiline",
                 visible: true,
                 removable: false,
             },
@@ -223,16 +247,55 @@ export default class EditorTemplate extends React.Component {
                 <CardHeader title="Options" />
                 <hr />
                 <CardContent>
+                        <div className="horizontal-line"></div>
                         <Grid
-                            container="container"
                             spacing={2}
                             columns={{ xs: 4, sm: 8, md: 12 }}
                         >
-                            <FormTableFormat
-                                catalog="Options"
-                                opts={this.infoOptionList}
-                            ></FormTableFormat>
+                            <TabContext value={this.state.responseViwerType}>
+                            <Box
+                                sx={{ borderBottom: 1, borderColor: "divider" }}
+                            >
+                                <TabList
+                                    onChange={
+                                        this.Right_ResponseViwer_Type_Change
+                                    }
+                                >
+                                    <Tab label="Base HTTP" value="1" />
+                                    <Tab label="Raw" value="2" />
+                                </TabList>
+                            </Box>
+                                <TabPanel value="1">
+                                    <FormTableFormat
+                                        catalog="Options"
+                                        opts={this.httpinfoOptionList}
+                                    ></FormTableFormat> 
+                                </TabPanel>
+                                <TabPanel value="2">
+                                    <FormTableFormat
+                                        catalog="options"
+                                        opts={this.RawinfoOptionList}
+                                    ></FormTableFormat>
+                                </TabPanel>
+                            </TabContext>
                         </Grid>
+                </CardContent>
+            </Card>
+        );
+    };
+
+    Partpayloads= () => {
+        return (
+            <Card sx={{ my: 2 }}>
+                <CardHeader title="Tags" />
+                <hr />
+                <CardContent>
+                    <Grid
+                        container="container"
+                        spacing={2}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                    ></Grid>
+                    <this.MyComponent/>
                 </CardContent>
             </Card>
         );
@@ -293,6 +356,7 @@ export default class EditorTemplate extends React.Component {
                         <this.Partclassification />
                         <this.PartTags />
                         <this.PartOptions />
+                        <this.Partpayloads />
                         <EditorAction input={this.state.input} />
                     </Grid>
                     <Grid item xs={6}>
