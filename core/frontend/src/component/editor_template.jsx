@@ -287,7 +287,7 @@ export default class EditorTemplate extends React.Component {
     Partpayloads= () => {
         return (
             <Card sx={{ my: 2 }}>
-                <CardHeader title="Tags" />
+                <CardHeader title="Payloads" />
                 <hr />
                 <CardContent>
                     <Grid
@@ -295,7 +295,14 @@ export default class EditorTemplate extends React.Component {
                         spacing={2}
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     ></Grid>
-                    <this.MyComponent/>
+                    <Grid container spacing={2}>
+                        <Grid item xs={4}>
+                            <TextField id="key 1" label="key 1" variant="outlined" />
+                        </Grid>
+                        <Grid item xs={8}>
+                            <this.MyComponent/>
+                        </Grid>
+                    </Grid>
                 </CardContent>
             </Card>
         );
