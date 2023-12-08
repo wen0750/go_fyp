@@ -885,11 +885,11 @@ func GetScanHistoryList(c *gin.Context, pid string) {
 
     // Define the fields to be returned
     projection := bson.D{
-        {"_id", 1},
-        {"startTime", 1},
-        {"endTime", 1},
-        {"status", 1},
-    }
+		{Key: "_id", Value: 1},
+		{Key: "startTime", Value: 1},
+		{Key: "endTime", Value: 1},
+		{Key: "status", Value: 1},
+	}
 
     // Query the database to get the "history" list
     var folder struct {
