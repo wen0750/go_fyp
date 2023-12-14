@@ -18,11 +18,17 @@ import EditorAction from "../component/editor_action";
 import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
 import { MuiChipsInput } from 'mui-chips-input'
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import AddIcon from '@mui/icons-material/Add';
+import { RadioGroup, RadioButton } from 'react-radio-buttons';
+
 
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
+import { ThirtyFpsSelect } from "@mui/icons-material";
 
 
 
@@ -32,9 +38,12 @@ export default class EditorTemplate extends React.Component {
         this.state = {
             option: "",
             FormData: {},
+            responseType: 1,
             responseViwerType: 1,
+            
         };
 
+        
         const ITEM_HEIGHT = 40;
         const ITEM_PADDING_TOP = 8;
 
@@ -59,6 +68,7 @@ export default class EditorTemplate extends React.Component {
                 },
             },
         };
+
         this.changeFormData = (catalog, name, value) => {
             if (catalog in this.state.FormData) {
                 let newdata = this.state.FormData;
@@ -182,6 +192,8 @@ export default class EditorTemplate extends React.Component {
         ];
     }
 
+
+
     PartInformation = () => {
         return (
             <Card sx={{ my: 2 }}>
@@ -241,6 +253,10 @@ export default class EditorTemplate extends React.Component {
         );
     };
 
+    left_ResponseViwer_Type_Change = (event, newValue) => {
+        this.setState({ responseType: newValue });
+    };
+
     PartOptions= () => {
         return (
             <Card sx={{ my: 2 }}>
@@ -252,13 +268,13 @@ export default class EditorTemplate extends React.Component {
                             spacing={2}
                             columns={{ xs: 4, sm: 8, md: 12 }}
                         >
-                            <TabContext value={this.state.responseViwerType}>
+                            <TabContext value={this.state.responseType}>
                             <Box
                                 sx={{ borderBottom: 1, borderColor: "divider" }}
                             >
                                 <TabList
                                     onChange={
-                                        this.Right_ResponseViwer_Type_Change
+                                        this.left_ResponseViwer_Type_Change
                                     }
                                 >
                                     <Tab label="Base HTTP" value="1" />
@@ -287,7 +303,57 @@ export default class EditorTemplate extends React.Component {
     Partpayloads= () => {
         return (
             <Card sx={{ my: 2 }}>
-                <CardHeader title="Tags" />
+                <CardHeader title="Payloads" />
+                <hr />
+                <CardContent>
+                    <Grid
+                        container="container"
+                        spacing={2}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                    ></Grid>
+                    <Grid container spacing={2}>
+                        <Grid item xs={4}>
+                            <TextField id="key 1" label="key 1" variant="outlined" />
+                            <TextField id="key 2" label="key 2" variant="outlined" />
+                        </Grid>
+                        <Grid item xs={8}>
+                            <this.MyComponent/>
+                            <this.MyComponent/>
+                        </Grid>
+                    </Grid>
+                    <Button   variant="outlined" startIcon={<AddIcon />}>
+                        Add
+                    </Button>
+                </CardContent>
+                <CardHeader title="Attack mode:" />
+                <CardContent>
+                    <Grid
+                        container="container"
+                        spacing={2}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                    ></Grid>
+                    <Grid container spacing={2}>
+                        <RadioGroup horizontal>
+                            <RadioButton value="apple">
+                                Batteringram
+                            </RadioButton>
+                            <RadioButton value="orange">
+                                Pitchfork
+                            </RadioButton>
+                            <RadioButton value="orange">
+                                Clusterbomb
+                            </RadioButton>
+                        </RadioGroup>
+                    </Grid>
+                </CardContent>
+            </Card>
+        );
+    };
+
+    PartFuzzing= () => {
+        return (
+            <Card sx={{ my: 2 }}>
+                <CardHeader title="Fuzzing" />
                 <hr />
                 <CardContent>
                     <Grid
@@ -357,6 +423,7 @@ export default class EditorTemplate extends React.Component {
                         <this.PartTags />
                         <this.PartOptions />
                         <this.Partpayloads />
+                        <this.PartFuzzing />
                         <EditorAction input={this.state.input} />
                     </Grid>
                     <Grid item xs={6}>
