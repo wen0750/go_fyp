@@ -30,7 +30,6 @@ import StopIcon from "@mui/icons-material/Stop";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SendIcon from "@mui/icons-material/Send";
 
-
 class ProjectFolder extends React.Component {
     constructor(props) {
         super(props);
@@ -248,11 +247,6 @@ class ProjectFolder extends React.Component {
                 console.error("Error:", error);
             });
     };
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.fid !== this.props.fid) {
-            this.fetchFoldersDetail(nextProps.fid);
-        }
-    }
 
     createNewFolder = () => {
         if (this.state.f_folder_name) {
@@ -495,7 +489,7 @@ class ProjectFolder extends React.Component {
                 body: JSON.stringify({
                     id: poc,
                     host: host,
-                    pid: pid
+                    pid: pid,
                 }),
             }
         );
