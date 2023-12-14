@@ -84,15 +84,6 @@ export default class FormTableFormat extends React.Component {
         }
     };
 
-    searchCveData = async (indata) => {
-        if (indata.length < 1) {
-            this.fetchCveData();
-        } else {
-            try {
-            } catch (error) {}
-        }
-    };
-
     fetchCveData = async () => {
         try {
             const data = await (

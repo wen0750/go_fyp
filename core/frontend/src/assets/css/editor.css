@@ -2,79 +2,79 @@
     width: 100%;
 }
 
-
 li {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
 }
-  
+
 li span {
-  flex-grow: 1;
+    flex-grow: 1;
 }
 
-
 .styled-submit-button {
-  padding: 1.3em 3em;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 2.5px;
-  font-weight: 500;
-  color: #000;
-  background-color: #fff;
-  border: none;
-  border-radius: 45px;
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease 0s;
-  cursor: pointer;
-  outline: none;
+    padding: 1.3em 3em;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #000;
+    background-color: #fff;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    outline: none;
 }
 
 .styled-submit-button:hover {
-  background-color: #3ea7e4;
-  box-shadow: 0px 15px 20px rgba(46, 192, 229, 0.4);
-  color: #fff;
-  transform: translateY(-7px);
+    background-color: #3ea7e4;
+    box-shadow: 0px 15px 20px rgba(46, 192, 229, 0.4);
+    color: #fff;
+    transform: translateY(-7px);
 }
 
 .styled-submit-button:active {
-  transform: translateY(-1px);
+    transform: translateY(-1px);
 }
 
 .styled-delete-button {
-  margin-right: 2%;
-  padding: 1.3em 3em;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 2.5px;
-  font-weight: 500;
-  color: #000;
-  background-color: #fff;
-  border: none;
-  border-radius: 45px;
-  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease 0s;
-  cursor: pointer;
-  outline: none;
+    margin-right: 2%;
+    padding: 1.3em 3em;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #000;
+    background-color: #fff;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    outline: none;
 }
 
 .styled-delete-button:hover {
-  background-color: #ff0000;
-  box-shadow: 0px 15px 20px rgba(255, 0, 68, 0.4);
-  color: #fff;
-  transform: translateY(-7px);
+    background-color: #ff0000;
+    box-shadow: 0px 15px 20px rgba(255, 0, 68, 0.4);
+    color: #fff;
+    transform: translateY(-7px);
 }
 
 .styled-delete-button:active {
-  transform: translateY(-1px);
+    transform: translateY(-1px);
 }
 
 .cardContent {
-  font-family: 'Consolas', 'Fira Code', 'Courier New', monospace , 'JetBrains Mono';
+    font-family: "Consolas", "Fira Code", "Courier New", monospace,
+        "JetBrains Mono";
 }
 
 .ace_editor * {
+<<<<<<< Updated upstream
   font-size:12px !important;
   font-family: monospace !important;
 }
@@ -82,3 +82,16 @@ li span {
 .horizontal-line {
   border:  1px solid black;
 }
+=======
+    font-size: 12px !important;
+    font-family: monospace !important;
+}
+
+/* traffic sniffer */
+.MuiPaper-root
+    .MuiStack-root
+    .MuiFormControl-root
+    .MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-formControl {
+    border-radius: 0;
+}
+>>>>>>> Stashed changes

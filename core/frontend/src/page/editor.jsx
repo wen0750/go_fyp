@@ -3,6 +3,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Paper from "@mui/material/Paper";
 
 import EditorTemplate from "../component/editor_template";
 import EditorAction from "../component/editor_action";
@@ -11,6 +12,9 @@ import EditorWorkflow from "../component/editor_workflow";
 import EditorUpload from "../component/editor_upload";
 import EditorEdit from "../component/editor_edit";
 
+import Editor_Right from "../component/editor_right";
+import DnD_Table from "../component/editor_dnd_table";
+
 class Editor extends React.Component {
     constructor(props) {
         super(props);
@@ -18,6 +22,8 @@ class Editor extends React.Component {
         this.state = {
             curTab: 0,
             input: {},
+            tableData: null,
+            totalWidth: "50%",
         };
     }
 
@@ -53,44 +59,102 @@ class Editor extends React.Component {
     };
 
     handleChange = (event, newValue) => {
+        let tempTW = "";
+        if (newValue === 0 || newValue === 3) {
+            tempTW = "50%";
+        } else {
+            tempTW = "100%";
+        }
+        if (this.state.totalWidth != tempTW) {
+            this.setState({ totalWidth: tempTW });
+        }
         this.setState({ curTab: newValue });
     };
 
+    setTableData = (newValue) => {
+        this.setState({ tableData: newValue });
+    };
+
     render() {
+        const columns = [
+            {
+                Header: "Name",
+                columns: [
+                    {
+                        Header: "First Name",
+                        accessor: "firstName",
+                    },
+                    {
+                        Header: "Last Name",
+                        accessor: "lastName",
+                    },
+                ],
+            },
+            {
+                Header: "Info",
+                columns: [
+                    {
+                        Header: "Age",
+                        accessor: "age",
+                    },
+                    {
+                        Header: "Visits",
+                        accessor: "visits",
+                    },
+                    {
+                        Header: "Status",
+                        accessor: "status",
+                    },
+                    {
+                        Header: "Profile Progress",
+                        accessor: "progress",
+                    },
+                ],
+            },
+        ];
         return (
-            <Box sx={{ width: "100%" }}>
-                <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                    <Tabs
-                        value={this.state.curTab}
-                        onChange={this.handleChange}
-                        aria-label="basic tabs example"
-                        centered
-                    >
-                        <Tab label="Template" {...this.a11yProps(0)} />
-                        <Tab label="Workflow" {...this.a11yProps(1)} />
-                        <Tab label="Variable" {...this.a11yProps(2)} />
-                        <Tab label="Upload" {...this.a11yProps(3)} />
-                        <Tab label="editor" {...this.a11yProps(4)} />
-                    </Tabs>
+            <Box sx={{ width: "100%", display: "flex" }}>
+                <Box sx={{ width: this.state.totalWidth }}>
+                    <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+                        <Tabs
+                            value={this.state.curTab}
+                            onChange={this.handleChange}
+                            aria-label="basic tabs example"
+                            centered
+                        >
+                            <Tab label="Template" {...this.a11yProps(0)} />
+                            <Tab label="Workflow" {...this.a11yProps(1)} />
+                            <Tab label="Upload" {...this.a11yProps(2)} />
+                            <Tab label="editor" {...this.a11yProps(3)} />
+                        </Tabs>
+                    </Box>
+                    <this.TabPanel value={this.state.curTab} index={0}>
+                        <EditorTemplate dataChange={this.setInput} />
+                        <EditorAction input={this.state.input} />
+                    </this.TabPanel>
+                    <this.TabPanel value={this.state.curTab} index={1}>
+                        <EditorWorkflow dataChange={this.setInput} />
+                        <EditorAction input={this.state.input} />
+                    </this.TabPanel>
+                    <this.TabPanel value={this.state.curTab} index={2}>
+                        <EditorUpload dataChange={this.setInput} />
+                    </this.TabPanel>
+                    <this.TabPanel value={this.state.curTab} index={3}>
+                        <EditorEdit dataChange={this.setInput} />
+                    </this.TabPanel>
                 </Box>
-                <this.TabPanel value={this.state.curTab} index={0}>
-                    <EditorTemplate dataChange={this.setInput} />
-                    
-                </this.TabPanel>
-                <this.TabPanel value={this.state.curTab} index={1}>
-                    <EditorWorkflow dataChange={this.setInput} />
-                    <EditorAction input={this.state.input} />
-                </this.TabPanel>
-                <this.TabPanel value={this.state.curTab} index={2}>
-                    <EditorVariables dataChange={this.setInput} />
-                    <EditorAction input={this.state.input} />
-                </this.TabPanel>
-                <this.TabPanel value={this.state.curTab} index={3}>
-                    <EditorUpload dataChange={this.setInput} />
-                </this.TabPanel>
-                <this.TabPanel value={this.state.curTab} index={4}>
-                    <EditorEdit dataChange={this.setInput} />
-                </this.TabPanel>
+                {(this.state.curTab === 0 || this.state.curTab === 3) && (
+                    <Box sx={{ width: "50%", ml: "0.5rem", height: "100%" }}>
+                        <Paper sx={{ height: "800px" }}>
+                            <Editor_Right></Editor_Right>
+                            {/* <DnD_Table
+                            columns={columns}
+                            data={this.state.tableData}
+                            setData={this.setTableData}
+                        ></DnD_Table> */}
+                        </Paper>
+                    </Box>
+                )}
             </Box>
         );
     }

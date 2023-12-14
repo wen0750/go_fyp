@@ -17,20 +17,17 @@ import FormTableFormat from "./editor_ext_formTableFormat";
 import EditorAction from "../component/editor_action";
 import Chip from "@mui/material/Chip";
 import Paper from "@mui/material/Paper";
-import { MuiChipsInput } from 'mui-chips-input'
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import AddIcon from '@mui/icons-material/Add';
-import { RadioGroup, RadioButton } from 'react-radio-buttons';
-
+import { MuiChipsInput } from "mui-chips-input";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import AddIcon from "@mui/icons-material/Add";
+import { RadioGroup, RadioButton } from "react-radio-buttons";
 
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import { ThirtyFpsSelect } from "@mui/icons-material";
-
-
 
 export default class EditorTemplate extends React.Component {
     constructor(props) {
@@ -40,25 +37,20 @@ export default class EditorTemplate extends React.Component {
             FormData: {},
             responseType: 1,
             responseViwerType: 1,
-            
         };
 
-        
         const ITEM_HEIGHT = 40;
         const ITEM_PADDING_TOP = 8;
 
-
         this.MyComponent = () => {
-            const [chips, setChips] = React.useState([])
-          
+            const [chips, setChips] = React.useState([]);
+
             const handleChange = (newChips) => {
-              setChips(newChips)
-            }
-          
-            return (
-              <MuiChipsInput value={chips} onChange={handleChange} />
-            )
-        }
+                setChips(newChips);
+            };
+
+            return <MuiChipsInput value={chips} onChange={handleChange} />;
+        };
 
         this.menuProps = {
             PaperProps: {
@@ -192,8 +184,6 @@ export default class EditorTemplate extends React.Component {
         ];
     }
 
-
-
     PartInformation = () => {
         return (
             <Card sx={{ my: 2 }}>
@@ -215,22 +205,22 @@ export default class EditorTemplate extends React.Component {
         );
     };
 
-    Partclassification= () => {
+    Partclassification = () => {
         return (
             <Card sx={{ my: 2 }}>
                 <CardHeader title="Classification" />
                 <hr />
                 <CardContent>
-                        <Grid
-                            container="container"
-                            spacing={2}
-                            columns={{ xs: 4, sm: 8, md: 12 }}
-                        >
-                            <FormTableFormat
-                                catalog="classification"
-                                opts={this.classificationOptionList}
-                            ></FormTableFormat>
-                        </Grid>
+                    <Grid
+                        container="container"
+                        spacing={2}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                    >
+                        <FormTableFormat
+                            catalog="classification"
+                            opts={this.classificationOptionList}
+                        ></FormTableFormat>
+                    </Grid>
                 </CardContent>
             </Card>
         );
@@ -247,7 +237,7 @@ export default class EditorTemplate extends React.Component {
                         spacing={2}
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     ></Grid>
-                    <this.MyComponent/>
+                    <this.MyComponent />
                 </CardContent>
             </Card>
         );
@@ -257,18 +247,15 @@ export default class EditorTemplate extends React.Component {
         this.setState({ responseType: newValue });
     };
 
-    PartOptions= () => {
+    PartOptions = () => {
         return (
             <Card sx={{ my: 2 }}>
                 <CardHeader title="Options" />
                 <hr />
                 <CardContent>
-                        <div className="horizontal-line"></div>
-                        <Grid
-                            spacing={2}
-                            columns={{ xs: 4, sm: 8, md: 12 }}
-                        >
-                            <TabContext value={this.state.responseType}>
+                    <div className="horizontal-line"></div>
+                    <Grid spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
+                        <TabContext value={this.state.responseType}>
                             <Box
                                 sx={{ borderBottom: 1, borderColor: "divider" }}
                             >
@@ -281,26 +268,26 @@ export default class EditorTemplate extends React.Component {
                                     <Tab label="Raw" value="2" />
                                 </TabList>
                             </Box>
-                                <TabPanel value="1">
-                                    <FormTableFormat
-                                        catalog="Options"
-                                        opts={this.httpinfoOptionList}
-                                    ></FormTableFormat> 
-                                </TabPanel>
-                                <TabPanel value="2">
-                                    <FormTableFormat
-                                        catalog="options"
-                                        opts={this.RawinfoOptionList}
-                                    ></FormTableFormat>
-                                </TabPanel>
-                            </TabContext>
-                        </Grid>
+                            <TabPanel value="1">
+                                <FormTableFormat
+                                    catalog="Options"
+                                    opts={this.httpinfoOptionList}
+                                ></FormTableFormat>
+                            </TabPanel>
+                            <TabPanel value="2">
+                                <FormTableFormat
+                                    catalog="options"
+                                    opts={this.RawinfoOptionList}
+                                ></FormTableFormat>
+                            </TabPanel>
+                        </TabContext>
+                    </Grid>
                 </CardContent>
             </Card>
         );
     };
 
-    Partpayloads= () => {
+    Partpayloads = () => {
         return (
             <Card sx={{ my: 2 }}>
                 <CardHeader title="Payloads" />
@@ -313,15 +300,23 @@ export default class EditorTemplate extends React.Component {
                     ></Grid>
                     <Grid container spacing={2}>
                         <Grid item xs={4}>
-                            <TextField id="key 1" label="key 1" variant="outlined" />
-                            <TextField id="key 2" label="key 2" variant="outlined" />
+                            <TextField
+                                id="key 1"
+                                label="key 1"
+                                variant="outlined"
+                            />
+                            <TextField
+                                id="key 2"
+                                label="key 2"
+                                variant="outlined"
+                            />
                         </Grid>
                         <Grid item xs={8}>
-                            <this.MyComponent/>
-                            <this.MyComponent/>
+                            <this.MyComponent />
+                            <this.MyComponent />
                         </Grid>
                     </Grid>
-                    <Button   variant="outlined" startIcon={<AddIcon />}>
+                    <Button variant="outlined" startIcon={<AddIcon />}>
                         Add
                     </Button>
                 </CardContent>
@@ -337,9 +332,7 @@ export default class EditorTemplate extends React.Component {
                             <RadioButton value="apple">
                                 Batteringram
                             </RadioButton>
-                            <RadioButton value="orange">
-                                Pitchfork
-                            </RadioButton>
+                            <RadioButton value="orange">Pitchfork</RadioButton>
                             <RadioButton value="orange">
                                 Clusterbomb
                             </RadioButton>
@@ -350,7 +343,7 @@ export default class EditorTemplate extends React.Component {
         );
     };
 
-    PartFuzzing= () => {
+    PartFuzzing = () => {
         return (
             <Card sx={{ my: 2 }}>
                 <CardHeader title="Fuzzing" />
@@ -361,7 +354,7 @@ export default class EditorTemplate extends React.Component {
                         spacing={2}
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     ></Grid>
-                    <this.MyComponent/>
+                    <this.MyComponent />
                 </CardContent>
             </Card>
         );
@@ -371,18 +364,19 @@ export default class EditorTemplate extends React.Component {
     // fatch data
     componentDidMount() {
         this.fetchData();
-      }
-    
+    }
+
     fetchData = async () => {
         try {
-            const response = await fetch('https://www.npmjs.com/package/react-syntax-highlighter');
+            const response = await fetch(
+                "https://www.npmjs.com/package/react-syntax-highlighter"
+            );
             const jsonData = await response.text();
             this.setState({ tmpdata: jsonData });
         } catch (error) {
-            console.error('Error fetching data:', error);
+            console.error("Error fetching data:", error);
         }
     };
-
 
     Right_ResponseViwer_Type_Change = (event, newValue) => {
         this.setState({ responseViwerType: newValue });
@@ -392,21 +386,42 @@ export default class EditorTemplate extends React.Component {
             <Card sx={{ my: 2 }}>
                 <CardContent>
                     <TabContext value={this.state.responseViwerType}>
-                        <Box
-                            sx={{ borderBottom: 1, borderColor: "divider" }}
-                        >
+                        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                             <TabList
-                                onChange={
-                                    this.Right_ResponseViwer_Type_Change
-                                }
+                                onChange={this.Right_ResponseViwer_Type_Change}
                                 aria-label="lab API tabs example"
                             >
                                 <Tab label="HTML Code" value="1" />
                                 <Tab label="Page Review" value="2" />
                             </TabList>
                         </Box>
-                        <TabPanel value="1" sx={{padding:0,height:"50%", maxHeight: "500px" , overflow: "scroll"}} > {this.state.tmpdata} </TabPanel>
-                        <TabPanel value="2" sx={{padding:0,height:"50%", maxHeight: "500px", overflowY: "scroll"}} ><div dangerouslySetInnerHTML={{__html: this.state.tmpdata}} ></div></TabPanel>
+                        <TabPanel
+                            value="1"
+                            sx={{
+                                padding: 0,
+                                height: "50%",
+                                maxHeight: "500px",
+                                overflow: "scroll",
+                            }}
+                        >
+                            {" "}
+                            {this.state.tmpdata}{" "}
+                        </TabPanel>
+                        <TabPanel
+                            value="2"
+                            sx={{
+                                padding: 0,
+                                height: "50%",
+                                maxHeight: "500px",
+                                overflowY: "scroll",
+                            }}
+                        >
+                            <div
+                                dangerouslySetInnerHTML={{
+                                    __html: this.state.tmpdata,
+                                }}
+                            ></div>
+                        </TabPanel>
                     </TabContext>
                 </CardContent>
             </Card>

@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 
-import { Card, CardHeader, CardContent, Container } from "@mui/material";
+import {
+    Card,
+    CardHeader,
+    CardContent,
+    Container,
+    Typography,
+} from "@mui/material";
 
 import globeVar from "../../GlobalVar";
 
@@ -214,9 +220,6 @@ const DropZone = (props) => {
                         {errorMessage}
                     </div>
                 )}
-                <p className="cardContent">
-                    Drag and drop your .yaml or .json file here
-                </p>
             </div>
             <div>
                 <h3 className="cardContent">File:</h3>
@@ -280,7 +283,6 @@ export default class EditorUpload extends React.Component {
         return (
             <Card>
                 <CardHeader title="Submit your own Template for others" />
-                <hr />
                 <CardContent>
                     <DropZone />
                     <Grid
