@@ -333,13 +333,13 @@ export default class EditorTemplate extends React.Component {
                     ></Grid>
                     <Grid container spacing={2}>
                         <RadioGroup horizontal>
-                            <RadioButton rootColor="Silver" value="Batteringram">
+                            <RadioButton rootColor="Gray" value="Batteringram">
                                 Batteringram
                             </RadioButton>
-                            <RadioButton rootColor="Silver" value="Pitchfork">
+                            <RadioButton rootColor="Gray" value="Pitchfork">
                                 Pitchfork
                             </RadioButton>
-                            <RadioButton rootColor="Silver" value="Clusterbomb">
+                            <RadioButton rootColor="Gray" value="Clusterbomb">
                                 Clusterbomb
                             </RadioButton>
                         </RadioGroup>
@@ -380,19 +380,19 @@ export default class EditorTemplate extends React.Component {
                     ></Grid>
                     <Grid container spacing={2}>
                         <RadioGroup horizontal>
-                            <RadioButton rootColor="Silver" value="query">
+                            <RadioButton rootColor="Gray" value="query">
                                 query
                             </RadioButton>
-                            <RadioButton rootColor="Silver" value="path">
+                            <RadioButton rootColor="Gray" value="path">
                                 path
                             </RadioButton>
-                            <RadioButton rootColor="Silver" value="header">
+                            <RadioButton rootColor="Gray" value="header">
                                 header
                             </RadioButton>
-                            <RadioButton rootColor="Silver" value="body">
+                            <RadioButton rootColor="Gray" value="body">
                                 body
                             </RadioButton>
-                            <RadioButton rootColor="Silver" value="cookie">
+                            <RadioButton rootColor="Gray" value="cookie">
                                 cookie
                             </RadioButton>
                         </RadioGroup>
@@ -407,16 +407,16 @@ export default class EditorTemplate extends React.Component {
                     ></Grid>
                     <Grid container spacing={2}>
                         <RadioGroup horizontal>
-                            <RadioButton rootColor="Silver" value="replace">
+                            <RadioButton rootColor="Gray" value="replace">
                                 replace
                             </RadioButton>
-                            <RadioButton rootColor="Silver" value="prefix">
+                            <RadioButton rootColor="Gray" value="prefix">
                                 prefix
                             </RadioButton>
-                            <RadioButton rootColor="Silver" value="postfix">
+                            <RadioButton rootColor="Gray" value="postfix">
                                 postfix
                             </RadioButton>
-                            <RadioButton rootColor="Silver" value="body">
+                            <RadioButton rootColor="Gray" value="body">
                                 body
                             </RadioButton>
                         </RadioGroup>
@@ -431,10 +431,10 @@ export default class EditorTemplate extends React.Component {
                     ></Grid>
                     <Grid container spacing={2}>
                         <RadioGroup horizontal>
-                            <RadioButton rootColor="Silver" value="Multiple">
+                            <RadioButton rootColor="Gray" value="Multiple">
                                 Multiple
                             </RadioButton>
-                            <RadioButton rootColor="Silver" value="Single">
+                            <RadioButton rootColor="Gray" value="Single">
                                 Single
                             </RadioButton>
                         </RadioGroup>
@@ -453,9 +453,10 @@ export default class EditorTemplate extends React.Component {
                                         label="Fuzz"
                                         onChange={handleChange}
                                     >
-                                        <MenuItem value={10}>keys</MenuItem>
-                                        <MenuItem value={20}>keys-regex</MenuItem>
-                                        <MenuItem value={30}>values</MenuItem>
+                                        <MenuItem value={0}>None</MenuItem>
+                                        <MenuItem value={1}>keys</MenuItem>
+                                        <MenuItem value={2}>keys-regex</MenuItem>
+                                        <MenuItem value={3}>values</MenuItem>
                                     </Select>
                                 </FormControl>
                             </Grid>
