@@ -1,7 +1,7 @@
 const globeVar = {
     frontendprotocol: "http",
-    frontendhost: "172.18.12.5:8000",
+    frontendhost: "127.0.0.1:8000",
     backendprotocol: "http",
-    backendhost: "172.18.12.5:8888",
+    backendhost: "127.0.0.1:8888",
 };
 export default globeVar;
