@@ -431,20 +431,12 @@ export default class EditorTemplate extends React.Component {
     render() {
         return (
             <Container maxWidth="lg">
-                <Grid container spacing={2}>
-                    <Grid item xs={6}>
-                        <this.PartInformation />
+                <this.PartInformation />
                         <this.Partclassification />
                         <this.PartTags />
                         <this.PartOptions />
                         <this.Partpayloads />
                         <this.PartFuzzing />
-                        <EditorAction input={this.state.input} />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <this.RightPart />
-                    </Grid>
-                </Grid>
                 {/* <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <this.PartRequest />
