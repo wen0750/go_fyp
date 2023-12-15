@@ -22,6 +22,10 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import { RadioGroup, RadioButton } from "react-radio-buttons";
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
@@ -35,13 +39,13 @@ export default class EditorTemplate extends React.Component {
         this.state = {
             option: "",
             FormData: {},
-            responseType: 1,
+            responseType: "1",
             responseViwerType: 1,
         };
 
         const ITEM_HEIGHT = 40;
         const ITEM_PADDING_TOP = 8;
-
+        
         this.MyComponent = () => {
             const [chips, setChips] = React.useState([]);
 
@@ -329,11 +333,13 @@ export default class EditorTemplate extends React.Component {
                     ></Grid>
                     <Grid container spacing={2}>
                         <RadioGroup horizontal>
-                            <RadioButton value="apple">
+                            <RadioButton rootColor="Silver" value="Batteringram">
                                 Batteringram
                             </RadioButton>
-                            <RadioButton value="orange">Pitchfork</RadioButton>
-                            <RadioButton value="orange">
+                            <RadioButton rootColor="Silver" value="Pitchfork">
+                                Pitchfork
+                            </RadioButton>
+                            <RadioButton rootColor="Silver" value="Clusterbomb">
                                 Clusterbomb
                             </RadioButton>
                         </RadioGroup>
@@ -344,6 +350,12 @@ export default class EditorTemplate extends React.Component {
     };
 
     PartFuzzing = () => {
+        const [Fuzz, setFuzz] = React.useState('');
+
+        const handleChange = (event) => {
+            setFuzz(event.target.value);
+        };
+
         return (
             <Card sx={{ my: 2 }}>
                 <CardHeader title="Fuzzing" />
@@ -354,7 +366,103 @@ export default class EditorTemplate extends React.Component {
                         spacing={2}
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     ></Grid>
-                    <this.MyComponent />
+                    <Box
+                        sx={{ borderBottom: 1, borderColor: "divider" }}   
+                    >
+                    </Box>
+                </CardContent>
+                <CardHeader title="Part" />
+                <CardContent>
+                    <Grid
+                        container="container"
+                        spacing={2}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                    ></Grid>
+                    <Grid container spacing={2}>
+                        <RadioGroup horizontal>
+                            <RadioButton rootColor="Silver" value="query">
+                                query
+                            </RadioButton>
+                            <RadioButton rootColor="Silver" value="path">
+                                path
+                            </RadioButton>
+                            <RadioButton rootColor="Silver" value="header">
+                                header
+                            </RadioButton>
+                            <RadioButton rootColor="Silver" value="body">
+                                body
+                            </RadioButton>
+                            <RadioButton rootColor="Silver" value="cookie">
+                                cookie
+                            </RadioButton>
+                        </RadioGroup>
+                    </Grid>
+                </CardContent>
+                <CardHeader title="Type" />
+                <CardContent>
+                    <Grid
+                        container="container"
+                        spacing={2}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                    ></Grid>
+                    <Grid container spacing={2}>
+                        <RadioGroup horizontal>
+                            <RadioButton rootColor="Silver" value="replace">
+                                replace
+                            </RadioButton>
+                            <RadioButton rootColor="Silver" value="prefix">
+                                prefix
+                            </RadioButton>
+                            <RadioButton rootColor="Silver" value="postfix">
+                                postfix
+                            </RadioButton>
+                            <RadioButton rootColor="Silver" value="body">
+                                body
+                            </RadioButton>
+                        </RadioGroup>
+                    </Grid>
+                </CardContent>
+                <CardHeader title="Mode" />
+                <CardContent>
+                    <Grid
+                        container="container"
+                        spacing={2}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                    ></Grid>
+                    <Grid container spacing={2}>
+                        <RadioGroup horizontal>
+                            <RadioButton rootColor="Silver" value="Multiple">
+                                Multiple
+                            </RadioButton>
+                            <RadioButton rootColor="Silver" value="Single">
+                                Single
+                            </RadioButton>
+                        </RadioGroup>
+                    </Grid>
+                </CardContent>
+                <CardHeader title="Fuzz" />
+                <CardContent>
+                    <Grid container spacing={2}>
+                            <Grid item xs={4}>
+                                <FormControl fullWidth>
+                                    <InputLabel id="Fuzz-select-label">Fuzz</InputLabel>
+                                    <Select
+                                        labelId="Fuzz-simple-select-label"
+                                        id="Fuzz-simple-select"
+                                        value={Fuzz}
+                                        label="Fuzz"
+                                        onChange={handleChange}
+                                    >
+                                        <MenuItem value={10}>keys</MenuItem>
+                                        <MenuItem value={20}>keys-regex</MenuItem>
+                                        <MenuItem value={30}>values</MenuItem>
+                                    </Select>
+                                </FormControl>
+                            </Grid>
+                            <Grid item xs={8}>
+                                <this.MyComponent />
+                            </Grid>
+                    </Grid>
                 </CardContent>
             </Card>
         );
