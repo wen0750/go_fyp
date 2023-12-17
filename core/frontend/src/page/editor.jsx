@@ -13,7 +13,6 @@ import EditorUpload from "../component/editor_upload";
 import EditorEdit from "../component/editor_edit";
 
 import Editor_Right from "../component/editor_right";
-import DnD_Table from "../component/editor_dnd_table";
 
 class Editor extends React.Component {
     constructor(props) {
@@ -147,11 +146,6 @@ class Editor extends React.Component {
                     <Box sx={{ width: "50%", ml: "0.5rem", height: "100%" }}>
                         <Paper sx={{ height: "800px" }}>
                             <Editor_Right></Editor_Right>
-                            {/* <DnD_Table
-                            columns={columns}
-                            data={this.state.tableData}
-                            setData={this.setTableData}
-                        ></DnD_Table> */}
                         </Paper>
                     </Box>
                 )}
