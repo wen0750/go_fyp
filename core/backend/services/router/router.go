@@ -114,9 +114,11 @@ func routing(router *gin.Engine) {
 		switch action {
 		case "file":
 			c.File("../services/tagList.txt")
-		case "search":
+		case "defaultShow":
 			tagWordlist.Top15Tags(c)
-		}
+		case "search":
+			tagWordlist.Action_Search(c)
 		
+		}
 	})
 }

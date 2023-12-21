@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -93,3 +94,45 @@ func Top15Tags(c *gin.Context) {
     // Send the top tags as a JSON response
     c.JSON(http.StatusOK, topTags)
 }
+
+func Action_Search(c *gin.Context) {
+    // Assume 'query' is the query parameter with the user's current input
+    query := c.Query("q")
+
+    if query == "" {
+        // If the query is empty, call the Top15Tags function
+        Top15Tags(c)
+        return
+    }
+
+    // Read the file
+    filePath := "../backend/services/tagWordlist/tagList.json"
+    data, err := os.ReadFile(filePath)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to read tag list."})
+        return
+    }
+
+    // Unmarshal JSON data into a TagsData struct
+    var tagsData TagsData
+    if err := json.Unmarshal(data, &tagsData); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to parse tag list."})
+        return
+    }
+
+    // Filter tags starting with the query prefix and limit to first 15
+    var suggestions []string
+    lowerQuery := strings.ToLower(query)
+    for _, tag := range tagsData.Tags {
+        if strings.HasPrefix(strings.ToLower(tag.Name), lowerQuery) {
+            suggestions = append(suggestions, tag.Name)
+            if len(suggestions) >= 15 {
+                break
+            }
+        }
+    }
+
+    // Return the suggestions as a JSON response
+    c.JSON(http.StatusOK, gin.H{"suggestions": suggestions})
+}
+
