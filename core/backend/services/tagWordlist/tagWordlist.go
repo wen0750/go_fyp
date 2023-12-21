@@ -1,14 +1,31 @@
 package tagWordlist
 
 import (
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
 	"path/filepath"
+	"sort"
 
 	"github.com/gin-gonic/gin"
 )
+
+// Tag structure to match the JSON "tags" array
+type Tag struct {
+	Name  string `json:"name"`
+	Count int    `json:"count"`
+}
+
+// TagsData to match the top-level JSON object containing the "tags" array
+type TagsData struct {
+	Tags  []Tag `json:"tags"`
+	Types []struct {
+		Name  string `json:"name"`
+		Count int    `json:"count"`
+	} `json:"types"`
+}
 
 func GetWordlist() error {
 	url := "https://raw.githubusercontent.com/projectdiscovery/nuclei-templates/main/TEMPLATES-STATS.json"
@@ -45,6 +62,34 @@ func GetWordlist() error {
 }
 
 
-func Action_Search (c *gin.Context){
+// Read the JSON file and return the top 15 tags
+func Top15Tags(c *gin.Context) {
+    // Read the file
+    filePath := "../backend/services/tagWordlist/tagList.json"
+    data, err := os.ReadFile(filePath)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
 
+    // Unmarshal JSON data
+    var tagsData TagsData
+    if err := json.Unmarshal(data, &tagsData); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+
+    // Sort the tags by count, descending
+    sort.Slice(tagsData.Tags, func(i, j int) bool {
+        return tagsData.Tags[i].Count > tagsData.Tags[j].Count
+    })
+
+    // Get the top 15 tags
+    topTags := tagsData.Tags
+    if len(topTags) > 15 {
+        topTags = topTags[:15]
+    }
+
+    // Send the top tags as a JSON response
+    c.JSON(http.StatusOK, topTags)
 }

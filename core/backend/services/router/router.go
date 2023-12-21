@@ -115,7 +115,7 @@ func routing(router *gin.Engine) {
 		case "file":
 			c.File("../services/tagList.txt")
 		case "search":
-			tagWordlist.Action_Search(c)
+			tagWordlist.Top15Tags(c)
 		}
 		
 	})
