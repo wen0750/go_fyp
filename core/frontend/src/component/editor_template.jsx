@@ -26,6 +26,8 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import { useState } from "react";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
@@ -292,6 +294,25 @@ export default class EditorTemplate extends React.Component {
     };
 
     Partpayloads = () => {
+        const [data,setData]=useState([{fname:"",lname:""}])
+   
+        const handleClick=()=>{
+            setData([...data,{fname:"",lname:""}])
+        }
+
+        const handleChange=(e,i)=>{
+            const {name,value}=e.target
+            const onchangeVal = [...data]
+            onchangeVal[i][name]=value
+            setData(onchangeVal)
+        }
+
+        const handleDelete=(i)=>{
+            const deleteVal = [...data]
+            deleteVal.splice(i,1)
+            setData(deleteVal)
+        }
+        
         return (
             <Card sx={{ my: 2 }}>
                 <CardHeader title="Payloads" />
@@ -302,27 +323,36 @@ export default class EditorTemplate extends React.Component {
                         spacing={2}
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     ></Grid>
-                    <Grid container spacing={2}>
-                        <Grid item xs={4}>
-                            <TextField
-                                id="key 1"
-                                label="key 1"
-                                variant="outlined"
-                            />
-                            <TextField
-                                id="key 2"
-                                label="key 2"
-                                variant="outlined"
-                            />
-                        </Grid>
-                        <Grid item xs={8}>
-                            <this.MyComponent />
-                            <this.MyComponent />
-                        </Grid>
-                    </Grid>
-                    <Button variant="outlined" startIcon={<AddIcon />}>
-                        Add
-                    </Button>
+                    <div className="App">{
+                        data.map((val,i)=>
+                        <div>
+                            <Grid container spacing={3}>
+                                <Grid item xs={4}>
+                                    <TextField id="Key" label="key "  variant="outlined"lname="fname" value={val.fname} onChange={(e)=>handleChange(e,i)} />
+                                </Grid>
+                                <Grid item xs={7}>
+                                    <this.MyComponent name="lname" value={val.lname} onChange={(e)=>handleChange(e,i)} />
+                                </Grid>
+                                <Grid item xs={1}>
+                                    <IconButton aria-label="delete"  size="large" onClick={()=>handleDelete(i)}>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Grid>
+                            </Grid>
+                                <CardContent>
+                                <Grid
+                                    container="container"
+                                    spacing={2}
+                                    columns={{ xs: 4, sm: 8, md: 12 }}
+                                ></Grid>
+                            </CardContent>
+                        </div>
+                        )
+                    }
+                        <Button variant="outlined" onClick={handleClick} startIcon={<AddIcon />}>
+                         Add Key
+                        </Button>
+                    </div>
                 </CardContent>
                 <CardHeader title="Attack mode:" />
                 <CardContent>
@@ -469,6 +499,72 @@ export default class EditorTemplate extends React.Component {
         );
     };
 
+    PartMatchers= () => {
+        const [data,setData]=useState([{fname:"",lname:""}])
+   
+        const handleClick=()=>{
+            setData([...data,{fname:"",lname:""}])
+        }
+
+        const handleChange=(e,i)=>{
+            const {name,value}=e.target
+            const onchangeVal = [...data]
+            onchangeVal[i][name]=value
+            setData(onchangeVal)
+        }
+
+        const handleDelete=(i)=>{
+            const deleteVal = [...data]
+            deleteVal.splice(i,1)
+            setData(deleteVal)
+        }
+
+        return (
+            <Card sx={{my: 2}}>
+                <CardHeader title="Tags" />
+                <hr />
+                <CardContent>
+                    <Grid
+                        container="container"
+                        spacing={2}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                    ></Grid>
+                    <div className="App">{
+                        data.map((val,i)=>
+                        <div>
+                            <Grid container spacing={3}>
+                                <Grid item xs={4}>
+                                    <TextField id="Key" label="key "  variant="outlined"lname="fname" value={val.fname} onChange={(e)=>handleChange(e,i)} />
+                                </Grid>
+                                <Grid item xs={7}>
+                                    <this.MyComponent name="lname" value={val.lname} onChange={(e)=>handleChange(e,i)} />
+                                </Grid>
+                                <Grid item xs={1}>
+                                    <IconButton aria-label="delete"  size="large" onClick={()=>handleDelete(i)}>
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Grid>
+                            </Grid>
+                                <CardContent>
+                                <Grid
+                                    container="container"
+                                    spacing={2}
+                                    columns={{ xs: 4, sm: 8, md: 12 }}
+                                ></Grid>
+                            </CardContent>
+                        </div>
+                        )
+                    }
+                        <Button onClick={handleClick}>Add</Button>
+                    </div>
+                </CardContent>
+            </Card>
+        );
+    };
+
+    
+
+
     // Respone View
     // fatch data
     componentDidMount() {
@@ -546,6 +642,7 @@ export default class EditorTemplate extends React.Component {
                         <this.PartOptions />
                         <this.Partpayloads />
                         <this.PartFuzzing />
+                        <this.PartMatchers />
                 {/* <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <this.PartRequest />
