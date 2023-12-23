@@ -14,9 +14,6 @@ import {
 import Grid from "@mui/material/Unstable_Grid2";
 import "../assets/css/editor.css";
 import FormTableFormat from "./editor_ext_formTableFormat";
-import EditorAction from "../component/editor_action";
-import Chip from "@mui/material/Chip";
-import Paper from "@mui/material/Paper";
 import { MuiChipsInput } from "mui-chips-input";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
@@ -294,10 +291,10 @@ export default class EditorTemplate extends React.Component {
     };
 
     Partpayloads = () => {
-        const [data,setData]=useState([{fname:"",lname:""}])
+        const [data,setData]=useState([{key:"",tab:""}])
    
         const handleClick=()=>{
-            setData([...data,{fname:"",lname:""}])
+            setData([...data,{key:"",tab:""}])
         }
 
         const handleChange=(e,i)=>{
@@ -312,7 +309,7 @@ export default class EditorTemplate extends React.Component {
             deleteVal.splice(i,1)
             setData(deleteVal)
         }
-        
+
         return (
             <Card sx={{ my: 2 }}>
                 <CardHeader title="Payloads" />
@@ -331,7 +328,7 @@ export default class EditorTemplate extends React.Component {
                                     <TextField id="Key" label="key "  variant="outlined"lname="fname" value={val.fname} onChange={(e)=>handleChange(e,i)} />
                                 </Grid>
                                 <Grid item xs={7}>
-                                    <this.MyComponent name="lname" value={val.lname} onChange={(e)=>handleChange(e,i)} />
+                                    <this.MyComponent name="tab" value={val.lname} onChange={(e)=>handleChange(e,i)} />
                                 </Grid>
                                 <Grid item xs={1}>
                                     <IconButton aria-label="delete"  size="large" onClick={()=>handleDelete(i)}>
@@ -363,9 +360,15 @@ export default class EditorTemplate extends React.Component {
                     ></Grid>
                     <Grid container spacing={2}>
                         <RadioGroup horizontal>
-                            <RadioButton rootColor="Gray" value="Batteringram">
+                            {data.length <= 2 ? (
+                                <RadioButton rootColor="Gray" value="Batteringram">
+                                    Batteringram
+                                </RadioButton>
+                            ) : (
+                            <RadioButton rootColor="Gray" value="Batteringram" disabled>
                                 Batteringram
                             </RadioButton>
+                            )}
                             <RadioButton rootColor="Gray" value="Pitchfork">
                                 Pitchfork
                             </RadioButton>
@@ -521,7 +524,7 @@ export default class EditorTemplate extends React.Component {
 
         return (
             <Card sx={{my: 2}}>
-                <CardHeader title="Tags" />
+                <CardHeader title="Matchers" />
                 <hr />
                 <CardContent>
                     <Grid
