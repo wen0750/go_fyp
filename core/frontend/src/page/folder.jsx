@@ -241,7 +241,12 @@ class ProjectFolder extends React.Component {
         )
             .then((response) => response.json())
             .then((data) => {
-                this.setState({ f_templates: data }); // Update the state with the fetched templates
+                if (data == null) {
+                    this.setState({ f_templates: [] });
+                } else {
+                    this.setState({ f_templates: data });
+                }
+                // Update the state with the fetched templates
             })
             .catch((error) => {
                 console.error("Error:", error);
