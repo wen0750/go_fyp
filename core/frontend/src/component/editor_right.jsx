@@ -42,6 +42,7 @@ export default class Editor_Right extends React.Component {
                 },
                 { id: "row-2", key: "password", value: "ppppp", status: true },
             ],
+            fetchDataActiveID: null,
         };
 
         this.TableCol = [
@@ -57,6 +58,31 @@ export default class Editor_Right extends React.Component {
                 Header: "Value",
                 accessor: "value",
             },
+        ];
+
+        this.ycolumns = [
+            {
+                field: "firstName",
+                headerName: "First name",
+                width: 150,
+            },
+            {
+                field: "lastName",
+                headerName: "Last name",
+                width: 150,
+            },
+        ];
+
+        this.yrows = [
+            { id: 1, lastName: "Snow", firstName: "Jon", age: 14 },
+            { id: 2, lastName: "Lannister", firstName: "Cersei", age: 31 },
+            { id: 3, lastName: "Lannister", firstName: "Jaime", age: 31 },
+            { id: 4, lastName: "Stark", firstName: "Arya", age: 11 },
+            { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
+            { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
+            { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
+            { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
+            { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
         ];
 
         this.dnd_TableStyles = styled.div`
@@ -167,7 +193,11 @@ export default class Editor_Right extends React.Component {
             </List>
         );
     };
-    FetchDataTable = () => {
+    FetchDataTableClickHandler = (newID) => {
+        console.log(newID);
+        // this.setState({ fetchDataActiveID: newID });
+    };
+    FetchDataTable = ({ changeSelectData }) => {
         const STable = styled.table`
             border-collapse: collapse;
             width: 100%;
@@ -177,6 +207,7 @@ export default class Editor_Right extends React.Component {
             border: 2px solid #000;
 
             &:first-child {
+                user-select: none;
                 text-align: center;
                 width: 18px;
                 height: 30px;
@@ -208,58 +239,22 @@ export default class Editor_Right extends React.Component {
                         <Th>Name</Th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr>
-                        <Td>1</Td>
-                        <Td>Table cell 2</Td>
-                    </tr>
-                    <tr>
-                        <Td>33</Td>
-                        <Td>Table cell 4</Td>
-                    </tr>
-                    <tr>
-                        <Td>33</Td>
-                        <Td>
-                            Table cell 4 Table cell 4 Table cell 4 Table cell 4
-                        </Td>
-                    </tr>
-                    <tr>
-                        <Td>33</Td>
-                        <Td>Table cell 4</Td>
-                    </tr>
+                <tbody onClick={changeSelectData}>
+                    {[0, 4, 1, 2, 3].map((cell, j) => (
+                        <tr>
+                            <Td>{j}</Td>
+                            <Td>{cell}</Td>
+                        </tr>
+                    ))}
                 </tbody>
             </STable>
         );
     };
-    FetchedDataList = () => {
-        const columns = [
-            {
-                field: "firstName",
-                headerName: "First name",
-                width: 150,
-            },
-            {
-                field: "lastName",
-                headerName: "Last name",
-                width: 150,
-            },
-        ];
-
-        const rows = [
-            { id: 1, lastName: "Snow", firstName: "Jon", age: 14 },
-            { id: 2, lastName: "Lannister", firstName: "Cersei", age: 31 },
-            { id: 3, lastName: "Lannister", firstName: "Jaime", age: 31 },
-            { id: 4, lastName: "Stark", firstName: "Arya", age: 11 },
-            { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-            { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-            { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-            { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-            { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-        ];
+    FetchedDataList = ({ headerName, columns, rows }) => {
         return (
             <div>
                 <Typography variant="h6" gutterBottom>
-                    Heading
+                    {headerName}
                 </Typography>
                 <Box sx={{ width: "100%" }}>
                     <DataGrid
@@ -420,7 +415,21 @@ export default class Editor_Right extends React.Component {
                         <this.FetchDataTable></this.FetchDataTable>
                     </Grid>
                     <Grid item xs={8}>
-                        <this.FetchedDataList></this.FetchedDataList>
+                        <this.FetchedDataList
+                            headerName={"Name"}
+                            columns={this.ycolumns}
+                            rows={this.yrows}
+                        ></this.FetchedDataList>
+                        <this.FetchedDataList
+                            headerName={"Name2"}
+                            columns={this.ycolumns}
+                            rows={this.yrows}
+                        ></this.FetchedDataList>
+                        <this.FetchedDataList
+                            headerName={"Name3"}
+                            columns={this.ycolumns}
+                            rows={this.yrows}
+                        ></this.FetchedDataList>
                     </Grid>
                 </Grid>
             </div>

@@ -19,12 +19,12 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import AddIcon from "@mui/icons-material/Add";
 import { RadioGroup, RadioButton } from "react-radio-buttons";
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 import { useState } from "react";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
@@ -44,7 +44,7 @@ export default class EditorTemplate extends React.Component {
 
         const ITEM_HEIGHT = 40;
         const ITEM_PADDING_TOP = 8;
-        
+
         this.MyComponent = () => {
             const [chips, setChips] = React.useState([]);
 
@@ -291,24 +291,24 @@ export default class EditorTemplate extends React.Component {
     };
 
     Partpayloads = () => {
-        const [data,setData]=useState([{key:"",tab:""}])
-   
-        const handleClick=()=>{
-            setData([...data,{key:"",tab:""}])
-        }
+        const [data, setData] = useState([{ key: "", tab: "" }]);
 
-        const handleChange=(e,i)=>{
-            const {name,value}=e.target
-            const onchangeVal = [...data]
-            onchangeVal[i][name]=value
-            setData(onchangeVal)
-        }
+        const handleClick = () => {
+            setData([...data, { key: "", tab: "" }]);
+        };
 
-        const handleDelete=(i)=>{
-            const deleteVal = [...data]
-            deleteVal.splice(i,1)
-            setData(deleteVal)
-        }
+        const handleChange = (e, i) => {
+            const { name, value } = e.target;
+            const onchangeVal = [...data];
+            onchangeVal[i][name] = value;
+            setData(onchangeVal);
+        };
+
+        const handleDelete = (i) => {
+            const deleteVal = [...data];
+            deleteVal.splice(i, 1);
+            setData(deleteVal);
+        };
 
         return (
             <Card sx={{ my: 2 }}>
@@ -320,34 +320,52 @@ export default class EditorTemplate extends React.Component {
                         spacing={2}
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     ></Grid>
-                    <div className="App">{
-                        data.map((val,i)=>
-                        <div>
-                            <Grid container spacing={3}>
-                                <Grid item xs={4}>
-                                    <TextField id="Key" label="key "  variant="outlined"lname="fname" value={val.fname} onChange={(e)=>handleChange(e,i)} />
+                    <div className="App">
+                        {data.map((val, i) => (
+                            <div>
+                                <Grid container spacing={3}>
+                                    <Grid item xs={4}>
+                                        <TextField
+                                            id="Key"
+                                            label="key "
+                                            variant="outlined"
+                                            lname="fname"
+                                            value={val.fname}
+                                            onChange={(e) => handleChange(e, i)}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={7}>
+                                        <this.MyComponent
+                                            name="tab"
+                                            value={val.lname}
+                                            onChange={(e) => handleChange(e, i)}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={1}>
+                                        <IconButton
+                                            aria-label="delete"
+                                            size="large"
+                                            onClick={() => handleDelete(i)}
+                                        >
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={7}>
-                                    <this.MyComponent name="tab" value={val.lname} onChange={(e)=>handleChange(e,i)} />
-                                </Grid>
-                                <Grid item xs={1}>
-                                    <IconButton aria-label="delete"  size="large" onClick={()=>handleDelete(i)}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </Grid>
-                            </Grid>
                                 <CardContent>
-                                <Grid
-                                    container="container"
-                                    spacing={2}
-                                    columns={{ xs: 4, sm: 8, md: 12 }}
-                                ></Grid>
-                            </CardContent>
-                        </div>
-                        )
-                    }
-                        <Button variant="outlined" onClick={handleClick} startIcon={<AddIcon />}>
-                         Add Key
+                                    <Grid
+                                        container="container"
+                                        spacing={2}
+                                        columns={{ xs: 4, sm: 8, md: 12 }}
+                                    ></Grid>
+                                </CardContent>
+                            </div>
+                        ))}
+                        <Button
+                            variant="outlined"
+                            onClick={handleClick}
+                            startIcon={<AddIcon />}
+                        >
+                            Add Key
                         </Button>
                     </div>
                 </CardContent>
@@ -361,13 +379,20 @@ export default class EditorTemplate extends React.Component {
                     <Grid container spacing={2}>
                         <RadioGroup horizontal>
                             {data.length <= 2 ? (
-                                <RadioButton rootColor="Gray" value="Batteringram">
+                                <RadioButton
+                                    rootColor="Gray"
+                                    value="Batteringram"
+                                >
                                     Batteringram
                                 </RadioButton>
                             ) : (
-                            <RadioButton rootColor="Gray" value="Batteringram" disabled>
-                                Batteringram
-                            </RadioButton>
+                                <RadioButton
+                                    rootColor="Gray"
+                                    value="Batteringram"
+                                    disabled
+                                >
+                                    Batteringram
+                                </RadioButton>
                             )}
                             <RadioButton rootColor="Gray" value="Pitchfork">
                                 Pitchfork
@@ -383,7 +408,7 @@ export default class EditorTemplate extends React.Component {
     };
 
     PartFuzzing = () => {
-        const [Fuzz, setFuzz] = React.useState('');
+        const [Fuzz, setFuzz] = React.useState("");
 
         const handleChange = (event) => {
             setFuzz(event.target.value);
@@ -399,10 +424,7 @@ export default class EditorTemplate extends React.Component {
                         spacing={2}
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     ></Grid>
-                    <Box
-                        sx={{ borderBottom: 1, borderColor: "divider" }}   
-                    >
-                    </Box>
+                    <Box sx={{ borderBottom: 1, borderColor: "divider" }}></Box>
                 </CardContent>
                 <CardHeader title="Part" />
                 <CardContent>
@@ -476,54 +498,56 @@ export default class EditorTemplate extends React.Component {
                 <CardHeader title="Fuzz" />
                 <CardContent>
                     <Grid container spacing={2}>
-                            <Grid item xs={4}>
-                                <FormControl fullWidth>
-                                    <InputLabel id="Fuzz-select-label">Fuzz</InputLabel>
-                                    <Select
-                                        labelId="Fuzz-simple-select-label"
-                                        id="Fuzz-simple-select"
-                                        value={Fuzz}
-                                        label="Fuzz"
-                                        onChange={handleChange}
-                                    >
-                                        <MenuItem value={0}>None</MenuItem>
-                                        <MenuItem value={1}>keys</MenuItem>
-                                        <MenuItem value={2}>keys-regex</MenuItem>
-                                        <MenuItem value={3}>values</MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </Grid>
-                            <Grid item xs={8}>
-                                <this.MyComponent />
-                            </Grid>
+                        <Grid item xs={4}>
+                            <FormControl fullWidth>
+                                <InputLabel id="Fuzz-select-label">
+                                    Fuzz
+                                </InputLabel>
+                                <Select
+                                    labelId="Fuzz-simple-select-label"
+                                    id="Fuzz-simple-select"
+                                    value={Fuzz}
+                                    label="Fuzz"
+                                    onChange={handleChange}
+                                >
+                                    <MenuItem value={0}>None</MenuItem>
+                                    <MenuItem value={1}>keys</MenuItem>
+                                    <MenuItem value={2}>keys-regex</MenuItem>
+                                    <MenuItem value={3}>values</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={8}>
+                            <this.MyComponent />
+                        </Grid>
                     </Grid>
                 </CardContent>
             </Card>
         );
     };
 
-    PartMatchers= () => {
-        const [data,setData]=useState([{fname:"",lname:""}])
-   
-        const handleClick=()=>{
-            setData([...data,{fname:"",lname:""}])
-        }
+    PartMatchers = () => {
+        const [data, setData] = useState([{ fname: "", lname: "" }]);
 
-        const handleChange=(e,i)=>{
-            const {name,value}=e.target
-            const onchangeVal = [...data]
-            onchangeVal[i][name]=value
-            setData(onchangeVal)
-        }
+        const handleClick = () => {
+            setData([...data, { fname: "", lname: "" }]);
+        };
 
-        const handleDelete=(i)=>{
-            const deleteVal = [...data]
-            deleteVal.splice(i,1)
-            setData(deleteVal)
-        }
+        const handleChange = (e, i) => {
+            const { name, value } = e.target;
+            const onchangeVal = [...data];
+            onchangeVal[i][name] = value;
+            setData(onchangeVal);
+        };
+
+        const handleDelete = (i) => {
+            const deleteVal = [...data];
+            deleteVal.splice(i, 1);
+            setData(deleteVal);
+        };
 
         return (
-            <Card sx={{my: 2}}>
+            <Card sx={{ my: 2 }}>
                 <CardHeader title="Matchers" />
                 <hr />
                 <CardContent>
@@ -532,41 +556,52 @@ export default class EditorTemplate extends React.Component {
                         spacing={2}
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     ></Grid>
-                    <div className="App">{
-                        data.map((val,i)=>
-                        <div>
-                            <Grid container spacing={3}>
-                                <Grid item xs={4}>
-                                    <TextField id="Key" label="key "  variant="outlined"lname="fname" value={val.fname} onChange={(e)=>handleChange(e,i)} />
+                    <div className="App">
+                        {data.map((val, i) => (
+                            <div>
+                                <Grid container spacing={3}>
+                                    <Grid item xs={4}>
+                                        <TextField
+                                            id="Key"
+                                            label="key "
+                                            variant="outlined"
+                                            lname="fname"
+                                            value={val.fname}
+                                            onChange={(e) => handleChange(e, i)}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={7}>
+                                        <this.MyComponent
+                                            name="lname"
+                                            value={val.lname}
+                                            onChange={(e) => handleChange(e, i)}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={1}>
+                                        <IconButton
+                                            aria-label="delete"
+                                            size="large"
+                                            onClick={() => handleDelete(i)}
+                                        >
+                                            <DeleteIcon />
+                                        </IconButton>
+                                    </Grid>
                                 </Grid>
-                                <Grid item xs={7}>
-                                    <this.MyComponent name="lname" value={val.lname} onChange={(e)=>handleChange(e,i)} />
-                                </Grid>
-                                <Grid item xs={1}>
-                                    <IconButton aria-label="delete"  size="large" onClick={()=>handleDelete(i)}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </Grid>
-                            </Grid>
                                 <CardContent>
-                                <Grid
-                                    container="container"
-                                    spacing={2}
-                                    columns={{ xs: 4, sm: 8, md: 12 }}
-                                ></Grid>
-                            </CardContent>
-                        </div>
-                        )
-                    }
+                                    <Grid
+                                        container="container"
+                                        spacing={2}
+                                        columns={{ xs: 4, sm: 8, md: 12 }}
+                                    ></Grid>
+                                </CardContent>
+                            </div>
+                        ))}
                         <Button onClick={handleClick}>Add</Button>
                     </div>
                 </CardContent>
             </Card>
         );
     };
-
-    
-
 
     // Respone View
     // fatch data
@@ -586,81 +621,16 @@ export default class EditorTemplate extends React.Component {
         }
     };
 
-    Right_ResponseViwer_Type_Change = (event, newValue) => {
-        this.setState({ responseViwerType: newValue });
-    };
-    RightPart = () => {
-        return (
-            <Card sx={{ my: 2 }}>
-                <CardContent>
-                    <TabContext value={this.state.responseViwerType}>
-                        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                            <TabList
-                                onChange={this.Right_ResponseViwer_Type_Change}
-                                aria-label="lab API tabs example"
-                            >
-                                <Tab label="HTML Code" value="1" />
-                                <Tab label="Page Review" value="2" />
-                            </TabList>
-                        </Box>
-                        <TabPanel
-                            value="1"
-                            sx={{
-                                padding: 0,
-                                height: "50%",
-                                maxHeight: "500px",
-                                overflow: "scroll",
-                            }}
-                        >
-                            {" "}
-                            {this.state.tmpdata}{" "}
-                        </TabPanel>
-                        <TabPanel
-                            value="2"
-                            sx={{
-                                padding: 0,
-                                height: "50%",
-                                maxHeight: "500px",
-                                overflowY: "scroll",
-                            }}
-                        >
-                            <div
-                                dangerouslySetInnerHTML={{
-                                    __html: this.state.tmpdata,
-                                }}
-                            ></div>
-                        </TabPanel>
-                    </TabContext>
-                </CardContent>
-            </Card>
-        );
-    };
-
     render() {
         return (
             <Container maxWidth="lg">
                 <this.PartInformation />
-                        <this.Partclassification />
-                        <this.PartTags />
-                        <this.PartOptions />
-                        <this.Partpayloads />
-                        <this.PartFuzzing />
-                        <this.PartMatchers />
-                {/* <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <this.PartRequest />
-                    </Grid>
-                </Grid>
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <this.PartRequest />
-                    </Grid>
-                </Grid>
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <this.ActionButton />
-                    </Grid>
-                </Grid> */}
+                <this.Partclassification />
+                <this.PartTags />
+                <this.PartOptions />
+                <this.Partpayloads />
+                <this.PartFuzzing />
+                <this.PartMatchers />
             </Container>
         );
     }

@@ -144,7 +144,7 @@ class Editor extends React.Component {
                 </Box>
                 {(this.state.curTab === 0 || this.state.curTab === 3) && (
                     <Box sx={{ width: "50%", ml: "0.5rem", height: "100%" }}>
-                        <Paper sx={{ height: "800px" }}>
+                        <Paper>
                             <Editor_Right></Editor_Right>
                         </Paper>
                     </Box>
