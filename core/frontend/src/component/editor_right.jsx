@@ -239,11 +239,11 @@ export default class Editor_Right extends React.Component {
                         <Th>Name</Th>
                     </tr>
                 </thead>
-                <tbody onClick={changeSelectData}>
+                <tbody>
                     {[0, 4, 1, 2, 3].map((cell, j) => (
                         <tr>
                             <Td>{j}</Td>
-                            <Td>{cell}</Td>
+                            <Td onClick={() => changeSelectData(j)}>{cell}</Td>
                         </tr>
                     ))}
                 </tbody>
@@ -410,23 +410,25 @@ export default class Editor_Right extends React.Component {
                     </TabPanel>
                 </TabContext>
 
-                <Grid container spacing={2}>
+                <Grid container spacing={2} sx={{ paddingRight: "5px" }}>
                     <Grid item xs={4}>
-                        <this.FetchDataTable></this.FetchDataTable>
+                        <this.FetchDataTable
+                            changeSelectData={this.FetchDataTableClickHandler}
+                        ></this.FetchDataTable>
                     </Grid>
                     <Grid item xs={8}>
                         <this.FetchedDataList
-                            headerName={"Name"}
+                            headerName={"General"}
                             columns={this.ycolumns}
                             rows={this.yrows}
                         ></this.FetchedDataList>
                         <this.FetchedDataList
-                            headerName={"Name2"}
+                            headerName={"Response Headers"}
                             columns={this.ycolumns}
                             rows={this.yrows}
                         ></this.FetchedDataList>
                         <this.FetchedDataList
-                            headerName={"Name3"}
+                            headerName={"Request Headers"}
                             columns={this.ycolumns}
                             rows={this.yrows}
                         ></this.FetchedDataList>
