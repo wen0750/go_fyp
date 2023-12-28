@@ -28,17 +28,17 @@ import (
 type History struct {
 	ID        primitive.ObjectID `bson:"_id,omitempty"`
 	PID       string             `bson:"pid"`
-	StartTime int64                `bson:"startTime"`
-	EndTime   int64                `bson:"endTime"`
+	StartTime int64              `bson:"startTime"`
+	EndTime   int64              `bson:"endTime"`
 	Result    []string           `bson:"result"`
 	Status    string             `bson:"status"`
-	CVECount  map[string]int           `bson:"cvecount"`
+	CVECount  map[string]int     `bson:"cvecount"`
 }
 type HistoryEntry struct {
-    ID        string `json:"_id" bson:"_id,omitempty"`
-    StartTime int64  `json:"startTime" bson:"startTime,omitempty"`
-    EndTime   int64  `json:"endTime" bson:"endTime,omitempty"`
-    Status    string `json:"status" bson:"status,omitempty"`
+	ID        string `json:"_id" bson:"_id,omitempty"`
+	StartTime int64  `json:"startTime" bson:"startTime,omitempty"`
+	EndTime   int64  `json:"endTime" bson:"endTime,omitempty"`
+	Status    string `json:"status" bson:"status,omitempty"`
 }
 
 type InputCreateProject struct {
@@ -50,11 +50,11 @@ type InputCreateProject struct {
 }
 
 type Folder struct {
-	Name     string   `json:"name"`
-	Project  []ProjectItem  `json:"project"`
-	Status   string   `json:"status"`
-	Lastscan int      `json:"lastscan"`
-	Ownerid  int      `json:"ownerid"`
+	Name     string        `json:"name"`
+	Project  []ProjectItem `json:"project"`
+	Status   string        `json:"status"`
+	Lastscan int           `json:"lastscan"`
+	Ownerid  int           `json:"ownerid"`
 }
 
 type ProjectItem struct {
@@ -62,7 +62,7 @@ type ProjectItem struct {
 	Name     string             `json:"name"`
 	Host     []string           `json:"host"`
 	Poc      []string           `json:"poc"`
-	History  []string			`json:"history"`
+	History  []string           `json:"history"`
 	LastScan int                `json:"lastscan"`
 	Schedule string             `json:"schedule"`
 	Status   string             `json:"status"`
@@ -70,8 +70,8 @@ type ProjectItem struct {
 
 // From 127.0.0.1:8888/project/startScan
 type ScanRequest struct {
-	ID []string `json:"ID"`
-	PID string `json:"PID"`
+	ID   []string `json:"ID"`
+	PID  string   `json:"PID"`
 	Host []string `json:"host"`
 }
 
@@ -80,25 +80,23 @@ type InputDeleteProject struct {
 	Fid string `json:"fid"`
 	//RowId string  `json:"rowId"`
 	Pid string `json:"pid"`
-
 }
 
 type ScanOutput struct {
-    TemplateID string
-    Protocol   string
-    Severity   string
-    URL        string
+	TemplateID string
+	Protocol   string
+	Severity   string
+	URL        string
 }
 
 // For parseCVECount in startScan
 type CVECount struct {
-    Info     int
-    Low      int
-    Medium   int
-    High     int
-    Critical int
+	Info     int
+	Low      int
+	Medium   int
+	High     int
+	Critical int
 }
-
 
 // For find
 type Template struct {
@@ -110,33 +108,33 @@ type Template struct {
 		Description string   `json:"description,omitempty"`
 		Remediation string   `json:"remediation,omitempty"`
 		Reference   []string `json:"reference,omitempty"`
-		
+
 		Classification struct {
 			CvssMetrics string  `json:"cvss-metrics,omitempty"`
 			CvssScore   float64 `json:"cvss-score,omitempty"`
 			CveID       string  `json:"cve-id,omitempty"`
 			CweID       string  `json:"cwe-id,omitempty"`
 		} `json:"classification,omitempty"`
-		
+
 		Metadata struct {
 			Verified    bool   `json:"verified,omitempty"`
 			ShodanQuery string `json:"shodan-query,omitempty"`
-			MaxRequest int `json:"max-request,omitempty"`
+			MaxRequest  int    `json:"max-request,omitempty"`
 		} `json:"metadata,omitempty"`
-		
+
 		Tags string `json:"tags,omitempty"`
 	} `json:"info,omitempty"`
 
 	Variables map[string]interface{} `json:"variables,omitempty"`
 
 	HTTP []struct {
-		Method            string `json:"method,omitempty"`
-		Path              []string `json:"path,omitempty"`
-		Raw               []string `json:"raw,omitempty"`
+		Method            string            `json:"method,omitempty"`
+		Path              []string          `json:"path,omitempty"`
+		Raw               []string          `json:"raw,omitempty"`
 		Payloads          map[string]string `json:"payloads,omitempty"`
 		Threads           int               `json:"threads,omitempty"`
-		StopAtFirstMatch  bool `json:"stop-at-first-match,omitempty"`
-		MatchersCondition string `json:"matchers-condition,omitempty"`
+		StopAtFirstMatch  bool              `json:"stop-at-first-match,omitempty"`
+		MatchersCondition string            `json:"matchers-condition,omitempty"`
 		//
 		Matchers []struct {
 			Type      string   `json:"type,omitempty"`
@@ -147,15 +145,14 @@ type Template struct {
 			Condition string   `json:"condition,omitempty"`
 			Status    []int    `json:"status,omitempty"`
 		} `json:"matchers,omitempty"`
-		
+
 		Extractors []struct {
-			Type  string   `json:"type,omitempty"`
-			Name  string   `json:"name,omitempty"`
-			Json  []string `json:"json,omitempty"`
-			Part  string   `json:"part,omitempty"`
+			Type string   `json:"type,omitempty"`
+			Name string   `json:"name,omitempty"`
+			Json []string `json:"json,omitempty"`
+			Part string   `json:"part,omitempty"`
 		} `json:"extractors,omitempty"`
 	} `json:"http,omitempty"`
-	
 }
 
 var templatesCollection *mongo.Collection
@@ -185,8 +182,6 @@ func init() {
 	} else {
 		log.Println("MongoDB (History) initialized successfully")
 	}
-
-	
 }
 
 func ProjectCreateHandler(c *gin.Context) {
@@ -303,14 +298,9 @@ func RemoveProjectFromFolder(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Successfully deleted project"})
 }
 
-
-
-
-
 func GetPOEList() {
 
 }
-
 
 func StartScan(c *gin.Context) {
 	var req ScanRequest
@@ -321,16 +311,15 @@ func StartScan(c *gin.Context) {
 		return
 	}
 	hostFilePath := "hosts.txt"
-    hostFile, err := os.Create(hostFilePath)
-    if err != nil {
-        log.Fatalf("Failed to create file: %s", err)
-    }
-    defer hostFile.Close()
-
+	hostFile, err := os.Create(hostFilePath)
+	if err != nil {
+		log.Fatalf("Failed to create file: %s", err)
+	}
+	defer hostFile.Close()
 
 	var filenames []string // To collect filenames
-	var mu sync.Mutex // To make appending to filenames slice thread-safe
-	var wg sync.WaitGroup // To wait for all goroutines to finish
+	var mu sync.Mutex      // To make appending to filenames slice thread-safe
+	var wg sync.WaitGroup  // To wait for all goroutines to finish
 
 	// Iterate over IDs
 	for i := range req.ID {
@@ -367,9 +356,9 @@ func StartScan(c *gin.Context) {
 				return
 			}
 
-			mu.Lock() // Lock to prevent concurrent write to the slice
+			mu.Lock()                               // Lock to prevent concurrent write to the slice
 			filenames = append(filenames, filename) // Add filename to slice
-			mu.Unlock() // Unlock after writing to the slice
+			mu.Unlock()                             // Unlock after writing to the slice
 		}(i)
 	}
 
@@ -389,9 +378,9 @@ func StartScan(c *gin.Context) {
 		cveCountMap := make(map[string]int)
 
 		history := History{
-			PID:       req.PID, // front should pass the pid
-			StartTime: startTime,    //  time stamp start
-			EndTime:   int64(0),      //  time stamp end
+			PID:       req.PID,   // front should pass the pid
+			StartTime: startTime, //  time stamp start
+			EndTime:   int64(0),  //  time stamp end
 			Result:    []string{},
 			Status:    "status",
 			CVECount:  cveCountMap,
@@ -405,9 +394,8 @@ func StartScan(c *gin.Context) {
 		//if err != nil {
 		//	log.Printf("Error creating scan result for ID %s: %s", id, err.Error())
 		//}
-		
 
-		currentDir, err := os.Getwd() 
+		currentDir, err := os.Getwd()
 		if err != nil {
 			log.Fatalf("Error getting current directory: %v", err)
 		}
@@ -437,7 +425,6 @@ func StartScan(c *gin.Context) {
 		cveCountMap["medium"] = CVECount.Medium
 		cveCountMap["high"] = CVECount.High
 		cveCountMap["critical"] = CVECount.Critical
-		
 
 		// Record the end time of the scan
 		endTime := time.Now().Unix()
@@ -454,14 +441,14 @@ func StartScan(c *gin.Context) {
 
 		// Store the results in MongoDB
 		after_scan := History{
-			PID:       req.PID, // front should pass the pid
-			StartTime: startTime,    //  time stamp start
-			EndTime:   endTime,      //  time stamp end
+			PID:       req.PID,   // front should pass the pid
+			StartTime: startTime, //  time stamp start
+			EndTime:   endTime,   //  time stamp end
 			Result:    outputStr,
 			Status:    status,
 			CVECount:  cveCountMap,
 		}
-		
+
 		filter := bson.M{"_id": id.InsertedID}
 		update := bson.M{
 			"$set": bson.M{
@@ -471,8 +458,7 @@ func StartScan(c *gin.Context) {
 				"cvecount": after_scan.CVECount,
 			},
 		}
-		
-		
+
 		updateResult, err := scanResultsCollection.UpdateOne(context.Background(), filter, update)
 		if err != nil {
 			log.Printf("Error saving scan result for ID %s: %s", id, err.Error())
@@ -554,203 +540,199 @@ func createYAMLFile(template Template) (string, error) {
 }
 
 func parseNucleiOutput(output string) []string {
-    // A slice to hold the parsed results
-    var results []string
+	// A slice to hold the parsed results
+	var results []string
 
-    re := regexp.MustCompile("\x1b\\[[0-9;]*m")
-    cleanOutput := re.ReplaceAllString(output, "")
+	re := regexp.MustCompile("\x1b\\[[0-9;]*m")
+	cleanOutput := re.ReplaceAllString(output, "")
 
-    // Split the output into lines
-    lines := strings.Split(cleanOutput, "\n")
+	// Split the output into lines
+	lines := strings.Split(cleanOutput, "\n")
 
-    // Flag to check if any result is found
-    var found bool
+	// Flag to check if any result is found
+	var found bool
 
-    // Regular expression to match timestamp at the beginning of a line
-    timeRe := regexp.MustCompile(`^\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2}`)
+	// Regular expression to match timestamp at the beginning of a line
+	timeRe := regexp.MustCompile(`^\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2}`)
 
-    // Iterate over each line
-    for _, line := range lines {
-        // Skip empty lines and lines starting with a timestamp
-        if len(line) == 0 || timeRe.MatchString(line) {
-            continue
-        }
+	// Iterate over each line
+	for _, line := range lines {
+		// Skip empty lines and lines starting with a timestamp
+		if len(line) == 0 || timeRe.MatchString(line) {
+			continue
+		}
 
-        // Split the line into parts
-        parts := strings.Split(line, " ")
+		// Split the line into parts
+		parts := strings.Split(line, " ")
 
-        // Check if the line has at least 4 parts
-        if len(parts) >= 5 {
-            // Add the 4th and 5th parts to the results slice
-            results = append(results, parts[3]+" "+parts[4])
-            found = true
-        } else if len(parts) >= 4 {
-            // Add the 4th part to the results slice
-            results = append(results, parts[3])
-            found = true
-        }
-    }
+		// Check if the line has at least 4 parts
+		if len(parts) >= 5 {
+			// Add the 4th and 5th parts to the results slice
+			results = append(results, parts[3]+" "+parts[4])
+			found = true
+		} else if len(parts) >= 4 {
+			// Add the 4th part to the results slice
+			results = append(results, parts[3])
+			found = true
+		}
+	}
 
-    // Check if any result is found. If not, add "No results found."
-    if !found {
-        results = append(results, "No results found.")
-    }
+	// Check if any result is found. If not, add "No results found."
+	if !found {
+		results = append(results, "No results found.")
+	}
 
-    // Return the slice of results
-    return results
+	// Return the slice of results
+	return results
 }
 
 func parseCVECount(output string) CVECount {
-    re := regexp.MustCompile("\x1b\\[[0-9;]*m")
-    cleanOutput := re.ReplaceAllString(output, "")
+	re := regexp.MustCompile("\x1b\\[[0-9;]*m")
+	cleanOutput := re.ReplaceAllString(output, "")
 
-    var cveCount CVECount
+	var cveCount CVECount
 
-    lines := strings.Split(cleanOutput, "\n")
+	lines := strings.Split(cleanOutput, "\n")
 
-    for _, line := range lines {
-        if len(line) == 0 {
-            continue
-        }
+	for _, line := range lines {
+		if len(line) == 0 {
+			continue
+		}
 
-        parts := strings.Split(line, " ")
+		parts := strings.Split(line, " ")
 
-        // Skip lines that don't have enough parts to hold the severity level
-        if len(parts) < 4 {
-            continue
-        }
+		// Skip lines that don't have enough parts to hold the severity level
+		if len(parts) < 4 {
+			continue
+		}
 
-        // The severity level is the fourth part in the line
-        severity := parts[2]
+		// The severity level is the fourth part in the line
+		severity := parts[2]
 
-        // Increment the corresponding severity level count in the CVECount object
-        switch severity {
-        case "[info]":
-            cveCount.Info++
-        case "[low]":
-            cveCount.Low++
-        case "[medium]":
-            cveCount.Medium++
-        case "[high]":
-            cveCount.High++
-        case "[critical]":
-            cveCount.Critical++
-        }
-    }
+		// Increment the corresponding severity level count in the CVECount object
+		switch severity {
+		case "[info]":
+			cveCount.Info++
+		case "[low]":
+			cveCount.Low++
+		case "[medium]":
+			cveCount.Medium++
+		case "[high]":
+			cveCount.High++
+		case "[critical]":
+			cveCount.Critical++
+		}
+	}
 
-    return cveCount
+	return cveCount
 }
 
-
-
-
 func ScanSummary(c *gin.Context, pid string) {
-    filter := bson.M{"pid": pid}
-    options := options.FindOne().SetSort(bson.M{"endtime": -1}) // sorts in descending order by endtime
+	filter := bson.M{"pid": pid}
+	options := options.FindOne().SetSort(bson.M{"endtime": -1}) // sorts in descending order by endtime
 
-    var result History // replace with your actual History struct
+	var result History // replace with your actual History struct
 
-    err := scanResultsCollection.FindOne(context.Background(), filter, options).Decode(&result)
-    if err != nil {
-        if err == mongo.ErrNoDocuments {
-            // Handle no document found
-            log.Printf("No document was found with pid: %v", pid)
-            c.JSON(404, gin.H{"message": "No document found"})
-            return
-        } else {
-            // Handle other errors
-            log.Printf("An error occurred: %v", err)
-            c.JSON(500, gin.H{"message": "Internal server error"})
-            return
-        }
-    }
+	err := scanResultsCollection.FindOne(context.Background(), filter, options).Decode(&result)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			// Handle no document found
+			log.Printf("No document was found with pid: %v", pid)
+			c.JSON(404, gin.H{"message": "No document found"})
+			return
+		} else {
+			// Handle other errors
+			log.Printf("An error occurred: %v", err)
+			c.JSON(500, gin.H{"message": "Internal server error"})
+			return
+		}
+	}
 
-    // Send the result back to the client
-    c.JSON(200, result)
+	// Send the result back to the client
+	c.JSON(200, result)
 }
 
 //
 func GetScanResultSummary(c *gin.Context, pid string) {
-    // Convert the pid string to an ObjectID
-    pidOid, err := primitive.ObjectIDFromHex(pid)
-    if err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid pid format"})
-        return
-    }
+	// Convert the pid string to an ObjectID
+	pidOid, err := primitive.ObjectIDFromHex(pid)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid pid format"})
+		return
+	}
 
-    // Create a pipeline to extract the history IDs for the given pid
-    pipeline := mongo.Pipeline{
-        bson.D{{Key: "$unwind", Value: "$project"}},
-        bson.D{{Key: "$match", Value: bson.D{{Key: "project.pid", Value: pidOid}}}},
-        bson.D{{Key: "$project", Value: bson.D{{Key: "history", Value: "$project.history"}}}},
-    }
+	// Create a pipeline to extract the history IDs for the given pid
+	pipeline := mongo.Pipeline{
+		bson.D{{Key: "$unwind", Value: "$project"}},
+		bson.D{{Key: "$match", Value: bson.D{{Key: "project.pid", Value: pidOid}}}},
+		bson.D{{Key: "$project", Value: bson.D{{Key: "history", Value: "$project.history"}}}},
+	}
 
-    // Run the pipeline
-    cur, err := folderCollection.Aggregate(context.Background(), pipeline)
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error executing pipeline"})
-        return
-    }
-    defer cur.Close(context.Background())
+	// Run the pipeline
+	cur, err := folderCollection.Aggregate(context.Background(), pipeline)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error executing pipeline"})
+		return
+	}
+	defer cur.Close(context.Background())
 
-    // Parse the results
-    var results []bson.M
-    if err := cur.All(context.Background(), &results); err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error reading pipeline results"})
-        return
-    }
+	// Parse the results
+	var results []bson.M
+	if err := cur.All(context.Background(), &results); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error reading pipeline results"})
+		return
+	}
 
-    // For each history ID, fetch the corresponding document from the scanResultsCollection
-    var histories []bson.M
-for _, result := range results {
-    for _, historyOid := range result["history"].(primitive.A) {
-        // Create a slice of maps to hold multiple documents
-        var historyDocs []bson.M
+	// For each history ID, fetch the corresponding document from the scanResultsCollection
+	var histories []bson.M
+	for _, result := range results {
+		for _, historyOid := range result["history"].(primitive.A) {
+			// Create a slice of maps to hold multiple documents
+			var historyDocs []bson.M
 
-        // Create a pipeline to extract only the desired fields
-        historyPipeline := mongo.Pipeline{
-            bson.D{{Key: "$match", Value: bson.D{{Key: "_id", Value: historyOid}}}},
-            bson.D{{Key: "$project", Value: bson.D{
-				{Key: "result.info.name", Value: 1},
-				{Key: "result.info.severityholder.severity", Value: 1}, 
-				{Key: "result.matchername", Value: 1},
-				{Key: "result.extractorname", Value: 1},
-				{Key: "result.host", Value: 1},
-				{Key: "result.matched", Value: 1},
-				{Key: "result.extractedresults", Value: 1},
-				{Key: "result.ip", Value: 1},
-				{Key: "result.request", Value: 1}, 
-				{Key: "result.response", Value: 1},
-				{Key: "result.metadata", Value: 1}, 
-				{Key: "result.matcherstatus", Value: 1}, 
-				{Key: "status", Value: 1},
-				{Key: "cvecount", Value: 1},
-            }}},
-        }
+			// Create a pipeline to extract only the desired fields
+			historyPipeline := mongo.Pipeline{
+				bson.D{{Key: "$match", Value: bson.D{{Key: "_id", Value: historyOid}}}},
+				bson.D{{Key: "$project", Value: bson.D{
+					{Key: "result.info.name", Value: 1},
+					{Key: "result.info.severityholder.severity", Value: 1},
+					{Key: "result.matchername", Value: 1},
+					{Key: "result.extractorname", Value: 1},
+					{Key: "result.host", Value: 1},
+					{Key: "result.matched", Value: 1},
+					{Key: "result.extractedresults", Value: 1},
+					{Key: "result.ip", Value: 1},
+					{Key: "result.request", Value: 1},
+					{Key: "result.response", Value: 1},
+					{Key: "result.metadata", Value: 1},
+					{Key: "result.matcherstatus", Value: 1},
+					{Key: "status", Value: 1},
+					{Key: "cvecount", Value: 1},
+				}}},
+			}
 
-        // Run the pipeline
-        historyCur, err := scanResultsCollection.Aggregate(context.Background(), historyPipeline)
-        if err != nil {
-            c.JSON(http.StatusInternalServerError, gin.H{"error": "Error executing history pipeline"})
-            return
-        }
-        defer historyCur.Close(context.Background())
+			// Run the pipeline
+			historyCur, err := scanResultsCollection.Aggregate(context.Background(), historyPipeline)
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": "Error executing history pipeline"})
+				return
+			}
+			defer historyCur.Close(context.Background())
 
-        // Parse the result
-        if err := historyCur.All(context.Background(), &historyDocs); err != nil {
-            c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Error reading history pipeline results: %v", err)})
-            return
-        }
+			// Parse the result
+			if err := historyCur.All(context.Background(), &historyDocs); err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("Error reading history pipeline results: %v", err)})
+				return
+			}
 
-        // Append the history documents to the histories slice
-        histories = append(histories, historyDocs...)
-    }
+			// Append the history documents to the histories slice
+			histories = append(histories, historyDocs...)
+		}
+	}
+
+	// Return the histories as JSON
+	c.JSON(http.StatusOK, histories)
 }
-
-// Return the histories as JSON
-c.JSON(http.StatusOK, histories)
-}
-
 
 func GetLatestScanResultSummary(c *gin.Context, pid string) {
 	objID, err := primitive.ObjectIDFromHex(pid)
@@ -815,7 +797,6 @@ func GetLatestScanResultSummary(c *gin.Context, pid string) {
 		{Key: "cvecount", Value: 1},
 	}
 
-
 	// Fetch the latest scan result from the 'History' collection with the selected fields
 	var historyRecord bson.M
 	if err := scanResultsCollection.FindOne(
@@ -829,7 +810,6 @@ func GetLatestScanResultSummary(c *gin.Context, pid string) {
 
 	c.JSON(http.StatusOK, historyRecord)
 }
-
 
 func GetScanResultByHistoryId(c *gin.Context, hid string) {
 	historyObjID, err := primitive.ObjectIDFromHex(hid)
@@ -874,63 +854,62 @@ func GetScanResultByHistoryId(c *gin.Context, hid string) {
 	c.JSON(http.StatusOK, historyRecord)
 }
 
-
 func GetScanHistoryList(c *gin.Context, pid string) {
-    // Convert pid to ObjectID
-    pidObjID, err := primitive.ObjectIDFromHex(pid)
-    if err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid PID"})
-        return
-    }
+	// Convert pid to ObjectID
+	pidObjID, err := primitive.ObjectIDFromHex(pid)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid PID"})
+		return
+	}
 
-    // Define the fields to be returned
-    projection := bson.D{
+	// Define the fields to be returned
+	projection := bson.D{
 		{Key: "_id", Value: 1},
 		{Key: "startTime", Value: 1},
 		{Key: "endTime", Value: 1},
 		{Key: "status", Value: 1},
 	}
 
-    // Query the database to get the "history" list
-    var folder struct {
-        Project []struct {
-            PID     primitive.ObjectID `bson:"pid"`
-            History []primitive.ObjectID `bson:"history"`
-        } `bson:"project"`
-    }
+	// Query the database to get the "history" list
+	var folder struct {
+		Project []struct {
+			PID     primitive.ObjectID   `bson:"pid"`
+			History []primitive.ObjectID `bson:"history"`
+		} `bson:"project"`
+	}
 
-    err = folderCollection.FindOne(
-        context.TODO(),
-        bson.M{"project.pid": pidObjID},
-    ).Decode(&folder)
+	err = folderCollection.FindOne(
+		context.TODO(),
+		bson.M{"project.pid": pidObjID},
+	).Decode(&folder)
 
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error querying database for pid"})
-        return
-    }
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error querying database for pid"})
+		return
+	}
 
-    // Iterate over the projects and collect history IDs if pid matches
-    var historyIDs []primitive.ObjectID
-    for _, project := range folder.Project {
-        if project.PID == pidObjID {
-            historyIDs = append(historyIDs, project.History...)
-        }
-    }
+	// Iterate over the projects and collect history IDs if pid matches
+	var historyIDs []primitive.ObjectID
+	for _, project := range folder.Project {
+		if project.PID == pidObjID {
+			historyIDs = append(historyIDs, project.History...)
+		}
+	}
 
-    // Query the database for history records
-    cursor, err := scanResultsCollection.Find(
-        context.TODO(),
-        bson.M{"_id": bson.M{"$in": historyIDs}},
-        options.Find().SetProjection(projection),
-    )
-    if err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error querying database for history"})
-        return
-    }
-    defer cursor.Close(context.TODO())
+	// Query the database for history records
+	cursor, err := scanResultsCollection.Find(
+		context.TODO(),
+		bson.M{"_id": bson.M{"$in": historyIDs}},
+		options.Find().SetProjection(projection),
+	)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error querying database for history"})
+		return
+	}
+	defer cursor.Close(context.TODO())
 
-    // Iterate the cursor and decode each item into a History struct
-    var results []*HistoryEntry
+	// Iterate the cursor and decode each item into a History struct
+	var results []*HistoryEntry
 	for cursor.Next(context.TODO()) {
 		var elem HistoryEntry
 		err := cursor.Decode(&elem)
@@ -940,13 +919,11 @@ func GetScanHistoryList(c *gin.Context, pid string) {
 		results = append(results, &elem)
 	}
 
-    if err := cursor.Err(); err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "Error iterating cursor"})
-        return
-    }
+	if err := cursor.Err(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Error iterating cursor"})
+		return
+	}
 
-    // Return the results
-    c.JSON(http.StatusOK, results)
+	// Return the results
+	c.JSON(http.StatusOK, results)
 }
-
-

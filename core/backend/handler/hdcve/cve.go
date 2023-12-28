@@ -177,5 +177,9 @@ func Action_Search(request *gin.Context) {
 		request.JSON(http.StatusInternalServerError, gin.H{"error": "Error listing cve", "code": http.StatusInternalServerError, "errorCode": "1008"})
 		return
 	}
+	if result == nil {
+		request.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "result": []int{}})
+		return
+	}
 	request.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "result": result})
 }

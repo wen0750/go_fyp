@@ -68,23 +68,21 @@ func routing(router *gin.Engine) {
 	router.GET("/project/:scanResult", func(c *gin.Context) {
 		pid := c.Param("scanResult")
 		project.GetLatestScanResultSummary(c, pid)
-		log.Printf("%s",pid)
-		
+		log.Printf("%s", pid)
 	})
 
 	//Scan History List
 	router.GET("/historyList/:list", func(c *gin.Context) {
 		pid := c.Param("list")
 		project.GetScanHistoryList(c, pid)
-		log.Printf("%s",pid)
-		
+		log.Printf("%s", pid)
 	})
 
 	//select one from Scan History List
 	router.GET("/historyOne/:scanResult", func(c *gin.Context) {
 		hid := c.Param("scanResult")
 		project.GetScanResultByHistoryId(c, hid)
-		
+
 	})
 
 	router.POST("/cve/:action", func(c *gin.Context) {
@@ -118,7 +116,6 @@ func routing(router *gin.Engine) {
 			tagWordlist.Top15Tags(c)
 		case "search":
 			tagWordlist.Action_Search(c)
-		
 		}
 	})
 }

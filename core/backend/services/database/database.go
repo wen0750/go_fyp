@@ -10,7 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-var mongoURI string = "mongodb+srv://sam1916:ue6aE6jfXGtBvwS@cluster1.mrkha9f.mongodb.net/?retryWrites=true&w=majority"
+var mongoURI string = "mongodb://fyp_admin:nPg6Q6eOS4kUxgtMH2mrbmD4Gkh0Z1oa@unifi.wen0750.club:27017/FYP"
 var dbName string = "FYP"
 var collection *mongo.Collection
 
@@ -24,33 +24,33 @@ type Template struct {
 		Description string   `json:"description,omitempty"`
 		Remediation string   `json:"remediation,omitempty"`
 		Reference   []string `json:"reference,omitempty"`
-		
+
 		Classification struct {
 			CvssMetrics string  `json:"cvss-metrics,omitempty"`
 			CvssScore   float64 `json:"cvss-score,omitempty"`
 			CveID       string  `json:"cve-id,omitempty"`
 			CweID       string  `json:"cwe-id,omitempty"`
 		} `json:"classification,omitempty"`
-		
+
 		Metadata struct {
 			Verified    bool   `json:"verified,omitempty"`
 			ShodanQuery string `json:"shodan-query,omitempty"`
-			MaxRequest int `json:"max-request,omitempty"`
+			MaxRequest  int    `json:"max-request,omitempty"`
 		} `json:"metadata,omitempty"`
-		
+
 		Tags string `json:"tags,omitempty"`
 	} `json:"info,omitempty"`
 
 	Variables map[string]interface{} `json:"variables,omitempty"`
 
 	HTTP []struct {
-		Method            string `json:"method,omitempty"`
-		Path              []string `json:"path,omitempty"`
-		Raw               []string `json:"raw,omitempty"`
+		Method            string            `json:"method,omitempty"`
+		Path              []string          `json:"path,omitempty"`
+		Raw               []string          `json:"raw,omitempty"`
 		Payloads          map[string]string `json:"payloads,omitempty"`
 		Threads           int               `json:"threads,omitempty"`
-		StopAtFirstMatch  bool `json:"stop-at-first-match,omitempty"`
-		MatchersCondition string `json:"matchers-condition,omitempty"`
+		StopAtFirstMatch  bool              `json:"stop-at-first-match,omitempty"`
+		MatchersCondition string            `json:"matchers-condition,omitempty"`
 		//
 		Matchers []struct {
 			Type      string   `json:"type,omitempty"`
@@ -61,15 +61,14 @@ type Template struct {
 			Condition string   `json:"condition,omitempty"`
 			Status    []int    `json:"status,omitempty"`
 		} `json:"matchers,omitempty"`
-		
+
 		Extractors []struct {
-			Type  string   `json:"type,omitempty"`
-			Name  string   `json:"name,omitempty"`
-			Json  []string `json:"json,omitempty"`
-			Part  string   `json:"part,omitempty"`
+			Type string   `json:"type,omitempty"`
+			Name string   `json:"name,omitempty"`
+			Json []string `json:"json,omitempty"`
+			Part string   `json:"part,omitempty"`
 		} `json:"extractors,omitempty"`
 	} `json:"http,omitempty"`
-	
 }
 
 // create a template structure
