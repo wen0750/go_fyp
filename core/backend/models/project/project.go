@@ -410,52 +410,55 @@ func StartScan(c *gin.Context) {
 				log.Fatalf("Error checking file existence: %v", err)
 			}
 		}
-		cmd := exec.Command(nucleiPath, "-t", templates, "-l", hostFilePath, "-hid", id.InsertedID.(primitive.ObjectID).Hex(), "-silent", "-j", "-nc")
-		output, err := cmd.CombinedOutput()
+		exec.Command(nucleiPath, "-t", templates, "-l", hostFilePath, "-hid", id.InsertedID.(primitive.ObjectID).Hex(), "-silent", "-j", "-nc")
+		// output, err := cmd.CombinedOutput()
 
-		if err != nil {
-			log.Printf("Error running Nuclei scan: %v", err)
-		}
-		outputStr := parseNucleiOutput(string(output))
+		// if err != nil {
+		// log.Printf("Error running Nuclei scan: %v", err)
+		// }
+		// outputStr := parseNucleiOutput(string(output))
 
-		CVECount := parseCVECount(string(output))
+		// CVECount := parseCVECount(string(output))
 
-		cveCountMap["info"] = CVECount.Info
-		cveCountMap["low"] = CVECount.Low
-		cveCountMap["medium"] = CVECount.Medium
-		cveCountMap["high"] = CVECount.High
-		cveCountMap["critical"] = CVECount.Critical
+		// cveCountMap["info"] = CVECount.Info
+		// cveCountMap["low"] = CVECount.Low
+		// cveCountMap["medium"] = CVECount.Medium
+		// cveCountMap["high"] = CVECount.High
+		// cveCountMap["critical"] = CVECount.Critical
+
+		cveCountMap["info"] = 1
+		cveCountMap["low"] = 2
+		cveCountMap["medium"] = 3
+		cveCountMap["high"] = 4
+		cveCountMap["critical"] = 5
 
 		// Record the end time of the scan
-		endTime := time.Now().Unix()
+		// endTime := time.Now().Unix()
 
-		status := "Complete"
+		// status := "Complete"
 
-		if err != nil {
-			log.Printf("Error running Nuclei scan for ID %s: %s", id, err.Error())
-			status = "Failed"
-		}
+		// if err != nil {
+		// 	log.Printf("Error running Nuclei scan for ID %s: %s", id, err.Error())
+		// 	status = "Failed"
+		// }
 
 		// Parse the output to get the CVE counts
-		//cveCount := parseOutputToGetCVEs(output)  // You need to implement this function
+		// cveCount := parseOutputToGetCVEs(output)  // You need to implement this function
 
 		// Store the results in MongoDB
-		after_scan := History{
-			PID:       req.PID,   // front should pass the pid
-			StartTime: startTime, //  time stamp start
-			EndTime:   endTime,   //  time stamp end
-			Result:    outputStr,
-			Status:    status,
-			CVECount:  cveCountMap,
-		}
+		// after_scan := History{
+		// 	PID:       req.PID,   // front should pass the pid
+		// 	StartTime: startTime, //  time stamp start
+		// 	EndTime:   endTime,   //  time stamp end
+		// 	Result:    outputStr,
+		// 	Status:    status,
+		// 	CVECount:  cveCountMap,
+		// }
 
 		filter := bson.M{"_id": id.InsertedID}
 		update := bson.M{
 			"$set": bson.M{
-				"endTime":  after_scan.EndTime,
-				"result":   after_scan.Result,
-				"status":   after_scan.Status,
-				"cvecount": after_scan.CVECount,
+				"cvecount": cveCountMap,
 			},
 		}
 
