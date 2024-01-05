@@ -11,17 +11,37 @@ import (
 	"github.com/chromedp/chromedp"
 )
 
-var resourceList = []string{}
+var reqList = []string{}
+var respList = []string{}
 
-func Capture() {
-	result := GetPageResource("https://engoo.com.tw/app/materials/en https://engoo.com.tw/app/materials/en")
-
-	outout := strings.Join(result, ",")
-	outout = "[" + outout + "]"
-	fmt.Println(outout)
+type Request struct {
+	URL            string     `json:"url"`
+	Method         string     `json:"method"`
+	RequestHeaders []struct{} `json:"headers"`
+	ReferrerPolicy string     `json:"referrerPolicy"`
 }
 
-func GetPageResource(urlstr string) []string {
+type Response struct {
+	URL               string     `json:"url"`
+	Status            string     `json:"status"`
+	ResponseHeaders   []struct{} `json:"headers"`
+	MimeType          string     `json:"mimeType"`
+	RemoteIPAddress   string     `json:"remoteIPAddress"`
+	RemotePort        string     `json:"remotePort"`
+	EncodedDataLength string     `json:"encodedDataLength"`
+	ResponseTime      string     `json:"responseTime"`
+}
+
+func main() {
+	GetPageResource("https://engoo.com.tw/app/materials/en")
+	// fmt.Println(reflect.TypeOf(result[0]))
+	outout := strings.Join(reqList, ",")
+	outout = "[" + outout + "]"
+	fmt.Println(outout)
+
+}
+
+func GetPageResource(urlstr string) {
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
 		chromedp.NoDefaultBrowserCheck, //不检查默认浏览器
 		chromedp.DisableGPU,
@@ -59,19 +79,23 @@ func GetPageResource(urlstr string) []string {
 		chromedp.Navigate(urlstr),
 		chromedp.WaitVisible(`body`, chromedp.BySearch),
 	)
-	return resourceList
 }
 
 func listenUrlForNetworkEvent(ctx context.Context) {
 	chromedp.ListenTarget(ctx, func(ev interface{}) {
 		switch ev := ev.(type) {
 
+		case *network.EventRequestWillBeSent:
+			req := ev.Request
+			if len(req.Headers) != 0 {
+				b, _ := json.Marshal(req)
+				reqList = append(reqList, string(b))
+			}
 		case *network.EventResponseReceived:
 			resp := ev.Response
 			if len(resp.Headers) != 0 {
 				b, _ := json.Marshal(resp)
-
-				resourceList = append(resourceList, string(b))
+				respList = append(respList, string(b))
 			}
 		}
 	})
