@@ -411,6 +411,8 @@ func StartScan(c *gin.Context) {
 			}
 		}
 		exec.Command(nucleiPath, "-t", templates, "-l", hostFilePath, "-hid", id.InsertedID.(primitive.ObjectID).Hex(), "-silent", "-j", "-nc")
+		//fmt.Println("Command to be executed:\n", cmd.String())
+
 		// output, err := cmd.CombinedOutput()
 
 		// if err != nil {
