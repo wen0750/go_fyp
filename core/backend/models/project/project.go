@@ -382,7 +382,7 @@ func StartScan(c *gin.Context) {
 			StartTime: startTime, //  time stamp start
 			EndTime:   int64(0),  //  time stamp end
 			Result:    []string{},
-			Status:    "status",
+			Status:    "Scanning",
 			CVECount:  cveCountMap,
 		}
 		id, err := scanResultsCollection.InsertOne(context.Background(), history)
@@ -410,14 +410,11 @@ func StartScan(c *gin.Context) {
 				log.Fatalf("Error checking file existence: %v", err)
 			}
 		}
-		exec.Command(nucleiPath, "-t", templates, "-l", hostFilePath, "-hid", id.InsertedID.(primitive.ObjectID).Hex(), "-silent", "-j", "-nc")
-		//fmt.Println("Command to be executed:\n", cmd.String())
+		cmd := exec.Command(nucleiPath, "-t", templates, "-l", hostFilePath, "-hid", id.InsertedID.(primitive.ObjectID).Hex(), "-silent", "-j", "-nc")
+		fmt.Println("Command to be executed:\n", cmd.String())
 
-		// output, err := cmd.CombinedOutput()
+		cmd.Run()
 
-		// if err != nil {
-		// log.Printf("Error running Nuclei scan: %v", err)
-		// }
 		// outputStr := parseNucleiOutput(string(output))
 
 		// CVECount := parseCVECount(string(output))
@@ -477,13 +474,13 @@ func StartScan(c *gin.Context) {
 			return
 		}
 
-		filter = bson.M{"project.pid": pidObjectID, "project.history": nil}
-		update = bson.M{
-			"$set": bson.M{
-				"project.$[].history": []string{},
-			},
-		}
-		_, err = folderCollection.UpdateOne(context.Background(), filter, update)
+		//filter = bson.M{"project.pid": pidObjectID, "project.history": nil}
+		//update = bson.M{
+		//	"$set": bson.M{
+		//		"project.$[].history": []string{},
+		//	},
+		//}
+		//_, err = folderCollection.UpdateOne(context.Background(), filter, update)
 
 		filter = bson.M{"project": bson.M{"$elemMatch": bson.M{"pid": pidObjectID}}} // req.PID is the PID from FYP.History
 		update = bson.M{
@@ -500,7 +497,7 @@ func StartScan(c *gin.Context) {
 			log.Printf("UpdateOne Result: Matched Count = %v, Modified Count = %v", result.MatchedCount, result.ModifiedCount)
 		}
 
-		os.Remove(hostFilePath)
+		//os.Remove(hostFilePath)
 		for _, filename := range filenames {
 			err := os.Remove(filename)
 			if err != nil {
