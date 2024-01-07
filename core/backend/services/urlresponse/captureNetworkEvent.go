@@ -32,6 +32,11 @@ type Response struct {
 	ResponseTime      string     `json:"responseTime"`
 }
 
+type Combined struct {
+	Request  Request  `json:"request"`
+	Response Response `json:"response"`
+}
+
 func main() {
 	GetPageResource("https://engoo.com.tw/app/materials/en")
 	// fmt.Println(reflect.TypeOf(result[0]))
@@ -39,7 +44,62 @@ func main() {
 	outout = "[" + outout + "]"
 	fmt.Println(outout)
 
+	
+	combinedList, err := combineRequestResponse(reqList, respList)
+	if err != nil {
+		fmt.Println("Error combining request and response:", err)
+		return
+	}
+
+	// Print the combined list
+	for _, combinedStr := range combinedList {
+		fmt.Println(combinedStr)
+	}
 }
+
+func combineRequestResponse(reqList []string, respList []string) ([]string, error) {
+	reqMap := make(map[string]Request)
+	respMap := make(map[string]Response)
+	var combinedList []string
+
+	// Deserialize requests and map them by URL
+	for _, reqStr := range reqList {
+		var req Request
+		err := json.Unmarshal([]byte(reqStr), &req)
+		if err != nil {
+			return nil, err
+		}
+		reqMap[req.URL] = req
+	}
+
+	// Deserialize responses and map them by URL
+	for _, respStr := range respList {
+		var resp Response
+		err := json.Unmarshal([]byte(respStr), &resp)
+		if err != nil {
+			return nil, err
+		}
+		respMap[resp.URL] = resp
+	}
+
+	// Combine requests and responses based on their URL
+	for url, req := range reqMap {
+		if resp, exists := respMap[url]; exists {
+			combined := Combined{
+				Request:  req,
+				Response: resp,
+			}
+			combinedStr, err := json.Marshal(combined)
+			if err != nil {
+				return nil, err
+			}
+			combinedList = append(combinedList, string(combinedStr))
+		}
+	}
+
+	return combinedList, nil
+}
+
 
 func GetPageResource(urlstr string) {
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
