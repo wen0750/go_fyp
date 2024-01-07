@@ -15,21 +15,15 @@ var reqList = []string{}
 var respList = []string{}
 
 type Request struct {
-	URL            string     `json:"url"`
-	Method         string     `json:"method"`
-	RequestHeaders []struct{} `json:"headers"`
-	ReferrerPolicy string     `json:"referrerPolicy"`
+	URL     string            `json:"url"`
+	Method  string            `json:"method"`
+	Headers map[string]string `json:"headers"`
 }
 
 type Response struct {
-	URL               string     `json:"url"`
-	Status            string     `json:"status"`
-	ResponseHeaders   []struct{} `json:"headers"`
-	MimeType          string     `json:"mimeType"`
-	RemoteIPAddress   string     `json:"remoteIPAddress"`
-	RemotePort        string     `json:"remotePort"`
-	EncodedDataLength string     `json:"encodedDataLength"`
-	ResponseTime      string     `json:"responseTime"`
+	URL     string            `json:"url"`
+	Status  int               `json:"status"`
+	Headers map[string]string `json:"headers"`
 }
 
 type Combined struct {
@@ -37,24 +31,19 @@ type Combined struct {
 	Response Response `json:"response"`
 }
 
-func main() {
-	GetPageResource("https://engoo.com.tw/app/materials/en")
-	// fmt.Println(reflect.TypeOf(result[0]))
-	outout := strings.Join(reqList, ",")
-	outout = "[" + outout + "]"
-	fmt.Println(outout)
+func Run(url string) (string, bool) {
+	GetPageResource(url)
 
-	
 	combinedList, err := combineRequestResponse(reqList, respList)
 	if err != nil {
 		fmt.Println("Error combining request and response:", err)
-		return
+		return err.Error(), false
 	}
 
-	// Print the combined list
-	for _, combinedStr := range combinedList {
-		fmt.Println(combinedStr)
-	}
+	// fmt.Println(reflect.TypeOf(result[0]))
+	outout := strings.Join(combinedList, ",")
+	outout = "[" + outout + "]"
+	return outout, true
 }
 
 func combineRequestResponse(reqList []string, respList []string) ([]string, error) {
@@ -99,7 +88,6 @@ func combineRequestResponse(reqList []string, respList []string) ([]string, erro
 
 	return combinedList, nil
 }
-
 
 func GetPageResource(urlstr string) {
 	opts := append(chromedp.DefaultExecAllocatorOptions[:],
