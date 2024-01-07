@@ -1,88 +1,66 @@
-package main
+package urlresponse
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
-	"strings"
 	"time"
 
 	"github.com/chromedp/cdproto/network"
 	"github.com/chromedp/chromedp"
 )
 
-var reqList = []string{}
-var respList = []string{}
+var reqList = []network.Request{}
+var respList = []network.Response{}
 
-type Request struct {
-	URL     string            `json:"url"`
-	Method  string            `json:"method"`
-	Headers map[string]string `json:"headers"`
+type NetowrkItem struct {
+	URL               string                 `json:"url"`
+	Method            string                 `json:"method"`
+	Status            int64                  `json:"status"`
+	ReferrerPolicy    string                 `json:"referrerPolicy"`
+	RemoteIPAddress   string                 `json:"remoteIPAddress"`
+	RemotePort        int64                  `json:"remotePort"`
+	EncodedDataLength float64                `json:"encodedDataLength"`
+	ResponseTime      time.Time              `json:"responseTime"`
+	SecurityState     string                 `json:"securityState"`
+	ReqHeaders        map[string]interface{} `json:"reqheaders"`
+	RespHeaders       map[string]interface{} `json:"respheaders"`
 }
 
-type Response struct {
-	URL     string            `json:"url"`
-	Status  int               `json:"status"`
-	Headers map[string]string `json:"headers"`
-}
-
-type Combined struct {
-	Request  Request  `json:"request"`
-	Response Response `json:"response"`
-}
-
-func Run(url string) (string, bool) {
+func Run(url string) ([]NetowrkItem, error) {
 	GetPageResource(url)
-
-	combinedList, err := combineRequestResponse(reqList, respList)
-	if err != nil {
-		fmt.Println("Error combining request and response:", err)
-		return err.Error(), false
-	}
-
-	// fmt.Println(reflect.TypeOf(result[0]))
-	outout := strings.Join(combinedList, ",")
-	outout = "[" + outout + "]"
-	return outout, true
+	return combineRequestResponse(reqList, respList)
 }
 
-func combineRequestResponse(reqList []string, respList []string) ([]string, error) {
-	reqMap := make(map[string]Request)
-	respMap := make(map[string]Response)
-	var combinedList []string
+func combineRequestResponse(reqList []network.Request, respList []network.Response) ([]NetowrkItem, error) {
+	reqMap := make(map[string]network.Request)
+	respMap := make(map[string]network.Response)
+	combinedList := []NetowrkItem{}
 
 	// Deserialize requests and map them by URL
-	for _, reqStr := range reqList {
-		var req Request
-		err := json.Unmarshal([]byte(reqStr), &req)
-		if err != nil {
-			return nil, err
-		}
-		reqMap[req.URL] = req
+	for _, reqItem := range reqList {
+		reqMap[reqItem.URL] = reqItem
 	}
 
 	// Deserialize responses and map them by URL
-	for _, respStr := range respList {
-		var resp Response
-		err := json.Unmarshal([]byte(respStr), &resp)
-		if err != nil {
-			return nil, err
-		}
-		respMap[resp.URL] = resp
+	for _, respItem := range respList {
+		respMap[respItem.URL] = respItem
 	}
 
 	// Combine requests and responses based on their URL
 	for url, req := range reqMap {
 		if resp, exists := respMap[url]; exists {
-			combined := Combined{
-				Request:  req,
-				Response: resp,
+			combined := NetowrkItem{
+				URL:               req.URL,
+				Method:            req.Method,
+				ReqHeaders:        req.Headers,
+				Status:            resp.Status,
+				RespHeaders:       resp.Headers,
+				RemoteIPAddress:   resp.RemoteIPAddress,
+				RemotePort:        resp.RemotePort,
+				EncodedDataLength: resp.EncodedDataLength,
+				ResponseTime:      resp.ResponseTime.Time(),
+				SecurityState:     string(resp.SecurityState),
 			}
-			combinedStr, err := json.Marshal(combined)
-			if err != nil {
-				return nil, err
-			}
-			combinedList = append(combinedList, string(combinedStr))
+			combinedList = append(combinedList, combined)
 		}
 	}
 
@@ -136,14 +114,12 @@ func listenUrlForNetworkEvent(ctx context.Context) {
 		case *network.EventRequestWillBeSent:
 			req := ev.Request
 			if len(req.Headers) != 0 {
-				b, _ := json.Marshal(req)
-				reqList = append(reqList, string(b))
+				reqList = append(reqList, *req)
 			}
 		case *network.EventResponseReceived:
 			resp := ev.Response
 			if len(resp.Headers) != 0 {
-				b, _ := json.Marshal(resp)
-				respList = append(respList, string(b))
+				respList = append(respList, *resp)
 			}
 		}
 	})

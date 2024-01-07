@@ -1,7 +1,7 @@
 package hdresourcelist
 
 import (
-	"go_fyp/core/backend/handler/hdresourcelist"
+	"go_fyp/core/backend/services/urlresponse"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -32,7 +32,7 @@ func Fetch(request *gin.Context) {
 	}
 
 	// get data from database
-	result, err := hdresourcelist.Fetch(inputData.URL)
+	result, err := urlresponse.Run(inputData.URL)
 	if err != nil {
 		request.JSON(http.StatusInternalServerError, gin.H{"error": "Error listing cwe", "code": http.StatusInternalServerError, "errorCode": "1008"})
 		return

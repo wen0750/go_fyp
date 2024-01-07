@@ -15,7 +15,7 @@ require (
 	github.com/bytedance/sonic v1.10.1 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20230717121745-296ad89f973d // indirect
 	github.com/chenzhuoyu/iasm v0.9.0 // indirect
-	github.com/chromedp/cdproto v0.0.0-20231205062650-00455a960d61 // indirect
+	github.com/chromedp/cdproto v0.0.0-20240102194822-c006b26f21c7 // indirect
 	github.com/chromedp/chromedp v0.9.3 // indirect
 	github.com/chromedp/sysutil v1.0.0 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.2 // indirect
