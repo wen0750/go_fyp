@@ -382,6 +382,7 @@ export default class EditorTemplate extends React.Component {
                                 <RadioButton
                                     rootColor="Gray"
                                     value="Batteringram"
+                                    iconSize={20}
                                 >
                                     Batteringram
                                 </RadioButton>
@@ -390,14 +391,15 @@ export default class EditorTemplate extends React.Component {
                                     rootColor="Gray"
                                     value="Batteringram"
                                     disabled
+                                    iconSize={20}
                                 >
                                     Batteringram
                                 </RadioButton>
                             )}
-                            <RadioButton rootColor="Gray" value="Pitchfork">
+                            <RadioButton rootColor="Gray" value="Pitchfork" iconSize={20}>
                                 Pitchfork
                             </RadioButton>
-                            <RadioButton rootColor="Gray" value="Clusterbomb">
+                            <RadioButton rootColor="Gray" value="Clusterbomb" iconSize={20}>
                                 Clusterbomb
                             </RadioButton>
                         </RadioGroup>
@@ -435,19 +437,19 @@ export default class EditorTemplate extends React.Component {
                     ></Grid>
                     <Grid container spacing={2}>
                         <RadioGroup horizontal>
-                            <RadioButton rootColor="Gray" value="query">
+                            <RadioButton rootColor="Gray" value="query" iconSize={20}>
                                 query
                             </RadioButton>
-                            <RadioButton rootColor="Gray" value="path">
+                            <RadioButton rootColor="Gray" value="path" iconSize={20}>
                                 path
                             </RadioButton>
-                            <RadioButton rootColor="Gray" value="header">
+                            <RadioButton rootColor="Gray" value="header"iconSize={20}>
                                 header
                             </RadioButton>
-                            <RadioButton rootColor="Gray" value="body">
+                            <RadioButton rootColor="Gray" value="body" iconSize={20}>
                                 body
                             </RadioButton>
-                            <RadioButton rootColor="Gray" value="cookie">
+                            <RadioButton rootColor="Gray" value="cookie" iconSize={20}>
                                 cookie
                             </RadioButton>
                         </RadioGroup>
@@ -462,16 +464,16 @@ export default class EditorTemplate extends React.Component {
                     ></Grid>
                     <Grid container spacing={2}>
                         <RadioGroup horizontal>
-                            <RadioButton rootColor="Gray" value="replace">
+                            <RadioButton rootColor="Gray" value="replace" iconSize={20}>
                                 replace
                             </RadioButton>
-                            <RadioButton rootColor="Gray" value="prefix">
+                            <RadioButton rootColor="Gray" value="prefix" iconSize={20}>
                                 prefix
                             </RadioButton>
-                            <RadioButton rootColor="Gray" value="postfix">
+                            <RadioButton rootColor="Gray" value="postfix" iconSize={20}>
                                 postfix
                             </RadioButton>
-                            <RadioButton rootColor="Gray" value="body">
+                            <RadioButton rootColor="Gray" value="body" iconSize={20}>
                                 body
                             </RadioButton>
                         </RadioGroup>
@@ -486,10 +488,10 @@ export default class EditorTemplate extends React.Component {
                     ></Grid>
                     <Grid container spacing={2}>
                         <RadioGroup horizontal>
-                            <RadioButton rootColor="Gray" value="Multiple">
+                            <RadioButton rootColor="Gray" value="Multiple" iconSize={20}>
                                 Multiple
                             </RadioButton>
-                            <RadioButton rootColor="Gray" value="Single">
+                            <RadioButton rootColor="Gray" value="Single" iconSize={20}>
                                 Single
                             </RadioButton>
                         </RadioGroup>
@@ -510,7 +512,6 @@ export default class EditorTemplate extends React.Component {
                                     label="Fuzz"
                                     onChange={handleChange}
                                 >
-                                    <MenuItem value={0}>None</MenuItem>
                                     <MenuItem value={1}>keys</MenuItem>
                                     <MenuItem value={2}>keys-regex</MenuItem>
                                     <MenuItem value={3}>values</MenuItem>
@@ -526,11 +527,12 @@ export default class EditorTemplate extends React.Component {
         );
     };
 
+    /*
     PartMatchers = () => {
-        const [data, setData] = useState([{ fname: "", lname: "" }]);
+        const [data, setData] = useState([{ key: "", tab: "" }]);
 
         const handleClick = () => {
-            setData([...data, { fname: "", lname: "" }]);
+            setData([...data, { key: "", tab: "" }]);
         };
 
         const handleChange = (e, i) => {
@@ -565,15 +567,15 @@ export default class EditorTemplate extends React.Component {
                                             id="Key"
                                             label="key "
                                             variant="outlined"
-                                            lname="fname"
-                                            value={val.fname}
+                                            lname="key"
+                                            value={val.tab}
                                             onChange={(e) => handleChange(e, i)}
                                         />
                                     </Grid>
                                     <Grid item xs={7}>
                                         <this.MyComponent
-                                            name="lname"
-                                            value={val.lname}
+                                            name="key"
+                                            value={val.tab}
                                             onChange={(e) => handleChange(e, i)}
                                         />
                                     </Grid>
@@ -598,6 +600,69 @@ export default class EditorTemplate extends React.Component {
                         ))}
                         <Button onClick={handleClick}>Add</Button>
                     </div>
+                </CardContent>
+            </Card>
+        );
+    }; */
+
+    PartMatchers = () => {
+        
+
+        return (
+            <Card sx={{ my: 2 }}>
+                <CardHeader title="Matchers-condition" />
+                <hr />
+                <CardContent>
+                    <Grid
+                        container="container"
+                        spacing={2}
+                        columns={{ xs: 4, sm: 8, md: 12 }}
+                    ></Grid>
+                        <Grid container spacing={3}>
+                            <Grid item xs={4}>
+                                    <RadioGroup horizontal>
+                                        <RadioButton  rootColor="Gray" value="OR" iconSize={20}>
+                                            OR
+                                        </RadioButton>
+                                        <RadioButton  rootColor="Gray" value="AND" iconSize={20}>
+                                            AMD
+                                        </RadioButton>
+                                    </RadioGroup>
+                            </Grid>
+                        </Grid>
+                        <CardHeader title="Matchers" />
+                        <CardContent>
+                            <Grid
+                                container="container"
+                                spacing={2}
+                                columns={{ xs: 4, sm: 8, md: 12 }}
+                            ></Grid>
+                            <Grid container spacing={2}>
+                                <RadioGroup horizontal>
+                                    <RadioButton rootColor="Gray" value="status" iconSize={20}>
+                                        status
+                                    </RadioButton>
+                                    <RadioButton rootColor="Gray" value="size" iconSize={20}>
+                                        size
+                                    </RadioButton>
+                                    <RadioButton rootColor="Gray" value="word" iconSize={20}>
+                                        word
+                                    </RadioButton>
+                                    <RadioButton rootColor="Gray" value="regex" iconSize={20}>
+                                        regex
+                                    </RadioButton>
+                                    <RadioButton rootColor="Gray" value="binary" iconSize={20}>
+                                        binary
+                                    </RadioButton>
+                                    <RadioButton rootColor="Gray" value="dsl" iconSize={20}>
+                                        dsl
+                                    </RadioButton>
+                                    <RadioButton rootColor="Gray" value="xpath" iconSize={20}>
+                                        xpath
+                                    </RadioButton>
+                                </RadioGroup>
+                            </Grid>
+                        </CardContent>
                 </CardContent>
             </Card>
         );
