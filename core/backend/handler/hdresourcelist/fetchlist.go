@@ -32,7 +32,7 @@ func Fetch(request *gin.Context) {
 	}
 
 	// get data from database
-	result, err := urlresponse.Run(inputData.URL)
+	result, htmlbody, err := urlresponse.Run(inputData.URL)
 	if err != nil {
 		request.JSON(http.StatusInternalServerError, gin.H{"error": "Error listing cwe", "code": http.StatusInternalServerError, "errorCode": "1008"})
 		return
@@ -41,5 +41,5 @@ func Fetch(request *gin.Context) {
 		request.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "result": []int{}})
 		return
 	}
-	request.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "result": result})
+	request.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "result": result, "body": htmlbody})
 }

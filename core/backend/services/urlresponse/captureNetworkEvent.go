@@ -2,6 +2,7 @@ package urlresponse
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/chromedp/cdproto/network"
@@ -10,6 +11,7 @@ import (
 
 var reqList = []network.Request{}
 var respList = []network.Response{}
+var respBody = ""
 
 type NetowrkItem struct {
 	URL               string                 `json:"url"`
@@ -25,12 +27,12 @@ type NetowrkItem struct {
 	RespHeaders       map[string]interface{} `json:"respheaders"`
 }
 
-func Run(url string) ([]NetowrkItem, error) {
+func Run(url string) ([]NetowrkItem, string, error) {
 	GetPageResource(url)
 	return combineRequestResponse(reqList, respList)
 }
 
-func combineRequestResponse(reqList []network.Request, respList []network.Response) ([]NetowrkItem, error) {
+func combineRequestResponse(reqList []network.Request, respList []network.Response) ([]NetowrkItem, string, error) {
 	reqMap := make(map[string]network.Request)
 	respMap := make(map[string]network.Response)
 	combinedList := []NetowrkItem{}
@@ -64,7 +66,7 @@ func combineRequestResponse(reqList []network.Request, respList []network.Respon
 		}
 	}
 
-	return combinedList, nil
+	return combinedList, respBody, nil
 }
 
 func GetPageResource(urlstr string) {
@@ -120,6 +122,20 @@ func listenUrlForNetworkEvent(ctx context.Context) {
 			resp := ev.Response
 			if len(resp.Headers) != 0 {
 				respList = append(respList, *resp)
+			}
+		case *network.EventLoadingFinished:
+			if respBody == "" {
+				go func() {
+					_ = chromedp.Run(ctx, chromedp.ActionFunc(func(ctx context.Context) error {
+						htmlbody, err := network.GetResponseBody(ev.RequestID).Do(ctx)
+						if err != nil {
+							fmt.Println(err)
+						} else {
+							respBody = string(htmlbody)
+						}
+						return nil
+					}))
+				}()
 			}
 		}
 	})
