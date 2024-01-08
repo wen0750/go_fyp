@@ -42,6 +42,22 @@ export default class EditorTemplate extends React.Component {
             responseViwerType: 1,
         };
 
+        this.inputhandler = (event,key) => {
+            // the key will like url / playload / tag / cve / etc...
+            newdata= this.props.data
+            newdata[key] = event.target.value
+            this.props.dataChange(newdata)
+        }
+
+        this.tag_inputhandler = (newdata,key) => {
+            // the key will like url / playload / tag / cve / etc...
+            newdata= this.props.data
+            newdata[key] = newdata
+            this.props.dataChange(newdata)
+        }
+
+        this.props.dataChange 
+
         const ITEM_HEIGHT = 40;
         const ITEM_PADDING_TOP = 8;
 
@@ -50,6 +66,7 @@ export default class EditorTemplate extends React.Component {
 
             const handleChange = (newChips) => {
                 setChips(newChips);
+                this.tag_inputhandler(newChips)
             };
 
             return <MuiChipsInput value={chips} onChange={handleChange} />;
@@ -85,6 +102,8 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
+                
+                
             },
             {
                 key: 1,
@@ -187,6 +206,7 @@ export default class EditorTemplate extends React.Component {
         ];
     }
 
+
     PartInformation = () => {
         return (
             <Card sx={{ my: 2 }}>
@@ -201,6 +221,7 @@ export default class EditorTemplate extends React.Component {
                         <FormTableFormat
                             catalog="information"
                             opts={this.infomationList}
+                            
                         ></FormTableFormat>
                     </Grid>
                 </CardContent>
