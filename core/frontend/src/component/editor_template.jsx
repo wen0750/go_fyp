@@ -31,6 +31,7 @@ import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
 import { ThirtyFpsSelect } from "@mui/icons-material";
+import { Form } from "react-router-dom";
 
 export default class EditorTemplate extends React.Component {
     constructor(props) {
@@ -102,7 +103,6 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
-                
                 
             },
             {
@@ -204,8 +204,172 @@ export default class EditorTemplate extends React.Component {
                 removable: false,
             },
         ];
+        this.Type_Status = [
+            {
+                key: 0,
+                label: "Status",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 1,
+                label: "Status",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 2,
+                label: "Status:",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+        ];
+        this.Type_size = [
+            {
+                key: 0,
+                label: "Status",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 1,
+                label: "Status",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 2,
+                label: "Status:",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+        ];
+        this.Type_word = [
+            {
+                key: 0,
+                label: "Status",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 1,
+                label: "Status",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 2,
+                label: "Status:",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+        ];
+        this.Type_regex = [
+            {
+                key: 0,
+                label: "Status",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 1,
+                label: "Status",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 2,
+                label: "Status:",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+        ];
+        this.Type_binary = [
+            {
+                key: 0,
+                label: "Status",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 1,
+                label: "Status",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 2,
+                label: "Status:",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+        ];
+        this.Type_dsl = [
+            {
+                key: 0,
+                label: "Status",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 1,
+                label: "Status",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 2,
+                label: "Status:",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+        ];
+        this.Type_xpath = [
+            {
+                key: 0,
+                label: "Status",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 1,
+                label: "Status",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+            {
+                key: 2,
+                label: "Status:",
+                type: "TextField",
+                visible: true,
+                removable: false,
+            },
+        ]
     }
 
+    left_Matchers_Type_Change = (event, newValue) => {
+        this.setState({ responseType: newValue });
+    };
 
     PartInformation = () => {
         return (
@@ -270,6 +434,8 @@ export default class EditorTemplate extends React.Component {
     left_ResponseViwer_Type_Change = (event, newValue) => {
         this.setState({ responseType: newValue });
     };
+
+    
 
     PartOptions = () => {
         return (
@@ -627,7 +793,24 @@ export default class EditorTemplate extends React.Component {
     }; */
 
     PartMatchers = () => {
-        
+        const [data, setData] = useState([{ key: "", tab: "" }]);
+
+        const handleClick = () => {
+            setData([...data, { key: "", tab: "" }]);
+        };
+
+        const handleChange = (e, i) => {
+            const { name, value } = e.target;
+            const onchangeVal = [...data];
+            onchangeVal[i][name] = value;
+            setData(onchangeVal);
+        };
+
+        const handleDelete = (i) => {
+            const deleteVal = [...data];
+            deleteVal.splice(i, 1);
+            setData(deleteVal);
+        };
 
         return (
             <Card sx={{ my: 2 }}>
@@ -635,59 +818,171 @@ export default class EditorTemplate extends React.Component {
                 <hr />
                 <CardContent>
                     <Grid
-                        container="container"
                         spacing={2}
                         columns={{ xs: 4, sm: 8, md: 12 }}
-                    ></Grid>
-                        <Grid container spacing={3}>
-                            <Grid item xs={4}>
-                                    <RadioGroup horizontal>
-                                        <RadioButton  rootColor="Gray" value="OR" iconSize={20}>
-                                            OR
-                                        </RadioButton>
-                                        <RadioButton  rootColor="Gray" value="AND" iconSize={20}>
-                                            AMD
-                                        </RadioButton>
-                                    </RadioGroup>
-                            </Grid>
+                    >
+                        <Grid container rowspacing={3}>
+                            <RadioGroup horizontal>
+                                <RadioButton  rootColor="Gray" value="Multiple" iconSize={20}>
+                                    and
+                                </RadioButton>
+                                <RadioButton  rootColor="Gray" value="Single" iconSize={20}>
+                                    or
+                                </RadioButton>
+                            </RadioGroup>
                         </Grid>
-                        <CardHeader title="Matchers" />
-                        <CardContent>
-                            <Grid
-                                container="container"
-                                spacing={2}
-                                columns={{ xs: 4, sm: 8, md: 12 }}
-                            ></Grid>
-                            <Grid container spacing={2}>
-                                <RadioGroup horizontal>
-                                    <RadioButton rootColor="Gray" value="status" iconSize={20}>
-                                        status
-                                    </RadioButton>
-                                    <RadioButton rootColor="Gray" value="size" iconSize={20}>
-                                        size
-                                    </RadioButton>
-                                    <RadioButton rootColor="Gray" value="word" iconSize={20}>
-                                        word
-                                    </RadioButton>
-                                    <RadioButton rootColor="Gray" value="regex" iconSize={20}>
-                                        regex
-                                    </RadioButton>
-                                    <RadioButton rootColor="Gray" value="binary" iconSize={20}>
-                                        binary
-                                    </RadioButton>
-                                    <RadioButton rootColor="Gray" value="dsl" iconSize={20}>
-                                        dsl
-                                    </RadioButton>
-                                    <RadioButton rootColor="Gray" value="xpath" iconSize={20}>
-                                        xpath
-                                    </RadioButton>
-                                </RadioGroup>
-                            </Grid>
-                        </CardContent>
+                        <Grid>
+                        <TabContext value={this.state.responseType}>
+                            <Box
+                                sx={{ borderBottom: 1, borderColor: "divider" }}
+                            >
+                                <TabList
+                                    onChange={
+                                        this.left_Matchers_Type_Change
+                                    }
+                                >
+                                    <Tab label="status" value="1" />
+                                    <Tab label="size" value="2" />
+                                    <Tab label="word" value="3" />
+                                    <Tab label="regex" value="4" />
+                                    <Tab label="binary" value="5" />
+                                    <Tab label="dsl" value="6" />
+                                    <Tab label="xpath" value="7" />
+                                </TabList>
+                            </Box>
+                            <TabPanel value="1">
+                                <FormTableFormat
+                                    catalog="Options"
+                                    opts={this.Type_Status}
+                                ></FormTableFormat>
+                            </TabPanel>
+                            <TabPanel value="2">
+                                <CardContent>
+                                    <Grid
+                                        container="container"
+                                        spacing={2}
+                                        columns={{ xs: 4, sm: 8, md: 12 }}
+                                    ></Grid>
+                                    <div className="App">
+                                        {data.map((val, i) => (
+                                            <div>
+                                                <Grid container spacing={3}>
+                                                    <Grid item xs={4}>
+                                                        <TextField
+                                                            id="Key"
+                                                            label="key "
+                                                            variant="outlined"
+                                                            lname="fname"
+                                                            value={val.fname}
+                                                            onChange={(e) => handleChange(e, i)}
+                                                        />
+                                                    </Grid>
+                                                    <Grid item xs={7}>
+                                                        <this.MyComponent
+                                                            name="tab"
+                                                            value={val.lname}
+                                                            onChange={(e) => handleChange(e, i)}
+                                                        />
+                                                    </Grid>
+                                                    <Grid item xs={1}>
+                                                        <IconButton
+                                                            aria-label="delete"
+                                                            size="large"
+                                                            onClick={() => handleDelete(i)}
+                                                        >
+                                                            <DeleteIcon />
+                                                        </IconButton>
+                                                    </Grid>
+                                                </Grid>
+                                                <CardContent>
+                                                    <Grid
+                                                        container="container"
+                                                        spacing={2}
+                                                        columns={{ xs: 4, sm: 8, md: 12 }}
+                                                    ></Grid>
+                                                </CardContent>
+                                            </div>
+                                        ))}
+                                        <Button
+                                            variant="outlined"
+                                            onClick={handleClick}
+                                            startIcon={<AddIcon />}
+                                        >
+                                            Add Key
+                                        </Button>
+                                    </div>
+                                </CardContent>
+                            </TabPanel>
+                            <TabPanel value="3">
+                                <Grid container spacing={3}>
+                                <Grid item xs={2}>
+                                        <RadioGroup horizontal   >
+                                            <RadioButton rootColor="Gray" value="OR" iconSize={20}>
+                                                or
+                                            </RadioButton>
+                                            <RadioButton rootColor="Gray" value="AMD" iconSize={20}>
+                                                and
+                                            </RadioButton>
+                                        </RadioGroup>
+                                </Grid>
+                                </Grid>
+                            </TabPanel>
+                            <TabPanel value="4">
+
+
+                            </TabPanel>
+                                        
+
+                            
+                            
+                        </TabContext>
+                        </Grid>
+                    </Grid>
                 </CardContent>
             </Card>
         );
     };
+
+    /*
+    PartOptions = () => {
+        return (
+            <Card sx={{ my: 2 }}>
+                <CardHeader title="Options" />
+                <hr />
+                <CardContent>
+                    <div className="horizontal-line"></div>
+                    <Grid spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
+                        <TabContext value={this.state.responseType}>
+                            <Box
+                                sx={{ borderBottom: 1, borderColor: "divider" }}
+                            >
+                                <TabList
+                                    onChange={
+                                        this.left_ResponseViwer_Type_Change
+                                    }
+                                >
+                                    <Tab label="Base HTTP" value="1" />
+                                    <Tab label="Raw" value="2" />
+                                </TabList>
+                            </Box>
+                            <TabPanel value="1">
+                                <FormTableFormat
+                                    catalog="Options"
+                                    opts={this.httpinfoOptionList}
+                                ></FormTableFormat>
+                            </TabPanel>
+                            <TabPanel value="2">
+                                <FormTableFormat
+                                    catalog="options"
+                                    opts={this.RawinfoOptionList}
+                                ></FormTableFormat>
+                            </TabPanel>
+                        </TabContext>
+                    </Grid>
+                </CardContent>
+            </Card>
+        );
+    };*/
 
     // Respone View
     // fatch data
