@@ -59,6 +59,12 @@ export function Table({ columns, data, setData }) {
         setActiveId(null);
     }
 
+    function handleDataInput(id, key, targetValue) {
+        const sdata = data;
+        sdata[id][key] = targetValue;
+        setData(sdata);
+    }
+
     function handleDragCancel() {
         setActiveId(null);
     }
@@ -105,6 +111,7 @@ export function Table({ columns, data, setData }) {
                                 <DraggableTableRow
                                     key={row.original.id}
                                     row={row}
+                                    dataInput={handleDataInput}
                                 />
                             );
                         })}

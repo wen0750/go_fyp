@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/cdproto/network"
 	"github.com/chromedp/chromedp"
 )
@@ -14,20 +15,23 @@ var respList = []network.Response{}
 var respBody = ""
 
 type NetowrkItem struct {
-	URL               string                 `json:"url"`
-	Method            string                 `json:"method"`
-	Status            int64                  `json:"status"`
-	ReferrerPolicy    string                 `json:"referrerPolicy"`
-	RemoteIPAddress   string                 `json:"remoteIPAddress"`
-	RemotePort        int64                  `json:"remotePort"`
-	EncodedDataLength float64                `json:"encodedDataLength"`
-	ResponseTime      time.Time              `json:"responseTime"`
-	SecurityState     string                 `json:"securityState"`
-	ReqHeaders        map[string]interface{} `json:"reqheaders"`
-	RespHeaders       map[string]interface{} `json:"respheaders"`
+	URL               string                   `json:"url"`
+	Method            string                   `json:"method"`
+	Status            int64                    `json:"status"`
+	ReferrerPolicy    string                   `json:"referrerPolicy"`
+	RemoteIPAddress   string                   `json:"remoteIPAddress"`
+	RemotePort        int64                    `json:"remotePort"`
+	EncodedDataLength float64                  `json:"encodedDataLength"`
+	ResponseTime      *cdp.TimeSinceEpochMilli `json:"responseTime"`
+	SecurityState     string                   `json:"securityState"`
+	ReqHeaders        map[string]interface{}   `json:"reqheaders"`
+	RespHeaders       map[string]interface{}   `json:"respheaders"`
 }
 
 func Run(url string) ([]NetowrkItem, string, error) {
+	reqList = []network.Request{}
+	respList = []network.Response{}
+	respBody = ""
 	GetPageResource(url)
 	return combineRequestResponse(reqList, respList)
 }
@@ -59,7 +63,7 @@ func combineRequestResponse(reqList []network.Request, respList []network.Respon
 				RemoteIPAddress:   resp.RemoteIPAddress,
 				RemotePort:        resp.RemotePort,
 				EncodedDataLength: resp.EncodedDataLength,
-				ResponseTime:      resp.ResponseTime.Time(),
+				ResponseTime:      resp.ResponseTime,
 				SecurityState:     string(resp.SecurityState),
 			}
 			combinedList = append(combinedList, combined)

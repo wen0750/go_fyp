@@ -24,7 +24,10 @@ export const StaticTableRow = ({ row }) => {
                     return (
                         <StyledStaticData {...cell.getCellProps()}>
                             <DragHandle isDragging />
-                            <input type="checkbox" checked={cell.value} />
+                            <input
+                                type="checkbox"
+                                defaultChecked={cell.value}
+                            />
                         </StyledStaticData>
                     );
                 }

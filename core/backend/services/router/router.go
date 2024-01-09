@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	cve "go_fyp/core/backend/handler/hdcve"
+	fetchResourceList "go_fyp/core/backend/handler/hdresourcelist"
 	"go_fyp/core/backend/models/editor"
 	"go_fyp/core/backend/models/folder"
 	"go_fyp/core/backend/models/project"
@@ -116,6 +117,14 @@ func routing(router *gin.Engine) {
 			tagWordlist.Top15Tags(c)
 		case "search":
 			tagWordlist.Action_Search(c)
+		}
+	})
+
+	router.POST("/pageresponse/:action", func(c *gin.Context) {
+		action := c.Param("action")
+		switch action {
+		case "capture":
+			fetchResourceList.Fetch(c)
 		}
 	})
 }
