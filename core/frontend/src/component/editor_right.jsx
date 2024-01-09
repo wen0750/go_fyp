@@ -24,13 +24,15 @@ import SendIcon from "@mui/icons-material/Send";
 import "../assets/css/editor_top_right.css";
 import Dnd_Table from "./dnd_table/Test";
 import { html_beautify } from "js-beautify";
+import globeVar from "../../GlobalVar";
 
 export default class Editor_Right extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            httpmethod: "GET",
+            reqHttpMethod: "GET",
+            reqURL: "",
             responseViwerType: "1",
             requestTabsType: "1",
             TableData: [
@@ -43,6 +45,7 @@ export default class Editor_Right extends React.Component {
                 { id: "row-2", key: "password", value: "ppppp", status: true },
             ],
             fetchDataActiveID: null,
+            tmpdata: false,
         };
 
         this.TableCol = [
@@ -139,18 +142,23 @@ export default class Editor_Right extends React.Component {
 
     // Top Part
     handleRequestMethodChange = (method) => {
-        if (method.target.value != this.state.httpmethod) {
+        if (method.target.value != this.state.reqHttpMethod) {
             console.log();
             this.setState({
-                httpmethod: method.target.value,
+                reqHttpMethod: method.target.value,
             });
         }
+    };
+    handleURLChange = (event) => {
+        this.setState({
+            reqURL: event.target.value,
+        });
     };
     selectRequestMethod = () => {
         return (
             <Select
                 sx={{ borderRadius: "4px 0 0 4px", minWidth: 120 }}
-                value={this.state.httpmethod}
+                value={this.state.reqHttpMethod}
                 onChange={this.handleRequestMethodChange}
                 displayEmpty
                 inputProps={{ "aria-label": "Without label" }}
@@ -222,6 +230,7 @@ export default class Editor_Right extends React.Component {
             }
             &:last-child {
                 width: 170px;
+                max-width: 220px;
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
@@ -240,12 +249,15 @@ export default class Editor_Right extends React.Component {
                     </tr>
                 </thead>
                 <tbody>
-                    {[0, 4, 1, 2, 3].map((cell, j) => (
-                        <tr>
-                            <Td>{j}</Td>
-                            <Td onClick={() => changeSelectData(j)}>{cell}</Td>
-                        </tr>
-                    ))}
+                    {this.state.tmpdata &&
+                        this.state.tmpResourceList.map((cell, j) => (
+                            <tr>
+                                <Td>{j}</Td>
+                                <Td onClick={() => changeSelectData(j)}>
+                                    {cell.url.split("/").at(-1)}
+                                </Td>
+                            </tr>
+                        ))}
                 </tbody>
             </STable>
         );
@@ -288,11 +300,21 @@ export default class Editor_Right extends React.Component {
     fetchData = async () => {
         try {
             const response = await fetch(
-                "https://www.npmjs.com/package/react-syntax-highlighter"
+                `${globeVar.backendprotocol}://${globeVar.backendhost}/pageresponse/capture`,
+                {
+                    method: "POST",
+                    body: JSON.stringify({
+                        url: this.state.reqURL,
+                    }),
+                }
             );
-            const jsonData = await response.text();
+            const jsonData = await response.json();
 
-            this.setState({ tmpdata: jsonData });
+            this.setState({
+                tmpHTMLBody: jsonData.body,
+                tmpResourceList: jsonData.result,
+                tmpdata: true,
+            });
         } catch (error) {
             console.error("Error fetching data:", error);
         }
@@ -311,7 +333,7 @@ export default class Editor_Right extends React.Component {
     };
 
     render() {
-        console.log(html_beautify(this.state.tmpdata));
+        console.log(html_beautify(this.state.tmpHTMLBody));
         return (
             <div>
                 <Box
@@ -332,14 +354,15 @@ export default class Editor_Right extends React.Component {
                         <TextField
                             fullWidth
                             label="URL ( https://example.com )"
-                            id="fullWidth"
                             sx={{ borderRadius: "0", minWidth: 120 }}
+                            onChange={this.handleURLChange}
                         />
                         <Button
                             variant="contained"
                             endIcon={<SendIcon />}
                             sx={{ borderRadius: "0 4px 4px 0", height: "56px" }}
                             size="large"
+                            onClick={this.fetchData}
                         >
                             Send
                         </Button>
@@ -371,7 +394,6 @@ export default class Editor_Right extends React.Component {
                         <TabPanel value="4">Item </TabPanel>
                     </TabContext>
                 </Box>
-
                 <TabContext value={this.state.responseViwerType}>
                     <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
                         <TabList
@@ -391,7 +413,7 @@ export default class Editor_Right extends React.Component {
                             overflow: "scroll",
                         }}
                     >
-                        {html_beautify(this.state.tmpdata)}
+                        {html_beautify(this.state.tmpHTMLBody)}
                     </TabPanel>
                     <TabPanel
                         value="2"
@@ -404,12 +426,11 @@ export default class Editor_Right extends React.Component {
                     >
                         <div
                             dangerouslySetInnerHTML={{
-                                __html: this.state.tmpdata,
+                                __html: this.state.tmpHTMLBody,
                             }}
                         ></div>
                     </TabPanel>
                 </TabContext>
-
                 <Grid container spacing={2} sx={{ paddingRight: "5px" }}>
                     <Grid item xs={4}>
                         <this.FetchDataTable
