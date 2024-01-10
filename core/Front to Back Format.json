@@ -1,0 +1,84 @@
+{
+    "id": "dbgate-unauth-rce",
+    "info": {
+        "name": "",
+        "author": "",
+        "severity": "",
+        "description": "",
+        "reference": [""],
+        "classification": {
+            "cvss-metrics": "",
+            "cvss-score": 9.8,
+            "cwe-id": ""
+        },
+        "metadata": {
+            "verified": true,
+            "max-request": 1,
+            "shodan-query": "",
+            "fofa-query": "",
+            "google-query": ""
+        },
+        "tags": []
+    },
+
+    "self-contained": true,
+    "http": {
+        "method": "",
+        "path": [""],
+        "headers": {
+            "Accept": "",
+            "Accept-Language": "",
+            "Accept-Encoding": ""
+        },
+
+        "payloads": [],
+        "iterate-all": true,
+        "stop-at-first-match": true,
+        "host-redirects": true,
+        "max-redirects": 1,
+        "unsafe": true,
+
+        "matchers-condition": "and",
+        "matchers": [
+            {
+                "type": "dsl",
+                "dsl": [
+                    "status_code == 200",
+                    "contains(body, '\"runid\"')",
+                    "contains(interactsh_protocol, \"dns\")"
+                ],
+                "condition": "and"
+            },
+            {
+                "type": "word",
+                "part": "host",
+                "name": "airee",
+                "negative": true,
+                "case-insensitive": true,
+                "condition": "and",
+                "words": [
+                    "Oops.</h2><p class=\"text-muted text-tight\">The page you're looking for doesn't exist."
+                ]
+            },
+            {
+                "type": "status",
+                "status": ["404"]
+            }
+        ]
+    },
+    "extractors": [
+        {
+            "type": "regex",
+            "part": "body",
+            "group": 1,
+            "regex": ["<li>BucketName: (.*?)</li>"]
+        },
+        {
+            "type": "json",
+            "part": "body",
+            "name": "path",
+            "json": [".[]"],
+            "internal": true
+        }
+    ]
+}
