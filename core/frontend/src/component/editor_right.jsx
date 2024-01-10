@@ -26,6 +26,91 @@ import Dnd_Table from "./dnd_table/Test";
 import { html_beautify } from "js-beautify";
 import globeVar from "../../GlobalVar";
 
+const STable = styled.table`
+    border-collapse: collapse;
+    width: 100%;
+`;
+const Td = styled.td`
+    padding: 5px;
+    border: 2px solid #000;
+
+    &:first-child {
+        user-select: none;
+        text-align: center;
+        width: 18px;
+        height: 30px;
+    }
+    tr:nth-child(even) &:first-child {
+        background-color: #4c8bf5;
+        color: #fff;
+    }
+    tr:nth-child(odd) &:first-child {
+        background-color: #54a08d;
+        color: #fff;
+    }
+    &:last-child {
+        width: 170px;
+        max-width: 170px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+`;
+const Th = styled.th`
+    padding: 5px;
+    border: 2px solid #000;
+`;
+
+const dnd_TableStyles = styled.div`
+    table {
+        border-spacing: 0;
+        border: 1px solid black;
+
+        tr {
+            :last-child {
+                td {
+                    border-bottom: 0;
+                }
+            }
+        }
+
+        th,
+        td {
+            margin: 0;
+            padding: 0.5rem;
+            border-bottom: 1px solid black;
+            border-right: 1px solid black;
+
+            :last-child {
+                border-right: 0;
+            }
+        }
+    }
+`;
+
+const FetchDataList = styled.table`
+    table {
+        border-collapse: collapse;
+    }
+    table td,
+    table th {
+        padding: 5px;
+        border: 2px solid #000;
+    }
+    table td:first-child {
+        text-align: center;
+        width: 18px;
+        height: 30px;
+    }
+    table tr:nth-child(even) td:first-child {
+        background-color: #4c8bf5;
+        color: #fff;
+    }
+    table tr:nth-child(odd) td:first-child {
+        background-color: #54a08d;
+        color: #fff;
+    }
+`;
+
 export default class Editor_Right extends React.Component {
     constructor(props) {
         super(props);
@@ -46,98 +131,22 @@ export default class Editor_Right extends React.Component {
             ],
             fetchDataActiveID: null,
             tmpdata: false,
+            yrow1: [],
+            yrow2: [],
+            yrow3: [],
+            ycolumns: [
+                {
+                    field: "key",
+                    headerName: "First name",
+                    width: 150,
+                },
+                {
+                    field: "value",
+                    headerName: "Last name",
+                    width: 300,
+                },
+            ],
         };
-
-        this.TableCol = [
-            {
-                Header: "",
-                accessor: "status",
-            },
-            {
-                Header: "Key",
-                accessor: "key",
-            },
-            {
-                Header: "Value",
-                accessor: "value",
-            },
-        ];
-
-        this.ycolumns = [
-            {
-                field: "firstName",
-                headerName: "First name",
-                width: 150,
-            },
-            {
-                field: "lastName",
-                headerName: "Last name",
-                width: 150,
-            },
-        ];
-
-        this.yrows = [
-            { id: 1, lastName: "Snow", firstName: "Jon", age: 14 },
-            { id: 2, lastName: "Lannister", firstName: "Cersei", age: 31 },
-            { id: 3, lastName: "Lannister", firstName: "Jaime", age: 31 },
-            { id: 4, lastName: "Stark", firstName: "Arya", age: 11 },
-            { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-            { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-            { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-            { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-            { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-        ];
-
-        this.dnd_TableStyles = styled.div`
-            table {
-                border-spacing: 0;
-                border: 1px solid black;
-
-                tr {
-                    :last-child {
-                        td {
-                            border-bottom: 0;
-                        }
-                    }
-                }
-
-                th,
-                td {
-                    margin: 0;
-                    padding: 0.5rem;
-                    border-bottom: 1px solid black;
-                    border-right: 1px solid black;
-
-                    :last-child {
-                        border-right: 0;
-                    }
-                }
-            }
-        `;
-
-        this.FetchDataList = styled.table`
-            table {
-                border-collapse: collapse;
-            }
-            table td,
-            table th {
-                padding: 5px;
-                border: 2px solid #000;
-            }
-            table td:first-child {
-                text-align: center;
-                width: 18px;
-                height: 30px;
-            }
-            table tr:nth-child(even) td:first-child {
-                background-color: #4c8bf5;
-                color: #fff;
-            }
-            table tr:nth-child(odd) td:first-child {
-                background-color: #54a08d;
-                color: #fff;
-            }
-        `;
     }
 
     // Top Part
@@ -202,44 +211,72 @@ export default class Editor_Right extends React.Component {
         );
     };
     FetchDataTableClickHandler = (newID) => {
-        console.log(newID);
-        // this.setState({ fetchDataActiveID: newID });
+        let data = this.state.tmpResourceList[newID];
+
+        // General
+        const fmdataGeneral = [
+            {
+                id: 1,
+                key: "Request URL",
+                value: data.url,
+            },
+            {
+                id: 2,
+                key: "Request Method",
+                value: data.method,
+            },
+            {
+                id: 3,
+                key: "Status Code",
+                value: data.status,
+            },
+            {
+                id: 4,
+                key: "Remote Address",
+                value: data.remoteIPAddress,
+            },
+            {
+                id: 5,
+                key: "Remote Port",
+                value: data.remotePort,
+            },
+            { id: 6, key: "Referrer Policy", value: data.referrerPolicy },
+            {
+                id: 7,
+                key: "Encoded Data Length",
+                value: data.encodedDataLength,
+            },
+        ];
+
+        // Response Headers
+        const fmdataReqHeader = [];
+        Object.keys(data.reqheaders).forEach((element, index) => {
+            console.log(element, index);
+            fmdataReqHeader.push({
+                id: index,
+                key: element,
+                value: data.reqheaders[element],
+            });
+        });
+
+        // Request Headers
+        const fmdataRespHeader = [];
+        Object.keys(data.respheaders).forEach((element, index) => {
+            console.log(element, index);
+            fmdataRespHeader.push({
+                id: index,
+                key: element,
+                value: data.respheaders[element],
+            });
+        });
+
+        this.setState({
+            yrow1: fmdataGeneral,
+            yrow2: fmdataReqHeader,
+            yrow3: fmdataRespHeader,
+        });
     };
     FetchDataTable = ({ changeSelectData }) => {
-        const STable = styled.table`
-            border-collapse: collapse;
-            width: 100%;
-        `;
-        const Td = styled.td`
-            padding: 5px;
-            border: 2px solid #000;
-
-            &:first-child {
-                user-select: none;
-                text-align: center;
-                width: 18px;
-                height: 30px;
-            }
-            tr:nth-child(even) &:first-child {
-                background-color: #4c8bf5;
-                color: #fff;
-            }
-            tr:nth-child(odd) &:first-child {
-                background-color: #54a08d;
-                color: #fff;
-            }
-            &:last-child {
-                width: 170px;
-                max-width: 220px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-        `;
-        const Th = styled.th`
-            padding: 5px;
-            border: 2px solid #000;
-        `;
-
         return (
             <STable>
                 <thead>
@@ -252,9 +289,19 @@ export default class Editor_Right extends React.Component {
                     {this.state.tmpdata &&
                         this.state.tmpResourceList.map((cell, j) => (
                             <tr>
-                                <Td>{j}</Td>
+                                <Td>{j + 1}</Td>
                                 <Td onClick={() => changeSelectData(j)}>
-                                    {cell.url.split("/").at(-1)}
+                                    {cell.url.split("/").at(-1) != ""
+                                        ? cell.url
+                                              .split("/")
+                                              .at(-1)
+                                              .split("?")
+                                              .at(0)
+                                        : cell.url
+                                              .split("/")
+                                              .at(-2)
+                                              .split("?")
+                                              .at(0)}
                                 </Td>
                             </tr>
                         ))}
@@ -333,7 +380,7 @@ export default class Editor_Right extends React.Component {
     };
 
     render() {
-        console.log(html_beautify(this.state.tmpHTMLBody));
+        // console.log(html_beautify(this.state.tmpHTMLBody));
         return (
             <div>
                 <Box
@@ -380,14 +427,14 @@ export default class Editor_Right extends React.Component {
                             </TabList>
                         </Box>
                         <TabPanel value="1" sx={{ padding: 0 }}>
-                            <this.dnd_TableStyles>
+                            <dnd_TableStyles>
                                 {/* <Dnd_Table
                                     columns={this.TableCol}
                                     data={this.state.TableData}
                                     setData={this.ChangeTableData}
                                 ></Dnd_Table> */}
                                 <h1>s</h1>
-                            </this.dnd_TableStyles>
+                            </dnd_TableStyles>
                         </TabPanel>
                         <TabPanel value="2">Item Two</TabPanel>
                         <TabPanel value="3">Item Three</TabPanel>
@@ -440,18 +487,18 @@ export default class Editor_Right extends React.Component {
                     <Grid item xs={8}>
                         <this.FetchedDataList
                             headerName={"General"}
-                            columns={this.ycolumns}
-                            rows={this.yrows}
+                            columns={this.state.ycolumns}
+                            rows={this.state.yrow1}
                         ></this.FetchedDataList>
                         <this.FetchedDataList
                             headerName={"Response Headers"}
-                            columns={this.ycolumns}
-                            rows={this.yrows}
+                            columns={this.state.ycolumns}
+                            rows={this.state.yrow2}
                         ></this.FetchedDataList>
                         <this.FetchedDataList
                             headerName={"Request Headers"}
-                            columns={this.ycolumns}
-                            rows={this.yrows}
+                            columns={this.state.ycolumns}
+                            rows={this.state.yrow3}
                         ></this.FetchedDataList>
                     </Grid>
                 </Grid>

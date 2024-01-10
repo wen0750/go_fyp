@@ -13,6 +13,7 @@ import (
 var reqList = []network.Request{}
 var respList = []network.Response{}
 var respBody = ""
+var respBodyID = ""
 
 type NetowrkItem struct {
 	URL               string                   `json:"url"`
@@ -32,6 +33,7 @@ func Run(url string) ([]NetowrkItem, string, error) {
 	reqList = []network.Request{}
 	respList = []network.Response{}
 	respBody = ""
+	respBodyID = ""
 	GetPageResource(url)
 	return combineRequestResponse(reqList, respList)
 }
@@ -124,22 +126,29 @@ func listenUrlForNetworkEvent(ctx context.Context) {
 			}
 		case *network.EventResponseReceived:
 			resp := ev.Response
+			if resp.Status == 200 {
+				if resp.MimeType == "text/html" {
+					respBodyID = ev.RequestID.String()
+				}
+			}
 			if len(resp.Headers) != 0 {
 				respList = append(respList, *resp)
 			}
 		case *network.EventLoadingFinished:
 			if respBody == "" {
-				go func() {
-					_ = chromedp.Run(ctx, chromedp.ActionFunc(func(ctx context.Context) error {
-						htmlbody, err := network.GetResponseBody(ev.RequestID).Do(ctx)
-						if err != nil {
-							fmt.Println(err)
-						} else {
-							respBody = string(htmlbody)
-						}
-						return nil
-					}))
-				}()
+				if ev.RequestID.String() == respBodyID {
+					go func() {
+						_ = chromedp.Run(ctx, chromedp.ActionFunc(func(ctx context.Context) error {
+							htmlbody, err := network.GetResponseBody(ev.RequestID).Do(ctx)
+							if err != nil {
+								fmt.Println(err)
+							} else {
+								respBody = string(htmlbody)
+							}
+							return nil
+						}))
+					}()
+				}
 			}
 		}
 	})
