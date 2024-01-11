@@ -50,18 +50,15 @@ export default class EditorTemplate extends React.Component {
             this.props.dataChange(newdata)
         }*/
 
-        this.tag_inputhandler = (newdata,key) => {
-            console.log(newdata);
-            console.log(key);
-            console.log(this.props.data);
+        this.tag_inputhandler = (newdata,skey) => {
             // the key will like url / playload / tag / cve / etc...
-            newdata= this.props.data
-            newdata[key] = newdata
-            this.props.dataChange(newdata)
+            const data= this.props.templatedata
+            data[skey] = newdata
+            console.log(this.props.templatedata);
+            console.log(data);
+            this.props.dataChange(data)
 
         }
-
-        this.props.dataChange 
 
         const ITEM_HEIGHT = 40;
         const ITEM_PADDING_TOP = 8;
@@ -71,10 +68,21 @@ export default class EditorTemplate extends React.Component {
 
             const handleChange = (newChips) => {
                 setChips(newChips);
-                this.tag_inputhandler(newChips,"tags")
+                this.inputhandler(newChips,"ta")
             };
 
             return <MuiChipsInput value={chips} onChange={handleChange} />;
+        };
+
+        this.TagMyComponent = () => {
+            const [chips, setChips] = React.useState([]);
+
+            const TaghandleChange = (newChips) => {
+                setChips(newChips);
+                this.tag_inputhandler(newChips,"tags")
+            };
+
+            return <MuiChipsInput value={chips} onChange={TaghandleChange} />;
         };
 
         this.menuProps = {
@@ -97,9 +105,10 @@ export default class EditorTemplate extends React.Component {
                 newdata[catalog][name] = value;
                 this.setState({ FormData: newdata });
             }
-            this.props.dataChange(this.state.FormData);
+            //this.props.dataChange(this.state.FormData);
             console.log(this.state.FormData);
         };
+
         this.classificationOptionList = [
             {
                 key: 0,
@@ -291,7 +300,7 @@ export default class EditorTemplate extends React.Component {
                         spacing={2}
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     ></Grid>
-                    <this.MyComponent />
+                    <this.TagMyComponent />
                 </CardContent>
             </Card>
         );
