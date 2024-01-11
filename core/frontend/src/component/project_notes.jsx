@@ -69,8 +69,14 @@ export default class ProjectNotes extends React.Component {
         };
 
         this.rows = [
-            this.createData("DNS lssue", "Unable to resolve log4shell-generic-3PsFeAUq2HWWrkuYrflL.r.nessus.org,please check your DNS configuration or retry the scan later"),
-            this.createData("Log4j DNS Failed Request", "Unable to resolve DNS r.nessus.org to check Log4j Vunlnerability"),
+            this.createData(
+                "DNS lssue",
+                "Unable to resolve log4shell-generic-3PsFeAUq2HWWrkuYrflL.r.nessus.org,please check your DNS configuration or retry the scan later"
+            ),
+            this.createData(
+                "Log4j DNS Failed Request",
+                "Unable to resolve DNS r.nessus.org to check Log4j Vunlnerability"
+            ),
             this.createData("amazon.com", 262),
             this.createData("imdb.com", 159),
             this.createData("apple.com", 356),
@@ -352,8 +358,7 @@ export default class ProjectNotes extends React.Component {
         return (
             <Box component="div" sx={{ display: "flex" }}>
                 <Box sx={{ width: "70%" }}>
-                    <this.EnhancedTable>
-                    </this.EnhancedTable>
+                    <this.EnhancedTable></this.EnhancedTable>
                 </Box>
                 <Box sx={{ width: "30%", padding: "25px" }}>
                     <div style={{ marginBottom: "1rem" }}>
