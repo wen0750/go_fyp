@@ -96,8 +96,9 @@ export default class EditorAction extends React.Component {
                 method: "POST",
                 body: JSON.stringify({
                     id: String(Date.now()+28800000),
-                    info: this.props.input.information,
-                    author: this.props.input.information.author,
+                    info: this.props.input,
+    
+                    
                 }),
                 headers: {
                     "Content-type": "application/json; charset=UTF-8",

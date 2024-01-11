@@ -43,18 +43,22 @@ export default class EditorTemplate extends React.Component {
             responseViwerType: 1,
         };
 
-        this.inputhandler = (event,key) => {
+        /*this.inputhandler = (event,key) => {
             // the key will like url / playload / tag / cve / etc...
             newdata= this.props.data
             newdata[key] = event.target.value
             this.props.dataChange(newdata)
-        }
+        }*/
 
         this.tag_inputhandler = (newdata,key) => {
+            console.log(newdata);
+            console.log(key);
+            console.log(this.props.data);
             // the key will like url / playload / tag / cve / etc...
             newdata= this.props.data
             newdata[key] = newdata
             this.props.dataChange(newdata)
+
         }
 
         this.props.dataChange 
@@ -67,7 +71,7 @@ export default class EditorTemplate extends React.Component {
 
             const handleChange = (newChips) => {
                 setChips(newChips);
-                this.tag_inputhandler(newChips)
+                this.tag_inputhandler(newChips,"tags")
             };
 
             return <MuiChipsInput value={chips} onChange={handleChange} />;
@@ -227,144 +231,6 @@ export default class EditorTemplate extends React.Component {
                 removable: false,
             },
         ];
-        this.Type_size = [
-            {
-                key: 0,
-                label: "Status",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 1,
-                label: "Status",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 2,
-                label: "Status:",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-        ];
-        this.Type_word = [
-            {
-                key: 0,
-                label: "Status",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 1,
-                label: "Status",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 2,
-                label: "Status:",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-        ];
-        this.Type_regex = [
-            {
-                key: 0,
-                label: "Status",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 1,
-                label: "Status",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 2,
-                label: "Status:",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-        ];
-        this.Type_binary = [
-            {
-                key: 0,
-                label: "Status",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 1,
-                label: "Status",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 2,
-                label: "Status:",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-        ];
-        this.Type_dsl = [
-            {
-                key: 0,
-                label: "Status",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 1,
-                label: "Status",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 2,
-                label: "Status:",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-        ];
-        this.Type_xpath = [
-            {
-                key: 0,
-                label: "Status",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 1,
-                label: "Status",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-            {
-                key: 2,
-                label: "Status:",
-                type: "TextField",
-                visible: true,
-                removable: false,
-            },
-        ]
     }
 
     left_Matchers_Type_Change = (event, newValue) => {
