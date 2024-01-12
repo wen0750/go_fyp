@@ -129,7 +129,7 @@ class Editor extends React.Component {
                         </Tabs>
                     </Box>
                     <this.TabPanel value={this.state.curTab} index={0}>
-                        <EditorTemplate dataChange={this.setInput} data={this.state.input} />
+                        <EditorTemplate dataChange={this.setInput} templatedata={this.state.input} />
                         <EditorAction input={this.state.input} />
                     </this.TabPanel>
                     <this.TabPanel value={this.state.curTab} index={1}>

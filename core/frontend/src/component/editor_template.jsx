@@ -53,6 +53,7 @@ export default class EditorTemplate extends React.Component {
         this.tag_inputhandler = (newdata,skey) => {
             // the key will like url / playload / tag / cve / etc...
             const data= this.props.templatedata
+            console.log(typeof(this.props.templatedata));
             data[skey] = newdata
             console.log(this.props.templatedata);
             console.log(data);
