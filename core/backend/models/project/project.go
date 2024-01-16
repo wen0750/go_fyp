@@ -46,7 +46,14 @@ type InputCreateProject struct {
 	Fid      string   `json:"fid"`
 	Host     []string `json:"host"`
 	Poc      []string `json:"poc"`
-	Template string   `json:"template"`
+}
+
+type InputUpdateProject struct {
+	Fid      string   `json:"fid"` // for finding
+	Pid 	 primitive.ObjectID `json:"pid"`
+	Name     string   `json:"name"`
+	Host     []string `json:"host"`
+	Poc      []string `json:"poc"`
 }
 
 type Folder struct {
@@ -193,16 +200,9 @@ func ProjectCreateHandler(c *gin.Context) {
 		return
 	}
 
-	var poc []string
-	switch inputData.Template {
-	case "customs":
-		poc = inputData.Poc
-	case "wordpress":
-		poc = []string{"wp"}
-	}
 
 	var primary_id = primitive.NewObjectID()
-	var newProject = ProjectItem{primary_id, inputData.Name, inputData.Host, poc, []string{}, 1000, "onDemand", "idle"}
+	var newProject = ProjectItem{primary_id, inputData.Name, inputData.Host, inputData.Poc, []string{}, 1000, "onDemand", "idle"}
 
 	result, err := addProjectToFolder(newProject, inputData.Fid)
 	if err != nil {
@@ -235,6 +235,71 @@ func addProjectToFolder(projectDetail ProjectItem, fid string) (bson.M, error) {
 	return result, err
 }
 
+func UpdateProject(c *gin.Context) {
+	var inputData InputUpdateProject
+
+	if err := c.ShouldBindJSON(&inputData); err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	result, err := updateProjectInFolder(inputData, inputData.Fid)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	} else {
+		c.JSON(http.StatusOK, gin.H{
+			"action": "updated",
+			"result": result,
+		})
+	}
+}
+
+
+
+func updateProjectInFolder(inputData InputUpdateProject, fid string) (bson.M, error) {
+	var result bson.M
+
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	// Convert fid from string to ObjectID
+	parentObjID, err := primitive.ObjectIDFromHex(fid)
+	if err != nil {
+		return nil, err // Invalid ObjectID for the parent document
+	}
+
+	// inputData.Pid is already of type primitive.ObjectID, so no conversion is needed.
+
+	filter := bson.M{
+		"_id":         parentObjID,
+		"project.pid": inputData.Pid, // Use the correct field name here.
+	}
+
+	// Build the update document using the positional operator `$`.
+	update := bson.M{
+		"$set": bson.M{
+			"project.$.name": inputData.Name, // Use the correct field name here.
+			"project.$.host": inputData.Host,
+			"project.$.poc":  inputData.Poc,
+			// Include other fields as necessary.
+		},
+	}
+
+	err = folderCollection.FindOneAndUpdate(ctx, filter, update).Decode(&result)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, err // No document found
+		}
+		// Some other error occurred
+		return nil, err
+	}
+
+	return result, nil
+}
+
+
+
 func addHIDToFolder(projectDetail ProjectItem, pid string) (bson.M, error) {
 	var result bson.M
 
@@ -251,9 +316,6 @@ func addHIDToFolder(projectDetail ProjectItem, pid string) (bson.M, error) {
 	return result, err
 }
 
-func UpDateProjectProfile() {
-
-}
 
 func RemoveProjectFromFolder(c *gin.Context) {
 	var reqBody InputDeleteProject

@@ -11,6 +11,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type InputCreateFolder struct {
@@ -256,7 +257,35 @@ func ViewFolderItem() {
 	//a function that show the Folder content
 }
 
-func GetTemplates(c *gin.Context) {
+func GetTemplatesList(c *gin.Context) {
+	var templates []bson.M
+
+	// Create a projection to select only the _id, id and info.name fields
+	projection := bson.M{
+		"_id": 1,      // Include the _id field
+		"id": 1,       // Include the id field
+		"info.name": 1, // Include the info.name field
+	}
+
+	// Fetch documents from the "templates" collection with the projection
+	cursor, err := templatesCollection.Find(context.Background(), bson.M{}, options.Find().SetProjection(projection))
+	if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+	defer cursor.Close(context.Background())
+
+	// Decode documents into `templates`
+    if err := cursor.All(context.Background(), &templates); err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        return
+    }
+
+	// Return the templates
+    c.JSON(http.StatusOK, templates)
+}
+
+func GetTemplatesDetails(c *gin.Context) {
 	var templates []bson.M
 
 	// Fetch all documents from the "templates" collection

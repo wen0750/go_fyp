@@ -47,8 +47,8 @@ func routing(router *gin.Engine) {
 		case "details":
 			folder.GetFolderDetail(c)
 		// retrieve all templates from database for button "Create Project"
-		case "getTemplates":
-			folder.GetTemplates(c)
+		case "getTemplatesList":
+			folder.GetTemplatesList(c)
 		}
 	})
 
@@ -58,6 +58,8 @@ func routing(router *gin.Engine) {
 		switch action {
 		case "createProject":
 			project.ProjectCreateHandler(c)
+		case "updateProject":
+			project.UpdateProject(c)
 		case "startScan":
 			project.StartScan(c)
 		case "remove":
