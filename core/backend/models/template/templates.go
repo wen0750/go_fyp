@@ -1,4 +1,4 @@
-package template
+package templates
 
 import (
 	"context"
@@ -9,9 +9,15 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
+
+// templates/getTemplatesDetails
+type RequestTemplatesDetails struct {
+	ID string `json:"_id"`
+}
 
 // For finding
 type Template struct {
@@ -128,23 +134,33 @@ func GetTemplatesList(c *gin.Context) {
 }
 
 func GetTemplatesDetails(c *gin.Context) {
-	var templates []bson.M
+	var requestBody RequestTemplatesDetails
+	var templates bson.M
 
-	// Fetch all documents from the "templates" collection
-	cursor, err := templatesCollection.Find(context.Background(), bson.M{})
-	if err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+	// Bind the JSON to your struct
+    if err := c.BindJSON(&requestBody); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload"})
         return
     }
-	defer cursor.Close(context.Background())
 
-	
-	// Decode documents into `templates`
-    if err := cursor.All(context.Background(), &templates); err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+    // Convert the string _id to a MongoDB ObjectID
+    objectID, err := primitive.ObjectIDFromHex(requestBody.ID)
+    if err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
         return
     }
-	
-	// Return the templates
+
+    // Find the document with the specified _id
+    err = templatesCollection.FindOne(context.Background(), bson.M{"_id": objectID}).Decode(&templates)
+    if err != nil {
+        if err == mongo.ErrNoDocuments {
+            c.JSON(http.StatusNotFound, gin.H{"error": "Template not found"})
+        } else {
+            c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+        }
+        return
+    }
+
+    // Return the template
     c.JSON(http.StatusOK, templates)
 }

@@ -1,7 +1,6 @@
 package router
 
 import (
-	"html/template"
 	"log"
 
 	"github.com/gin-contrib/cors"
@@ -12,7 +11,7 @@ import (
 	"go_fyp/core/backend/models/editor"
 	"go_fyp/core/backend/models/folder"
 	"go_fyp/core/backend/models/project"
-	"go_fyp/core/backend/models/template"
+	templates "go_fyp/core/backend/models/template"
 	"go_fyp/core/backend/services/tagWordlist"
 )
 
@@ -55,7 +54,9 @@ func routing(router *gin.Engine) {
 		action := c.Param("action")
 		switch action {
 		case "getTemplatesList":
-			template.GetFolderDetail(c)
+			templates.GetTemplatesList(c)
+		case "getTemplatesDetails":
+			templates.GetTemplatesDetails(c)
 		}
 	})
 
