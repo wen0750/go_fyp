@@ -1,6 +1,7 @@
 package router
 
 import (
+	"html/template"
 	"log"
 
 	"github.com/gin-contrib/cors"
@@ -11,6 +12,7 @@ import (
 	"go_fyp/core/backend/models/editor"
 	"go_fyp/core/backend/models/folder"
 	"go_fyp/core/backend/models/project"
+	"go_fyp/core/backend/models/template"
 	"go_fyp/core/backend/services/tagWordlist"
 )
 
@@ -46,9 +48,14 @@ func routing(router *gin.Engine) {
 			folder.GetFolderList(c)
 		case "details":
 			folder.GetFolderDetail(c)
-		// retrieve all templates from database for button "Create Project"
+		}
+	})
+
+	router.POST("/template/:action", func(c *gin.Context) {
+		action := c.Param("action")
+		switch action {
 		case "getTemplatesList":
-			folder.GetTemplatesList(c)
+			template.GetFolderDetail(c)
 		}
 	})
 
