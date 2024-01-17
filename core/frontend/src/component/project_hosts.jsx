@@ -50,6 +50,7 @@ export default class ProjectHosts extends React.Component {
             dense: false,
             rowsPerPage: 10,
             showStackedBar: 0,
+            vulnerabilities: [],
         };
 
         this.headCells = [
@@ -526,6 +527,70 @@ export default class ProjectHosts extends React.Component {
         }
     }
 
+    static getDerivedStateFromProps(props, state) {
+        // if (props.inputData !== state.result) {
+        //     console.log(props.inputData);
+        //     return {
+        //         result: props.inputData,
+        //     };
+        // }
+
+        // for (const key in props.inputData) {
+        //     if (Object.hasOwnProperty.call(object, key)) {
+        //         const element = object[key];
+        //     }
+        // }
+        if (Object.hasOwnProperty.call(props.inputData, "result")) {
+            console.log(props.inputData.result);
+
+            const custList = [];
+
+            for (const key in props.inputData.result) {
+                if (Object.hasOwnProperty.call(props.inputData.result, key)) {
+                    let obj = props.inputData.result[key];
+
+                    if (Object.hasOwnProperty.call(custList, obj.ip)) {
+                        switch (obj.info.severityholder.severity) {
+                            case 6:
+                                // code block
+                                custList[obj.ip].critical += 1;
+                                break;
+                            case 4:
+                                // code block
+                                custList[obj.ip].high += 1;
+                                break;
+                            case 3:
+                                // info
+                                custList[obj.ip].medium += 1;
+                                break;
+                            case 2:
+                                // code block
+                                custList[obj.ip].low += 1;
+                                break;
+                            case 1:
+                                // code block
+                                custList[obj.ip].info += 1;
+                                break;
+                            case 0:
+                                break;
+                        }
+                    } else {
+                        custList[obj.ip] = {
+                            ip: obj.ip,
+                            critical: 0,
+                            high: 0,
+                            info: 0,
+                            low: 0,
+                            medium: 2,
+                        };
+                    }
+                }
+            }
+            return { vulnerabilities: custList };
+        }
+        return null;
+    }
+
     render() {
         return (
             <Box component="div" sx={{ display: "flex" }}>
@@ -544,11 +609,11 @@ export default class ProjectHosts extends React.Component {
                             </tr>
                             <tr>
                                 <td>Status</td>
-                                <td>Maria Anders</td>
+                                <td></td>
                             </tr>
                             <tr>
                                 <td>Severity Base</td>
-                                <td>Francisco Chang</td>
+                                <td></td>
                             </tr>
                             <tr>
                                 <td>Scanner</td>
@@ -556,15 +621,15 @@ export default class ProjectHosts extends React.Component {
                             </tr>
                             <tr>
                                 <td>Start</td>
-                                <td>Maria Anders</td>
+                                <td></td>
                             </tr>
                             <tr>
                                 <td>End</td>
-                                <td>Francisco Chang</td>
+                                <td></td>
                             </tr>
                             <tr>
                                 <td>Elapsed</td>
-                                <td>Francisco Chang</td>
+                                <td></td>
                             </tr>
                         </table>
                     </div>
