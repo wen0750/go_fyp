@@ -43,24 +43,6 @@ export default class EditorTemplate extends React.Component {
             responseViwerType: 1,
         };
 
-        /*this.inputhandler = (event,key) => {
-            // the key will like url / playload / tag / cve / etc...
-            newdata= this.props.data
-            newdata[key] = event.target.value
-            this.props.dataChange(newdata)
-        }*/
-
-        this.tag_inputhandler = (newdata,skey) => {
-            // the key will like url / playload / tag / cve / etc...
-            const data= this.props.templatedata
-            console.log(typeof(this.props.templatedata));
-            data[skey] = newdata
-            console.log(this.props.templatedata);
-            console.log(data);
-            this.props.dataChange(data)
-
-        }
-
         const ITEM_HEIGHT = 40;
         const ITEM_PADDING_TOP = 8;
 
@@ -75,9 +57,31 @@ export default class EditorTemplate extends React.Component {
             return <MuiChipsInput value={chips} onChange={handleChange} />;
         };
 
+        this.info_input = () => {
+            const [name, setname] = React.useState([]);
+            const infohandleChange = (newname) => {
+                setname(newname);
+                this.info_inputhandler(newname,"name")
+            };
+
+            return <MuiChipsInput value={chips} onChange={infohandleChange} />;
+        };
+
+        this.info_inputhandler = (newdata,key) => {
+            const data= this.props.templatedata
+            data[key] = newdata
+            this.props.dataChange(data)
+            
+        }
+
+        this.tag_inputhandler = (newdata,key) => {
+            const data= this.props.templatedata
+            data[key] = newdata
+            this.props.dataChange(data)
+        }
+
         this.TagMyComponent = () => {
             const [chips, setChips] = React.useState([]);
-
             const TaghandleChange = (newChips) => {
                 setChips(newChips);
                 this.tag_inputhandler(newChips,"tags")
@@ -178,13 +182,6 @@ export default class EditorTemplate extends React.Component {
                 visible: true,
                 removable: false,
             },
-            {
-                key: 5,
-                label: "tags",
-                type: "TextField", //Tags
-                visible: true,
-                removable: false,
-            },
         ];
         this.httpinfoOptionList = [
             {
@@ -262,6 +259,7 @@ export default class EditorTemplate extends React.Component {
                             catalog="information"
                             opts={this.infomationList}
                             
+                            
                         ></FormTableFormat>
                     </Grid>
                 </CardContent>
@@ -283,6 +281,7 @@ export default class EditorTemplate extends React.Component {
                         <FormTableFormat
                             catalog="classification"
                             opts={this.classificationOptionList}
+                            onChange={this.info_input}
                         ></FormTableFormat>
                     </Grid>
                 </CardContent>
@@ -853,8 +852,8 @@ export default class EditorTemplate extends React.Component {
         return (
             <Container maxWidth="lg">
                 <this.PartInformation />
-                <this.Partclassification />
                 <this.PartTags />
+                <this.Partclassification />
                 <this.PartOptions />
                 <this.Partpayloads />
                 <this.PartFuzzing />
