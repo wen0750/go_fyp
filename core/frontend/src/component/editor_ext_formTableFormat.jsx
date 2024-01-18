@@ -42,7 +42,20 @@ export default class FormTableFormat extends React.Component {
         };
 
         this.handleOnChange = (event) => {
-            this.props.callback(
+            console.log(this.props.catalog)
+            console.log(event.target.name)
+            console.log(event.target.value)
+            if (event.target.name == "reference")
+            {
+                ;this.props.callback(
+                    this.props.catalog,
+                    event.target.name,
+                    [event.target.value]
+                );
+                return null
+            }
+                
+            ;this.props.callback(
                 this.props.catalog,
                 event.target.name,
                 event.target.value

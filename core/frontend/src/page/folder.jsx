@@ -231,7 +231,7 @@ class ProjectFolder extends React.Component {
     getTemplates = () => {
         // Fetch the templates
         fetch(
-            `${globeVar.backendprotocol}://${globeVar.backendhost}/folder/getTemplates`,
+            `${globeVar.backendprotocol}://${globeVar.backendhost}/template/getTemplatesList`,
             {
                 method: "POST",
                 headers: {
