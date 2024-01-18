@@ -57,26 +57,16 @@ export default class EditorTemplate extends React.Component {
             return <MuiChipsInput value={chips} onChange={handleChange} />;
         };
 
-        this.info_input = () => {
-            const [name, setname] = React.useState([]);
-            const infohandleChange = (newname) => {
-                setname(newname);
-                this.info_inputhandler(newname,"name")
-            };
 
-            return <MuiChipsInput value={chips} onChange={infohandleChange} />;
-        };
-
-        this.info_inputhandler = (newdata,key) => {
+        this.info_inputhandler = (catalog,name,value) => {
             const data= this.props.templatedata
-            data[key] = newdata
+            data[name] = value
             this.props.dataChange(data)
-            
-        }
+        };
 
         this.tag_inputhandler = (newdata,key) => {
             const data= this.props.templatedata
-            data[key] = newdata
+            data[key] = newdata.toString()
             this.props.dataChange(data)
         }
 
@@ -258,6 +248,7 @@ export default class EditorTemplate extends React.Component {
                         <FormTableFormat
                             catalog="information"
                             opts={this.infomationList}
+                            callback={this.info_inputhandler}
                             
                             
                         ></FormTableFormat>
@@ -281,7 +272,7 @@ export default class EditorTemplate extends React.Component {
                         <FormTableFormat
                             catalog="classification"
                             opts={this.classificationOptionList}
-                            onChange={this.info_input}
+                            callback={this.info_inputhandler}
                         ></FormTableFormat>
                     </Grid>
                 </CardContent>

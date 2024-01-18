@@ -144,75 +144,76 @@ func Download(c *gin.Context) {
 // Save data To MongoDB by using InsertData method in mongodb.go
 // lastest edit
 func SaveToDB(c *gin.Context) {
-	var template Template
+    var template Template
 
-	// Bind the JSON data received to the Template struct
-	if err := c.ShouldBindJSON(&template); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Invalid JSON data",
-		})
-		return
-	}
+    // Bind the JSON data received to the Template struct
+    if err := c.ShouldBindJSON(&template); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{
+            "error": "Invalid JSON data",
+            "details": err.Error(),
+        })
+        return
+    }
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
+    ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+    defer cancel()
 
-	// Check for an existing document with the same info.name
-	filter := bson.M{"id": template.ID}
+    // Check for an existing document with the same ID
+    filter := bson.M{"id": template.ID}
 
-	var existingTemplate Template
-	err := collection.FindOne(ctx, filter).Decode(&existingTemplate)
+    var existingTemplate Template
+    err := collection.FindOne(ctx, filter).Decode(&existingTemplate)
 
-	// There are 3 scenarios to handle
+    // There are 3 scenarios to handle
+    // First scenario, check if Template ID does not exist, then create one
+    if err == mongo.ErrNoDocuments {
+        result, err := collection.InsertOne(ctx, template)
+        if err != nil {
+            c.JSON(http.StatusInternalServerError, gin.H{
+                "error": "Failed to save the template",
+                "details": err.Error(),
+            })
+            return
+        }
+        // Return a message to user/frontend
+        c.JSON(http.StatusOK, gin.H{
+            "action": "created",
+            "id":     result.InsertedID,
+        })
+    } else if err != nil {
+        // If an error other than ErrNoDocuments occurred, return it
+        c.JSON(http.StatusInternalServerError, gin.H{
+            "error": "Failed to retrieve existing template",
+            "details": err.Error(),
+        })
+        return
+    } else {
+        // Second scenario, if the data is unchanged (duplicate), return a 409 conflict error
+        // Note: .Equal() must be a method you implement for comparing two Template objects
+        if template.Equal(existingTemplate) {
+            c.JSON(http.StatusConflict, gin.H{
+                "error": "Duplicate data - no changes detected",
+            })
+            return
+        } else {
+            // Third scenario, if data is updated, perform the update operation
+            update := bson.M{"$set": template}
+            _, err := collection.UpdateOne(ctx, filter, update)
 
-	// First scenario, check if Template ID is exist, if not, create one
-	if err == mongo.ErrNoDocuments {
-		result, err := collection.InsertOne(ctx, template)
-		if err != nil {
-			log.Printf("Error inserting template: %v\n", err)
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"error": "Failed to save the template",
-			})
-			return
-		}
-		//reture message to user/frontend
-		c.JSON(http.StatusOK, gin.H{
-			//Template saved successfully
-			"action": "created",
-			"id":     result.InsertedID,
-		})
-	} else if err != nil {
-		log.Printf("Error retrieving template: %v\n", err)
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Failed to retrieve existing template",
-		})
-		return
-	} else {
-		// Second scenario, If all the Data == unchanged(Duplicated), return 409 error
-		if template.Equal(existingTemplate) {
-			c.JSON(http.StatusConflict, gin.H{
-				"error": "Duplicated data",
-			})
-			return
-		} else {
-			// Third scenario, if Data == Updated, return 200 OK
-			update := bson.M{"$set": template}
-			_, err := collection.UpdateOne(ctx, filter, update)
-
-			if err != nil {
-				log.Printf("Error updating template: %v\n", err)
-				c.JSON(http.StatusInternalServerError, gin.H{
-					"error": "Failed to update the template",
-				})
-				return
-			}
-			c.JSON(http.StatusOK, gin.H{
-				//Template updated successfully
-				"action": "updated",
-				"id":     template.ID,
-			})
-		}
-	}
+            if err != nil {
+                c.JSON(http.StatusInternalServerError, gin.H{
+                    "error": "Failed to update the template",
+                    "details": err.Error(),
+                })
+                return
+            }
+            // Return a message indicating the update was successful
+            c.JSON(http.StatusOK, gin.H{
+                "action": "updated",
+                "id":     template.ID,
+            })
+        }
+    }
 }
 
 //upload page
