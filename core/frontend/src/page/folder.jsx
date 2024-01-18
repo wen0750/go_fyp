@@ -597,7 +597,7 @@ class ProjectFolder extends React.Component {
                                 id="tags-outlined"
                                 options={this.state.f_templates}
                                 getOptionLabel={(option) =>
-                                    option.id || "Unnamed Template"
+                                    option.info.name || "Unnamed Template"
                                 }
                                 filterSelectedOptions
                                 onChange={(event, newValue) => {
