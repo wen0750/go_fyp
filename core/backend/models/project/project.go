@@ -9,7 +9,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"regexp"
 	"strings"
 	"sync"
 	"time"
@@ -89,12 +88,6 @@ type InputDeleteProject struct {
 	Pid string `json:"pid"`
 }
 
-type ScanOutput struct {
-	TemplateID string
-	Protocol   string
-	Severity   string
-	URL        string
-}
 
 // For parseCVECount in startScan
 type CVECount struct {
@@ -467,7 +460,7 @@ func StartScan(c *gin.Context) {
 		_, err = os.Stat(nucleiPath)
 		if err != nil {
 			if os.IsNotExist(err) {
-				log.Fatalf("Nuclei executable does not exist at path: %s", nucleiPath)
+				log.Printf("Nuclei executable does not exist at path: %s", nucleiPath)
 			} else {
 				log.Printf("Error checking file existence: %v", err)
 			}
@@ -581,7 +574,7 @@ func StartScan(c *gin.Context) {
 			log.Printf("UpdateOne Result: Matched Count = %v, Modified Count = %v", result.MatchedCount, result.ModifiedCount)
 		}
 
-		//os.Remove(hostFilePath)
+		os.Remove(hostFilePath)
 		for _, filename := range filenames {
 			err := os.Remove(filename)
 			if err != nil {
@@ -623,53 +616,6 @@ func createYAMLFile(template Template) (string, error) {
 	}
 
 	return tempFile.Name(), nil
-}
-
-func parseNucleiOutput(output string) []string {
-	// A slice to hold the parsed results
-	var results []string
-
-	re := regexp.MustCompile("\x1b\\[[0-9;]*m")
-	cleanOutput := re.ReplaceAllString(output, "")
-
-	// Split the output into lines
-	lines := strings.Split(cleanOutput, "\n")
-
-	// Flag to check if any result is found
-	var found bool
-
-	// Regular expression to match timestamp at the beginning of a line
-	timeRe := regexp.MustCompile(`^\d{4}/\d{2}/\d{2} \d{2}:\d{2}:\d{2}`)
-
-	// Iterate over each line
-	for _, line := range lines {
-		// Skip empty lines and lines starting with a timestamp
-		if len(line) == 0 || timeRe.MatchString(line) {
-			continue
-		}
-
-		// Split the line into parts
-		parts := strings.Split(line, " ")
-
-		// Check if the line has at least 4 parts
-		if len(parts) >= 5 {
-			// Add the 4th and 5th parts to the results slice
-			results = append(results, parts[3]+" "+parts[4])
-			found = true
-		} else if len(parts) >= 4 {
-			// Add the 4th part to the results slice
-			results = append(results, parts[3])
-			found = true
-		}
-	}
-
-	// Check if any result is found. If not, add "No results found."
-	if !found {
-		results = append(results, "No results found.")
-	}
-
-	// Return the slice of results
-	return results
 }
 
 func parseCVECount(jsonData string) (CVECount, error) {
