@@ -469,29 +469,51 @@ func StartScan(c *gin.Context) {
 			if os.IsNotExist(err) {
 				log.Fatalf("Nuclei executable does not exist at path: %s", nucleiPath)
 			} else {
-				log.Fatalf("Error checking file existence: %v", err)
+				log.Printf("Error checking file existence: %v", err)
 			}
 		}
 		cmd := exec.Command(nucleiPath, "-t", templates, "-l", hostFilePath, "-hid", id.InsertedID.(primitive.ObjectID).Hex(), "-silent", "-j", "-nc")
 		fmt.Println("Command to be executed:\n", cmd.String())
 
-		cmd.Run()
+		output, err := cmd.CombinedOutput()
+		if err != nil {
+			fmt.Println("Error executing command:", err)
+			return
+		}
 
-		// outputStr := parseNucleiOutput(string(output))
+		outputLines := strings.Split(string(output), "\n")
 
-		// CVECount := parseCVECount(string(output))
 
-		// cveCountMap["info"] = CVECount.Info
-		// cveCountMap["low"] = CVECount.Low
-		// cveCountMap["medium"] = CVECount.Medium
-		// cveCountMap["high"] = CVECount.High
-		// cveCountMap["critical"] = CVECount.Critical
+		var combinedCVECount CVECount
+		for _, line := range outputLines {
+			line = strings.TrimSpace(line)
+			if strings.HasPrefix(line, "{") && strings.HasSuffix(line, "}") {
+				// Parse this JSON line
+				cveCount, err := parseCVECount(line)
+				if err != nil {
+					// Handle the JSON parsing error appropriately
+					fmt.Printf("Error parsing CVE count from line: %s\nError: %s\n", line, err)
+					// Decide if you want to continue processing other lines or return
+					continue
+				}
+		
+				// Combine the counts from each line
+				combinedCVECount.Info += cveCount.Info
+				combinedCVECount.Low += cveCount.Low
+				combinedCVECount.Medium += cveCount.Medium
+				combinedCVECount.High += cveCount.High
+				combinedCVECount.Critical += cveCount.Critical
+			}
+		}
 
-		cveCountMap["info"] = 1
-		cveCountMap["low"] = 2
-		cveCountMap["medium"] = 3
-		cveCountMap["high"] = 4
-		cveCountMap["critical"] = 5
+		log.Printf("Final combined CVE count: %+v", combinedCVECount)
+
+
+		cveCountMap["info"] = combinedCVECount.Info
+		cveCountMap["low"] = combinedCVECount.Low
+		cveCountMap["medium"] = combinedCVECount.Medium
+		cveCountMap["high"] = combinedCVECount.High
+		cveCountMap["critical"] = combinedCVECount.Critical
 
 		// Record the end time of the scan
 		// endTime := time.Now().Unix()
@@ -650,45 +672,35 @@ func parseNucleiOutput(output string) []string {
 	return results
 }
 
-func parseCVECount(output string) CVECount {
-	re := regexp.MustCompile("\x1b\\[[0-9;]*m")
-	cleanOutput := re.ReplaceAllString(output, "")
+func parseCVECount(jsonData string) (CVECount, error) {
 
-	var cveCount CVECount
+    var scanResult struct {
+        Info struct {
+            Severity string `json:"severity"`
+        } `json:"info"`
+    }
+    var counts CVECount
 
-	lines := strings.Split(cleanOutput, "\n")
+    err := json.Unmarshal([]byte(jsonData), &scanResult)
+    if err != nil {
+        log.Printf("Error unmarshalling JSON: %v", err)
+        return counts, err
+    }
 
-	for _, line := range lines {
-		if len(line) == 0 {
-			continue
-		}
-
-		parts := strings.Split(line, " ")
-
-		// Skip lines that don't have enough parts to hold the severity level
-		if len(parts) < 4 {
-			continue
-		}
-
-		// The severity level is the fourth part in the line
-		severity := parts[2]
-
-		// Increment the corresponding severity level count in the CVECount object
-		switch severity {
-		case "[info]":
-			cveCount.Info++
-		case "[low]":
-			cveCount.Low++
-		case "[medium]":
-			cveCount.Medium++
-		case "[high]":
-			cveCount.High++
-		case "[critical]":
-			cveCount.Critical++
-		}
-	}
-
-	return cveCount
+    // Map string severity to count
+    switch strings.ToLower(scanResult.Info.Severity) {
+    case "info":
+        counts.Info++
+    case "low":
+        counts.Low++
+    case "medium":
+        counts.Medium++
+    case "high":
+        counts.High++
+    case "critical":
+        counts.Critical++
+    }
+    return counts, nil
 }
 
 func ScanSummary(c *gin.Context, pid string) {

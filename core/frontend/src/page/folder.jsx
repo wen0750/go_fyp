@@ -585,7 +585,7 @@ class ProjectFolder extends React.Component {
                         <Stack spacing={3} sx={{ width: 1, marginBlock: 1 }}>
                             <TextField
                                 id="outlined-basic"
-                                label="Template_Names"
+                                label="Project Name"
                                 variant="outlined"
                                 onChange={this.changeProjectFormInput_name}
                             />
@@ -613,8 +613,8 @@ class ProjectFolder extends React.Component {
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}
-                                        label="Select POCs of this project"
-                                        placeholder="POCs (ex. CVE-2013-2621.yaml)"
+                                        label="Select Template(s) of this project"
+                                        placeholder="Template(s) (ex. CVE-2013-2621.yaml)"
                                     />
                                 )}
                             />
@@ -654,7 +654,7 @@ class ProjectFolder extends React.Component {
                                     loadingPosition="end"
                                     variant="contained"
                                 >
-                                    <span>Send</span>
+                                    <span>Create</span>
                                 </LoadingButton>
                             </Grid>
                         </Grid>
