@@ -537,6 +537,7 @@ func StartScan(c *gin.Context) {
 				"cvecount": cveCountMap,
 			},
 		}
+		EndTime := time.Now().Unix()
 
 		updateResult, err := scanResultsCollection.UpdateOne(context.Background(), filter, update)
 		if err != nil {
@@ -563,6 +564,8 @@ func StartScan(c *gin.Context) {
 		update = bson.M{
 			"$push": bson.M{
 				"project.$.history": id.InsertedID.(primitive.ObjectID),
+				"project.$.lastscan" : EndTime, 
+				"lastscan":EndTime,
 			},
 		}
 		result, err := folderCollection.UpdateOne(context.Background(), filter, update)
