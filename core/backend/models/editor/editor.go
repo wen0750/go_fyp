@@ -1,12 +1,14 @@
 package editor
 
 import (
+	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"reflect"
 	"strings"
@@ -75,7 +77,6 @@ type Template struct {
 			Part  string   `json:"part,omitempty"`
 		} `json:"extractors,omitempty"`
 	} `json:"http,omitempty"`
-	
 }
 
 var collection *mongo.Collection
@@ -146,10 +147,31 @@ func Download(c *gin.Context) {
 func SaveToDB(c *gin.Context) {
     var template Template
 
-    // Bind the JSON data received to the Template struct
-    if err := c.ShouldBindJSON(&template); err != nil {
+    // Read the JSON body
+    jsonData, err := c.GetRawData()
+    if err != nil {
         c.JSON(http.StatusBadRequest, gin.H{
-            "error": "Invalid JSON data",
+            "error": "Invalid request body",
+            "details": err.Error(),
+        })
+        return
+    }
+
+    // Validate the JSON data using nuclei
+    valid, err := validateWithNuclei(jsonData)
+    if !valid || err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{
+            "error": "Invalid template format",
+            "details": err.Error(),
+        })
+        return
+    }
+
+    // Re-bind the JSON data to the Template struct after validation, if needed
+    err = json.Unmarshal(jsonData, &template)
+    if err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{
+            "error": "Could not unmarshal JSON to struct",
             "details": err.Error(),
         })
         return
@@ -162,7 +184,7 @@ func SaveToDB(c *gin.Context) {
     filter := bson.M{"id": template.ID}
 
     var existingTemplate Template
-    err := collection.FindOne(ctx, filter).Decode(&existingTemplate)
+    err = collection.FindOne(ctx, filter).Decode(&existingTemplate)
 
     // There are 3 scenarios to handle
     // First scenario, check if Template ID does not exist, then create one
@@ -214,6 +236,18 @@ func SaveToDB(c *gin.Context) {
             })
         }
     }
+}
+
+func validateWithNuclei(jsonData []byte) (bool, error) {
+    cmd := exec.Command("nuclei", "-validate", "-t", "-")
+    cmd.Stdin = bytes.NewReader(jsonData)
+
+    if err := cmd.Run(); err != nil {
+        // If an error occurs, the validation failed
+        return false, err
+    }
+    // If the command runs without error, the validation passed
+    return true, nil
 }
 
 //upload page
