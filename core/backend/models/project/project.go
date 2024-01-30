@@ -587,6 +587,7 @@ func StartScan(c *gin.Context) {
 			"$set": bson.M{
 				"project.$.lastscan": EndTime,
 				"lastscan": EndTime,
+				"project.$.status": "idle",
 			},
 		}
 		result, err = folderCollection.UpdateOne(context.Background(), filter, update)
