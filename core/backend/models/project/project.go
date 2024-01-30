@@ -360,6 +360,7 @@ func GetPOEList() {
 func StartScan(c *gin.Context) {
 	var req ScanRequest
 
+	
 	// Bind JSON body to ScanRequest struct
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
@@ -443,6 +444,28 @@ func StartScan(c *gin.Context) {
 		id, err := scanResultsCollection.InsertOne(context.Background(), history)
 		if err != nil {
 			log.Printf("Error creating scan result for ID %s: %s", id, err.Error())
+		}
+
+		pidObjectID, err := primitive.ObjectIDFromHex(req.PID)
+		if err != nil {
+			log.Printf("Error converting PID to ObjectID: %s", err.Error())
+			return
+		}
+
+		filter := bson.M{"project": bson.M{"$elemMatch": bson.M{"pid": pidObjectID}}}
+		update := bson.M{
+			"$set": bson.M{
+				"project.$.status": "scanning",
+			},
+		}
+
+		result, err := folderCollection.UpdateOne(context.Background(), filter, update)
+		if err != nil {
+			log.Printf("Error updating folder collection for ID %s: %s", id, err.Error())
+		} else {
+			log.Printf("Filter used in update: %v", filter)
+			log.Printf("Update applied: %v", update)
+			log.Printf("UpdateOne Result: Matched Count = %v, Modified Count = %v", result.MatchedCount, result.ModifiedCount)
 		}
 
 		//_, err = folderCollection.InsertOne(context.Background(), id.InsertedID.(primitive.ObjectID))
@@ -531,8 +554,8 @@ func StartScan(c *gin.Context) {
 		// 	CVECount:  cveCountMap,
 		// }
 
-		filter := bson.M{"_id": id.InsertedID}
-		update := bson.M{
+		filter = bson.M{"_id": id.InsertedID}
+		update = bson.M{
 			"$set": bson.M{
 				"cvecount": cveCountMap,
 			},
@@ -546,11 +569,7 @@ func StartScan(c *gin.Context) {
 			log.Printf("Update Result: Matched Count = %d, Modified Count = %d", updateResult.MatchedCount, updateResult.ModifiedCount)
 		}
 
-		pidObjectID, err := primitive.ObjectIDFromHex(req.PID)
-		if err != nil {
-			log.Printf("Error converting PID to ObjectID: %s", err.Error())
-			return
-		}
+		
 
 		//filter = bson.M{"project.pid": pidObjectID, "project.history": nil}
 		//update = bson.M{
@@ -570,7 +589,7 @@ func StartScan(c *gin.Context) {
 				"lastscan": EndTime,
 			},
 		}
-		result, err := folderCollection.UpdateOne(context.Background(), filter, update)
+		result, err = folderCollection.UpdateOne(context.Background(), filter, update)
 		if err != nil {
 			log.Printf("Error updating folder collection for ID %s: %s", id, err.Error())
 		} else {
