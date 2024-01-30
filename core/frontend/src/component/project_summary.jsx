@@ -22,7 +22,7 @@ export default class ProjectSummary extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {};
+        this.state = { result: props.inputData };
 
         this.Item = styled(Paper)(({ theme }) => ({
             backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -85,7 +85,11 @@ export default class ProjectSummary extends React.Component {
                             src="../image/vulnerabilities/vulnerabilities_4.png"
                             alt=""
                         />
-                        <p>4</p>
+                        <p>
+                            {this.state.result
+                                ? this.state.result.cvecount.critical
+                                : ""}
+                        </p>
                     </div>
                     <h5>Cirtical Vulnerabilities</h5>
                 </div>
@@ -95,7 +99,11 @@ export default class ProjectSummary extends React.Component {
                             src="../image/vulnerabilities/vulnerabilities_3.png"
                             alt=""
                         />
-                        <p>3</p>
+                        <p>
+                            {this.state.result
+                                ? this.state.result.cvecount.high
+                                : ""}
+                        </p>
                     </div>
                     <h5>High Vulnerabilities</h5>
                 </div>
@@ -105,7 +113,11 @@ export default class ProjectSummary extends React.Component {
                             src="../image/vulnerabilities/vulnerabilities_2.png"
                             alt=""
                         />
-                        <p>2</p>
+                        <p>
+                            {this.state.result
+                                ? this.state.result.cvecount.medium
+                                : ""}
+                        </p>
                     </div>
                     <h5>Medium Vulnerabilities</h5>
                 </div>
@@ -115,7 +127,11 @@ export default class ProjectSummary extends React.Component {
                             src="../image/vulnerabilities/vulnerabilities_1.png"
                             alt=""
                         />
-                        <p>1</p>
+                        <p>
+                            {this.state.result
+                                ? this.state.result.cvecount.low
+                                : ""}
+                        </p>
                     </div>
                     <h5>Low Vulnerabilities</h5>
                 </div>
@@ -204,6 +220,16 @@ export default class ProjectSummary extends React.Component {
         );
     };
 
+    static getDerivedStateFromProps(props, state) {
+        if (props.inputData !== state.result && props.inputData != null) {
+            console.log(props.inputData);
+            return {
+                result: props.inputData,
+            };
+        }
+        return null;
+    }
+
     render() {
         return (
             <Box sx={{ flexGrow: 1, p: 2 }}>
@@ -217,10 +243,10 @@ export default class ProjectSummary extends React.Component {
                         <this.details></this.details>
                     </Grid>
                     <Grid {...{ xs: 12, sm: 12, md: 6, lg: 6 }} minHeight={160}>
-                        <MiniTitle>
+                        {/* <MiniTitle>
                             Top 5 Operating System Detected During Scan
                         </MiniTitle>
-                        <this.detectedDuringScan></this.detectedDuringScan>
+                        <this.detectedDuringScan></this.detectedDuringScan> */}
                     </Grid>
                     <Grid {...{ xs: 12, sm: 12, md: 6, lg: 6 }} minHeight={160}>
                         <MiniTitle>

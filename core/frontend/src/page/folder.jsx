@@ -141,19 +141,24 @@ class ProjectFolder extends React.Component {
                 maxWidth: 400,
                 renderCell: (params) => this.renderTablePorjectName(params),
             },
+            // {
+            //     field: "schedule",
+            //     headerName: "Schedule",
+            //     width: 250,
+            //     minWidth: 150,
+            //     maxWidth: 400,
+            // },
             {
-                field: "schedule",
-                headerName: "Schedule",
-                width: 250,
-                minWidth: 150,
-                maxWidth: 400,
-            },
-            {
-                field: "lastscanned",
+                field: "lastscan",
                 headerName: "Last Scanned",
                 width: 250,
                 minWidth: 150,
                 maxWidth: 400,
+                renderCell: (params) => {
+                    return new Date(
+                        params.formattedValue * 1000
+                    ).toLocaleString();
+                },
             },
             {
                 field: "status",
@@ -214,7 +219,6 @@ class ProjectFolder extends React.Component {
                 // Displaying results to console
                 .then((json) => {
                     if (json[0].project.length > 0) {
-                        console.log("tta1");
                         json[0].project.forEach((item, i) => {
                             item.id = i + 1;
                         });
@@ -478,6 +482,7 @@ class ProjectFolder extends React.Component {
                 // this.projectActionRestart(id);
                 break;
         }
+
         // Update the state with the new rows
         this.setState({ rows: newRows });
         console.log(`Action button clicked for id: ${poc}`);
@@ -499,7 +504,7 @@ class ProjectFolder extends React.Component {
             }
         );
 
-        this.fetchFoldersDetail(this.props.fid);
+        // this.fetchFoldersDetail(this.props.fid);
     };
 
     projectActionPause = () => {};
@@ -837,7 +842,7 @@ class ProjectFolder extends React.Component {
                         },
                     }}
                     pageSizeOptions={[10, 25, 50]}
-                    checkboxSelection
+                    // checkboxSelection
                     disableRowSelectionOnClick
                 />
             </div>

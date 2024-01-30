@@ -11,7 +11,6 @@ const App = (props) => {
     sKeys.forEach((key) => {
         if (list[key] > 0) {
             series.push({ name: key, data: [list[key]] });
-            console.log(key);
             switch (key) {
                 case "info":
                     colorsGapChart.push("#1e7ace");

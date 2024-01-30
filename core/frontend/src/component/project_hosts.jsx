@@ -312,7 +312,9 @@ export default class ProjectHosts extends React.Component {
 
         const handleSelectAllClick = (event) => {
             if (event.target.checked) {
-                const newSelected = this.rows.map((n) => n.name);
+                const newSelected = this.state.vulnerabilities.map(
+                    (n) => n.name
+                );
                 setSelected(newSelected);
                 return;
             }
@@ -358,13 +360,17 @@ export default class ProjectHosts extends React.Component {
         // Avoid a layout jump when reaching the last page with empty rows.
         const emptyRows =
             page > 0
-                ? Math.max(0, (1 + page) * rowsPerPage - this.rows.length)
+                ? Math.max(
+                      0,
+                      (1 + page) * rowsPerPage -
+                          this.state.vulnerabilities.length
+                  )
                 : 0;
 
         const visibleRows = React.useMemo(
             () =>
                 this.stableSort(
-                    this.rows,
+                    this.state.vulnerabilities,
                     this.getComparator(order, orderBy)
                 ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
             [order, orderBy, page, rowsPerPage]
@@ -386,7 +392,7 @@ export default class ProjectHosts extends React.Component {
                                 orderBy={orderBy}
                                 onSelectAllClick={handleSelectAllClick}
                                 onRequestSort={handleRequestSort}
-                                rowCount={this.rows.length}
+                                rowCount={this.state.vulnerabilities.length}
                             />
                             <TableBody>
                                 {visibleRows.map((row, index) => {
@@ -457,7 +463,7 @@ export default class ProjectHosts extends React.Component {
                     <TablePagination
                         rowsPerPageOptions={[10, 25]}
                         component="div"
-                        count={this.rows.length}
+                        count={this.state.vulnerabilities.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}

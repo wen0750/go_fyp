@@ -41,12 +41,12 @@ const Td = styled.td`
         height: 30px;
     }
     tr:nth-child(even) &:first-child {
-        background-color: #4c8bf5;
-        color: #fff;
+        background-color: #e8e8e8;
+        color: #495464;
     }
     tr:nth-child(odd) &:first-child {
-        background-color: #54a08d;
-        color: #fff;
+        background-color: #bbbfca;
+        color: #495464;
     }
     &:last-child {
         width: 170px;

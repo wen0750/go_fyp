@@ -19,10 +19,18 @@ import ProjectHistory from "../component/project_history";
 import ProjectThreats from "../component/project_threats";
 import "../assets/css/project_style.css";
 
+import globeVar from "../../GlobalVar";
+
 class ProjectItem extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { anchorEl: null, open: false, curTab: 0 };
+
+        this.state = {
+            anchorEl: null,
+            open: false,
+            curTab: 0,
+            scanningResult: null,
+        };
     }
 
     StyledTab = styled((props) => <Tab disableRipple {...props} />)(
@@ -178,6 +186,22 @@ class ProjectItem extends React.Component {
         );
     };
 
+    fetchScanningResult = async () => {
+        try {
+            const response = await fetch(
+                `${globeVar.backendprotocol}://${globeVar.backendhost}/project/${this.props.pid}`
+            );
+            const jsonData = await response.json();
+            this.setState({ scanningResult: jsonData });
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    componentDidMount() {
+        this.fetchScanningResult();
+    }
+
     render() {
         return (
             <div>
@@ -217,22 +241,24 @@ class ProjectItem extends React.Component {
                         </this.AntTabs>
                     </Box>
                     <this.TabPanel value={this.state.curTab} index={0}>
-                        <ProjectSummary />
+                        <ProjectSummary inputData={this.state.scanningResult} />
                     </this.TabPanel>
                     <this.TabPanel value={this.state.curTab} index={1}>
-                        <ProjectHosts />
+                        <ProjectHosts inputData={this.state.scanningResult} />
                     </this.TabPanel>
                     <this.TabPanel value={this.state.curTab} index={2}>
-                        <ProjectVulnerabilities />
+                        <ProjectVulnerabilities
+                            inputData={this.state.scanningResult}
+                        />
                     </this.TabPanel>
                     <this.TabPanel value={this.state.curTab} index={3}>
-                        <ProjectNotes />
+                        <ProjectNotes inputData={this.state.scanningResult} />
                     </this.TabPanel>
                     <this.TabPanel value={this.state.curTab} index={4}>
-                        <ProjectThreats />
+                        <ProjectThreats inputData={this.state.scanningResult} />
                     </this.TabPanel>
                     <this.TabPanel value={this.state.curTab} index={5}>
-                        <ProjectHistory />
+                        <ProjectHistory inputData={this.state.scanningResult} />
                     </this.TabPanel>
                 </div>
             </div>
