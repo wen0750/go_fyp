@@ -110,27 +110,27 @@ func GetTemplatesList(c *gin.Context) {
 
 	// Create a projection to select only the _id, id and info.name fields
 	projection := bson.M{
-		"_id": 1,      // Include the _id field
-		"id": 1,       // Include the id field
+		"_id":       1, // Include the _id field
+		"id":        1, // Include the id field
 		"info.name": 1, // Include the info.name field
 	}
 
 	// Fetch documents from the "templates" collection with the projection
 	cursor, err := templatesCollection.Find(context.Background(), bson.M{}, options.Find().SetProjection(projection))
 	if err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-        return
-    }
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 	defer cursor.Close(context.Background())
 
 	// Decode documents into `templates`
-    if err := cursor.All(context.Background(), &templates); err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-        return
-    }
+	if err := cursor.All(context.Background(), &templates); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
 
 	// Return the templates
-    c.JSON(http.StatusOK, templates)
+	c.JSON(http.StatusOK, templates)
 }
 
 func GetTemplatesDetails(c *gin.Context) {
@@ -138,29 +138,29 @@ func GetTemplatesDetails(c *gin.Context) {
 	var templates bson.M
 
 	// Bind the JSON to your struct
-    if err := c.BindJSON(&requestBody); err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload"})
-        return
-    }
+	if err := c.BindJSON(&requestBody); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload"})
+		return
+	}
 
-    // Convert the string _id to a MongoDB ObjectID
-    objectID, err := primitive.ObjectIDFromHex(requestBody.ID)
-    if err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
-        return
-    }
+	// Convert the string _id to a MongoDB ObjectID
+	objectID, err := primitive.ObjectIDFromHex(requestBody.ID)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID format"})
+		return
+	}
 
-    // Find the document with the specified _id
-    err = templatesCollection.FindOne(context.Background(), bson.M{"_id": objectID}).Decode(&templates)
-    if err != nil {
-        if err == mongo.ErrNoDocuments {
-            c.JSON(http.StatusNotFound, gin.H{"error": "Template not found"})
-        } else {
-            c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-        }
-        return
-    }
+	// Find the document with the specified _id
+	err = templatesCollection.FindOne(context.Background(), bson.M{"_id": objectID}).Decode(&templates)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			c.JSON(http.StatusNotFound, gin.H{"error": "Template not found"})
+		} else {
+			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		}
+		return
+	}
 
-    // Return the template
-    c.JSON(http.StatusOK, templates)
+	// Return the template
+	c.JSON(http.StatusOK, templates)
 }

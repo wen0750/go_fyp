@@ -45,10 +45,6 @@ type CVE struct {
 	Tid       string `bson:"tid"`
 }
 
-
-
-
-
 // For find
 type Template struct {
 	ID   string `json:"id"`
@@ -59,33 +55,33 @@ type Template struct {
 		Description string   `json:"description,omitempty"`
 		Remediation string   `json:"remediation,omitempty"`
 		Reference   []string `json:"reference,omitempty"`
-		
+
 		Classification struct {
 			CvssMetrics string  `json:"cvss-metrics,omitempty"`
 			CvssScore   float64 `json:"cvss-score,omitempty"`
 			CveID       string  `json:"cve-id,omitempty"`
 			CweID       string  `json:"cwe-id,omitempty"`
 		} `json:"classification,omitempty"`
-		
+
 		Metadata struct {
 			Verified    bool   `json:"verified,omitempty"`
 			ShodanQuery string `json:"shodan-query,omitempty"`
-			MaxRequest int `json:"max-request,omitempty"`
+			MaxRequest  int    `json:"max-request,omitempty"`
 		} `json:"metadata,omitempty"`
-		
+
 		Tags string `json:"tags,omitempty"`
 	} `json:"info,omitempty"`
 
 	Variables map[string]interface{} `json:"variables,omitempty"`
 
 	HTTP []struct {
-		Method            string `json:"method,omitempty"`
-		Path              []string `json:"path,omitempty"`
-		Raw               []string `json:"raw,omitempty"`
+		Method            string            `json:"method,omitempty"`
+		Path              []string          `json:"path,omitempty"`
+		Raw               []string          `json:"raw,omitempty"`
 		Payloads          map[string]string `json:"payloads,omitempty"`
 		Threads           int               `json:"threads,omitempty"`
-		StopAtFirstMatch  bool `json:"stop-at-first-match,omitempty"`
-		MatchersCondition string `json:"matchers-condition,omitempty"`
+		StopAtFirstMatch  bool              `json:"stop-at-first-match,omitempty"`
+		MatchersCondition string            `json:"matchers-condition,omitempty"`
 		//
 		Matchers []struct {
 			Type      string   `json:"type,omitempty"`
@@ -96,15 +92,14 @@ type Template struct {
 			Condition string   `json:"condition,omitempty"`
 			Status    []int    `json:"status,omitempty"`
 		} `json:"matchers,omitempty"`
-		
+
 		Extractors []struct {
-			Type  string   `json:"type,omitempty"`
-			Name  string   `json:"name,omitempty"`
-			Json  []string `json:"json,omitempty"`
-			Part  string   `json:"part,omitempty"`
+			Type string   `json:"type,omitempty"`
+			Name string   `json:"name,omitempty"`
+			Json []string `json:"json,omitempty"`
+			Part string   `json:"part,omitempty"`
 		} `json:"extractors,omitempty"`
 	} `json:"http,omitempty"`
-	
 }
 
 var folderCollection *mongo.Collection
@@ -257,4 +252,3 @@ func RemoveFolder(c *gin.Context) {
 func ViewFolderItem() {
 	//a function that show the Folder content
 }
-

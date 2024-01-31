@@ -41,18 +41,18 @@ type HistoryEntry struct {
 }
 
 type InputCreateProject struct {
-	Name     string   `json:"name"`
-	Fid      string   `json:"fid"`
-	Host     []string `json:"host"`
-	Poc      []string `json:"poc"`
+	Name string   `json:"name"`
+	Fid  string   `json:"fid"`
+	Host []string `json:"host"`
+	Poc  []string `json:"poc"`
 }
 
 type InputUpdateProject struct {
-	Fid      string   `json:"fid"` // for finding
-	Pid 	 primitive.ObjectID `json:"pid"`
-	Name     string   `json:"name"`
-	Host     []string `json:"host"`
-	Poc      []string `json:"poc"`
+	Fid  string             `json:"fid"` // for finding
+	Pid  primitive.ObjectID `json:"pid"`
+	Name string             `json:"name"`
+	Host []string           `json:"host"`
+	Poc  []string           `json:"poc"`
 }
 
 type Folder struct {
@@ -87,7 +87,6 @@ type InputDeleteProject struct {
 	//RowId string  `json:"rowId"`
 	Pid string `json:"pid"`
 }
-
 
 // For parseCVECount in startScan
 type CVECount struct {
@@ -193,7 +192,6 @@ func ProjectCreateHandler(c *gin.Context) {
 		return
 	}
 
-
 	var primary_id = primitive.NewObjectID()
 	var newProject = ProjectItem{primary_id, inputData.Name, inputData.Host, inputData.Poc, []string{}, 1000, "onDemand", "idle"}
 
@@ -248,8 +246,6 @@ func UpdateProject(c *gin.Context) {
 	}
 }
 
-
-
 func updateProjectInFolder(inputData InputUpdateProject, fid string) (bson.M, error) {
 	var result bson.M
 
@@ -291,8 +287,6 @@ func updateProjectInFolder(inputData InputUpdateProject, fid string) (bson.M, er
 	return result, nil
 }
 
-
-
 func addHIDToFolder(projectDetail ProjectItem, pid string) (bson.M, error) {
 	var result bson.M
 
@@ -308,7 +302,6 @@ func addHIDToFolder(projectDetail ProjectItem, pid string) (bson.M, error) {
 	err := folderCollection.FindOneAndUpdate(ctx, filter, update).Decode(&result)
 	return result, err
 }
-
 
 func RemoveProjectFromFolder(c *gin.Context) {
 	var reqBody InputDeleteProject
@@ -360,7 +353,6 @@ func GetPOEList() {
 func StartScan(c *gin.Context) {
 	var req ScanRequest
 
-	
 	// Bind JSON body to ScanRequest struct
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
@@ -499,7 +491,6 @@ func StartScan(c *gin.Context) {
 
 		outputLines := strings.Split(string(output), "\n")
 
-
 		var combinedCVECount CVECount
 		for _, line := range outputLines {
 			line = strings.TrimSpace(line)
@@ -512,7 +503,7 @@ func StartScan(c *gin.Context) {
 					// Decide if you want to continue processing other lines or return
 					continue
 				}
-		
+
 				// Combine the counts from each line
 				combinedCVECount.Info += cveCount.Info
 				combinedCVECount.Low += cveCount.Low
@@ -523,7 +514,6 @@ func StartScan(c *gin.Context) {
 		}
 
 		log.Printf("Final combined CVE count: %+v", combinedCVECount)
-
 
 		cveCountMap["info"] = combinedCVECount.Info
 		cveCountMap["low"] = combinedCVECount.Low
@@ -569,8 +559,6 @@ func StartScan(c *gin.Context) {
 			log.Printf("Update Result: Matched Count = %d, Modified Count = %d", updateResult.MatchedCount, updateResult.ModifiedCount)
 		}
 
-		
-
 		//filter = bson.M{"project.pid": pidObjectID, "project.history": nil}
 		//update = bson.M{
 		//	"$set": bson.M{
@@ -586,8 +574,8 @@ func StartScan(c *gin.Context) {
 			},
 			"$set": bson.M{
 				"project.$.lastscan": EndTime,
-				"lastscan": EndTime,
-				"project.$.status": "idle",
+				"lastscan":           EndTime,
+				"project.$.status":   "idle",
 			},
 		}
 		result, err = folderCollection.UpdateOne(context.Background(), filter, update)
@@ -645,33 +633,33 @@ func createYAMLFile(template Template) (string, error) {
 
 func parseCVECount(jsonData string) (CVECount, error) {
 
-    var scanResult struct {
-        Info struct {
-            Severity string `json:"severity"`
-        } `json:"info"`
-    }
-    var counts CVECount
+	var scanResult struct {
+		Info struct {
+			Severity string `json:"severity"`
+		} `json:"info"`
+	}
+	var counts CVECount
 
-    err := json.Unmarshal([]byte(jsonData), &scanResult)
-    if err != nil {
-        log.Printf("Error unmarshalling JSON: %v", err)
-        return counts, err
-    }
+	err := json.Unmarshal([]byte(jsonData), &scanResult)
+	if err != nil {
+		log.Printf("Error unmarshalling JSON: %v", err)
+		return counts, err
+	}
 
-    // Map string severity to count
-    switch strings.ToLower(scanResult.Info.Severity) {
-    case "info":
-        counts.Info++
-    case "low":
-        counts.Low++
-    case "medium":
-        counts.Medium++
-    case "high":
-        counts.High++
-    case "critical":
-        counts.Critical++
-    }
-    return counts, nil
+	// Map string severity to count
+	switch strings.ToLower(scanResult.Info.Severity) {
+	case "info":
+		counts.Info++
+	case "low":
+		counts.Low++
+	case "medium":
+		counts.Medium++
+	case "high":
+		counts.High++
+	case "critical":
+		counts.Critical++
+	}
+	return counts, nil
 }
 
 func ScanSummary(c *gin.Context, pid string) {
@@ -840,6 +828,8 @@ func GetLatestScanResultSummary(c *gin.Context, pid string) {
 		{Key: "result.response", Value: 1},
 		{Key: "result.metadata", Value: 1},
 		{Key: "result.matcherstatus", Value: 1},
+		{Key: "startTime", Value: 1},
+		{Key: "endTime", Value: 1},
 		{Key: "status", Value: 1},
 		{Key: "cvecount", Value: 1},
 	}
@@ -879,6 +869,8 @@ func GetScanResultByHistoryId(c *gin.Context, hid string) {
 		{Key: "result.response", Value: 1},
 		{Key: "result.metadata", Value: 1},
 		{Key: "result.matcherstatus", Value: 1},
+		{Key: "startTime", Value: 1},
+		{Key: "endTime", Value: 1},
 		{Key: "status", Value: 1},
 		{Key: "cvecount", Value: 1},
 	}

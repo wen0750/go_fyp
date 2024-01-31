@@ -32,33 +32,33 @@ type Template struct {
 		Description string   `json:"description,omitempty"`
 		Remediation string   `json:"remediation,omitempty"`
 		Reference   []string `json:"reference,omitempty"`
-		
+
 		Classification struct {
 			CvssMetrics string  `json:"cvss-metrics,omitempty"`
 			CvssScore   float64 `json:"cvss-score,omitempty"`
 			CveID       string  `json:"cve-id,omitempty"`
 			CweID       string  `json:"cwe-id,omitempty"`
 		} `json:"classification,omitempty"`
-		
+
 		Metadata struct {
 			Verified    bool   `json:"verified,omitempty"`
 			ShodanQuery string `json:"shodan-query,omitempty"`
-			MaxRequest int `json:"max-request,omitempty"`
+			MaxRequest  int    `json:"max-request,omitempty"`
 		} `json:"metadata,omitempty"`
-		
+
 		Tags string `json:"tags,omitempty"`
 	} `json:"info,omitempty"`
 
 	Variables map[string]interface{} `json:"variables,omitempty"`
 
 	HTTP []struct {
-		Method            string `json:"method,omitempty"`
-		Path              []string `json:"path,omitempty"`
-		Raw               []string `json:"raw,omitempty"`
+		Method            string            `json:"method,omitempty"`
+		Path              []string          `json:"path,omitempty"`
+		Raw               []string          `json:"raw,omitempty"`
 		Payloads          map[string]string `json:"payloads,omitempty"`
 		Threads           int               `json:"threads,omitempty"`
-		StopAtFirstMatch  bool `json:"stop-at-first-match,omitempty"`
-		MatchersCondition string `json:"matchers-condition,omitempty"`
+		StopAtFirstMatch  bool              `json:"stop-at-first-match,omitempty"`
+		MatchersCondition string            `json:"matchers-condition,omitempty"`
 		//
 		Matchers []struct {
 			Type      string   `json:"type,omitempty"`
@@ -69,12 +69,12 @@ type Template struct {
 			Condition string   `json:"condition,omitempty"`
 			Status    []int    `json:"status,omitempty"`
 		} `json:"matchers,omitempty"`
-		
+
 		Extractors []struct {
-			Type  string   `json:"type,omitempty"`
-			Name  string   `json:"name,omitempty"`
-			Json  []string `json:"json,omitempty"`
-			Part  string   `json:"part,omitempty"`
+			Type string   `json:"type,omitempty"`
+			Name string   `json:"name,omitempty"`
+			Json []string `json:"json,omitempty"`
+			Part string   `json:"part,omitempty"`
 		} `json:"extractors,omitempty"`
 	} `json:"http,omitempty"`
 }
@@ -98,8 +98,8 @@ func Download(c *gin.Context) {
 	c.BindJSON(&jsonData)
 	//For checking
 	fmt.Printf("JSON data: %v\n", gin.H{
-		"id":          jsonData.ID,
-		"\ninfo":      jsonData.Info,
+		"id":     jsonData.ID,
+		"\ninfo": jsonData.Info,
 	})
 
 	//Convert the data to yaml format
@@ -145,109 +145,109 @@ func Download(c *gin.Context) {
 // Save data To MongoDB by using InsertData method in mongodb.go
 // lastest edit
 func SaveToDB(c *gin.Context) {
-    var template Template
+	var template Template
 
-    // Read the JSON body
-    jsonData, err := c.GetRawData()
-    if err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{
-            "error": "Invalid request body",
-            "details": err.Error(),
-        })
-        return
-    }
+	// Read the JSON body
+	jsonData, err := c.GetRawData()
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":   "Invalid request body",
+			"details": err.Error(),
+		})
+		return
+	}
 
-    // Validate the JSON data using nuclei
-    valid, err := validateWithNuclei(jsonData)
-    if !valid || err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{
-            "error": "Invalid template format",
-            "details": err.Error(),
-        })
-        return
-    }
+	// Validate the JSON data using nuclei
+	valid, err := validateWithNuclei(jsonData)
+	if !valid || err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":   "Invalid template format",
+			"details": err.Error(),
+		})
+		return
+	}
 
-    // Re-bind the JSON data to the Template struct after validation, if needed
-    err = json.Unmarshal(jsonData, &template)
-    if err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{
-            "error": "Could not unmarshal JSON to struct",
-            "details": err.Error(),
-        })
-        return
-    }
+	// Re-bind the JSON data to the Template struct after validation, if needed
+	err = json.Unmarshal(jsonData, &template)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":   "Could not unmarshal JSON to struct",
+			"details": err.Error(),
+		})
+		return
+	}
 
-    ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-    defer cancel()
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 
-    // Check for an existing document with the same ID
-    filter := bson.M{"id": template.ID}
+	// Check for an existing document with the same ID
+	filter := bson.M{"id": template.ID}
 
-    var existingTemplate Template
-    err = collection.FindOne(ctx, filter).Decode(&existingTemplate)
+	var existingTemplate Template
+	err = collection.FindOne(ctx, filter).Decode(&existingTemplate)
 
-    // There are 3 scenarios to handle
-    // First scenario, check if Template ID does not exist, then create one
-    if err == mongo.ErrNoDocuments {
-        result, err := collection.InsertOne(ctx, template)
-        if err != nil {
-            c.JSON(http.StatusInternalServerError, gin.H{
-                "error": "Failed to save the template",
-                "details": err.Error(),
-            })
-            return
-        }
-        // Return a message to user/frontend
-        c.JSON(http.StatusOK, gin.H{
-            "action": "created",
-            "id":     result.InsertedID,
-        })
-    } else if err != nil {
-        // If an error other than ErrNoDocuments occurred, return it
-        c.JSON(http.StatusInternalServerError, gin.H{
-            "error": "Failed to retrieve existing template",
-            "details": err.Error(),
-        })
-        return
-    } else {
-        // Second scenario, if the data is unchanged (duplicate), return a 409 conflict error
-        // Note: .Equal() must be a method you implement for comparing two Template objects
-        if template.Equal(existingTemplate) {
-            c.JSON(http.StatusConflict, gin.H{
-                "error": "Duplicate data - no changes detected",
-            })
-            return
-        } else {
-            // Third scenario, if data is updated, perform the update operation
-            update := bson.M{"$set": template}
-            _, err := collection.UpdateOne(ctx, filter, update)
+	// There are 3 scenarios to handle
+	// First scenario, check if Template ID does not exist, then create one
+	if err == mongo.ErrNoDocuments {
+		result, err := collection.InsertOne(ctx, template)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error":   "Failed to save the template",
+				"details": err.Error(),
+			})
+			return
+		}
+		// Return a message to user/frontend
+		c.JSON(http.StatusOK, gin.H{
+			"action": "created",
+			"id":     result.InsertedID,
+		})
+	} else if err != nil {
+		// If an error other than ErrNoDocuments occurred, return it
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error":   "Failed to retrieve existing template",
+			"details": err.Error(),
+		})
+		return
+	} else {
+		// Second scenario, if the data is unchanged (duplicate), return a 409 conflict error
+		// Note: .Equal() must be a method you implement for comparing two Template objects
+		if template.Equal(existingTemplate) {
+			c.JSON(http.StatusConflict, gin.H{
+				"error": "Duplicate data - no changes detected",
+			})
+			return
+		} else {
+			// Third scenario, if data is updated, perform the update operation
+			update := bson.M{"$set": template}
+			_, err := collection.UpdateOne(ctx, filter, update)
 
-            if err != nil {
-                c.JSON(http.StatusInternalServerError, gin.H{
-                    "error": "Failed to update the template",
-                    "details": err.Error(),
-                })
-                return
-            }
-            // Return a message indicating the update was successful
-            c.JSON(http.StatusOK, gin.H{
-                "action": "updated",
-                "id":     template.ID,
-            })
-        }
-    }
+			if err != nil {
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"error":   "Failed to update the template",
+					"details": err.Error(),
+				})
+				return
+			}
+			// Return a message indicating the update was successful
+			c.JSON(http.StatusOK, gin.H{
+				"action": "updated",
+				"id":     template.ID,
+			})
+		}
+	}
 }
 
 func validateWithNuclei(jsonData []byte) (bool, error) {
-    cmd := exec.Command("nuclei", "-validate", "-t", "-")
-    cmd.Stdin = bytes.NewReader(jsonData)
+	cmd := exec.Command("nuclei", "-validate", "-t", "-")
+	cmd.Stdin = bytes.NewReader(jsonData)
 
-    if err := cmd.Run(); err != nil {
-        // If an error occurs, the validation failed
-        return false, err
-    }
-    // If the command runs without error, the validation passed
-    return true, nil
+	if err := cmd.Run(); err != nil {
+		// If an error occurs, the validation failed
+		return false, err
+	}
+	// If the command runs without error, the validation passed
+	return true, nil
 }
 
 //upload page
@@ -367,14 +367,14 @@ func UploadToDB(c *gin.Context) {
 				"id":     data.ID,
 			})
 		}
-		
+
 	}
 	err = os.RemoveAll(tmpDir)
 	if err != nil {
 		log.Printf("Error deleting the temp-uploads directory: %v", err)
 		// Handle the error as needed, e.g., return an error response
 	}
-	
+
 }
 
 //return ture if the data is the same
