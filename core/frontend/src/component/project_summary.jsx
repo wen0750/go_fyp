@@ -139,15 +139,45 @@ export default class ProjectSummary extends React.Component {
         );
     };
 
+    formateArrayToList = (indata) => {
+        console.log(indata);
+
+        return (
+            <ul style={{ marginLeft: "20px" }}>
+                {indata.map((element, i) => {
+                    // Return the element. Also pass key
+                    return <li key={i}>{element.info.name}</li>;
+                })}
+            </ul>
+        );
+    };
+
     details = () => {
+        var startt = "",
+            endt = "";
+
+        const templateName = "";
+
+        if (this.state.result != null) {
+            console.log(this.state.result);
+            startt = new Date(
+                this.state.result.startTime * 1000
+            ).toLocaleString();
+            endt = new Date(this.state.result.endTime * 1000).toLocaleString();
+            // templateName = "";
+        }
         return (
             <div>
-                <p>Scan Name: </p>
+                {/* <p>Scan Name: </p> */}
                 <p>Template Set: </p>
                 <p>CVSS_Socre: </p>
-                <p>Scan Template: </p>
-                <p>Scan Start: </p>
-                <p>Scan End: </p>
+                <div>
+                    <p>Scan Template:</p>
+                    {this.state.result &&
+                        this.formateArrayToList(this.state.result.result)}
+                </div>
+                <p>Scan Start: {startt}</p>
+                <p>Scan End: {endt}</p>
             </div>
         );
     };
@@ -207,13 +237,57 @@ export default class ProjectSummary extends React.Component {
         );
     };
 
+    humanDiff = (t1, t2) => {
+        const diff = Math.max(t1, t2) - Math.min(t1, t2);
+        const SEC = 1000,
+            MIN = 60 * SEC,
+            HRS = 60 * MIN;
+
+        const hrs = Math.floor(diff / HRS);
+        const min = Math.floor((diff % HRS) / MIN).toLocaleString("en-US", {
+            minimumIntegerDigits: 2,
+        });
+        const sec = Math.floor((diff % MIN) / SEC).toLocaleString("en-US", {
+            minimumIntegerDigits: 2,
+        });
+        // const ms = Math.floor(diff % SEC).toLocaleString("en-US", {
+        //     minimumIntegerDigits: 4,
+        //     useGrouping: false,
+        // });
+        // return `${hrs}:${min}:${sec}.${ms}`;
+
+        return `${hrs}:${min}:${sec}`;
+    };
+
+    hostCount = (result) => {
+        const hosts = [];
+        result.map((element, i) => {
+            if (!hosts.includes(element.ip)) {
+                hosts.push(element.ip);
+            }
+        });
+        return hosts.length;
+    };
+
     scanDuration = () => {
+        var scan_duration = "00:00:00";
+        var scanTimePerHost = "00:00:00";
+        var hostCount = 0;
+        if (this.state.result) {
+            const t1 = new Date(this.state.result.startTime * 1000);
+            const t2 = new Date(this.state.result.endTime * 1000);
+            scan_duration = this.humanDiff(t1, t2);
+            hostCount = this.hostCount(this.state.result.result);
+            var perhostTime = (Math.max(t1, t2) - Math.min(t1, t2)) / hostCount;
+            scanTimePerHost = this.humanDiff(0, perhostTime);
+        }
+
         return (
             <div style={{ display: "flex" }}>
-                <this.mediaCard cname="SCAN DURATION" cvalue="00:00:00" />
+                <this.mediaCard cname="SCAN DURATION" cvalue={scan_duration} />
                 <this.mediaCard
                     cname="MEDIAN SCAN TIME PER HOST"
-                    cvalue="00:00:00"
+                    cvalue={scanTimePerHost}
                 />
                 <this.mediaCard cname="MAX SCAN TIME" cvalue="00:00:00" />
             </div>
@@ -222,7 +296,6 @@ export default class ProjectSummary extends React.Component {
 
     static getDerivedStateFromProps(props, state) {
         if (props.inputData !== state.result && props.inputData != null) {
-            console.log(props.inputData);
             return {
                 result: props.inputData,
             };
@@ -248,12 +321,12 @@ export default class ProjectSummary extends React.Component {
                         </MiniTitle>
                         <this.detectedDuringScan></this.detectedDuringScan> */}
                     </Grid>
-                    <Grid {...{ xs: 12, sm: 12, md: 6, lg: 6 }} minHeight={160}>
+                    {/* <Grid {...{ xs: 12, sm: 12, md: 6, lg: 6 }} minHeight={160}>
                         <MiniTitle>
                             Authentication / Credential Info (Hosts)
                         </MiniTitle>
                         <this.hostScanStatus></this.hostScanStatus>
-                    </Grid>
+                    </Grid> */}
                     <Grid {...{ xs: 12, sm: 12, md: 6, lg: 6 }} minHeight={160}>
                         <MiniTitle>Scan Durations</MiniTitle>
                         <this.scanDuration></this.scanDuration>
