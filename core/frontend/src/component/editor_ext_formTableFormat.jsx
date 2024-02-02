@@ -15,16 +15,23 @@ import {
     FormControl,
     textFieldClasses,
     Typography,
+    Tooltip,
 } from "@mui/material";
 
 import { Autocomplete } from "@mui/material";
 
 import Grid from "@mui/material/Unstable_Grid2";
 import DeleteIcon from "@mui/icons-material/Delete";
+
+
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+
+
 import Check from "@mui/icons-material/Check";
 import SigleSelect from "./editor_ext_selector";
 import globeVar from "../../GlobalVar";
+
 
 export default class FormTableFormat extends React.Component {
     constructor(props) {
@@ -313,9 +320,18 @@ export default class FormTableFormat extends React.Component {
                             if (data.type === "TextField") {
                                 element = (
                                     <TextField
+                                        label="TextField"
                                         name={data.label}
-                                        label={data.label}
                                         onChange={this.handleOnChange}
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="start">
+                                                    <Tooltip title="Delete" variant="plain">
+                                                        <HelpOutlineIcon fontSize={"large"} />
+                                                    </Tooltip>
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
                                 );
                             } else if (data.type === "SigleSelect") {
