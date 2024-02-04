@@ -538,43 +538,6 @@ export default class ProjectHistory extends React.Component {
         );
     };
 
-    VulnerabilitiesPiChart = () => {
-        // const { data: chartData } = this.state;
-        const options = {
-            animationEnabled: true,
-            legend: {
-                cursor: "pointer",
-                verticalAlign: "center",
-                horizontalAlign: "right",
-            },
-            data: [
-                {
-                    type: "doughnut",
-                    showInLegend: true,
-                    yValueFormatString: "#,###'%'",
-                    radius: "120%",
-                    innerRadius: "50%",
-                    dataPoints: [
-                        { name: "Critical", y: 2 },
-                        { name: "High", y: 3 },
-                        { name: "Medium", y: 13 },
-                        { name: "Low", y: 7 },
-                        { name: "info", y: 75 },
-                    ],
-                },
-            ],
-        };
-        return (
-            <div>
-                <CanvasJSChart
-                    options={options}
-                    /* onRef={ref => this.chart = ref} */
-                />
-                {/*You can get reference to the chart instance as shown above using onRef. This allows you to access all chart properties and methods*/}
-            </div>
-        );
-    };
-
     fetchHistoryRecord = async () => {
         try {
             const response = await fetch(
