@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Component } from "react";
 
 import {
     Box,
@@ -11,8 +10,6 @@ import {
     Tooltip,
     FormControlLabel,
     Switch,
-} from "@mui/material";
-import {
     Table,
     TableBody,
     TableCell,
@@ -27,17 +24,11 @@ import PropTypes from "prop-types";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 
-import { DataGrid } from "@mui/x-data-grid";
 import { visuallyHidden } from "@mui/utils";
 import { alpha } from "@mui/material/styles";
 
-import { UnderLineMiniTitle } from "../component/page_style/project_style";
-
-import CanvasJSReact from "@canvasjs/react-charts";
-var CanvasJS = CanvasJSReact.CanvasJS;
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-
 import StackedBar from "./project_ext_stackedBar";
+import ScanDurations from "./project_ext_scan_durations";
 
 export default class ProjectHosts extends React.Component {
     constructor(props) {
@@ -51,6 +42,7 @@ export default class ProjectHosts extends React.Component {
             rowsPerPage: 10,
             showStackedBar: 0,
             vulnerabilities: [],
+            result: props.inputData,
         };
 
         this.headCells = [
@@ -600,49 +592,13 @@ export default class ProjectHosts extends React.Component {
     render() {
         return (
             <Box component="div" sx={{ display: "flex" }}>
-                <Box sx={{ width: 3 / 4 }}>
+                <Box sx={{ width: 7 / 10 }}>
                     <this.EnhancedTable
                         style={{ width: "75%" }}
                     ></this.EnhancedTable>
                 </Box>
-                <Box sx={{ width: 1 / 4, padding: "25px" }}>
-                    <div style={{ marginBottom: "1rem" }}>
-                        <UnderLineMiniTitle>Scan Durations</UnderLineMiniTitle>
-                        <table>
-                            <tr>
-                                <td>Policy</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Status</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Severity Base</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Scanner</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Start</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>End</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>Elapsed</td>
-                                <td></td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div>
-                        <UnderLineMiniTitle>Vulnerabilities</UnderLineMiniTitle>
-                        <this.VulnerabilitiesPiChart></this.VulnerabilitiesPiChart>
-                    </div>
+                <Box sx={{ width: 3 / 10, padding: "25px" }}>
+                    <ScanDurations></ScanDurations>
                 </Box>
             </Box>
         );

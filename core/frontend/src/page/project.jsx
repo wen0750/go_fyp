@@ -258,7 +258,10 @@ class ProjectItem extends React.Component {
                         <ProjectThreats inputData={this.state.scanningResult} />
                     </this.TabPanel>
                     <this.TabPanel value={this.state.curTab} index={5}>
-                        <ProjectHistory inputData={this.state.scanningResult} />
+                        <ProjectHistory
+                            inputData={this.state.scanningResult}
+                            projectID={this.props.pid}
+                        />
                     </this.TabPanel>
                 </div>
             </div>

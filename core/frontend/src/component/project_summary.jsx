@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Component } from "react";
 
 import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Unstable_Grid2";
@@ -10,7 +9,6 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 
 import CanvasJSReact from "@canvasjs/react-charts";
-var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 import {

@@ -3,6 +3,7 @@ import { Box, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
 import { UnderLineMiniTitle } from "../component/page_style/project_style";
+import ScanDurations from "./project_ext_scan_durations";
 import "../assets/css/threats.css";
 
 class ProjectThreats extends React.Component {
@@ -185,41 +186,7 @@ class ProjectThreats extends React.Component {
                         <this.threatslist></this.threatslist>
                     </Box>
                     <Box sx={{ width: "30%", padding: "25px" }}>
-                        <div style={{ marginBottom: "1rem" }}>
-                            <UnderLineMiniTitle>
-                                Scan Durations
-                            </UnderLineMiniTitle>
-                            <table>
-                                <tr>
-                                    <td width="5%">Policy:</td>
-                                    <td width="20%">Basic Network Scan</td>
-                                </tr>
-                                <tr>
-                                    <td>Status:</td>
-                                    <td>Completed</td>
-                                </tr>
-                                <tr>
-                                    <td>Severity Base:</td>
-                                    <td>CVSS v3.0</td>
-                                </tr>
-                                <tr>
-                                    <td>Scanner:</td>
-                                    <td>Local Scanner</td>
-                                </tr>
-                                <tr>
-                                    <td>Start:</td>
-                                    <td>January 16 at 5:30 PM</td>
-                                </tr>
-                                <tr>
-                                    <td>End:</td>
-                                    <td>January 16 at 6:28 PM</td>
-                                </tr>
-                                <tr>
-                                    <td>Elapsed:</td>
-                                    <td>an hour</td>
-                                </tr>
-                            </table>
-                        </div>
+                        <ScanDurations></ScanDurations>
                     </Box>
                 </Box>
             </Box>

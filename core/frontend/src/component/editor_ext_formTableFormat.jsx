@@ -23,15 +23,13 @@ import { Autocomplete } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
-
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 import Check from "@mui/icons-material/Check";
+import ScanDurations from "./project_ext_scan_durations";
 import SigleSelect from "./editor_ext_selector";
 import globeVar from "../../GlobalVar";
-
 
 export default class FormTableFormat extends React.Component {
     constructor(props) {
@@ -49,20 +47,17 @@ export default class FormTableFormat extends React.Component {
         };
 
         this.handleOnChange = (event) => {
-            console.log(this.props.catalog)
-            console.log(event.target.name)
-            console.log(event.target.value)
-            if (event.target.name == "reference")
-            {
-                ;this.props.callback(
-                    this.props.catalog,
-                    event.target.name,
-                    [event.target.value]
-                );
-                return null
+            console.log(this.props.catalog);
+            console.log(event.target.name);
+            console.log(event.target.value);
+            if (event.target.name == "reference") {
+                this.props.callback(this.props.catalog, event.target.name, [
+                    event.target.value,
+                ]);
+                return null;
             }
-                
-            ;this.props.callback(
+
+            this.props.callback(
                 this.props.catalog,
                 event.target.name,
                 event.target.value
@@ -326,8 +321,13 @@ export default class FormTableFormat extends React.Component {
                                         InputProps={{
                                             endAdornment: (
                                                 <InputAdornment position="start">
-                                                    <Tooltip title="Delete" variant="plain">
-                                                        <HelpOutlineIcon fontSize={"large"} />
+                                                    <Tooltip
+                                                        title="Delete"
+                                                        variant="plain"
+                                                    >
+                                                        <HelpOutlineIcon
+                                                            fontSize={"large"}
+                                                        />
                                                     </Tooltip>
                                                 </InputAdornment>
                                             ),

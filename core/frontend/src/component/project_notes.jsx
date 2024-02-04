@@ -1,18 +1,9 @@
 import * as React from "react";
-import { Component } from "react";
 
 import {
     Box,
-    Toolbar,
     Typography,
     Paper,
-    Checkbox,
-    IconButton,
-    Tooltip,
-    FormControlLabel,
-    Switch,
-} from "@mui/material";
-import {
     Table,
     TableBody,
     TableCell,
@@ -24,19 +15,9 @@ import {
 } from "@mui/material";
 
 import PropTypes from "prop-types";
-import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import { UnderLineMiniTitle } from "../component/page_style/project_style";
-
-import { DataGrid } from "@mui/x-data-grid";
 import { visuallyHidden } from "@mui/utils";
-import { alpha } from "@mui/material/styles";
 
-import CanvasJSReact from "@canvasjs/react-charts";
-var CanvasJS = CanvasJSReact.CanvasJS;
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
-
-import StackedBar from "./project_ext_stackedBar";
+import ScanDurations from "./project_ext_scan_durations";
 
 export default class ProjectNotes extends React.Component {
     constructor(props) {
@@ -361,39 +342,7 @@ export default class ProjectNotes extends React.Component {
                     <this.EnhancedTable></this.EnhancedTable>
                 </Box>
                 <Box sx={{ width: "30%", padding: "25px" }}>
-                    <div style={{ marginBottom: "1rem" }}>
-                        <UnderLineMiniTitle>Scan Durations</UnderLineMiniTitle>
-                        <table>
-                            <tr>
-                                <td width="5%">Policy:</td>
-                                <td width="20%">Basic Network Scan</td>
-                            </tr>
-                            <tr>
-                                <td>Status:</td>
-                                <td>Completed</td>
-                            </tr>
-                            <tr>
-                                <td>Severity Base:</td>
-                                <td>CVSS v3.0</td>
-                            </tr>
-                            <tr>
-                                <td>Scanner:</td>
-                                <td>Local Scanner</td>
-                            </tr>
-                            <tr>
-                                <td>Start:</td>
-                                <td>January 16 at 5:30 PM</td>
-                            </tr>
-                            <tr>
-                                <td>End:</td>
-                                <td>January 16 at 6:28 PM</td>
-                            </tr>
-                            <tr>
-                                <td>Elapsed:</td>
-                                <td>an hour</td>
-                            </tr>
-                        </table>
-                    </div>
+                    <ScanDurations></ScanDurations>
                 </Box>
             </Box>
         );

@@ -31,38 +31,38 @@ import { alpha } from "@mui/material/styles";
 
 import { UnderLineMiniTitle } from "../component/page_style/project_style";
 
-import CanvasJSReact from "@canvasjs/react-charts";
-
-var CanvasJS = CanvasJSReact.CanvasJS;
-var CanvasJSChart = CanvasJSReact.CanvasJSChart;
+import ScanDurations from "./project_ext_scan_durations";
+import globeVar from "../../GlobalVar";
 
 export default class ProjectHistory extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            // pid: props.projectID,
             order: "desc",
             orderBy: "Start Time",
             selected: [],
             page: 0,
             dense: false,
             rowsPerPage: 10,
+            historyRecord: [],
         };
 
         this.headCells = [
             {
-                id: "name",
+                id: "startTime",
                 numeric: false,
                 disablePadding: true,
                 label: "Start Time",
             },
             {
-                id: "Last Scanned",
+                id: "endTime",
                 numeric: false,
                 disablePadding: true,
                 label: "Last Scanned",
             },
             {
-                id: "Status",
+                id: "status",
                 numeric: false,
                 disablePadding: true,
                 label: "Status",
@@ -375,7 +375,9 @@ export default class ProjectHistory extends React.Component {
 
         const handleSelectAllClick = (event) => {
             if (event.target.checked) {
-                const newSelected = this.rows.map((n) => n.Start_Time);
+                const newSelected = this.state.historyRecord.map(
+                    (n) => n.Start_Time
+                );
                 setSelected(newSelected);
                 return;
             }
@@ -420,13 +422,16 @@ export default class ProjectHistory extends React.Component {
         // Avoid a layout jump when reaching the last page with empty rows.
         const emptyRows =
             page > 0
-                ? Math.max(0, (1 + page) * rowsPerPage - this.rows.length)
+                ? Math.max(
+                      0,
+                      (1 + page) * rowsPerPage - this.state.historyRecord.length
+                  )
                 : 0;
 
         const visibleRows = React.useMemo(
             () =>
                 this.stableSort(
-                    this.rows,
+                    this.state.historyRecord,
                     this.getComparator(order, orderBy)
                 ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
             [order, orderBy, page, rowsPerPage]
@@ -448,7 +453,7 @@ export default class ProjectHistory extends React.Component {
                                 orderBy={orderBy}
                                 onSelectAllClick={handleSelectAllClick}
                                 onRequestSort={handleRequestSort}
-                                rowCount={this.rows.length}
+                                rowCount={this.state.historyRecord.length}
                             />
                             <TableBody>
                                 {visibleRows.map((row, index) => {
@@ -516,7 +521,7 @@ export default class ProjectHistory extends React.Component {
                     <TablePagination
                         rowsPerPageOptions={[10, 25]}
                         component="div"
-                        count={this.rows.length}
+                        count={this.state.historyRecord.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
@@ -570,6 +575,22 @@ export default class ProjectHistory extends React.Component {
         );
     };
 
+    fetchHistoryRecord = async () => {
+        try {
+            const response = await fetch(
+                `${globeVar.backendprotocol}://${globeVar.backendhost}/historyList/${this.props.projectID}`
+            );
+            const jsonData = await response.json();
+            console.log(jsonData);
+            this.setState({ historyRecord: jsonData });
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+    componentDidMount() {
+        this.fetchHistoryRecord();
+    }
+
     render() {
         return (
             <Box component="div" sx={{ display: "flex" }}>
@@ -579,43 +600,7 @@ export default class ProjectHistory extends React.Component {
                     ></this.EnhancedTable>
                 </Box>
                 <Box sx={{ width: "30%", padding: "25px" }}>
-                    <div style={{ marginBottom: "1rem" }}>
-                        <UnderLineMiniTitle>Scan Durations</UnderLineMiniTitle>
-                        <table>
-                            <tr>
-                                <td width="5%">Policy:</td>
-                                <td width="20%">Basic Network Scan</td>
-                            </tr>
-                            <tr>
-                                <td>Status:</td>
-                                <td>Completed</td>
-                            </tr>
-                            <tr>
-                                <td>Severity Base:</td>
-                                <td>CVSS v3.0</td>
-                            </tr>
-                            <tr>
-                                <td>Scanner:</td>
-                                <td>Local Scanner</td>
-                            </tr>
-                            <tr>
-                                <td>Start:</td>
-                                <td>January 16 at 5:30 PM</td>
-                            </tr>
-                            <tr>
-                                <td>End:</td>
-                                <td>January 16 at 6:28 PM</td>
-                            </tr>
-                            <tr>
-                                <td>Elapsed:</td>
-                                <td>an hour</td>
-                            </tr>
-                        </table>
-                    </div>
-                    <div>
-                        <UnderLineMiniTitle>Vulnerabilities</UnderLineMiniTitle>
-                        <this.VulnerabilitiesPiChart></this.VulnerabilitiesPiChart>
-                    </div>
+                    <ScanDurations></ScanDurations>
                 </Box>
             </Box>
         );
