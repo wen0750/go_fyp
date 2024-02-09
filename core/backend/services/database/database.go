@@ -137,17 +137,7 @@ func InitializeMongoDB(collectionName string) (*mongo.Collection, error) {
 		}
 		log.Println("Collection created")
 	} else {
-		log.Println("Collection found")
 	}
-
-	// err = EnsureUniqueIndex(client, collectionName)
-	// if err != nil {
-	// 	log.Fatalf("Error ensuring unique index: %v\n", err)
-	// 	return nil, err
-	// } else {
-	// 	log.Printf("Unique Key set successful")
-	// }
-
 	collection := client.Database(dbName).Collection(collectionName)
 	return collection, nil
 }

@@ -158,7 +158,7 @@ func SaveToDB(c *gin.Context) {
 	}
 
 	// Validate the JSON data using nuclei
-	valid, err := validateWithNuclei(jsonData)
+	valid, err := ValidateWithNuclei(jsonData)
 	if !valid || err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
 			"error":   "Invalid template format",
@@ -238,7 +238,7 @@ func SaveToDB(c *gin.Context) {
 	}
 }
 
-func validateWithNuclei(jsonData []byte) (bool, error) {
+func ValidateWithNuclei(jsonData []byte) (bool, error) {
 	cmd := exec.Command("nuclei", "-validate", "-t", "-")
 	cmd.Stdin = bytes.NewReader(jsonData)
 

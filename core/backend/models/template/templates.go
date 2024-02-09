@@ -1,9 +1,16 @@
 package templates
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
+	"fmt"
 	"go_fyp/core/backend/services/database"
 	"net/http"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"time"
 
 	"log"
 
@@ -12,6 +19,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"gopkg.in/yaml.v2"
 )
 
 // templates/getTemplatesDetails
@@ -163,4 +171,80 @@ func GetTemplatesDetails(c *gin.Context) {
 
 	// Return the template
 	c.JSON(http.StatusOK, templates)
+}
+
+
+func MoveYAMLFilesToDB(srcDir string, templatesCollection *mongo.Collection) error {
+	return filepath.Walk(srcDir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return err
+		}
+
+		if !info.IsDir() && filepath.Ext(path) == ".yaml" {
+			fmt.Printf("Processing file: %s\n", path)
+
+			// Read the YAML file
+			yamlData, err := os.ReadFile(path)
+			if err != nil {
+				return err
+			}
+
+			// Parse YAML file into Template struct
+			var tmpl Template
+			err = yaml.Unmarshal(yamlData, &tmpl)
+			if err != nil {
+				return err
+			}
+
+			// Convert struct to JSON
+			jsonData, err := json.Marshal(tmpl)
+			if err != nil {
+				return err
+			}
+
+			// Validate JSON with Nuclei
+			valid, err := validateWithNuclei(jsonData)
+			if !valid || err != nil {
+				return fmt.Errorf("validation failed for file: %s with error: %v", path, err)
+			}
+
+			// Save to DB
+			if err := saveToDB(templatesCollection, jsonData, tmpl); err != nil {
+				return err
+			}
+		}
+
+		return nil
+	})
+}
+
+func saveToDB(collection *mongo.Collection, jsonData []byte, template Template) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	var bsonData bson.M
+	if err := bson.Unmarshal(jsonData, &bsonData); err != nil {
+		return err
+	}
+
+	_, err := collection.InsertOne(ctx, bsonData)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("Saved template with ID: %s\n", template.ID)
+	return nil
+}
+
+
+func validateWithNuclei(jsonData []byte) (bool, error) {
+	cmd := exec.Command("nuclei", "-validate", "-t", "-")
+	cmd.Stdin = bytes.NewReader(jsonData)
+
+	if err := cmd.Run(); err != nil {
+		// If an error occurs, the validation failed
+		return false, err
+	}
+	// If the command runs without error, the validation passed
+	return true, nil
 }
