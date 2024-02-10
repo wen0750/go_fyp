@@ -35,7 +35,7 @@ export default class ProjectHosts extends React.Component {
         super(props);
         this.state = {
             order: "asc",
-            orderBy: "calories",
+            orderBy: "ip",
             selected: [],
             page: 0,
             dense: false,
@@ -47,13 +47,13 @@ export default class ProjectHosts extends React.Component {
 
         this.headCells = [
             {
-                id: "name",
+                id: "ip",
                 numeric: false,
                 disablePadding: true,
                 label: "Host",
             },
             {
-                id: "calories",
+                id: "total",
                 numeric: false,
                 disablePadding: false,
                 label: "Vulnerabilities",
@@ -560,7 +560,7 @@ export default class ProjectHosts extends React.Component {
                         style={{ width: "75%" }}
                     ></this.EnhancedTable>
                 </Box>
-                <Box sx={{ width: 3 / 10, padding: "25px" }}>
+                <Box sx={{ width: 3 / 10, padding: "0 25px" }}>
                     <ScanDurations></ScanDurations>
                 </Box>
             </Box>
