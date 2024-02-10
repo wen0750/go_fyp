@@ -287,7 +287,7 @@ export default class ProjectSummary extends React.Component {
                     cname="MEDIAN SCAN TIME PER HOST"
                     cvalue={scanTimePerHost}
                 />
-                <this.mediaCard cname="MAX SCAN TIME" cvalue="00:00:00" />
+                {/* <this.mediaCard cname="MAX SCAN TIME" cvalue="00:00:00" /> */}
             </div>
         );
     };

@@ -185,7 +185,7 @@ class ProjectThreats extends React.Component {
                         <this.riskLevel></this.riskLevel>
                         <this.threatslist></this.threatslist>
                     </Box>
-                    <Box sx={{ width: "30%", padding: "25px" }}>
+                    <Box sx={{ width: "30%", padding: "0 25px" }}>
                         <ScanDurations></ScanDurations>
                     </Box>
                 </Box>

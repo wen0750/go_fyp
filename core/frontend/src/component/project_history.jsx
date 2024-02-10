@@ -562,7 +562,7 @@ export default class ProjectHistory extends React.Component {
                         style={{ width: "75%" }}
                     ></this.EnhancedTable>
                 </Box>
-                <Box sx={{ width: "30%", padding: "25px" }}>
+                <Box sx={{ width: "30%", padding: "0 25px" }}>
                     <ScanDurations></ScanDurations>
                 </Box>
             </Box>
