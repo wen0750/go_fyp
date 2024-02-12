@@ -9,7 +9,7 @@ import "../assets/css/threats.css";
 class ProjectVulnerabilities extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = { rows: [] };
         this.columns = [
             {
                 field: "Serverity",
@@ -95,7 +95,7 @@ class ProjectVulnerabilities extends React.Component {
         return (
             <div style={{ height: "100%", width: "100%" }}>
                 <DataGrid
-                    rows={this.rows}
+                    rows={this.state.rows}
                     columns={this.columns}
                     getCellClassName={(params) => {
                         if (
@@ -125,6 +125,32 @@ class ProjectVulnerabilities extends React.Component {
             </div>
         );
     };
+
+    componentDidMount() {
+        const list = [];
+        var indexid = 0;
+        this.props.inputData.result.forEach((element) => {
+            let ixid = list.find((value) => value.Name == element.info.name);
+            if (!ixid) {
+                list.push({
+                    id: indexid,
+                    Serverity: element.info.severityholder.severity,
+                    Score: "5.5",
+                    Name: element.info.name,
+                    Family: "General",
+                    Count: 1,
+                });
+                indexid++;
+            } else {
+                let ix = list.indexOf(ixid);
+                list[ix].Count += 1;
+            }
+        });
+
+        this.setState({
+            rows: list,
+        });
+    }
 
     render() {
         return (
