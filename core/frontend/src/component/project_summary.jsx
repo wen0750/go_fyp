@@ -138,8 +138,6 @@ export default class ProjectSummary extends React.Component {
     };
 
     formateArrayToList = (indata) => {
-        console.log(indata);
-
         return (
             <ul style={{ marginLeft: "20px" }}>
                 {indata.map((element, i) => {
@@ -157,7 +155,6 @@ export default class ProjectSummary extends React.Component {
         const templateName = "";
 
         if (this.state.result != null) {
-            console.log(this.state.result);
             startt = new Date(
                 this.state.result.startTime * 1000
             ).toLocaleString();

@@ -119,7 +119,7 @@ class ProjectVulnerabilities extends React.Component {
                             paginationModel: { page: 0, pageSize: 10 },
                         },
                     }}
-                    pageSizeOptions={[5, 10]}
+                    pageSizeOptions={[5, 10, 15]}
                     checkboxSelection
                 />
             </div>
@@ -135,7 +135,9 @@ class ProjectVulnerabilities extends React.Component {
                 list.push({
                     id: indexid,
                     Serverity: element.info.severityholder.severity,
-                    Score: "5.5",
+                    Score: element.info.hasOwnProperty("classification")
+                        ? element.info.classification.cvssscore
+                        : 0,
                     Name: element.info.name,
                     Family: "General",
                     Count: 1,

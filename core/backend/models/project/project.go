@@ -731,6 +731,7 @@ func GetScanResultSummary(c *gin.Context, pid string) {
 				bson.D{{Key: "$project", Value: bson.D{
 					{Key: "result.info.name", Value: 1},
 					{Key: "result.info.severityholder.severity", Value: 1},
+					{Key: "result.info.classification.cvssscore", Value: 1},
 					{Key: "result.matchername", Value: 1},
 					{Key: "result.extractorname", Value: 1},
 					{Key: "result.host", Value: 1},
@@ -819,6 +820,7 @@ func GetLatestScanResultSummary(c *gin.Context, pid string) {
 		{Key: "result.info.name", Value: 1},
 		{Key: "result.info.description", Value: 1},
 		{Key: "result.info.severityholder.severity", Value: 1},
+		{Key: "result.info.classification.cvssscore", Value: 1},
 		{Key: "result.matchername", Value: 1},
 		{Key: "result.extractorname", Value: 1},
 		{Key: "result.host", Value: 1},

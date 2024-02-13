@@ -58,9 +58,7 @@ export default class ProjectNotes extends React.Component {
     };
 
     stableSort = (array, comparator) => {
-        console.log(array);
         const stabilizedThis = array.map((el, index) => [el, index]);
-        console.log(stabilizedThis);
         stabilizedThis.sort((a, b) => {
             const order = comparator(a[0], b[0]);
             if (order !== 0) {
@@ -213,9 +211,6 @@ export default class ProjectNotes extends React.Component {
                 ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
             [order, orderBy, page, rowsPerPage]
         );
-
-        console.log(this.state.rows);
-        console.log(visibleRows);
 
         return (
             <Box sx={{ width: "100%" }}>

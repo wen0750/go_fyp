@@ -319,8 +319,6 @@ export default class ProjectHosts extends React.Component {
             [order, orderBy, page, rowsPerPage]
         );
 
-        console.log(visibleRows);
-
         return (
             <Box sx={{ width: "100%" }}>
                 <Paper sx={{ width: "100%", mb: 2 }}>
@@ -343,9 +341,6 @@ export default class ProjectHosts extends React.Component {
                                 {visibleRows.map((row, index) => {
                                     const isItemSelected = isSelected(row.ip);
                                     const labelId = `enhanced-table-checkbox-${index}`;
-                                    console.log(row);
-                                    console.log(index);
-
                                     return (
                                         <TableRow
                                             hover
