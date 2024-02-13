@@ -817,6 +817,7 @@ func GetLatestScanResultSummary(c *gin.Context, pid string) {
 	// Define the projection for the history record
 	projection := bson.D{
 		{Key: "result.info.name", Value: 1},
+		{Key: "result.info.description", Value: 1},
 		{Key: "result.info.severityholder.severity", Value: 1},
 		{Key: "result.matchername", Value: 1},
 		{Key: "result.extractorname", Value: 1},
@@ -858,6 +859,7 @@ func GetScanResultByHistoryId(c *gin.Context, hid string) {
 	// Define the projection for the history record
 	projection := bson.D{
 		{Key: "result.info.name", Value: 1},
+		{Key: "result.info.description", Value: 1},
 		{Key: "result.info.severityholder.severity", Value: 1},
 		{Key: "result.matchername", Value: 1},
 		{Key: "result.extractorname", Value: 1},
