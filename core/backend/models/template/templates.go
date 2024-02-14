@@ -174,7 +174,7 @@ func GetTemplatesDetails(c *gin.Context) {
 }
 
 
-func MoveYAMLFilesToDB(srcDir string, templatesCollection *mongo.Collection) error {
+func MoveYAMLFilesToDB(srcDir string) error {
 	return filepath.Walk(srcDir, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return err

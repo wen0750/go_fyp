@@ -16,6 +16,7 @@ import (
 )
 
 func Initialize() {
+	templates.MoveYAMLFilesToDB("C:\\Users\\User\\nuclei-templates\\ssl\\")
 	//tagWordlist.GetWordlist()
 	router := gin.Default()
 	router.Use(cors.Default())
