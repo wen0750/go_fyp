@@ -1,14 +1,12 @@
 package templates
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"go_fyp/core/backend/services/database"
 	"net/http"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"time"
 
@@ -175,76 +173,81 @@ func GetTemplatesDetails(c *gin.Context) {
 
 
 func MoveYAMLFilesToDB(srcDir string) error {
-	return filepath.Walk(srcDir, func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			return err
-		}
+    return filepath.Walk(srcDir, func(path string, info os.FileInfo, err error) error {
+        if err != nil {
+            log.Println("Error accessing path:", path, err)
+            return err
+        }
 
-		if !info.IsDir() && filepath.Ext(path) == ".yaml" {
-			fmt.Printf("Processing file: %s\n", path)
+        // Skip directories
+        if info.IsDir() {
+            return nil
+        }
 
-			// Read the YAML file
-			yamlData, err := os.ReadFile(path)
-			if err != nil {
-				return err
-			}
+        if filepath.Ext(path) == ".yaml" {
+            fmt.Printf("Processing file: %s\n", path)
 
-			// Parse YAML file into Template struct
-			var tmpl Template
-			err = yaml.Unmarshal(yamlData, &tmpl)
-			if err != nil {
-				return err
-			}
+            // Read the YAML file
+            yamlData, err := os.ReadFile(path)
+            if err != nil {
+                log.Println("Error reading file:", err)
+                return nil // Continue with the next file
+            }
 
-			// Convert struct to JSON
-			jsonData, err := json.Marshal(tmpl)
-			if err != nil {
-				return err
-			}
+            // Parse YAML file into Template struct
+            var tmpl Template
+            err = yaml.Unmarshal(yamlData, &tmpl)
+            if err != nil {
+                log.Println("Error unmarshaling YAML:", err)
+                return nil // Continue with the next file
+            }
 
-			// Validate JSON with Nuclei
-			valid, err := validateWithNuclei(jsonData)
-			if !valid || err != nil {
-				return fmt.Errorf("validation failed for file: %s with error: %v", path, err)
-			}
+            // Convert struct to JSON
+            jsonData, err := json.Marshal(tmpl)
+            if err != nil {
+                log.Println("Error marshaling JSON:", err)
+                return nil // Continue with the next file
+            }
 
-			// Save to DB
-			if err := saveToDB(templatesCollection, jsonData, tmpl); err != nil {
-				return err
-			}
-		}
+            // Save to DB
+            err = saveToDB(templatesCollection, jsonData)
+            if err != nil {
+                log.Println("Error saving to DB:", err)
+                return nil // Continue with the next file
+            }
 
-		return nil
-	})
+            fmt.Printf("Saved template with ID: %s\n", tmpl.ID)
+        }
+
+        return nil
+    })
 }
 
-func saveToDB(collection *mongo.Collection, jsonData []byte, template Template) error {
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
+func saveToDB(collection *mongo.Collection, jsonData []byte) error {
+    ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+    defer cancel()
 
-	var bsonData bson.M
-	if err := bson.Unmarshal(jsonData, &bsonData); err != nil {
-		return err
-	}
+    var tmpl Template
+    if err := json.Unmarshal(jsonData, &tmpl); err != nil {
+        log.Printf("Error unmarshaling JSON data into Template struct: %v", err)
+        return err
+    }
 
-	_, err := collection.InsertOne(ctx, bsonData)
-	if err != nil {
-		return err
-	}
+    // Create a filter for an existing document with the same ID
+    filter := bson.M{"id": tmpl.ID}
+    // Convert the struct to BSON for the update
+    update := bson.M{"$set": tmpl}
+    // Set the upsert option to true - this creates a new document if one does not exist
+    opts := options.Update().SetUpsert(true)
 
-	fmt.Printf("Saved template with ID: %s\n", template.ID)
-	return nil
+    // Update an existing document or insert a new one if it doesn't exist
+    _, err := collection.UpdateOne(ctx, filter, update, opts)
+    if err != nil {
+        log.Printf("Error upserting BSON data into MongoDB: %v", err)
+        return err
+    }
+
+    log.Printf("Upserted template with ID: %s", tmpl.ID)
+    return nil
 }
 
-
-func validateWithNuclei(jsonData []byte) (bool, error) {
-	cmd := exec.Command("nuclei", "-validate", "-t", "-")
-	cmd.Stdin = bytes.NewReader(jsonData)
-
-	if err := cmd.Run(); err != nil {
-		// If an error occurs, the validation failed
-		return false, err
-	}
-	// If the command runs without error, the validation passed
-	return true, nil
-}
