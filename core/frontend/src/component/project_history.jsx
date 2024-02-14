@@ -90,7 +90,6 @@ export default class ProjectHistory extends React.Component {
     };
 
     stableSort = (array, comparator) => {
-        console.log(array);
         const stabilizedThis = array.map((el, index) => [el, index]);
 
         stabilizedThis.sort((a, b) => {
@@ -346,24 +345,19 @@ export default class ProjectHistory extends React.Component {
                             />
                             <TableBody>
                                 {visibleRows.map((row, index) => {
-                                    const isItemSelected = isSelected(
-                                        row.Start_Time
-                                    );
+                                    const isItemSelected = isSelected(row._id);
                                     const labelId = `enhanced-table-checkbox-${index}`;
 
                                     return (
                                         <TableRow
                                             hover
                                             onClick={(event) =>
-                                                handleClick(
-                                                    event,
-                                                    row.Start_Time
-                                                )
+                                                handleClick(event, row._id)
                                             }
                                             role="checkbox"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
-                                            key={row.Start_Time}
+                                            key={row._id}
                                             selected={isItemSelected}
                                             sx={{ cursor: "pointer" }}
                                         >
@@ -452,7 +446,6 @@ export default class ProjectHistory extends React.Component {
     }
 
     render() {
-        console.log(this.state.historyRecord);
         return (
             <Box component="div" sx={{ display: "flex" }}>
                 <Box sx={{ width: "70%" }}>
