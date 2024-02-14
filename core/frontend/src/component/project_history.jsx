@@ -37,6 +37,7 @@ import globeVar from "../../GlobalVar";
 export default class ProjectHistory extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
             // pid: props.projectID,
             order: "desc",
@@ -46,6 +47,8 @@ export default class ProjectHistory extends React.Component {
             dense: false,
             rowsPerPage: 10,
             historyRecord: [],
+            display: false,
+            rows: [],
         };
 
         this.headCells = [
@@ -59,7 +62,7 @@ export default class ProjectHistory extends React.Component {
                 id: "endTime",
                 numeric: false,
                 disablePadding: true,
-                label: "Last Scanned",
+                label: "End Time",
             },
             {
                 id: "status",
@@ -67,117 +70,6 @@ export default class ProjectHistory extends React.Component {
                 disablePadding: true,
                 label: "Status",
             },
-        ];
-
-        this.createData = (Start_Time, Last_Scanned, Status) => {
-            return {
-                Start_Time,
-                Last_Scanned,
-                Status,
-            };
-        };
-
-        this.rows = [
-            this.createData(
-                "2020-11-21 at 11:18 AM",
-                "2020-11-21 at 11:38 AM",
-                "Completed"
-            ),
-            this.createData(
-                "2020-11-22 at 11:18 AM",
-                "2020-11-22 at 11:38 AM",
-                "Completed"
-            ),
-            this.createData(
-                "2020-11-23 at 11:18 AM",
-                "2020-11-23 at 11:38 AM",
-                "Completed"
-            ),
-            this.createData(
-                "2020-11-24 at 11:18 AM",
-                "2020-11-24 at 11:38 AM",
-                "Completed"
-            ),
-            this.createData(
-                "2020-11-25 at 11:18 AM",
-                "2020-11-25 at 11:38 AM",
-                "Completed"
-            ),
-            this.createData(
-                "2020-11-26 at 11:18 AM",
-                "2020-11-26 at 11:38 AM",
-                "Completed"
-            ),
-            this.createData(
-                "2020-11-27 at 11:18 AM",
-                "2020-11-27 at 11:38 AM",
-                "Completed"
-            ),
-            this.createData(
-                "2020-11-28 at 11:18 AM",
-                "2020-11-28 at 11:38 AM",
-                "Completed"
-            ),
-            this.createData(
-                "2020-11-29 at 11:18 AM",
-                "2020-11-28 at 11:38 AM",
-                "Completed"
-            ),
-            this.createData(
-                "2020-11-30 at 11:18 AM",
-                "2020-11-28 at 11:38 AM",
-                "Completed"
-            ),
-            this.createData(
-                "2020-12-01 at 11:18 AM",
-                "2020-11-28 at 11:38 AM",
-                "Completed"
-            ),
-            this.createData(
-                "2020-12-02 at 11:18 AM",
-                "2020-11-28 at 11:38 AM",
-                "Completed"
-            ),
-            this.createData(
-                "2020-12-03 at 11:18 AM",
-                "2020-11-28 at 11:38 AM",
-                "Completed"
-            ),
-            this.createData(
-                "2020-12-04 at 11:18 AM",
-                "2020-11-28 at 11:38 AM",
-                "Completed"
-            ),
-            this.createData(
-                "2020-12-05 at 11:18 AM",
-                "2020-11-28 at 11:38 AM",
-                "Completed"
-            ),
-            this.createData(
-                "2020-12-06 at 11:18 AM",
-                "2020-11-28 at 11:38 AM",
-                "Completed"
-            ),
-            this.createData(
-                "2020-12-07 at 11:18 AM",
-                "2020-11-28 at 11:38 AM",
-                "Completed"
-            ),
-            this.createData(
-                "2020-12-08 at 11:18 AM",
-                "2020-11-28 at 11:38 AM",
-                "Completed"
-            ),
-            this.createData(
-                "2020-12-09 at 11:18 AM",
-                "2020-11-28 at 11:38 AM",
-                "Completed"
-            ),
-            this.createData(
-                "2020-12-10 at 11:18 AM",
-                "2020-11-28 at 11:38 AM",
-                "Completed"
-            ),
         ];
     }
 
@@ -198,7 +90,9 @@ export default class ProjectHistory extends React.Component {
     };
 
     stableSort = (array, comparator) => {
+        console.log(array);
         const stabilizedThis = array.map((el, index) => [el, index]);
+
         stabilizedThis.sort((a, b) => {
             const order = comparator(a[0], b[0]);
             if (order !== 0) {
@@ -326,7 +220,7 @@ export default class ProjectHistory extends React.Component {
         );
     };
 
-    EnhancedTable = () => {
+    EnhancedTable = (props) => {
         const setRowsPerPage = (newValue) => {
             this.setState({ rowsPerPage: newValue });
         };
@@ -375,9 +269,7 @@ export default class ProjectHistory extends React.Component {
 
         const handleSelectAllClick = (event) => {
             if (event.target.checked) {
-                const newSelected = this.state.historyRecord.map(
-                    (n) => n.Start_Time
-                );
+                const newSelected = props.data.map((n) => n.Start_Time);
                 setSelected(newSelected);
                 return;
             }
@@ -422,16 +314,13 @@ export default class ProjectHistory extends React.Component {
         // Avoid a layout jump when reaching the last page with empty rows.
         const emptyRows =
             page > 0
-                ? Math.max(
-                      0,
-                      (1 + page) * rowsPerPage - this.state.historyRecord.length
-                  )
+                ? Math.max(0, (1 + page) * rowsPerPage - props.data.length)
                 : 0;
 
         const visibleRows = React.useMemo(
             () =>
                 this.stableSort(
-                    this.state.historyRecord,
+                    props.data,
                     this.getComparator(order, orderBy)
                 ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
             [order, orderBy, page, rowsPerPage]
@@ -453,7 +342,7 @@ export default class ProjectHistory extends React.Component {
                                 orderBy={orderBy}
                                 onSelectAllClick={handleSelectAllClick}
                                 onRequestSort={handleRequestSort}
-                                rowCount={this.state.historyRecord.length}
+                                rowCount={props.data.length}
                             />
                             <TableBody>
                                 {visibleRows.map((row, index) => {
@@ -494,7 +383,9 @@ export default class ProjectHistory extends React.Component {
                                                 scope="row"
                                                 padding="none"
                                             >
-                                                {row.Start_Time}
+                                                {new Date(
+                                                    row.startTime * 1000
+                                                ).toLocaleString()}
                                             </TableCell>
                                             <TableCell
                                                 component="th"
@@ -502,7 +393,9 @@ export default class ProjectHistory extends React.Component {
                                                 scope="row"
                                                 padding="none"
                                             >
-                                                {row.Last_Scanned}
+                                                {new Date(
+                                                    row.endTime * 1000
+                                                ).toLocaleString()}
                                             </TableCell>
                                             <TableCell
                                                 component="th"
@@ -510,7 +403,9 @@ export default class ProjectHistory extends React.Component {
                                                 scope="row"
                                                 padding="none"
                                             >
-                                                {row.Status}
+                                                {row.status == "idle"
+                                                    ? "Finish"
+                                                    : row.status}
                                             </TableCell>
                                         </TableRow>
                                     );
@@ -519,9 +414,9 @@ export default class ProjectHistory extends React.Component {
                         </Table>
                     </TableContainer>
                     <TablePagination
-                        rowsPerPageOptions={[10, 25]}
+                        rowsPerPageOptions={[10, 15, 20, 25]}
                         component="div"
-                        count={this.state.historyRecord.length}
+                        count={props.data.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
@@ -544,24 +439,31 @@ export default class ProjectHistory extends React.Component {
                 `${globeVar.backendprotocol}://${globeVar.backendhost}/historyList/${this.props.projectID}`
             );
             const jsonData = await response.json();
-            console.log(jsonData);
-            this.setState({ historyRecord: jsonData });
+            if (this.state.historyRecord != jsonData) {
+                this.setState({ historyRecord: jsonData, display: true });
+            }
         } catch (error) {
             console.error("Error fetching data:", error);
         }
     };
+
     componentDidMount() {
         this.fetchHistoryRecord();
     }
 
     render() {
+        console.log(this.state.historyRecord);
         return (
             <Box component="div" sx={{ display: "flex" }}>
                 <Box sx={{ width: "70%" }}>
-                    <this.EnhancedTable
-                        style={{ width: "75%" }}
-                    ></this.EnhancedTable>
+                    {this.state.display && (
+                        <this.EnhancedTable
+                            data={this.state.historyRecord}
+                            style={{ width: "75%" }}
+                        ></this.EnhancedTable>
+                    )}
                 </Box>
+
                 <Box sx={{ width: "30%", padding: "0 25px" }}>
                     <ScanDurations></ScanDurations>
                 </Box>
