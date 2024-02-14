@@ -35,7 +35,7 @@ export default class ProjectHosts extends React.Component {
         super(props);
         this.state = {
             order: "asc",
-            orderBy: "calories",
+            orderBy: "ip",
             selected: [],
             page: 0,
             dense: false,
@@ -47,66 +47,17 @@ export default class ProjectHosts extends React.Component {
 
         this.headCells = [
             {
-                id: "name",
+                id: "ip",
                 numeric: false,
                 disablePadding: true,
                 label: "Host",
             },
             {
-                id: "calories",
+                id: "total",
                 numeric: false,
                 disablePadding: false,
                 label: "Vulnerabilities",
             },
-        ];
-
-        this.createData = (name, calories, fat, carbs, protein) => {
-            return {
-                name,
-                calories,
-                fat,
-                carbs,
-                protein,
-            };
-        };
-
-        this.rows = [
-            this.createData("google.com", 1, 8, 2, 7),
-            this.createData("facebook.com", 452, 25.0, 51, 4.9),
-            this.createData("amazon.com", 262, 16.0, 24, 6.0),
-            this.createData("imdb.com", 159, 6.0, 24, 4.0),
-            this.createData("apple.com", 356, 16.0, 49, 3.9),
-            this.createData("pinterest.com", 408, 3.2, 87, 6.5),
-            this.createData("yelp.com", 237, 9.0, 37, 4.3),
-            this.createData("tripadvisor.com", 3, 10, 9, 2),
-            this.createData("wiktionary.org", 518, 26.0, 65, 7.0),
-            this.createData("dictionary.com", 392, 0.2, 98, 0.0),
-            this.createData("cambridge.org", 25.3, 87.5, 12.8, 56.7),
-            this.createData("britannica.com", 360, 19.0, 9, 37.0),
-            this.createData("microsoft.com", 6, 4, 8, 1),
-            this.createData("walmart.com", 1.5, 75.8, 69.2, 22.1),
-            this.createData("espn.com", 13.7, 57.2, 90.8, 4.3),
-            this.createData("weather.com", 53.4, 27.6, 10.9, 94.3),
-            this.createData("linkedin.com", 86.9, 3.2, 41.5, 59.1),
-            this.createData("homedepot.com", 437, 18.0, 63, 4.0),
-            this.createData("espncricinfo.com", 58.1, 33.6, 89.7, 22.4),
-            this.createData("samsung.com", 19.7, 67.9, 56.3, 8.2),
-            this.createData("craigslist.org", 69.4, 57.8, 16.3, 4.7),
-            this.createData("gsmarena.com", 28.5, 72.3, 5.9, 50.2),
-            this.createData("ebay.com", 76.9, 44.2, 12.5, 30.7),
-            this.createData("mayoclinic.org", 17.2, 92.8, 41.3, 6.1),
-            this.createData("cricbuzz.com", 94.1, 32.7, 79.4, 1.2),
-            this.createData("timeanddate.com", 79.6, 85.5, 52.1, 34.3),
-            this.createData("webmd.com", 9, 3, 2, 7),
-            this.createData("thesaurus.com", 437, 18.0, 63, 4.0),
-            this.createData("rottentomatoes.com", 60.2, 51.3, 18.9, 7.5),
-            this.createData("bbc.com", 52.1, 94.8, 84.9, 47.4),
-            this.createData("healthline.com", 15.6, 97.8, 88.1, 42.0),
-            this.createData("netflix.com", 47.3, 81.9, 16.4, 38.1),
-            this.createData("indeed.com", 72.4, 36.6, 81.0, 11.1),
-            this.createData("thefreedictionary.com", 70.1, 10.4, 39.5, 51.8),
-            this.createData("spotify.com", 98.5, 77.2, 65.9, 7.8),
-            this.createData("livescore.com", 45.7, 8.2, 74.4, 63.2),
         ];
     }
 
@@ -388,19 +339,18 @@ export default class ProjectHosts extends React.Component {
                             />
                             <TableBody>
                                 {visibleRows.map((row, index) => {
-                                    const isItemSelected = isSelected(row.name);
+                                    const isItemSelected = isSelected(row.ip);
                                     const labelId = `enhanced-table-checkbox-${index}`;
-
                                     return (
                                         <TableRow
                                             hover
                                             onClick={(event) =>
-                                                handleClick(event, row.name)
+                                                handleClick(event, row.ip)
                                             }
                                             role="checkbox"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
-                                            key={row.name}
+                                            key={row.ip}
                                             selected={isItemSelected}
                                             sx={{ cursor: "pointer" }}
                                         >
@@ -420,7 +370,7 @@ export default class ProjectHosts extends React.Component {
                                                 scope="row"
                                                 padding="none"
                                             >
-                                                {row.name}
+                                                {row.ip}
                                             </TableCell>
                                             <TableCell
                                                 align="right"
@@ -430,6 +380,7 @@ export default class ProjectHosts extends React.Component {
                                                 }}
                                             >
                                                 <StackedBar
+                                                    rowData={row}
                                                     isOpen={
                                                         this.state
                                                             .showStackedBar
@@ -489,61 +440,55 @@ export default class ProjectHosts extends React.Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        // if (props.inputData !== state.result) {
-        //     console.log(props.inputData);
-        //     return {
-        //         result: props.inputData,
-        //     };
-        // }
-
-        // for (const key in props.inputData) {
-        //     if (Object.hasOwnProperty.call(object, key)) {
-        //         const element = object[key];
-        //     }
-        // }
         if (Object.hasOwnProperty.call(props.inputData, "result")) {
-            console.log(props.inputData.result);
-
             const custList = [];
-
+            const indexer = [];
             for (const key in props.inputData.result) {
                 if (Object.hasOwnProperty.call(props.inputData.result, key)) {
                     let obj = props.inputData.result[key];
-
-                    if (Object.hasOwnProperty.call(custList, obj.ip)) {
-                        switch (obj.info.severityholder.severity) {
-                            case 6:
-                                // code block
-                                custList[obj.ip].critical += 1;
-                                break;
-                            case 4:
-                                // code block
-                                custList[obj.ip].high += 1;
-                                break;
-                            case 3:
-                                // info
-                                custList[obj.ip].medium += 1;
-                                break;
-                            case 2:
-                                // code block
-                                custList[obj.ip].low += 1;
-                                break;
-                            case 1:
-                                // code block
-                                custList[obj.ip].info += 1;
-                                break;
-                            case 0:
-                                break;
-                        }
-                    } else {
-                        custList[obj.ip] = {
+                    var indexofip = indexer.indexOf(obj.ip);
+                    if (indexofip < 0) {
+                        indexer.push(obj.ip);
+                        custList.push({
                             ip: obj.ip,
+                            total: 0,
                             critical: 0,
                             high: 0,
                             info: 0,
                             low: 0,
-                            medium: 2,
-                        };
+                            medium: 0,
+                        });
+                        indexofip = indexer.length - 1;
+                    }
+
+                    switch (obj.info.severityholder.severity) {
+                        case 6:
+                            // code block
+                            custList[indexofip].critical += 1;
+                            custList[indexofip].total += 1;
+                            break;
+                        case 4:
+                            // code block
+                            custList[indexofip].high += 1;
+                            custList[indexofip].total += 1;
+                            break;
+                        case 3:
+                            // info
+                            custList[indexofip].medium += 1;
+                            custList[indexofip].total += 1;
+                            break;
+                        case 2:
+                            // code block
+                            custList[indexofip].low += 1;
+                            custList[indexofip].total += 1;
+                            break;
+                        case 1:
+                            // code block
+                            custList[indexofip].info += 1;
+                            custList[indexofip].total += 1;
+                            break;
+                        case 0:
+                            break;
                     }
                 }
             }
@@ -560,7 +505,7 @@ export default class ProjectHosts extends React.Component {
                         style={{ width: "75%" }}
                     ></this.EnhancedTable>
                 </Box>
-                <Box sx={{ width: 3 / 10, padding: "25px" }}>
+                <Box sx={{ width: 3 / 10, padding: "0 25px" }}>
                     <ScanDurations></ScanDurations>
                 </Box>
             </Box>

@@ -138,8 +138,6 @@ export default class ProjectSummary extends React.Component {
     };
 
     formateArrayToList = (indata) => {
-        console.log(indata);
-
         return (
             <ul style={{ marginLeft: "20px" }}>
                 {indata.map((element, i) => {
@@ -157,7 +155,6 @@ export default class ProjectSummary extends React.Component {
         const templateName = "";
 
         if (this.state.result != null) {
-            console.log(this.state.result);
             startt = new Date(
                 this.state.result.startTime * 1000
             ).toLocaleString();
@@ -287,7 +284,7 @@ export default class ProjectSummary extends React.Component {
                     cname="MEDIAN SCAN TIME PER HOST"
                     cvalue={scanTimePerHost}
                 />
-                <this.mediaCard cname="MAX SCAN TIME" cvalue="00:00:00" />
+                {/* <this.mediaCard cname="MAX SCAN TIME" cvalue="00:00:00" /> */}
             </div>
         );
     };

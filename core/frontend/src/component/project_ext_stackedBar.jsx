@@ -3,13 +3,22 @@ import Chart from "react-apexcharts";
 
 const App = (props) => {
     // Defined default value
-    const list = { info: 20, low: 20, medium: 20, high: 20, critical: 20 };
+    // const list = {
+    //     info: props.rowData.info,
+    //     low: props.rowData.low,
+    //     medium: props.rowData.medium,
+    //     high: props.rowData.high,
+    //     critical: props.rowData.critical,
+    // };
+    const list = props.rowData;
     let series = [];
     let colorsGapChart = [];
 
     const sKeys = Object.keys(list);
     sKeys.forEach((key) => {
-        if (list[key] > 0) {
+        if (key != "total" && key != "ip") {
+            // series.push({ name: key, data: [] });
+            // let datalen = (list[key] / list.total) * 100;
             series.push({ name: key, data: [list[key]] });
             switch (key) {
                 case "info":
@@ -27,6 +36,8 @@ const App = (props) => {
                 case "critical":
                     colorsGapChart.push("#780000");
                     break;
+                default:
+                    break;
             }
         }
     });
@@ -36,7 +47,7 @@ const App = (props) => {
             id: "basic-bar",
             type: "bar",
             stacked: true,
-            stackType: 5,
+            stackType: "100%",
             height: "auto",
             toolbar: {
                 show: false,

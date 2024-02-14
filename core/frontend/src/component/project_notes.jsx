@@ -24,10 +24,11 @@ export default class ProjectNotes extends React.Component {
         super(props);
         this.state = {
             order: "asc",
-            orderBy: "name",
+            orderBy: "Name",
             selected: [],
             page: 0,
             rowsPerPage: 10,
+            rows: [],
         };
 
         this.headCells = [
@@ -37,38 +38,6 @@ export default class ProjectNotes extends React.Component {
                 disablePadding: false,
                 label: "Scan Notes",
             },
-        ];
-
-        this.createData = (name, calories, fat, carbs, protein) => {
-            return {
-                name,
-                calories,
-                fat,
-                carbs,
-                protein,
-            };
-        };
-
-        this.rows = [
-            this.createData(
-                "DNS lssue",
-                "Unable to resolve log4shell-generic-3PsFeAUq2HWWrkuYrflL.r.nessus.org,please check your DNS configuration or retry the scan later"
-            ),
-            this.createData(
-                "Log4j DNS Failed Request",
-                "Unable to resolve DNS r.nessus.org to check Log4j Vunlnerability"
-            ),
-            this.createData("amazon.com", 262),
-            this.createData("imdb.com", 159),
-            this.createData("apple.com", 356),
-            this.createData("pinterest.com", 4),
-            this.createData("yelp.com", 237),
-            this.createData("tripadvisor.com", 3),
-            this.createData("wiktionary.org", 518),
-            this.createData("dictionary.com", 392),
-            this.createData("cambridge.org", 25.3),
-            this.createData("britannica.com", 360),
-            this.createData("microsoft.com", 6),
         ];
     }
 
@@ -190,7 +159,7 @@ export default class ProjectNotes extends React.Component {
 
         const handleSelectAllClick = (event) => {
             if (event.target.checked) {
-                const newSelected = this.rows.map((n) => n.name);
+                const newSelected = this.state.rows.map((n) => n.name);
                 setSelected(newSelected);
                 return;
             }
@@ -231,13 +200,13 @@ export default class ProjectNotes extends React.Component {
         // Avoid a layout jump when reaching the last page with empty rows.
         const emptyRows =
             page > 0
-                ? Math.max(0, (1 + page) * rowsPerPage - this.rows.length)
+                ? Math.max(0, (1 + page) * rowsPerPage - this.state.rows.length)
                 : 0;
 
         const visibleRows = React.useMemo(
             () =>
                 this.stableSort(
-                    this.rows,
+                    this.state.rows,
                     this.getComparator(order, orderBy)
                 ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
             [order, orderBy, page, rowsPerPage]
@@ -258,7 +227,7 @@ export default class ProjectNotes extends React.Component {
                                 orderBy={orderBy}
                                 onSelectAllClick={handleSelectAllClick}
                                 onRequestSort={handleRequestSort}
-                                rowCount={this.rows.length}
+                                rowCount={this.state.rows.length}
                             />
                             <TableBody>
                                 {visibleRows.map((row, index) => {
@@ -296,14 +265,14 @@ export default class ProjectNotes extends React.Component {
                                                     }}
                                                     gutterBottom
                                                 >
-                                                    {row.name}
+                                                    {row.Name}
                                                 </Typography>
                                                 <Typography
                                                     variant="subtitle2"
                                                     sx={{ color: "black" }}
                                                     gutterBottom
                                                 >
-                                                    {row.calories}
+                                                    {row.Description}
                                                 </Typography>
                                             </TableCell>
                                         </TableRow>
@@ -324,7 +293,7 @@ export default class ProjectNotes extends React.Component {
                     <TablePagination
                         rowsPerPageOptions={[10, 25]}
                         component="div"
-                        count={this.rows.length}
+                        count={this.state.rows.length}
                         rowsPerPage={rowsPerPage}
                         page={page}
                         onPageChange={handleChangePage}
@@ -335,13 +304,38 @@ export default class ProjectNotes extends React.Component {
         );
     };
 
+    static getDerivedStateFromProps(props, state) {
+        if (Object.hasOwnProperty.call(props.inputData, "result")) {
+            const list = [];
+            var indexid = 0;
+            props.inputData.result.forEach((element) => {
+                let ixid = list.find(
+                    (value) => value.Name == element.info.name
+                );
+                if (!ixid) {
+                    list.push({
+                        id: indexid,
+                        Name: element.info.name,
+                        Description: element.info.description,
+                    });
+                    indexid++;
+                } else {
+                    let ix = list.indexOf(ixid);
+                    list[ix].Count += 1;
+                }
+            });
+            return { rows: list };
+        }
+        return null;
+    }
+
     render() {
         return (
             <Box component="div" sx={{ display: "flex" }}>
                 <Box sx={{ width: "70%" }}>
                     <this.EnhancedTable></this.EnhancedTable>
                 </Box>
-                <Box sx={{ width: "30%", padding: "25px" }}>
+                <Box sx={{ width: "30%", padding: "0 25px" }}>
                     <ScanDurations></ScanDurations>
                 </Box>
             </Box>
