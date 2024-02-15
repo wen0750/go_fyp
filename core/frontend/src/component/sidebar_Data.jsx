@@ -8,24 +8,24 @@ import {
 import globeVar from "../../GlobalVar";
 
 const hardData = [
-    {
-        id: 1,
-        name: "project folder",
-        path: "folder",
-        icon: <FolderCopyRoundedIcon />,
-    },
-    {
-        id: 2,
-        name: "project item",
-        path: "project",
-        icon: <LayoutIcon />,
-    },
-    {
-        id: 4,
-        name: "terminal",
-        path: "terminal",
-        icon: <TerminalIcon />,
-    },
+    // {
+    //     id: 1,
+    //     name: "project folder",
+    //     path: "folder",
+    //     icon: <FolderCopyRoundedIcon />,
+    // },
+    // {
+    //     id: 2,
+    //     name: "project item",
+    //     path: "project",
+    //     icon: <LayoutIcon />,
+    // },
+    // {
+    //     id: 4,
+    //     name: "terminal",
+    //     path: "terminal",
+    //     icon: <TerminalIcon />,
+    // },
     {
         id: 3,
         name: "template editor",

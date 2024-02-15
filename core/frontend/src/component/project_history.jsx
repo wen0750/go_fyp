@@ -291,7 +291,7 @@ export default class ProjectHistory extends React.Component {
                     selected.slice(selectedIndex + 1)
                 );
             }
-
+            this.props.onChangeHid(newSelected);
             setSelected(newSelected);
         };
 

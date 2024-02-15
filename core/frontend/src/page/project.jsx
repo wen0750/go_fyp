@@ -198,6 +198,18 @@ class ProjectItem extends React.Component {
         }
     };
 
+    fetchResultWithHid = async (hid) => {
+        try {
+            const response = await fetch(
+                `${globeVar.backendprotocol}://${globeVar.backendhost}/historyOne/${hid}`
+            );
+            const jsonData = await response.json();
+            this.setState({ scanningResult: jsonData, curTab: 0 });
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
     componentDidMount() {
         this.fetchScanningResult();
     }
@@ -261,6 +273,7 @@ class ProjectItem extends React.Component {
                         <ProjectHistory
                             inputData={this.state.scanningResult}
                             projectID={this.props.pid}
+                            onChangeHid={this.fetchResultWithHid}
                         />
                     </this.TabPanel>
                 </div>
