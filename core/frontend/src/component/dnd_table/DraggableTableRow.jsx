@@ -42,7 +42,6 @@ export const DraggableTableRow = ({ row, dataInput }) => {
                 <DraggingRow colSpan={row.cells.length}>&nbsp;</DraggingRow>
             ) : (
                 row.cells.map((cell, i) => {
-                    console.log(row.id);
                     if (i === 0) {
                         return (
                             <TableData {...cell.getCellProps()}>

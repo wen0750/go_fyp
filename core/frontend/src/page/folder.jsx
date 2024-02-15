@@ -280,13 +280,11 @@ class ProjectFolder extends React.Component {
     };
 
     createNewProject = () => {
-        console.log("tttttttttttttttt");
         if (
             this.state.f_project_name &&
             this.state.f_project_host &&
             this.state.selectedTIDs
         ) {
-            console.log("ttttttttttttttttt");
             fetch(
                 `${globeVar.backendprotocol}://${globeVar.backendhost}/project/createProject`,
                 {

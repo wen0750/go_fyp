@@ -7,7 +7,6 @@ import TerminalBody from "../../page/terminal";
 
 const Item = (props) => {
     const { page } = props;
-    console.log(props);
     switch (page) {
         case "folder":
             let { fid } = useParams();

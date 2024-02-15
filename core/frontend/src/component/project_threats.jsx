@@ -9,10 +9,12 @@ import "../assets/css/threats.css";
 class ProjectThreats extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            rows: props.inputData,
+        };
         this.columns = [
             {
-                field: "Serverity",
+                field: "serverity",
                 flex: 1.5,
                 width: 150,
                 headerClassName: "gray-background",
@@ -20,74 +22,31 @@ class ProjectThreats extends React.Component {
                 headerAlign: "center",
             },
             {
-                field: "Name",
+                field: "name",
                 flex: 5,
                 width: 500,
                 headerClassName: "gray-background",
             },
+            // {
+            //     field: "info.description",
+            //     flex: 2,
+            //     width: 200,
+            //     headerClassName: "gray-background",
+            // },
             {
-                field: "Reasons",
-                flex: 2,
-                width: 200,
-                headerClassName: "gray-background",
-            },
-            {
-                field: "Score",
+                field: "score",
                 flex: 1,
                 width: 150,
                 headerClassName: "gray-background",
             },
             {
-                field: "Hosts",
+                field: "count",
                 flex: 1,
                 width: 150,
                 headerClassName: "gray-background",
             },
         ];
     }
-
-    rows = [
-        {
-            id: 1,
-            Serverity: "Info",
-            Name: "SSH",
-            Reasons: "No recorded events",
-            Score: "5.5",
-            Hosts: "4",
-        },
-        {
-            id: 2,
-            Serverity: "Low",
-            Name: "wordpress",
-            Reasons: "No recorded events",
-            Score: "2.5",
-            Hosts: "3",
-        },
-        {
-            id: 3,
-            Serverity: "Medium",
-            Name: "word",
-            Reasons: "No recorded events",
-            Score: "6.5",
-            Hosts: "5",
-        },
-        {
-            id: 4,
-            Serverity: "High",
-            Name: "wordpress",
-            Reasons: "No recorded events",
-            Score: "2.5",
-            Hosts: "3",
-        },
-        {
-            id: 5,
-            Serverity: "Critical",
-            Name: "wordpress",
-            Reasons: "No recorded events",
-            Score: "2.5",
-            Hosts: "3",
-        },
-    ];
 
     riskLevel = () => {
         return (
@@ -122,7 +81,7 @@ class ProjectThreats extends React.Component {
         return (
             <div style={{ height: "100%", width: "100%" }}>
                 <DataGrid
-                    rows={this.rows}
+                    rows={this.state.rows}
                     columns={this.columns}
                     getCellClassName={(params) => {
                         if (
@@ -151,6 +110,35 @@ class ProjectThreats extends React.Component {
             </div>
         );
     };
+
+    static getDerivedStateFromProps(props, state) {
+        if (Object.hasOwnProperty.call(props.inputData, "result")) {
+            const list = [];
+            var indexid = 0;
+            props.inputData.result.forEach((element) => {
+                let ixid = list.find(
+                    (value) => value.name == element.info.name
+                );
+                if (!ixid) {
+                    list.push({
+                        id: indexid,
+                        serverity: element.info.severityholder.severity,
+                        name: element.info.name,
+                        score: element.info.classification
+                            ? element.info.classification.cvssscore
+                            : 0,
+                        count: 1,
+                    });
+                    indexid++;
+                } else {
+                    let ix = list.indexOf(ixid);
+                    list[ix].count += 1;
+                }
+            });
+            return { rows: list };
+        }
+        return null;
+    }
 
     render() {
         return (
