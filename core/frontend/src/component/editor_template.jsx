@@ -114,6 +114,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
+                tooltip: "name",
                 
             },
             {
@@ -122,6 +123,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
+                tooltip: "name",
             },
             {
                 key: 2,
@@ -129,6 +131,7 @@ export default class EditorTemplate extends React.Component {
                 type: "CVE",
                 visible: true,
                 removable: false,
+                tooltip: "name",
             },
             {
                 key: 3,
@@ -136,6 +139,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
+                tooltip: "name",
             },
         ];
         this.infomationList = [
@@ -145,6 +149,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
+                tooltip: "Template Name",
             },
             {
                 key: 1,
@@ -152,6 +157,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
+                tooltip: "Author Name",
             },
             {
                 key: 2,
@@ -160,6 +166,7 @@ export default class EditorTemplate extends React.Component {
                 value: ["info", "high", "medium", "critical", "low", "unknown"],
                 visible: true,
                 removable: false,
+                tooltip: "Severity field which indicates the severity of the template",
             },
             {
                 key: 3,
@@ -167,6 +174,7 @@ export default class EditorTemplate extends React.Component {
                 type: "filled",
                 visible: true,
                 removable: false,
+                tooltip: "The reference field should provide a link to relevant documentation or resources that explain more about the vulnerability or misconfiguration that is being checked in this template",
             },
             {
                 key: 4,
@@ -174,6 +182,7 @@ export default class EditorTemplate extends React.Component {
                 type: "multiline",
                 visible: true,
                 removable: false,
+                tooltip: "The description field provides more detail about what the template does",
             },
         ];
         this.httpinfoOptionList = [
@@ -183,6 +192,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
+                tooltip: "name",
             },
             {
                 key: 1,
@@ -190,6 +200,7 @@ export default class EditorTemplate extends React.Component {
                 type: "filled",
                 visible: true,
                 removable: false,
+                tooltip: "name",
             },
             {
                 key: 2,
@@ -197,6 +208,7 @@ export default class EditorTemplate extends React.Component {
                 type: "multiline",
                 visible: true,
                 removable: false,
+                tooltip: "name",
             },
         ];
         this.RawinfoOptionList = [
@@ -206,6 +218,7 @@ export default class EditorTemplate extends React.Component {
                 type: "multiline",
                 visible: true,
                 removable: false,
+                tooltip: "name",
             },
         ];
         this.Type_Status = [
@@ -215,6 +228,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
+                tooltip: "name",
             },
             {
                 key: 1,
@@ -222,6 +236,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
+                tooltip: "name",
             },
             {
                 key: 2,
@@ -229,6 +244,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
+                tooltip: "name",
             },
         ];
     }

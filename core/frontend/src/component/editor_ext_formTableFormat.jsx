@@ -315,14 +315,14 @@ export default class FormTableFormat extends React.Component {
                             if (data.type === "TextField") {
                                 element = (
                                     <TextField
-                                        label="TextField"
+                                        label={data.label}
                                         name={data.label}
                                         onChange={this.handleOnChange}
                                         InputProps={{
                                             endAdornment: (
                                                 <InputAdornment position="start">
                                                     <Tooltip
-                                                        title="Delete"
+                                                        title={ <h1>{data.tooltip}</h1>}
                                                         variant="plain"
                                                     >
                                                         <HelpOutlineIcon
@@ -340,6 +340,21 @@ export default class FormTableFormat extends React.Component {
                                         list={data.value}
                                         label={data.label}
                                         callback={this.handleOnChange}
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment >
+                                                    <Tooltip
+                                                        placement="right"
+                                                        title={ <h1>{data.tooltip}</h1>}
+                                                        variant="plain"
+                                                    >
+                                                        <HelpOutlineIcon
+                                                            fontSize={"large"}
+                                                        />
+                                                    </Tooltip>
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
                                 );
                             } else if (data.type === "multiline") {
@@ -351,6 +366,20 @@ export default class FormTableFormat extends React.Component {
                                         onChange={this.handleOnChange}
                                         multiline
                                         rows={9}
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="start">
+                                                    <Tooltip
+                                                        title={ <h1>{data.tooltip}</h1>}
+                                                        variant="plain"
+                                                    >
+                                                        <HelpOutlineIcon
+                                                            fontSize={"large"}
+                                                        />
+                                                    </Tooltip>
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
                                 );
                             } else if (data.type === "filled") {
@@ -361,6 +390,20 @@ export default class FormTableFormat extends React.Component {
                                         label={data.label}
                                         onChange={this.handleOnChange}
                                         id="fullWidth"
+                                        InputProps={{
+                                            endAdornment: (
+                                                <InputAdornment position="start">
+                                                    <Tooltip
+                                                        title={ <h1>{data.tooltip}</h1>}
+                                                        variant="plain"
+                                                    >
+                                                        <HelpOutlineIcon
+                                                            fontSize={"large"}
+                                                        />
+                                                    </Tooltip>
+                                                </InputAdornment>
+                                            ),
+                                        }}
                                     />
                                 );
                             } else if (data.type === "CVE") {
