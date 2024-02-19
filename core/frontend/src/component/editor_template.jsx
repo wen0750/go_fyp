@@ -25,6 +25,8 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Tooltip from '@mui/material/Tooltip';
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
@@ -113,7 +115,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
-                tooltip: "name",
+                tooltip: "CVSS Metrics for the template.",
             },
             {
                 key: 1,
@@ -121,7 +123,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
-                tooltip: "name",
+                tooltip: "CVSS Score for the template.",
             },
             {
                 key: 2,
@@ -129,7 +131,7 @@ export default class EditorTemplate extends React.Component {
                 type: "CVE",
                 visible: true,
                 removable: false,
-                tooltip: "name",
+                tooltip: "CVE ID for the template",
             },
             {
                 key: 3,
@@ -137,7 +139,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
-                tooltip: "name",
+                tooltip: "CWE ID for the template.",
             },
         ];
         this.infomationList = [
@@ -147,7 +149,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
-                tooltip: "Template Name",
+                tooltip: "Name should be good short summary that identifies what the template does.",
             },
             {
                 key: 1,
@@ -155,7 +157,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
-                tooltip: "Author Name",
+                tooltip: "Author of the template.",
             },
             {
                 key: 2,
@@ -165,7 +167,7 @@ export default class EditorTemplate extends React.Component {
                 visible: true,
                 removable: false,
                 tooltip:
-                    "Severity field which indicates the severity of the template",
+                    "Severity of the template.",
             },
             {
                 key: 3,
@@ -174,7 +176,7 @@ export default class EditorTemplate extends React.Component {
                 visible: true,
                 removable: false,
                 tooltip:
-                    "The reference field should provide a link to relevant documentation or resources that explain more about the vulnerability or misconfiguration that is being checked in this template",
+                    "This should contain links relevant to the template.",
             },
             {
                 key: 4,
@@ -183,7 +185,7 @@ export default class EditorTemplate extends React.Component {
                 visible: true,
                 removable: false,
                 tooltip:
-                    "The description field provides more detail about what the template does",
+                    "Description of the template.",
             },
         ];
         this.httpinfoOptionList = [
@@ -193,7 +195,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
-                tooltip: "name",
+                tooltip: "Method is the HTTP Request Method.",
             },
             {
                 key: 1,
@@ -201,7 +203,7 @@ export default class EditorTemplate extends React.Component {
                 type: "filled",
                 visible: true,
                 removable: false,
-                tooltip: "name",
+                tooltip: "Path contains the path/s for the HTTP requests. It supports variables as placeholders.",
             },
             {
                 key: 2,
@@ -209,7 +211,7 @@ export default class EditorTemplate extends React.Component {
                 type: "multiline",
                 visible: true,
                 removable: false,
-                tooltip: "name",
+                tooltip: "Headers contains HTTP Headers to send with the request.",
             },
         ];
         this.RawinfoOptionList = [
@@ -219,7 +221,7 @@ export default class EditorTemplate extends React.Component {
                 type: "multiline",
                 visible: true,
                 removable: false,
-                tooltip: "name",
+                tooltip: "Raw contains HTTP Requests in Raw format.",
             },
         ];
         this.Type_Status = [
@@ -229,7 +231,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
-                tooltip: "name",
+                tooltip: "Status Code received from the Server",
             },
             {
                 key: 1,
@@ -237,7 +239,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
-                tooltip: "name",
+                tooltip: "Status Code received from the Server",
             },
             {
                 key: 2,
@@ -245,7 +247,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
-                tooltip: "name",
+                tooltip: "Status Code received from the Server",
             },
         ];
     }
@@ -261,6 +263,20 @@ export default class EditorTemplate extends React.Component {
     left_Extractors_Type_Change = (event, newValue) => {
         this.setState({ Extractors_responseType: newValue });
     };
+
+    Title = () => {
+        return (
+          <div>
+            Tag
+            <Tooltip title={<h1>Any tags for the template.Multiple values can also be specified separated by commas.</h1>}>
+              <IconButton >
+                <HelpOutlineIcon 
+                    fontSize={"large"}/>
+              </IconButton>
+            </Tooltip>
+          </div>
+        );
+    }
 
     PartInformation = () => {
         return (
@@ -309,14 +325,14 @@ export default class EditorTemplate extends React.Component {
     PartTags = () => {
         return (
             <Card sx={{ my: 2 }}>
-                <CardHeader title="Tags" />
-                <hr />
+                <CardHeader title={<this.Title />} />
                 <CardContent>
                     <Grid
                         container="container"
                         spacing={2}
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     ></Grid>
+                    
                     <this.TagMyComponent />
                 </CardContent>
             </Card>
