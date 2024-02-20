@@ -322,7 +322,11 @@ export default class FormTableFormat extends React.Component {
                                             endAdornment: (
                                                 <InputAdornment position="start">
                                                     <Tooltip
-                                                        title={ <h1>{data.tooltip}</h1>}
+                                                        title={
+                                                            <h1>
+                                                                {data.tooltip}
+                                                            </h1>
+                                                        }
                                                         variant="plain"
                                                     >
                                                         <HelpOutlineIcon
@@ -342,10 +346,14 @@ export default class FormTableFormat extends React.Component {
                                         callback={this.handleOnChange}
                                         InputProps={{
                                             endAdornment: (
-                                                <InputAdornment >
+                                                <InputAdornment>
                                                     <Tooltip
                                                         placement="right"
-                                                        title={ <h1>{data.tooltip}</h1>}
+                                                        title={
+                                                            <h1>
+                                                                {data.tooltip}
+                                                            </h1>
+                                                        }
                                                         variant="plain"
                                                     >
                                                         <HelpOutlineIcon
@@ -370,7 +378,11 @@ export default class FormTableFormat extends React.Component {
                                             endAdornment: (
                                                 <InputAdornment position="start">
                                                     <Tooltip
-                                                        title={ <h1>{data.tooltip}</h1>}
+                                                        title={
+                                                            <h1>
+                                                                {data.tooltip}
+                                                            </h1>
+                                                        }
                                                         variant="plain"
                                                     >
                                                         <HelpOutlineIcon
@@ -394,7 +406,11 @@ export default class FormTableFormat extends React.Component {
                                             endAdornment: (
                                                 <InputAdornment position="start">
                                                     <Tooltip
-                                                        title={ <h1>{data.tooltip}</h1>}
+                                                        title={
+                                                            <h1>
+                                                                {data.tooltip}
+                                                            </h1>
+                                                        }
                                                         variant="plain"
                                                     >
                                                         <HelpOutlineIcon

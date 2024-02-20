@@ -25,6 +25,8 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Tooltip from '@mui/material/Tooltip';
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
@@ -54,30 +56,29 @@ export default class EditorTemplate extends React.Component {
 
             const handleChange = (newChips) => {
                 setChips(newChips);
-                this.inputhandler(newChips,"ta")
+                this.inputhandler(newChips, "ta");
             };
 
             return <MuiChipsInput value={chips} onChange={handleChange} />;
         };
 
-
-        this.info_inputhandler = (catalog,name,value) => {
-            const data= this.props.templatedata
-            data[name] = value
-            this.props.dataChange(data)
+        this.info_inputhandler = (catalog, name, value) => {
+            const data = this.props.templatedata;
+            data[name] = value;
+            this.props.dataChange(data);
         };
 
-        this.tag_inputhandler = (newdata,key) => {
-            const data= this.props.templatedata
-            data[key] = newdata.toString()
-            this.props.dataChange(data)
-        }
+        this.tag_inputhandler = (newdata, key) => {
+            const data = this.props.templatedata;
+            data[key] = newdata.toString();
+            this.props.dataChange(data);
+        };
 
         this.TagMyComponent = () => {
             const [chips, setChips] = React.useState([]);
             const TaghandleChange = (newChips) => {
                 setChips(newChips);
-                this.tag_inputhandler(newChips,"tags")
+                this.tag_inputhandler(newChips, "tags");
             };
 
             return <MuiChipsInput value={chips} onChange={TaghandleChange} />;
@@ -114,8 +115,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
-                tooltip: "name",
-                
+                tooltip: "CVSS Metrics for the template.",
             },
             {
                 key: 1,
@@ -123,7 +123,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
-                tooltip: "name",
+                tooltip: "CVSS Score for the template.",
             },
             {
                 key: 2,
@@ -131,7 +131,7 @@ export default class EditorTemplate extends React.Component {
                 type: "CVE",
                 visible: true,
                 removable: false,
-                tooltip: "name",
+                tooltip: "CVE ID for the template",
             },
             {
                 key: 3,
@@ -139,7 +139,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
-                tooltip: "name",
+                tooltip: "CWE ID for the template.",
             },
         ];
         this.infomationList = [
@@ -149,7 +149,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
-                tooltip: "Template Name",
+                tooltip: "Name should be good short summary that identifies what the template does.",
             },
             {
                 key: 1,
@@ -157,7 +157,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
-                tooltip: "Author Name",
+                tooltip: "Author of the template.",
             },
             {
                 key: 2,
@@ -166,7 +166,8 @@ export default class EditorTemplate extends React.Component {
                 value: ["info", "high", "medium", "critical", "low", "unknown"],
                 visible: true,
                 removable: false,
-                tooltip: "Severity field which indicates the severity of the template",
+                tooltip:
+                    "Severity of the template.",
             },
             {
                 key: 3,
@@ -174,7 +175,8 @@ export default class EditorTemplate extends React.Component {
                 type: "filled",
                 visible: true,
                 removable: false,
-                tooltip: "The reference field should provide a link to relevant documentation or resources that explain more about the vulnerability or misconfiguration that is being checked in this template",
+                tooltip:
+                    "This should contain links relevant to the template.",
             },
             {
                 key: 4,
@@ -182,7 +184,8 @@ export default class EditorTemplate extends React.Component {
                 type: "multiline",
                 visible: true,
                 removable: false,
-                tooltip: "The description field provides more detail about what the template does",
+                tooltip:
+                    "Description of the template.",
             },
         ];
         this.httpinfoOptionList = [
@@ -192,7 +195,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
-                tooltip: "name",
+                tooltip: "Method is the HTTP Request Method.",
             },
             {
                 key: 1,
@@ -200,7 +203,7 @@ export default class EditorTemplate extends React.Component {
                 type: "filled",
                 visible: true,
                 removable: false,
-                tooltip: "name",
+                tooltip: "Path contains the path/s for the HTTP requests. It supports variables as placeholders.",
             },
             {
                 key: 2,
@@ -208,7 +211,7 @@ export default class EditorTemplate extends React.Component {
                 type: "multiline",
                 visible: true,
                 removable: false,
-                tooltip: "name",
+                tooltip: "Headers contains HTTP Headers to send with the request.",
             },
         ];
         this.RawinfoOptionList = [
@@ -218,7 +221,7 @@ export default class EditorTemplate extends React.Component {
                 type: "multiline",
                 visible: true,
                 removable: false,
-                tooltip: "name",
+                tooltip: "Raw contains HTTP Requests in Raw format.",
             },
         ];
         this.Type_Status = [
@@ -228,7 +231,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
-                tooltip: "name",
+                tooltip: "Status Code received from the Server",
             },
             {
                 key: 1,
@@ -236,7 +239,7 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
-                tooltip: "name",
+                tooltip: "Status Code received from the Server",
             },
             {
                 key: 2,
@@ -244,13 +247,13 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
-                tooltip: "name",
+                tooltip: "Status Code received from the Server",
             },
         ];
     }
 
     left_Options_Type_Change = (event, newValue) => {
-        this.setState({  option_responseType: newValue });
+        this.setState({ option_responseType: newValue });
     };
 
     left_Matchers_Type_Change = (event, newValue) => {
@@ -260,6 +263,20 @@ export default class EditorTemplate extends React.Component {
     left_Extractors_Type_Change = (event, newValue) => {
         this.setState({ Extractors_responseType: newValue });
     };
+
+    Title = () => {
+        return (
+          <div>
+            Tag
+            <Tooltip title={<h1>Any tags for the template.Multiple values can also be specified separated by commas.</h1>}>
+              <IconButton >
+                <HelpOutlineIcon 
+                    fontSize={"large"}/>
+              </IconButton>
+            </Tooltip>
+          </div>
+        );
+    }
 
     PartInformation = () => {
         return (
@@ -276,8 +293,6 @@ export default class EditorTemplate extends React.Component {
                             catalog="information"
                             opts={this.infomationList}
                             callback={this.info_inputhandler}
-                            
-                            
                         ></FormTableFormat>
                     </Grid>
                 </CardContent>
@@ -310,20 +325,19 @@ export default class EditorTemplate extends React.Component {
     PartTags = () => {
         return (
             <Card sx={{ my: 2 }}>
-                <CardHeader title="Tags" />
-                <hr />
+                <CardHeader title={<this.Title />} />
                 <CardContent>
                     <Grid
                         container="container"
                         spacing={2}
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     ></Grid>
+                    
                     <this.TagMyComponent />
                 </CardContent>
             </Card>
         );
     };
-    
 
     PartOptions = () => {
         return (
@@ -338,9 +352,7 @@ export default class EditorTemplate extends React.Component {
                                 sx={{ borderBottom: 1, borderColor: "divider" }}
                             >
                                 <TabList
-                                    onChange={
-                                        this.left_Options_Type_Change
-                                    }
+                                    onChange={this.left_Options_Type_Change}
                                 >
                                     <Tab label="Base HTTP" value="1" />
                                     <Tab label="Raw" value="2" />
@@ -471,10 +483,18 @@ export default class EditorTemplate extends React.Component {
                                     Batteringram
                                 </RadioButton>
                             )}
-                            <RadioButton rootColor="Gray" value="Pitchfork" iconSize={20}>
+                            <RadioButton
+                                rootColor="Gray"
+                                value="Pitchfork"
+                                iconSize={20}
+                            >
                                 Pitchfork
                             </RadioButton>
-                            <RadioButton rootColor="Gray" value="Clusterbomb" iconSize={20}>
+                            <RadioButton
+                                rootColor="Gray"
+                                value="Clusterbomb"
+                                iconSize={20}
+                            >
                                 Clusterbomb
                             </RadioButton>
                         </RadioGroup>
@@ -512,19 +532,39 @@ export default class EditorTemplate extends React.Component {
                     ></Grid>
                     <Grid container spacing={2}>
                         <RadioGroup horizontal>
-                            <RadioButton rootColor="Gray" value="query" iconSize={20}>
+                            <RadioButton
+                                rootColor="Gray"
+                                value="query"
+                                iconSize={20}
+                            >
                                 query
                             </RadioButton>
-                            <RadioButton rootColor="Gray" value="path" iconSize={20}>
+                            <RadioButton
+                                rootColor="Gray"
+                                value="path"
+                                iconSize={20}
+                            >
                                 path
                             </RadioButton>
-                            <RadioButton rootColor="Gray" value="header"iconSize={20}>
+                            <RadioButton
+                                rootColor="Gray"
+                                value="header"
+                                iconSize={20}
+                            >
                                 header
                             </RadioButton>
-                            <RadioButton rootColor="Gray" value="body" iconSize={20}>
+                            <RadioButton
+                                rootColor="Gray"
+                                value="body"
+                                iconSize={20}
+                            >
                                 body
                             </RadioButton>
-                            <RadioButton rootColor="Gray" value="cookie" iconSize={20}>
+                            <RadioButton
+                                rootColor="Gray"
+                                value="cookie"
+                                iconSize={20}
+                            >
                                 cookie
                             </RadioButton>
                         </RadioGroup>
@@ -539,16 +579,32 @@ export default class EditorTemplate extends React.Component {
                     ></Grid>
                     <Grid container spacing={2}>
                         <RadioGroup horizontal>
-                            <RadioButton rootColor="Gray" value="replace" iconSize={20}>
+                            <RadioButton
+                                rootColor="Gray"
+                                value="replace"
+                                iconSize={20}
+                            >
                                 replace
                             </RadioButton>
-                            <RadioButton rootColor="Gray" value="prefix" iconSize={20}>
+                            <RadioButton
+                                rootColor="Gray"
+                                value="prefix"
+                                iconSize={20}
+                            >
                                 prefix
                             </RadioButton>
-                            <RadioButton rootColor="Gray" value="postfix" iconSize={20}>
+                            <RadioButton
+                                rootColor="Gray"
+                                value="postfix"
+                                iconSize={20}
+                            >
                                 postfix
                             </RadioButton>
-                            <RadioButton rootColor="Gray" value="body" iconSize={20}>
+                            <RadioButton
+                                rootColor="Gray"
+                                value="body"
+                                iconSize={20}
+                            >
                                 body
                             </RadioButton>
                         </RadioGroup>
@@ -563,10 +619,18 @@ export default class EditorTemplate extends React.Component {
                     ></Grid>
                     <Grid container spacing={2}>
                         <RadioGroup horizontal>
-                            <RadioButton rootColor="Gray" value="Multiple" iconSize={20}>
+                            <RadioButton
+                                rootColor="Gray"
+                                value="Multiple"
+                                iconSize={20}
+                            >
                                 Multiple
                             </RadioButton>
-                            <RadioButton rootColor="Gray" value="Single" iconSize={20}>
+                            <RadioButton
+                                rootColor="Gray"
+                                value="Single"
+                                iconSize={20}
+                            >
                                 Single
                             </RadioButton>
                         </RadioGroup>
@@ -606,7 +670,7 @@ export default class EditorTemplate extends React.Component {
         const [data, setData] = useState([{ key: "", tab: "" }]);
 
         const handleClick = () => {
-            setData([...data, { key: "", tab: ""}]);
+            setData([...data, { key: "", tab: "" }]);
         };
 
         const handleChange = (e, i) => {
@@ -628,215 +692,344 @@ export default class EditorTemplate extends React.Component {
                 <hr />
                 <CardContent>
                     <Grid spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
-                        <Grid >
+                        <Grid>
                             <RadioGroup horizontal>
-                                
-                                <RadioButton  rootColor="Gray" value="Multiple" iconSize={20}>
+                                <RadioButton
+                                    rootColor="Gray"
+                                    value="Multiple"
+                                    iconSize={20}
+                                >
                                     and
                                 </RadioButton>
-                                
-                                <RadioButton  rootColor="Gray" value="Single" iconSize={20}>
+
+                                <RadioButton
+                                    rootColor="Gray"
+                                    value="Single"
+                                    iconSize={20}
+                                >
                                     or
                                 </RadioButton>
                             </RadioGroup>
                         </Grid>
                         <Grid>
-                        <TabContext value={this.state.Matchers_responseType}>
-                            <Box
-                                sx={{ borderBottom: 1, borderColor: "divider" }}
+                            <TabContext
+                                value={this.state.Matchers_responseType}
                             >
-                                <TabList
-                                    onChange={
-                                        this.left_Matchers_Type_Change
-                                    }
+                                <Box
+                                    sx={{
+                                        borderBottom: 1,
+                                        borderColor: "divider",
+                                    }}
                                 >
-                                    <Tab label="status" value="1" />
-                                    <Tab label="size" value="2" />
-                                    <Tab label="word" value="3" />
-                                    <Tab label="regex" value="4" />
-                                    <Tab label="binary" value="5" />
-                                    <Tab label="dsl" value="6" />
-                                    <Tab label="xpath" value="7" />
-                                </TabList>
-                            </Box>
-                            <TabPanel value="1">
-                                <FormTableFormat
-                                    catalog="Options"
-                                    opts={this.Type_Status}
-                                ></FormTableFormat>
-                            </TabPanel>
-                            <TabPanel value="2">
-                                <CardContent>
+                                    <TabList
+                                        onChange={
+                                            this.left_Matchers_Type_Change
+                                        }
+                                    >
+                                        <Tab label="status" value="1" />
+                                        <Tab label="size" value="2" />
+                                        <Tab label="word" value="3" />
+                                        <Tab label="regex" value="4" />
+                                        <Tab label="binary" value="5" />
+                                        <Tab label="dsl" value="6" />
+                                        <Tab label="xpath" value="7" />
+                                    </TabList>
+                                </Box>
+                                <TabPanel value="1">
+                                    <FormTableFormat
+                                        catalog="Options"
+                                        opts={this.Type_Status}
+                                    ></FormTableFormat>
+                                </TabPanel>
+                                <TabPanel value="2">
+                                    <CardContent>
+                                        <Grid
+                                            container="container"
+                                            spacing={2}
+                                            columns={{ xs: 4, sm: 8, md: 12 }}
+                                        ></Grid>
+                                        <div className="App">
+                                            {data.map((val, i) => (
+                                                <div>
+                                                    <Grid container spacing={3}>
+                                                        <Grid item xs={4}>
+                                                            <TextField
+                                                                id="Key"
+                                                                label="key "
+                                                                variant="outlined"
+                                                                lname="fname"
+                                                                value={
+                                                                    val.fname
+                                                                }
+                                                                onChange={(e) =>
+                                                                    handleChange(
+                                                                        e,
+                                                                        i
+                                                                    )
+                                                                }
+                                                            />
+                                                        </Grid>
+                                                        <Grid item xs={7}>
+                                                            <this.MyComponent
+                                                                name="tab"
+                                                                value={
+                                                                    val.lname
+                                                                }
+                                                                onChange={(e) =>
+                                                                    handleChange(
+                                                                        e,
+                                                                        i
+                                                                    )
+                                                                }
+                                                            />
+                                                        </Grid>
+                                                        <Grid item xs={1}>
+                                                            <IconButton
+                                                                aria-label="delete"
+                                                                size="large"
+                                                                onClick={() =>
+                                                                    handleDelete(
+                                                                        i
+                                                                    )
+                                                                }
+                                                            >
+                                                                <DeleteIcon />
+                                                            </IconButton>
+                                                        </Grid>
+                                                    </Grid>
+                                                    <CardContent>
+                                                        <Grid
+                                                            container="container"
+                                                            spacing={2}
+                                                            columns={{
+                                                                xs: 4,
+                                                                sm: 8,
+                                                                md: 12,
+                                                            }}
+                                                        ></Grid>
+                                                    </CardContent>
+                                                </div>
+                                            ))}
+                                            <Button
+                                                variant="outlined"
+                                                onClick={handleClick}
+                                                startIcon={<AddIcon />}
+                                            >
+                                                Add Key
+                                            </Button>
+                                        </div>
+                                    </CardContent>
+                                </TabPanel>
+                                <TabPanel value="3">
                                     <Grid
-                                        container="container"
-                                        spacing={2}
+                                        container
+                                        spacing={{ xs: 2, md: 4 }}
                                         columns={{ xs: 4, sm: 8, md: 12 }}
-                                    ></Grid>
-                                    <div className="App">
-                                        {data.map((val, i) => (
-                                            <div>
-                                                <Grid container spacing={3}>
-                                                    <Grid item xs={4}>
-                                                        <TextField
-                                                            id="Key"
-                                                            label="key "
-                                                            variant="outlined"
-                                                            lname="fname"
-                                                            value={val.fname}
-                                                            onChange={(e) => handleChange(e, i)}
-                                                        />
-                                                    </Grid>
-                                                    <Grid item xs={7}>
-                                                        <this.MyComponent
-                                                            name="tab"
-                                                            value={val.lname}
-                                                            onChange={(e) => handleChange(e, i)}
-                                                        />
-                                                    </Grid>
-                                                    <Grid item xs={1}>
-                                                        <IconButton
-                                                            aria-label="delete"
-                                                            size="large"
-                                                            onClick={() => handleDelete(i)}
-                                                        >
-                                                            <DeleteIcon />
-                                                        </IconButton>
-                                                    </Grid>
-                                                </Grid>
-                                                <CardContent>
-                                                    <Grid
-                                                        container="container"
-                                                        spacing={2}
-                                                        columns={{ xs: 4, sm: 8, md: 12 }}
-                                                    ></Grid>
-                                                </CardContent>
-                                            </div>
-                                        ))}
-                                        <Button
-                                            variant="outlined"
-                                            onClick={handleClick}
-                                            startIcon={<AddIcon />}
-                                        >
-                                            Add Key
-                                        </Button>
-                                    </div>
-                                </CardContent>
-                            </TabPanel>
-                            <TabPanel value="3">
-                                <Grid container spacing={{ xs: 2, md: 4 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                                    <Grid item xs={2} sm={4} md={4}>
-                                        <TextField id="Name" label="Name" variant="outlined" />   
-                                    </Grid>
-                                    <Grid item xs={2} sm={4} md={4}>
-                                        <TextField id="Encoding" label="Encoding" variant="outlined" />   
-                                    </Grid>
-                                    <Grid item xs={2} sm={4} md={4}>
-                                        <TextField id="Part" label="Part" variant="outlined" />   
-                                    </Grid>
-                                    <Grid item xs={2} sm={4} md={4}  > 
-                                        <CardHeader title="condition" />
-                                        <RadioGroup horizontal >
-                                            <RadioButton xs={2} rootColor="Gray" value="OR" iconSize={20}>
-                                                or
-                                            </RadioButton>
-                                            <RadioButton xs={2} rootColor="Gray" value="AMD" iconSize={20}>
-                                                and
-                                            </RadioButton>
-                                        </RadioGroup>
-                                    </Grid>
-                                    <Grid item xs={2} sm={4} md={4}  > 
-                                        <CardHeader title="Negative" />
-                                        <RadioGroup horizontal >
-                                            <RadioButton xs={2} rootColor="Gray" value="False" iconSize={20}>
-                                                False
-                                            </RadioButton>
-                                            <RadioButton xs={2} rootColor="Gray" value="True" iconSize={20}>
-                                                True
-                                            </RadioButton>
-                                        </RadioGroup>
-                                    </Grid>
-                                </Grid>
-                                <CardHeader title="Word" />
-                                <this.MyComponent />
-                            </TabPanel>
-                            <TabPanel value="4">
-                                <Grid container spacing={{ xs: 2, md: 4 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                                    <Grid item xs={2} sm={4} md={4}>
-                                        <CardHeader title="Part" />
-                                        <TextField id="Name" label="Name" variant="outlined" />   
-                                    </Grid>
-                                    <Grid item xs={2} sm={4} md={4}  > 
-                                        <CardHeader title="condition" />
-                                        <RadioGroup horizontal >
-                                            <RadioButton xs={2} rootColor="Gray" value="AND" iconSize={20}>
-                                                AND
-                                            </RadioButton>
-                                            <RadioButton xs={2} rootColor="Gray" value="OR" iconSize={20}>
-                                                OR
-                                            </RadioButton>
-                                        </RadioGroup>
-                                    </Grid>
-                                </Grid>
-                                <CardHeader title="Regex" />
-                                <TextField fullWidth label="" id="Regex" />
-                                        
-                            </TabPanel>
-                            <TabPanel value="5">
-                                <Grid container spacing={{ xs: 2, md: 4 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                                    <Grid item xs={2} sm={4} md={4}>
-                                        <CardHeader title="Part" />
-                                        <TextField id="Name" label="Name" variant="outlined" />   
-                                    </Grid>
-                                    <Grid item xs={2} sm={4} md={4}  > 
+                                    >
+                                        <Grid item xs={2} sm={4} md={4}>
+                                            <TextField
+                                                id="Name"
+                                                label="Name"
+                                                variant="outlined"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={2} sm={4} md={4}>
+                                            <TextField
+                                                id="Encoding"
+                                                label="Encoding"
+                                                variant="outlined"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={2} sm={4} md={4}>
+                                            <TextField
+                                                id="Part"
+                                                label="Part"
+                                                variant="outlined"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={2} sm={4} md={4}>
                                             <CardHeader title="condition" />
-                                            <RadioGroup horizontal >
-                                                <RadioButton xs={2} rootColor="Gray" value="AND" iconSize={20}>
-                                                    AND
+                                            <RadioGroup horizontal>
+                                                <RadioButton
+                                                    xs={2}
+                                                    rootColor="Gray"
+                                                    value="OR"
+                                                    iconSize={20}
+                                                >
+                                                    or
                                                 </RadioButton>
-                                                <RadioButton xs={2} rootColor="Gray" value="OR" iconSize={20}>
-                                                    OR
+                                                <RadioButton
+                                                    xs={2}
+                                                    rootColor="Gray"
+                                                    value="AMD"
+                                                    iconSize={20}
+                                                >
+                                                    and
                                                 </RadioButton>
                                             </RadioGroup>
-                                    </Grid>
-                                    <Grid item xs={2} sm={4} md={4}  > 
+                                        </Grid>
+                                        <Grid item xs={2} sm={4} md={4}>
                                             <CardHeader title="Negative" />
-                                            <RadioGroup horizontal >
-                                                <RadioButton xs={2} rootColor="Gray" value="False" iconSize={20}>
+                                            <RadioGroup horizontal>
+                                                <RadioButton
+                                                    xs={2}
+                                                    rootColor="Gray"
+                                                    value="False"
+                                                    iconSize={20}
+                                                >
                                                     False
                                                 </RadioButton>
-                                                <RadioButton xs={2} rootColor="Gray" value="True" iconSize={20}>
+                                                <RadioButton
+                                                    xs={2}
+                                                    rootColor="Gray"
+                                                    value="True"
+                                                    iconSize={20}
+                                                >
                                                     True
                                                 </RadioButton>
                                             </RadioGroup>
+                                        </Grid>
                                     </Grid>
-                                    <CardHeader title="Binary" />
+                                    <CardHeader title="Word" />
                                     <this.MyComponent />
-                                </Grid>
-                            </TabPanel>
-                            <TabPanel value="6">
-                                <Grid container spacing={{ xs: 2, md: 4 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                                    <Grid item xs={2} sm={4} md={4}>
-                                        <CardHeader title="Name" />
-                                        <TextField id="Name" label="Name" variant="outlined" />   
+                                </TabPanel>
+                                <TabPanel value="4">
+                                    <Grid
+                                        container
+                                        spacing={{ xs: 2, md: 4 }}
+                                        columns={{ xs: 4, sm: 8, md: 12 }}
+                                    >
+                                        <Grid item xs={2} sm={4} md={4}>
+                                            <CardHeader title="Part" />
+                                            <TextField
+                                                id="Name"
+                                                label="Name"
+                                                variant="outlined"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={2} sm={4} md={4}>
+                                            <CardHeader title="condition" />
+                                            <RadioGroup horizontal>
+                                                <RadioButton
+                                                    xs={2}
+                                                    rootColor="Gray"
+                                                    value="AND"
+                                                    iconSize={20}
+                                                >
+                                                    AND
+                                                </RadioButton>
+                                                <RadioButton
+                                                    xs={2}
+                                                    rootColor="Gray"
+                                                    value="OR"
+                                                    iconSize={20}
+                                                >
+                                                    OR
+                                                </RadioButton>
+                                            </RadioGroup>
+                                        </Grid>
                                     </Grid>
-                                </Grid>
-                                <CardHeader title="dsl" />
-                                <TextField fullWidth label="" id="dsl" />
-                            </TabPanel>
-                            <TabPanel value="7">
-                                <Grid container spacing={{ xs: 2, md: 4 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                                    <Grid item xs={2} sm={4} md={4}>
-                                        <CardHeader title="attribute" />
-                                        <TextField id="Name" label="attribute" variant="outlined" />   
+                                    <CardHeader title="Regex" />
+                                    <TextField fullWidth label="" id="Regex" />
+                                </TabPanel>
+                                <TabPanel value="5">
+                                    <Grid
+                                        container
+                                        spacing={{ xs: 2, md: 4 }}
+                                        columns={{ xs: 4, sm: 8, md: 12 }}
+                                    >
+                                        <Grid item xs={2} sm={4} md={4}>
+                                            <CardHeader title="Part" />
+                                            <TextField
+                                                id="Name"
+                                                label="Name"
+                                                variant="outlined"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={2} sm={4} md={4}>
+                                            <CardHeader title="condition" />
+                                            <RadioGroup horizontal>
+                                                <RadioButton
+                                                    xs={2}
+                                                    rootColor="Gray"
+                                                    value="AND"
+                                                    iconSize={20}
+                                                >
+                                                    AND
+                                                </RadioButton>
+                                                <RadioButton
+                                                    xs={2}
+                                                    rootColor="Gray"
+                                                    value="OR"
+                                                    iconSize={20}
+                                                >
+                                                    OR
+                                                </RadioButton>
+                                            </RadioGroup>
+                                        </Grid>
+                                        <Grid item xs={2} sm={4} md={4}>
+                                            <CardHeader title="Negative" />
+                                            <RadioGroup horizontal>
+                                                <RadioButton
+                                                    xs={2}
+                                                    rootColor="Gray"
+                                                    value="False"
+                                                    iconSize={20}
+                                                >
+                                                    False
+                                                </RadioButton>
+                                                <RadioButton
+                                                    xs={2}
+                                                    rootColor="Gray"
+                                                    value="True"
+                                                    iconSize={20}
+                                                >
+                                                    True
+                                                </RadioButton>
+                                            </RadioGroup>
+                                        </Grid>
+                                        <CardHeader title="Binary" />
+                                        <this.MyComponent />
                                     </Grid>
-                                </Grid>
-                                <CardHeader title="xpath" />
-                                <TextField fullWidth label="" id="xpath" />
-                            </TabPanel>
-                        </TabContext>
+                                </TabPanel>
+                                <TabPanel value="6">
+                                    <Grid
+                                        container
+                                        spacing={{ xs: 2, md: 4 }}
+                                        columns={{ xs: 4, sm: 8, md: 12 }}
+                                    >
+                                        <Grid item xs={2} sm={4} md={4}>
+                                            <CardHeader title="Name" />
+                                            <TextField
+                                                id="Name"
+                                                label="Name"
+                                                variant="outlined"
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                    <CardHeader title="dsl" />
+                                    <TextField fullWidth label="" id="dsl" />
+                                </TabPanel>
+                                <TabPanel value="7">
+                                    <Grid
+                                        container
+                                        spacing={{ xs: 2, md: 4 }}
+                                        columns={{ xs: 4, sm: 8, md: 12 }}
+                                    >
+                                        <Grid item xs={2} sm={4} md={4}>
+                                            <CardHeader title="attribute" />
+                                            <TextField
+                                                id="Name"
+                                                label="attribute"
+                                                variant="outlined"
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                    <CardHeader title="xpath" />
+                                    <TextField fullWidth label="" id="xpath" />
+                                </TabPanel>
+                            </TabContext>
                         </Grid>
-                        
-                        
                     </Grid>
                 </CardContent>
             </Card>
@@ -847,7 +1040,7 @@ export default class EditorTemplate extends React.Component {
         const [data, setData] = useState([{ key: "", tab: "" }]);
 
         const handleClick = () => {
-            setData([...data, { key: "", tab: ""}]);
+            setData([...data, { key: "", tab: "" }]);
         };
 
         const handleChange = (e, i) => {
@@ -870,110 +1063,195 @@ export default class EditorTemplate extends React.Component {
                 <CardContent>
                     <Grid spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
                         <Grid>
-                        <TabContext value={this.state.Extractors_responseType}>
-                            <Box
-                                sx={{ borderBottom: 1, borderColor: "divider" }}
+                            <TabContext
+                                value={this.state.Extractors_responseType}
                             >
-                                <TabList
-                                    onChange={
-                                        this.left_Extractors_Type_Change
-                                    }
+                                <Box
+                                    sx={{
+                                        borderBottom: 1,
+                                        borderColor: "divider",
+                                    }}
                                 >
-                                    <Tab label="regex" value="1" />
-                                    <Tab label="kval" value="2" />
-                                    <Tab label="json" value="3" />
-                                    <Tab label="xpath" value="4" />
-                                    <Tab label="dsl" value="5" />
-                                </TabList>
-                            </Box>
-                            <TabPanel value="1">
-                                <Grid container spacing={{ xs: 2, md: 4 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                                    <Grid item xs={2} sm={4} md={4}>
-                                        <CardHeader title="Nmae" />
-                                        <TextField id="Name" label="Name" variant="outlined" />   
-                                    </Grid>
-                                    <Grid item xs={2} sm={4} md={4}>
-                                        <CardHeader title="Part" />
-                                        <TextField id="Part" label="Part" variant="outlined" />   
-                                    </Grid>
-                                    <Grid item xs={2} sm={4} md={4}  > 
-                                        <CardHeader title="condition" />
-                                        <RadioGroup horizontal >
-                                            <RadioButton xs={2} rootColor="Gray" value="AND" iconSize={20}>
-                                                AND
-                                            </RadioButton>
-                                            <RadioButton xs={2} rootColor="Gray" value="OR" iconSize={20}>
-                                                OR
-                                            </RadioButton>
-                                        </RadioGroup>
-                                    </Grid>
-                                    <Grid item xs={2} sm={4} md={4}>
-                                        <CardHeader title="internal" />
-                                        <TextField id="internal" label="internal" variant="outlined" />   
-                                    </Grid>
-                                </Grid>
-                                <CardHeader title="Regex" />
-                                <TextField fullWidth label="" id="Regex" />
-                            </TabPanel >
-                            <TabPanel value="2">
-                                <Grid container spacing={{ xs: 2, md: 4 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                                    <Grid item xs={2} sm={4} md={4}>
-                                        <TextField id="kval" label="kval" variant="outlined" />   
-                                    </Grid>
-                                    <Grid item xs={2} sm={4} md={4}>
-                                        <TextField id="kval" label="kval" variant="outlined" />   
-                                    </Grid>
-                                    <Grid item xs={2} sm={4} md={4}>
-                                        <TextField id="kval" label="kval" variant="outlined" />   
-                                    </Grid>
-                                </Grid>
-                            </TabPanel>
-                            <TabPanel value="3">
-                                <Grid container spacing={{ xs: 2, md: 4 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                                    <Grid item xs={2} sm={4} md={4}>
-                                        <CardHeader title="Name" />
-                                        <TextField id="Name" label="Name" variant="outlined" />   
-                                    </Grid>
-                                    <Grid item xs={2} sm={4} md={4}>
-                                        <CardHeader title="Part" />
-                                        <TextField id="Part" label="Part" variant="outlined" />   
-                                    </Grid>
-                                    <Grid item xs={2} sm={4} md={4}  > 
+                                    <TabList
+                                        onChange={
+                                            this.left_Extractors_Type_Change
+                                        }
+                                    >
+                                        <Tab label="regex" value="1" />
+                                        <Tab label="kval" value="2" />
+                                        <Tab label="json" value="3" />
+                                        <Tab label="xpath" value="4" />
+                                        <Tab label="dsl" value="5" />
+                                    </TabList>
+                                </Box>
+                                <TabPanel value="1">
+                                    <Grid
+                                        container
+                                        spacing={{ xs: 2, md: 4 }}
+                                        columns={{ xs: 4, sm: 8, md: 12 }}
+                                    >
+                                        <Grid item xs={2} sm={4} md={4}>
+                                            <CardHeader title="Nmae" />
+                                            <TextField
+                                                id="Name"
+                                                label="Name"
+                                                variant="outlined"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={2} sm={4} md={4}>
+                                            <CardHeader title="Part" />
+                                            <TextField
+                                                id="Part"
+                                                label="Part"
+                                                variant="outlined"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={2} sm={4} md={4}>
                                             <CardHeader title="condition" />
-                                            <RadioGroup horizontal >
-                                                <RadioButton xs={2} rootColor="Gray" value="AND" iconSize={20}>
+                                            <RadioGroup horizontal>
+                                                <RadioButton
+                                                    xs={2}
+                                                    rootColor="Gray"
+                                                    value="AND"
+                                                    iconSize={20}
+                                                >
                                                     AND
                                                 </RadioButton>
-                                                <RadioButton xs={2} rootColor="Gray" value="OR" iconSize={20}>
+                                                <RadioButton
+                                                    xs={2}
+                                                    rootColor="Gray"
+                                                    value="OR"
+                                                    iconSize={20}
+                                                >
                                                     OR
                                                 </RadioButton>
                                             </RadioGroup>
+                                        </Grid>
+                                        <Grid item xs={2} sm={4} md={4}>
+                                            <CardHeader title="internal" />
+                                            <TextField
+                                                id="internal"
+                                                label="internal"
+                                                variant="outlined"
+                                            />
+                                        </Grid>
                                     </Grid>
-                                    <CardHeader title="json" />
-                                    <this.MyComponent />
-                                </Grid>
-                            </TabPanel>
-                            <TabPanel value="4">
-                                <Grid container spacing={{ xs: 2, md: 4 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                                    <Grid item xs={2} sm={4} md={4}>
-                                        <CardHeader title="attribute" />
-                                        <TextField id="attribute" label="attribute" variant="outlined" />   
+                                    <CardHeader title="Regex" />
+                                    <TextField fullWidth label="" id="Regex" />
+                                </TabPanel>
+                                <TabPanel value="2">
+                                    <Grid
+                                        container
+                                        spacing={{ xs: 2, md: 4 }}
+                                        columns={{ xs: 4, sm: 8, md: 12 }}
+                                    >
+                                        <Grid item xs={2} sm={4} md={4}>
+                                            <TextField
+                                                id="kval"
+                                                label="kval"
+                                                variant="outlined"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={2} sm={4} md={4}>
+                                            <TextField
+                                                id="kval"
+                                                label="kval"
+                                                variant="outlined"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={2} sm={4} md={4}>
+                                            <TextField
+                                                id="kval"
+                                                label="kval"
+                                                variant="outlined"
+                                            />
+                                        </Grid>
                                     </Grid>
-                                </Grid>
-                                <CardHeader title="xpath" />
-                                <TextField fullWidth label="" id="xpath" />
-                            </TabPanel>
-                            <TabPanel value="5">
-                                <Grid container spacing={{ xs: 2, md: 4 }} columns={{ xs: 4, sm: 8, md: 12 }}>
-                                    <Grid item xs={2} sm={4} md={4}>
-                                        <CardHeader title="Name" />
-                                        <TextField id="Name" label="Name" variant="outlined" />   
+                                </TabPanel>
+                                <TabPanel value="3">
+                                    <Grid
+                                        container
+                                        spacing={{ xs: 2, md: 4 }}
+                                        columns={{ xs: 4, sm: 8, md: 12 }}
+                                    >
+                                        <Grid item xs={2} sm={4} md={4}>
+                                            <CardHeader title="Name" />
+                                            <TextField
+                                                id="Name"
+                                                label="Name"
+                                                variant="outlined"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={2} sm={4} md={4}>
+                                            <CardHeader title="Part" />
+                                            <TextField
+                                                id="Part"
+                                                label="Part"
+                                                variant="outlined"
+                                            />
+                                        </Grid>
+                                        <Grid item xs={2} sm={4} md={4}>
+                                            <CardHeader title="condition" />
+                                            <RadioGroup horizontal>
+                                                <RadioButton
+                                                    xs={2}
+                                                    rootColor="Gray"
+                                                    value="AND"
+                                                    iconSize={20}
+                                                >
+                                                    AND
+                                                </RadioButton>
+                                                <RadioButton
+                                                    xs={2}
+                                                    rootColor="Gray"
+                                                    value="OR"
+                                                    iconSize={20}
+                                                >
+                                                    OR
+                                                </RadioButton>
+                                            </RadioGroup>
+                                        </Grid>
+                                        <CardHeader title="json" />
+                                        <this.MyComponent />
                                     </Grid>
-                                </Grid>
-                                <CardHeader title="dsl" />
-                                <TextField fullWidth label="" id="dsl" />
-                            </TabPanel>
-                        </TabContext>
+                                </TabPanel>
+                                <TabPanel value="4">
+                                    <Grid
+                                        container
+                                        spacing={{ xs: 2, md: 4 }}
+                                        columns={{ xs: 4, sm: 8, md: 12 }}
+                                    >
+                                        <Grid item xs={2} sm={4} md={4}>
+                                            <CardHeader title="attribute" />
+                                            <TextField
+                                                id="attribute"
+                                                label="attribute"
+                                                variant="outlined"
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                    <CardHeader title="xpath" />
+                                    <TextField fullWidth label="" id="xpath" />
+                                </TabPanel>
+                                <TabPanel value="5">
+                                    <Grid
+                                        container
+                                        spacing={{ xs: 2, md: 4 }}
+                                        columns={{ xs: 4, sm: 8, md: 12 }}
+                                    >
+                                        <Grid item xs={2} sm={4} md={4}>
+                                            <CardHeader title="Name" />
+                                            <TextField
+                                                id="Name"
+                                                label="Name"
+                                                variant="outlined"
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                    <CardHeader title="dsl" />
+                                    <TextField fullWidth label="" id="dsl" />
+                                </TabPanel>
+                            </TabContext>
                         </Grid>
                     </Grid>
                 </CardContent>
