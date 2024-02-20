@@ -239,7 +239,13 @@ func SaveToDB(c *gin.Context) {
 }
 
 func ValidateWithNuclei(jsonData []byte) (bool, error) {
-	cmd := exec.Command("nuclei", "-validate", "-t", "-")
+	currentDir, err := os.Getwd()
+		if err != nil {
+			log.Fatalf("Error getting current directory: %v", err)
+		}
+	nucleiPath := filepath.Join(currentDir, "services", "nuclei", "nuclei.exe")
+
+	cmd := exec.Command(nucleiPath, "-validate", "-t", "-")
 	cmd.Stdin = bytes.NewReader(jsonData)
 
 	if err := cmd.Run(); err != nil {

@@ -515,34 +515,11 @@ func StartScan(c *gin.Context) {
 
 		log.Printf("Final combined CVE count: %+v", combinedCVECount)
 
-		cveCountMap["info"] = combinedCVECount.Info
-		cveCountMap["low"] = combinedCVECount.Low
-		cveCountMap["medium"] = combinedCVECount.Medium
-		cveCountMap["high"] = combinedCVECount.High
-		cveCountMap["critical"] = combinedCVECount.Critical
-
-		// Record the end time of the scan
-		// endTime := time.Now().Unix()
-
-		// status := "Complete"
-
-		// if err != nil {
-		// 	log.Printf("Error running Nuclei scan for ID %s: %s", id, err.Error())
-		// 	status = "Failed"
-		// }
-
-		// Parse the output to get the CVE counts
-		// cveCount := parseOutputToGetCVEs(output)  // You need to implement this function
-
-		// Store the results in MongoDB
-		// after_scan := History{
-		// 	PID:       req.PID,   // front should pass the pid
-		// 	StartTime: startTime, //  time stamp start
-		// 	EndTime:   endTime,   //  time stamp end
-		// 	Result:    outputStr,
-		// 	Status:    status,
-		// 	CVECount:  cveCountMap,
-		// }
+		cveCountMap["info"] = combinedCVECount.Info 			//1
+		cveCountMap["low"] = combinedCVECount.Low 				//2
+		cveCountMap["medium"] = combinedCVECount.Medium			//3
+		cveCountMap["high"] = combinedCVECount.High				//4
+		cveCountMap["critical"] = combinedCVECount.Critical		//5
 
 		filter = bson.M{"_id": id.InsertedID}
 		update = bson.M{
