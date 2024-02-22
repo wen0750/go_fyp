@@ -41,7 +41,7 @@ class ProjectFolder extends React.Component {
             selectedTIDs: [],
             rows: this.rows,
             folderContent: this.rows,
-            folderName: "My Folder",
+            folderName: "",
             f_folder_name: "",
             f_project_name: "",
             f_project_host: [],
@@ -258,6 +258,7 @@ class ProjectFolder extends React.Component {
         return (
             <Link
                 to={"../project/" + param.row.pid}
+                state={param.row.name}
                 style={{
                     width: "100%",
                     height: "100%",

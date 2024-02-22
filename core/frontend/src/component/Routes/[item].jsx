@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 
 import Editor from "../../page/editor";
 import ProjectFolder from "../../page/folder";
@@ -13,11 +13,12 @@ const Item = (props) => {
             if (typeof fid == "undefined") {
                 fid = "";
             }
-
             return <ProjectFolder fid={fid} />;
         case "project":
             let { pid } = useParams();
-            return <ProjectItem pid={pid} />;
+            let { state } = useLocation();
+            console.log(state);
+            return <ProjectItem pid={pid} name={state} />;
         case "editor":
             return <Editor />;
         case "terminal":

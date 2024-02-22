@@ -275,12 +275,13 @@ export default class ProjectHistory extends React.Component {
             setSelected([]);
         };
 
-        const handleClick = (event, Start_Time) => {
-            const selectedIndex = selected.indexOf(Start_Time);
+        const handleClick = (event, id, starttime) => {
+            this.props.onItemSelect(starttime);
+            const selectedIndex = selected.indexOf(id);
             let newSelected = [];
 
             if (selectedIndex === -1) {
-                newSelected = newSelected.concat(selected, Start_Time);
+                newSelected = newSelected.concat(selected, id);
             } else if (selectedIndex === 0) {
                 newSelected = newSelected.concat(selected.slice(1));
             } else if (selectedIndex === selected.length - 1) {
@@ -352,7 +353,11 @@ export default class ProjectHistory extends React.Component {
                                         <TableRow
                                             hover
                                             onClick={(event) =>
-                                                handleClick(event, row._id)
+                                                handleClick(
+                                                    event,
+                                                    row._id,
+                                                    row.startTime
+                                                )
                                             }
                                             role="checkbox"
                                             aria-checked={isItemSelected}

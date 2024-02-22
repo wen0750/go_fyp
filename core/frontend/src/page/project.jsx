@@ -30,6 +30,7 @@ class ProjectItem extends React.Component {
             open: false,
             curTab: 0,
             scanningResult: null,
+            subtitle: "",
         };
     }
 
@@ -98,6 +99,9 @@ class ProjectItem extends React.Component {
             "aria-controls": `simple-tabpanel-${index}`,
         };
     };
+    Capitalize(str) {
+        return str[0].toUpperCase() + str.slice(1);
+    }
 
     handleClickHeaderButton = (event) => {
         // event.currentTarget;
@@ -121,7 +125,18 @@ class ProjectItem extends React.Component {
                 }}
             >
                 <ProjectHeader>
-                    <h1>MyProject</h1>
+                    <h1>
+                        {this.Capitalize(this.props.name)}
+                        <b Style="font-size:large;">
+                            {this.state.subtitle
+                                ? " ( " +
+                                  new Date(
+                                      this.state.subtitle * 1000
+                                  ).toLocaleString() +
+                                  " )"
+                                : ""}
+                        </b>
+                    </h1>
                     <div>
                         <ButtonGroup
                             variant="outlined"
@@ -210,6 +225,11 @@ class ProjectItem extends React.Component {
         }
     };
 
+    handleHistorySelect = (event) => {
+        // event.currentTarget;
+        this.setState({ subtitle: event });
+    };
+
     componentDidMount() {
         this.fetchScanningResult();
     }
@@ -273,6 +293,7 @@ class ProjectItem extends React.Component {
                         <ProjectHistory
                             inputData={this.state.scanningResult}
                             projectID={this.props.pid}
+                            onItemSelect={this.handleHistorySelect}
                             onChangeHid={this.fetchResultWithHid}
                         />
                     </this.TabPanel>
