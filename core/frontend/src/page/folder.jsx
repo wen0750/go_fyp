@@ -33,80 +33,7 @@ import SendIcon from "@mui/icons-material/Send";
 class ProjectFolder extends React.Component {
     constructor(props) {
         super(props);
-        this.rows = [
-            {
-                id: 1,
-                name: "version",
-                schedule: "CVE-2020-26067",
-                lastscanned: "2020-8-12 3:12:02",
-                tid: "64fbe26d40cbb5017185afe3",
-                action: "scanning",
-            },
-            {
-                id: 2,
-                name: "CVE-2021-26119",
-                schedule: "CVE-2021-26119",
-                lastscanned: "2021-5-04 12:03:18",
-                tid: "",
-                action: "paused",
-            },
-            {
-                id: 3,
-                name: "api_endpoints",
-                schedule: "api_endpoints",
-                lastscanned: "2020-3-24 9:35:23",
-                tid: "",
-                action: "stoped",
-            },
-            {
-                id: 4,
-                name: "CVE-2017-7504",
-                schedule: "CVE-2017-7504",
-                lastscanned: "2017-8-26 1:25:09",
-                tid: "",
-                action: "idle",
-            },
-            {
-                id: 5,
-                name: "CVE-2017-12636",
-                schedule: "CVE-2017-12636",
-                lastscanned: "2017-11-04 3:47:06",
-                tid: "",
-                action: { PlayArrowIcon },
-            },
-            {
-                id: 6,
-                name: "CVE-2020-1147",
-                schedule: "CVE-2020-1147",
-                lastscanned: "2020-1-9 11:17:11",
-                tid: "",
-                action: { PlayArrowIcon },
-            },
-            {
-                id: 7,
-                name: "CVE-2021-22123",
-                schedule: "CVE-2021-22123",
-                lastscanned: "2021-9-19 2:53:20",
-                tid: "",
-                action: { PlayArrowIcon },
-            },
-            {
-                id: 8,
-                name: "CVE-2021-36580",
-                schedule: "CVE-2021-36580",
-                lastscanned: "2021-6-8 8:43:03",
-                tid: "",
-                action: { PlayArrowIcon },
-            },
-            {
-                id: 9,
-                name: "CVE-2022-23642",
-                schedule: "CVE-2022-23642",
-                lastscanned: "2022-3-14 2:08:16",
-                tid: "",
-                action: { PlayArrowIcon },
-            },
-        ];
+        this.rows = [];
         this.state = {
             createProjectModalIsOpen: false,
             createFolderModalIsOpen: false,
@@ -114,6 +41,7 @@ class ProjectFolder extends React.Component {
             selectedTIDs: [],
             rows: this.rows,
             folderContent: this.rows,
+            folderName: "My Folder",
             f_folder_name: "",
             f_project_name: "",
             f_project_host: [],
@@ -222,8 +150,16 @@ class ProjectFolder extends React.Component {
                         json[0].project.forEach((item, i) => {
                             item.id = i + 1;
                         });
-                        this.setState({ folderContent: json[0].project });
+                        this.setState({
+                            folderName: json[0].name,
+                            folderContent: json[0].project,
+                        });
                         return;
+                    } else {
+                        this.setState({
+                            folderName: json[0].name,
+                            folderContent: [],
+                        });
                     }
                 });
         }
@@ -782,7 +718,7 @@ class ProjectFolder extends React.Component {
                 }}
             >
                 <FolderHeader>
-                    <h1>MyProject</h1>
+                    <h1>{this.state.folderName}</h1>
                     <div>
                         <Button variant="outlined" sx={{ mx: 1 }}>
                             Import
