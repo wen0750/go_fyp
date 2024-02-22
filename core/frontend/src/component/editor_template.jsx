@@ -56,7 +56,18 @@ export default class EditorTemplate extends React.Component {
 
             const handleChange = (newChips) => {
                 setChips(newChips);
-                this.inputhandler(newChips, "ta");
+                this.tag_inputhandler(newChips, "ta");
+            };
+
+            return <MuiChipsInput value={chips} onChange={handleChange} />;
+        };
+
+        this.Payload_key_Component = () => {
+            const [chips, setChips] = React.useState([]);
+
+            const handleChange = (newChips) => {
+                setChips(newChips);
+                this.tag_inputhandler(newChips, "payload_tag1");
             };
 
             return <MuiChipsInput value={chips} onChange={handleChange} />;
@@ -100,6 +111,45 @@ export default class EditorTemplate extends React.Component {
                 this.setState({ FormData: newdata });
             } else {
                 let newdata = this.state.FormData;
+                newdata[catalog] = {};
+                newdata[catalog][name] = value;
+                this.setState({ FormData: newdata });
+            }
+            //this.props.dataChange(this.state.FormData);
+            console.log(this.state.FormData);
+        };
+
+        this.all_changeFormData= (catalog, name, value) => {
+            console.log(this.state.FormData);
+            console.log(catalog);
+            console.log(name);
+            console.log(value);
+            if (catalog in this.state.FormData) {
+                const newdata = this.state.FormData;
+                newdata[catalog][name] = value;
+                this.setState({ FormData: newdata });
+            } else {
+                const newdata = this.state.FormData;
+                newdata[catalog] = {};
+                newdata[catalog][name] = value;
+                this.setState({ FormData: newdata });
+            }
+            //this.props.dataChange(this.state.FormData);
+            console.log(this.state.FormData);
+        };
+
+        this.fuzzing_changeFormData= (catalog, name, value) => {
+            
+            console.log(this.state.FormData);
+            console.log(catalog);
+            console.log(name);
+            console.log(value);
+            if (catalog in this.state.FormData) {
+                const newdata = this.state.FormData;
+                newdata[catalog][name] = value;
+                this.setState({ FormData: newdata });
+            } else {
+                const newdata = this.state.FormData;
                 newdata[catalog] = {};
                 newdata[catalog][name] = value;
                 this.setState({ FormData: newdata });
@@ -362,12 +412,14 @@ export default class EditorTemplate extends React.Component {
                                 <FormTableFormat
                                     catalog="Options"
                                     opts={this.httpinfoOptionList}
+                                    callback={this.info_inputhandler}
                                 ></FormTableFormat>
                             </TabPanel>
                             <TabPanel value="2">
                                 <FormTableFormat
                                     catalog="options"
                                     opts={this.RawinfoOptionList}
+                                    callback={this.info_inputhandler}
                                 ></FormTableFormat>
                             </TabPanel>
                         </TabContext>
@@ -419,13 +471,15 @@ export default class EditorTemplate extends React.Component {
                                             lname="fname"
                                             value={val.fname}
                                             onChange={(e) => handleChange(e, i)}
+                                            callback={this.info_inputhandler}
                                         />
                                     </Grid>
                                     <Grid item xs={7}>
-                                        <this.MyComponent
+                                        <this.Payload_key_Component
                                             name="tab"
                                             value={val.lname}
                                             onChange={(e) => handleChange(e, i)}
+                                            callback={this.info_inputhandler}
                                         />
                                     </Grid>
                                     <Grid item xs={1}>
@@ -470,6 +524,7 @@ export default class EditorTemplate extends React.Component {
                                     rootColor="Gray"
                                     value="Batteringram"
                                     iconSize={20}
+                                    callback={this.info_inputhandler}
                                 >
                                     Batteringram
                                 </RadioButton>
@@ -479,6 +534,7 @@ export default class EditorTemplate extends React.Component {
                                     value="Batteringram"
                                     disabled
                                     iconSize={20}
+                                    callback={this.info_inputhandler}
                                 >
                                     Batteringram
                                 </RadioButton>
@@ -487,6 +543,7 @@ export default class EditorTemplate extends React.Component {
                                 rootColor="Gray"
                                 value="Pitchfork"
                                 iconSize={20}
+                                callback={this.info_inputhandler}
                             >
                                 Pitchfork
                             </RadioButton>
@@ -494,6 +551,7 @@ export default class EditorTemplate extends React.Component {
                                 rootColor="Gray"
                                 value="Clusterbomb"
                                 iconSize={20}
+                                callback={this.info_inputhandler}
                             >
                                 Clusterbomb
                             </RadioButton>
@@ -531,11 +589,12 @@ export default class EditorTemplate extends React.Component {
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     ></Grid>
                     <Grid container spacing={2}>
-                        <RadioGroup horizontal>
+                        <RadioGroup onChange={(event) => this.all_changeFormData("Fuzzing","part", event)} horizontal>
                             <RadioButton
                                 rootColor="Gray"
                                 value="query"
                                 iconSize={20}
+                                
                             >
                                 query
                             </RadioButton>
@@ -543,6 +602,7 @@ export default class EditorTemplate extends React.Component {
                                 rootColor="Gray"
                                 value="path"
                                 iconSize={20}
+                                
                             >
                                 path
                             </RadioButton>
@@ -550,6 +610,7 @@ export default class EditorTemplate extends React.Component {
                                 rootColor="Gray"
                                 value="header"
                                 iconSize={20}
+                                
                             >
                                 header
                             </RadioButton>
@@ -557,6 +618,7 @@ export default class EditorTemplate extends React.Component {
                                 rootColor="Gray"
                                 value="body"
                                 iconSize={20}
+                                
                             >
                                 body
                             </RadioButton>
@@ -564,6 +626,7 @@ export default class EditorTemplate extends React.Component {
                                 rootColor="Gray"
                                 value="cookie"
                                 iconSize={20}
+                                
                             >
                                 cookie
                             </RadioButton>
@@ -578,7 +641,7 @@ export default class EditorTemplate extends React.Component {
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     ></Grid>
                     <Grid container spacing={2}>
-                        <RadioGroup horizontal>
+                        <RadioGroup onChange={(event) => this.all_changeFormData("Fuzzing","type", event)} horizontal>
                             <RadioButton
                                 rootColor="Gray"
                                 value="replace"
@@ -618,7 +681,7 @@ export default class EditorTemplate extends React.Component {
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     ></Grid>
                     <Grid container spacing={2}>
-                        <RadioGroup horizontal>
+                        <RadioGroup onChange={(event) => this.all_changeFormData("Fuzzing","Mode", event)} horizontal>
                             <RadioButton
                                 rootColor="Gray"
                                 value="Multiple"
@@ -644,12 +707,15 @@ export default class EditorTemplate extends React.Component {
                                 <InputLabel id="Fuzz-select-label">
                                     Fuzz
                                 </InputLabel>
-                                <Select
+                                <Select 
                                     labelId="Fuzz-simple-select-label"
                                     id="Fuzz-simple-select"
                                     value={Fuzz}
                                     label="Fuzz"
-                                    onChange={handleChange}
+                                    onChange={(event) => {
+                                        handleChange(event);
+                                        this.fuzzing_changeFormData("Fuzzing", "Fuzz", event);
+                                    }}
                                 >
                                     <MenuItem value={1}>keys</MenuItem>
                                     <MenuItem value={2}>keys-regex</MenuItem>
@@ -693,10 +759,10 @@ export default class EditorTemplate extends React.Component {
                 <CardContent>
                     <Grid spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
                         <Grid>
-                            <RadioGroup horizontal>
+                            <RadioGroup onChange={(event) => this.all_changeFormData("Matchers","condition", event)} horizontal>
                                 <RadioButton
                                     rootColor="Gray"
-                                    value="Multiple"
+                                    value="and"
                                     iconSize={20}
                                 >
                                     and
@@ -704,7 +770,7 @@ export default class EditorTemplate extends React.Component {
 
                                 <RadioButton
                                     rootColor="Gray"
-                                    value="Single"
+                                    value="or"
                                     iconSize={20}
                                 >
                                     or
