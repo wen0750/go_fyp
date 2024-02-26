@@ -25,7 +25,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from "@mui/material/Tooltip";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 import Tab from "@mui/material/Tab";
@@ -119,7 +119,7 @@ export default class EditorTemplate extends React.Component {
             console.log(this.state.FormData);
         };
 
-        this.all_changeFormData= (catalog, name, value) => {
+        this.all_changeFormData = (catalog, name, value) => {
             console.log(this.state.FormData);
             console.log(catalog);
             console.log(name);
@@ -138,8 +138,7 @@ export default class EditorTemplate extends React.Component {
             console.log(this.state.FormData);
         };
 
-        this.fuzzing_changeFormData= (catalog, name, value) => {
-            
+        this.fuzzing_changeFormData = (catalog, name, value) => {
             console.log(this.state.FormData);
             console.log(catalog);
             console.log(name);
@@ -199,7 +198,8 @@ export default class EditorTemplate extends React.Component {
                 type: "TextField",
                 visible: true,
                 removable: false,
-                tooltip: "Name should be good short summary that identifies what the template does.",
+                tooltip:
+                    "Name should be good short summary that identifies what the template does.",
             },
             {
                 key: 1,
@@ -216,8 +216,7 @@ export default class EditorTemplate extends React.Component {
                 value: ["info", "high", "medium", "critical", "low", "unknown"],
                 visible: true,
                 removable: false,
-                tooltip:
-                    "Severity of the template.",
+                tooltip: "Severity of the template.",
             },
             {
                 key: 3,
@@ -225,8 +224,7 @@ export default class EditorTemplate extends React.Component {
                 type: "filled",
                 visible: true,
                 removable: false,
-                tooltip:
-                    "This should contain links relevant to the template.",
+                tooltip: "This should contain links relevant to the template.",
             },
             {
                 key: 4,
@@ -234,8 +232,7 @@ export default class EditorTemplate extends React.Component {
                 type: "multiline",
                 visible: true,
                 removable: false,
-                tooltip:
-                    "Description of the template.",
+                tooltip: "Description of the template.",
             },
         ];
         this.httpinfoOptionList = [
@@ -253,7 +250,8 @@ export default class EditorTemplate extends React.Component {
                 type: "filled",
                 visible: true,
                 removable: false,
-                tooltip: "Path contains the path/s for the HTTP requests. It supports variables as placeholders.",
+                tooltip:
+                    "Path contains the path/s for the HTTP requests. It supports variables as placeholders.",
             },
             {
                 key: 2,
@@ -261,7 +259,8 @@ export default class EditorTemplate extends React.Component {
                 type: "multiline",
                 visible: true,
                 removable: false,
-                tooltip: "Headers contains HTTP Headers to send with the request.",
+                tooltip:
+                    "Headers contains HTTP Headers to send with the request.",
             },
         ];
         this.RawinfoOptionList = [
@@ -316,17 +315,23 @@ export default class EditorTemplate extends React.Component {
 
     Title = () => {
         return (
-          <div>
-            Tag
-            <Tooltip title={<h1>Any tags for the template.Multiple values can also be specified separated by commas.</h1>}>
-              <IconButton >
-                <HelpOutlineIcon 
-                    fontSize={"large"}/>
-              </IconButton>
-            </Tooltip>
-          </div>
+            <div>
+                Tag
+                <Tooltip
+                    title={
+                        <h1>
+                            Any tags for the template.Multiple values can also
+                            be specified separated by commas.
+                        </h1>
+                    }
+                >
+                    <IconButton>
+                        <HelpOutlineIcon fontSize={"large"} />
+                    </IconButton>
+                </Tooltip>
+            </div>
         );
-    }
+    };
 
     PartInformation = () => {
         return (
@@ -382,7 +387,7 @@ export default class EditorTemplate extends React.Component {
                         spacing={2}
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     ></Grid>
-                    
+
                     <this.TagMyComponent />
                 </CardContent>
             </Card>
@@ -589,12 +594,20 @@ export default class EditorTemplate extends React.Component {
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     ></Grid>
                     <Grid container spacing={2}>
-                        <RadioGroup onChange={(event) => this.all_changeFormData("Fuzzing","part", event)} horizontal>
+                        <RadioGroup
+                            onChange={(event) =>
+                                this.all_changeFormData(
+                                    "Fuzzing",
+                                    "part",
+                                    event
+                                )
+                            }
+                            horizontal
+                        >
                             <RadioButton
                                 rootColor="Gray"
                                 value="query"
                                 iconSize={20}
-                                
                             >
                                 query
                             </RadioButton>
@@ -602,7 +615,6 @@ export default class EditorTemplate extends React.Component {
                                 rootColor="Gray"
                                 value="path"
                                 iconSize={20}
-                                
                             >
                                 path
                             </RadioButton>
@@ -610,7 +622,6 @@ export default class EditorTemplate extends React.Component {
                                 rootColor="Gray"
                                 value="header"
                                 iconSize={20}
-                                
                             >
                                 header
                             </RadioButton>
@@ -618,7 +629,6 @@ export default class EditorTemplate extends React.Component {
                                 rootColor="Gray"
                                 value="body"
                                 iconSize={20}
-                                
                             >
                                 body
                             </RadioButton>
@@ -626,7 +636,6 @@ export default class EditorTemplate extends React.Component {
                                 rootColor="Gray"
                                 value="cookie"
                                 iconSize={20}
-                                
                             >
                                 cookie
                             </RadioButton>
@@ -641,7 +650,16 @@ export default class EditorTemplate extends React.Component {
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     ></Grid>
                     <Grid container spacing={2}>
-                        <RadioGroup onChange={(event) => this.all_changeFormData("Fuzzing","type", event)} horizontal>
+                        <RadioGroup
+                            onChange={(event) =>
+                                this.all_changeFormData(
+                                    "Fuzzing",
+                                    "type",
+                                    event
+                                )
+                            }
+                            horizontal
+                        >
                             <RadioButton
                                 rootColor="Gray"
                                 value="replace"
@@ -681,7 +699,16 @@ export default class EditorTemplate extends React.Component {
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     ></Grid>
                     <Grid container spacing={2}>
-                        <RadioGroup onChange={(event) => this.all_changeFormData("Fuzzing","Mode", event)} horizontal>
+                        <RadioGroup
+                            onChange={(event) =>
+                                this.all_changeFormData(
+                                    "Fuzzing",
+                                    "Mode",
+                                    event
+                                )
+                            }
+                            horizontal
+                        >
                             <RadioButton
                                 rootColor="Gray"
                                 value="Multiple"
@@ -707,14 +734,18 @@ export default class EditorTemplate extends React.Component {
                                 <InputLabel id="Fuzz-select-label">
                                     Fuzz
                                 </InputLabel>
-                                <Select 
+                                <Select
                                     labelId="Fuzz-simple-select-label"
                                     id="Fuzz-simple-select"
                                     value={Fuzz}
                                     label="Fuzz"
                                     onChange={(event) => {
                                         handleChange(event);
-                                        this.fuzzing_changeFormData("Fuzzing", "Fuzz", event);
+                                        this.fuzzing_changeFormData(
+                                            "Fuzzing",
+                                            "Fuzz",
+                                            event
+                                        );
                                     }}
                                 >
                                     <MenuItem value={1}>keys</MenuItem>
@@ -759,7 +790,16 @@ export default class EditorTemplate extends React.Component {
                 <CardContent>
                     <Grid spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
                         <Grid>
-                            <RadioGroup onChange={(event) => this.all_changeFormData("Matchers","condition", event)} horizontal>
+                            <RadioGroup
+                                onChange={(event) =>
+                                    this.all_changeFormData(
+                                        "Matchers",
+                                        "condition",
+                                        event
+                                    )
+                                }
+                                horizontal
+                            >
                                 <RadioButton
                                     rootColor="Gray"
                                     value="and"
