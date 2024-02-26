@@ -127,7 +127,7 @@ class ProjectItem extends React.Component {
                 <ProjectHeader>
                     <h1>
                         {this.Capitalize(this.props.name)}
-                        <b Style="font-size:large;">
+                        <b style={{ fontSize: "20px" }}>
                             {this.state.subtitle
                                 ? " ( " +
                                   new Date(
