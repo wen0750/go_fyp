@@ -17,7 +17,6 @@ const Item = (props) => {
         case "project":
             let { pid } = useParams();
             let { state } = useLocation();
-            console.log(state);
             return <ProjectItem pid={pid} name={state} />;
         case "editor":
             return <Editor />;
