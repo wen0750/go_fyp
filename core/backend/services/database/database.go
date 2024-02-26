@@ -69,6 +69,7 @@ type Template struct {
 			Part string   `json:"part,omitempty"`
 		} `json:"extractors,omitempty"`
 	} `json:"http,omitempty"`
+	Local   int		`json:"local,omitempty"`
 }
 
 // create a template structure

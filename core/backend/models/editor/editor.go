@@ -77,6 +77,7 @@ type Template struct {
 			Part string   `json:"part,omitempty"`
 		} `json:"extractors,omitempty"`
 	} `json:"http,omitempty"`
+	Local   int		`json:"local,omitempty"`
 }
 
 var collection *mongo.Collection
@@ -176,6 +177,8 @@ func SaveToDB(c *gin.Context) {
 		})
 		return
 	}
+
+	template.Local = 1
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -315,6 +318,8 @@ func UploadToDB(c *gin.Context) {
 		return
 	}
 	filter := bson.M{"id": data.ID}
+
+	data.Local = 1
 
 	var existingTemplate Template
 	if collection == nil {
