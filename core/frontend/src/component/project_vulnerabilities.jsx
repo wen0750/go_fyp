@@ -18,6 +18,21 @@ class ProjectVulnerabilities extends React.Component {
                 headerClassName: "gray-background",
                 align: "center",
                 headerAlign: "center",
+                valueGetter: (params) => {
+                    if (params.value != null) {
+                        if (params.value == 1) {
+                            return "Info";
+                        } else if (params.value == 2) {
+                            return "Low";
+                        } else if (params.value == 3) {
+                            return "Medium";
+                        } else if (params.value == 4) {
+                            return "High";
+                        } else if (params.value == 5) {
+                            return "Critical";
+                        }
+                    }
+                },
             },
             {
                 field: "Score",
@@ -111,8 +126,10 @@ class ProjectVulnerabilities extends React.Component {
                             return "Medium";
                         } else if (params.value == "High") {
                             return "High";
+                        } else if (params.value == "Critical") {
+                            return "Critical";
                         }
-                        return (params.value = "Critical" ? "Critical" : "");
+                        return "";
                     }}
                     initialState={{
                         pagination: {

@@ -138,11 +138,15 @@ export default class ProjectSummary extends React.Component {
     };
 
     formateArrayToList = (indata) => {
+        const extList = [];
         return (
             <ul style={{ marginLeft: "20px" }}>
                 {indata.map((element, i) => {
-                    // Return the element. Also pass key
-                    return <li key={i}>{element.info.name}</li>;
+                    if (!extList.includes(element.info.name)) {
+                        extList.push(element.info.name);
+                        // Return the element. Also pass key
+                        return <li key={i}>{element.info.name}</li>;
+                    }
                 })}
             </ul>
         );
