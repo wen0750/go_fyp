@@ -16,7 +16,7 @@ const App = (props) => {
 
     const sKeys = Object.keys(list);
     sKeys.forEach((key) => {
-        if (key != "total" && key != "ip") {
+        if (key != "total" && key != "ip" && key != "host") {
             // series.push({ name: key, data: [] });
             // let datalen = (list[key] / list.total) * 100;
             series.push({ name: key, data: [list[key]] });

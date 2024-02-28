@@ -43,118 +43,9 @@ export default class EditorTemplate extends React.Component {
             FormData: {},
             responseType: "1",
             option_responseType: "1",
-            Matchers_responseType: "1",
-            Extractors_responseType: "1",
+            Matchers_responseType: "",
+            Extractors_responseType: "",
             responseViwerType: 1,
-        };
-
-        const ITEM_HEIGHT = 40;
-        const ITEM_PADDING_TOP = 8;
-
-        this.MyComponent = () => {
-            const [chips, setChips] = React.useState([]);
-
-            const handleChange = (newChips) => {
-                setChips(newChips);
-                this.tag_inputhandler(newChips, "ta");
-            };
-
-            return <MuiChipsInput value={chips} onChange={handleChange} />;
-        };
-
-        this.Payload_key_Component = () => {
-            const [chips, setChips] = React.useState([]);
-
-            const handleChange = (newChips) => {
-                setChips(newChips);
-                this.tag_inputhandler(newChips, "payload_tag1");
-            };
-
-            return <MuiChipsInput value={chips} onChange={handleChange} />;
-        };
-
-        this.info_inputhandler = (catalog, name, value) => {
-            const data = this.props.templatedata;
-            data[name] = value;
-            this.props.dataChange(data);
-        };
-
-        this.tag_inputhandler = (newdata, key) => {
-            const data = this.props.templatedata;
-            data[key] = newdata.toString();
-            this.props.dataChange(data);
-        };
-
-        this.TagMyComponent = () => {
-            const [chips, setChips] = React.useState([]);
-            const TaghandleChange = (newChips) => {
-                setChips(newChips);
-                this.tag_inputhandler(newChips, "tags");
-            };
-
-            return <MuiChipsInput value={chips} onChange={TaghandleChange} />;
-        };
-
-        this.menuProps = {
-            PaperProps: {
-                style: {
-                    maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-                    width: 220,
-                },
-            },
-        };
-
-        this.changeFormData = (catalog, name, value) => {
-            if (catalog in this.state.FormData) {
-                let newdata = this.state.FormData;
-                newdata[catalog][name] = value;
-                this.setState({ FormData: newdata });
-            } else {
-                let newdata = this.state.FormData;
-                newdata[catalog] = {};
-                newdata[catalog][name] = value;
-                this.setState({ FormData: newdata });
-            }
-            //this.props.dataChange(this.state.FormData);
-            console.log(this.state.FormData);
-        };
-
-        this.all_changeFormData = (catalog, name, value) => {
-            console.log(this.state.FormData);
-            console.log(catalog);
-            console.log(name);
-            console.log(value);
-            if (catalog in this.state.FormData) {
-                const newdata = this.state.FormData;
-                newdata[catalog][name] = value;
-                this.setState({ FormData: newdata });
-            } else {
-                const newdata = this.state.FormData;
-                newdata[catalog] = {};
-                newdata[catalog][name] = value;
-                this.setState({ FormData: newdata });
-            }
-            //this.props.dataChange(this.state.FormData);
-            console.log(this.state.FormData);
-        };
-
-        this.fuzzing_changeFormData = (catalog, name, value) => {
-            console.log(this.state.FormData);
-            console.log(catalog);
-            console.log(name);
-            console.log(value);
-            if (catalog in this.state.FormData) {
-                const newdata = this.state.FormData;
-                newdata[catalog][name] = value;
-                this.setState({ FormData: newdata });
-            } else {
-                const newdata = this.state.FormData;
-                newdata[catalog] = {};
-                newdata[catalog][name] = value;
-                this.setState({ FormData: newdata });
-            }
-            //this.props.dataChange(this.state.FormData);
-            console.log(this.state.FormData);
         };
 
         this.classificationOptionList = [
@@ -299,6 +190,115 @@ export default class EditorTemplate extends React.Component {
                 tooltip: "Status Code received from the Server",
             },
         ];
+
+        const ITEM_HEIGHT = 40;
+        const ITEM_PADDING_TOP = 8;
+
+        this.MyComponent = () => {
+            const [chips, setChips] = React.useState([]);
+
+            const handleChange = (newChips) => {
+                setChips(newChips);
+                this.tag_inputhandler(newChips, "ta");
+            };
+
+            return <MuiChipsInput value={chips} onChange={handleChange} />;
+        };
+
+        this.Payload_key_Component = () => {
+            const [chips, setChips] = React.useState([]);
+
+            const handleChange = (newChips) => {
+                setChips(newChips);
+                this.tag_inputhandler(newChips, "payload_tag1");
+            };
+
+            return <MuiChipsInput value={chips} onChange={handleChange} />;
+        };
+
+        this.info_inputhandler = (catalog, name, value) => {
+            const data = this.props.templatedata;
+            data[name] = value;
+            this.props.dataChange(data);
+        };
+
+        this.tag_inputhandler = (newdata, key) => {
+            const data = this.props.templatedata;
+            data[key] = newdata.toString();
+            this.props.dataChange(data);
+        };
+
+        this.TagMyComponent = () => {
+            const [chips, setChips] = React.useState([]);
+            const TaghandleChange = (newChips) => {
+                setChips(newChips);
+                this.tag_inputhandler(newChips, "tags");
+            };
+
+            return <MuiChipsInput value={chips} onChange={TaghandleChange} />;
+        };
+
+        this.menuProps = {
+            PaperProps: {
+                style: {
+                    maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+                    width: 220,
+                },
+            },
+        };
+
+        this.changeFormData = (catalog, name, value) => {
+            if (catalog in this.state.FormData) {
+                let newdata = this.state.FormData;
+                newdata[catalog][name] = value;
+                this.setState({ FormData: newdata });
+            } else {
+                let newdata = this.state.FormData;
+                newdata[catalog] = {};
+                newdata[catalog][name] = value;
+                this.setState({ FormData: newdata });
+            }
+            //this.props.dataChange(this.state.FormData);
+            console.log(this.state.FormData);
+        };
+
+        this.all_changeFormData = (catalog, name, value) => {
+            console.log(this.state.FormData);
+            console.log(catalog);
+            console.log(name);
+            console.log(value);
+            if (catalog in this.state.FormData) {
+                const newdata = this.state.FormData;
+                newdata[catalog][name] = value;
+                this.setState({ FormData: newdata });
+            } else {
+                const newdata = this.state.FormData;
+                newdata[catalog] = {};
+                newdata[catalog][name] = value;
+                this.setState({ FormData: newdata });
+            }
+            //this.props.dataChange(this.state.FormData);
+            console.log(this.state.FormData);
+        };
+
+        this.fuzzing_changeFormData = (catalog, name, value) => {
+            console.log(this.state.FormData);
+            console.log(catalog);
+            console.log(name);
+            console.log(value);
+            if (catalog in this.state.FormData) {
+                const newdata = this.state.FormData;
+                newdata[catalog][name] = value;
+                this.setState({ FormData: newdata });
+            } else {
+                const newdata = this.state.FormData;
+                newdata[catalog] = {};
+                newdata[catalog][name] = value;
+                this.setState({ FormData: newdata });
+            }
+            //this.props.dataChange(this.state.FormData);
+            console.log(this.state.FormData);
+        };
     }
 
     left_Options_Type_Change = (event, newValue) => {
@@ -310,7 +310,13 @@ export default class EditorTemplate extends React.Component {
     };
 
     left_Extractors_Type_Change = (event, newValue) => {
-        this.setState({ Extractors_responseType: newValue });
+        const tmpdata = this.state.FormData;
+        tmpdata["extractors"] = [];
+        tmpdata["extractors"]["type"] = newValue;
+        this.setState({
+            Extractors_responseType: newValue,
+            FormData: tmpdata,
+        });
     };
 
     Title = () => {
@@ -1183,14 +1189,14 @@ export default class EditorTemplate extends React.Component {
                                             this.left_Extractors_Type_Change
                                         }
                                     >
-                                        <Tab label="regex" value="1" />
-                                        <Tab label="kval" value="2" />
-                                        <Tab label="json" value="3" />
-                                        <Tab label="xpath" value="4" />
-                                        <Tab label="dsl" value="5" />
+                                        <Tab label="regex" value="regex" />
+                                        <Tab label="kval" value="kval" />
+                                        <Tab label="json" value="json" />
+                                        <Tab label="xpath" value="xpath" />
+                                        <Tab label="dsl" value="dsl" />
                                     </TabList>
                                 </Box>
-                                <TabPanel value="1">
+                                <TabPanel value="regex">
                                     <Grid
                                         container
                                         spacing={{ xs: 2, md: 4 }}
@@ -1202,6 +1208,13 @@ export default class EditorTemplate extends React.Component {
                                                 id="Name"
                                                 label="Name"
                                                 variant="outlined"
+                                                onChange={(event) =>
+                                                    this.all_changeFormData(
+                                                        "extractors",
+                                                        "name",
+                                                        event.target.value
+                                                    )
+                                                }
                                             />
                                         </Grid>
                                         <Grid item xs={2} sm={4} md={4}>
@@ -1210,11 +1223,27 @@ export default class EditorTemplate extends React.Component {
                                                 id="Part"
                                                 label="Part"
                                                 variant="outlined"
+                                                onChange={(event) =>
+                                                    this.all_changeFormData(
+                                                        "extractors",
+                                                        "part",
+                                                        event.target.value
+                                                    )
+                                                }
                                             />
                                         </Grid>
-                                        <Grid item xs={2} sm={4} md={4}>
+                                        {/* <Grid item xs={2} sm={4} md={4}>
                                             <CardHeader title="condition" />
-                                            <RadioGroup horizontal>
+                                            <RadioGroup
+                                                horizontal
+                                                onChange={(event) =>
+                                                    this.all_changeFormData(
+                                                        "extractors",
+                                                        "condition",
+                                                        event
+                                                    )
+                                                }
+                                            >
                                                 <RadioButton
                                                     xs={2}
                                                     rootColor="Gray"
@@ -1232,20 +1261,38 @@ export default class EditorTemplate extends React.Component {
                                                     OR
                                                 </RadioButton>
                                             </RadioGroup>
-                                        </Grid>
+                                        </Grid> */}
                                         <Grid item xs={2} sm={4} md={4}>
                                             <CardHeader title="internal" />
                                             <TextField
                                                 id="internal"
                                                 label="internal"
                                                 variant="outlined"
+                                                onChange={(event) =>
+                                                    this.all_changeFormData(
+                                                        "extractors",
+                                                        "internal",
+                                                        event.target.value
+                                                    )
+                                                }
                                             />
                                         </Grid>
                                     </Grid>
                                     <CardHeader title="Regex" />
-                                    <TextField fullWidth label="" id="Regex" />
+                                    <TextField
+                                        fullWidth
+                                        label=""
+                                        id="Regex"
+                                        onChange={(event) =>
+                                            this.all_changeFormData(
+                                                "extractors",
+                                                "regex",
+                                                event.target.value
+                                            )
+                                        }
+                                    />
                                 </TabPanel>
-                                <TabPanel value="2">
+                                <TabPanel value="kval">
                                     <Grid
                                         container
                                         spacing={{ xs: 2, md: 4 }}
@@ -1274,7 +1321,7 @@ export default class EditorTemplate extends React.Component {
                                         </Grid>
                                     </Grid>
                                 </TabPanel>
-                                <TabPanel value="3">
+                                <TabPanel value="json">
                                     <Grid
                                         container
                                         spacing={{ xs: 2, md: 4 }}
@@ -1321,7 +1368,7 @@ export default class EditorTemplate extends React.Component {
                                         <this.MyComponent />
                                     </Grid>
                                 </TabPanel>
-                                <TabPanel value="4">
+                                <TabPanel value="xpath">
                                     <Grid
                                         container
                                         spacing={{ xs: 2, md: 4 }}
@@ -1339,7 +1386,7 @@ export default class EditorTemplate extends React.Component {
                                     <CardHeader title="xpath" />
                                     <TextField fullWidth label="" id="xpath" />
                                 </TabPanel>
-                                <TabPanel value="5">
+                                <TabPanel value="dsl">
                                     <Grid
                                         container
                                         spacing={{ xs: 2, md: 4 }}

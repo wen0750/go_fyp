@@ -370,7 +370,7 @@ export default class ProjectHosts extends React.Component {
                                                 scope="row"
                                                 padding="none"
                                             >
-                                                {row.ip}
+                                                {row.host ? row.host : row.ip}
                                             </TableCell>
                                             <TableCell
                                                 align="right"
@@ -457,6 +457,7 @@ export default class ProjectHosts extends React.Component {
                             info: 0,
                             low: 0,
                             medium: 0,
+                            host: obj.host,
                         });
                         indexofip = indexer.length - 1;
                     }
