@@ -44,7 +44,7 @@ export default class EditorTemplate extends React.Component {
             responseType: "1",
             option_responseType: "1",
             Matchers_responseType: "",
-            Extractors_responseType: "",
+            Extractors_responseType: "regex",
             responseViwerType: 1,
         };
 
@@ -1149,25 +1149,6 @@ export default class EditorTemplate extends React.Component {
     };
 
     PartExtractors = () => {
-        const [data, setData] = useState([{ key: "", tab: "" }]);
-
-        const handleClick = () => {
-            setData([...data, { key: "", tab: "" }]);
-        };
-
-        const handleChange = (e, i) => {
-            const { name, value } = e.target;
-            const onchangeVal = [...data];
-            onchangeVal[i][name] = value;
-            setData(onchangeVal);
-        };
-
-        const handleDelete = (i) => {
-            const deleteVal = [...data];
-            deleteVal.splice(i, 1);
-            setData(deleteVal);
-        };
-
         return (
             <Card sx={{ my: 2 }}>
                 <CardHeader title="Extractors" />
@@ -1415,7 +1396,7 @@ export default class EditorTemplate extends React.Component {
     // Respone View
     // fatch data
     componentDidMount() {
-        this.fetchData();
+        // this.fetchData();
     }
 
     fetchData = async () => {
