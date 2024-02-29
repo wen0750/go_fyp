@@ -319,7 +319,26 @@ export default class EditorTemplate extends React.Component {
         });
     };
 
-    Title = () => {
+    infoTitle = () => {
+        return (
+            <div>
+                Information
+                <Tooltip
+                    title={
+                        <h1>
+                            Info contains metadata information about a template
+                        </h1>
+                    }
+                >
+                    <IconButton>
+                        <HelpOutlineIcon fontSize={"large"} />
+                    </IconButton>
+                </Tooltip>
+            </div>
+        );
+    };
+
+    TagTitle = () => {
         return (
             <div>
                 Tag
@@ -339,10 +358,125 @@ export default class EditorTemplate extends React.Component {
         );
     };
 
+    ClassTitle = () => {
+        return (
+            <div>
+                classification
+                <Tooltip
+                    title={
+                        <h1>
+                            Classification contains classification information about the template.
+                        </h1>
+                    }
+                >
+                    <IconButton>
+                        <HelpOutlineIcon fontSize={"large"} />
+                    </IconButton>
+                </Tooltip>
+            </div>
+        );
+    };
+
+    OptionTitle = () => {
+        return (
+            <div>
+                Options
+                <Tooltip
+                    title={
+                        <h1>
+                            Request contains a http request to be made from a template
+                        </h1>
+                    }
+                >
+                    <IconButton>
+                        <HelpOutlineIcon fontSize={"large"} />
+                    </IconButton>
+                </Tooltip>
+            </div>
+        );
+    };
+
+    PayloadTitle = () => {
+        return (
+            <div>
+                Payload
+                <Tooltip
+                    title={
+                        <h1>
+                            Payloads contains any payloads for the current request.Payloads support both key-values combinations where a list of payloads is provided, or optionally a single file can also be provided as payload which will be read on run-time.
+                        </h1>
+                    }
+                >
+                    <IconButton>
+                        <HelpOutlineIcon fontSize={"large"} />
+                    </IconButton>
+                </Tooltip>
+            </div>
+        );
+    };
+
+    FuzzingTitle = () => {
+        return (
+            <div>
+                Fuzzing
+                <Tooltip
+                    title={
+                        <h1>
+                            Fuzzing describes schema to fuzz http requests
+                        </h1>
+                    }
+                >
+                    <IconButton>
+                        <HelpOutlineIcon fontSize={"large"} />
+                    </IconButton>
+                </Tooltip>
+            </div>
+        );
+    };
+
+    MatchersTitle = () => {
+        return (
+            <div>
+                Matchers
+                <Tooltip
+                    title={
+                        <h1>
+                            Matchers allow different type of flexible comparisons on protocol responses. They are what makes nuclei so powerful, checks are very simple to write and multiple checks can be added as per need for very effective scanning.
+                        </h1>
+                    }
+                >
+                    <IconButton>
+                        <HelpOutlineIcon fontSize={"large"} />
+                    </IconButton>
+                </Tooltip>
+            </div>
+        );
+    };
+
+    ExtractorTitle = () => {
+        return (
+            <div>
+                Extractor
+                <Tooltip
+                    title={
+                        <h1>
+                            Extractors can be used to extract and display in results a match from the response returned by a module.
+                        </h1>
+                    }
+                >
+                    <IconButton>
+                        <HelpOutlineIcon fontSize={"large"} />
+                    </IconButton>
+                </Tooltip>
+            </div>
+        );
+    };
+
+
     PartInformation = () => {
         return (
             <Card sx={{ my: 2 }}>
-                <CardHeader title="Information" />
+                <CardHeader title={<this.infoTitle />} />
                 <hr />
                 <CardContent>
                     <Grid
@@ -364,7 +498,7 @@ export default class EditorTemplate extends React.Component {
     Partclassification = () => {
         return (
             <Card sx={{ my: 2 }}>
-                <CardHeader title="Classification" />
+                <CardHeader title={<this.ClassTitle />} />
                 <hr />
                 <CardContent>
                     <Grid
@@ -386,7 +520,7 @@ export default class EditorTemplate extends React.Component {
     PartTags = () => {
         return (
             <Card sx={{ my: 2 }}>
-                <CardHeader title={<this.Title />} />
+                <CardHeader title={<this.TagTitle />} />
                 <CardContent>
                     <Grid
                         container="container"
@@ -403,7 +537,7 @@ export default class EditorTemplate extends React.Component {
     PartOptions = () => {
         return (
             <Card sx={{ my: 2 }}>
-                <CardHeader title="Options" />
+                <CardHeader title={<this.OptionTitle />} />
                 <hr />
                 <CardContent>
                     <div className="horizontal-line"></div>
@@ -462,7 +596,7 @@ export default class EditorTemplate extends React.Component {
 
         return (
             <Card sx={{ my: 2 }}>
-                <CardHeader title="Payloads" />
+                <CardHeader title={<this.PayloadTitle />} />
                 <hr />
                 <CardContent>
                     <Grid
@@ -582,7 +716,7 @@ export default class EditorTemplate extends React.Component {
 
         return (
             <Card sx={{ my: 2 }}>
-                <CardHeader title="Fuzzing" />
+                <CardHeader title={<this.FuzzingTitle />} />
                 <hr />
                 <CardContent>
                     <Grid
@@ -791,7 +925,7 @@ export default class EditorTemplate extends React.Component {
 
         return (
             <Card sx={{ my: 2 }}>
-                <CardHeader title="Matchers-condition" />
+                <CardHeader title={<this.MatchersTitle />} />
                 <hr />
                 <CardContent>
                     <Grid spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
@@ -1151,7 +1285,7 @@ export default class EditorTemplate extends React.Component {
     PartExtractors = () => {
         return (
             <Card sx={{ my: 2 }}>
-                <CardHeader title="Extractors" />
+                <CardHeader title={<this.ExtractorTitle />} />
                 <hr />
                 <CardContent>
                     <Grid spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
