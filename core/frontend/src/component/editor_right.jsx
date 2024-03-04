@@ -19,6 +19,8 @@ import ListItem from "@mui/joy/ListItem";
 
 import { TabContext, TabList, TabPanel } from "@mui/lab";
 
+import { CopyBlock, dracula } from "react-code-blocks";
+
 import SendIcon from "@mui/icons-material/Send";
 
 import "../assets/css/editor_top_right.css";
@@ -448,7 +450,7 @@ export default class Editor_Right extends React.Component {
                             aria-label="lab API tabs example"
                         >
                             <Tab label="HTML Code" value="1" />
-                            <Tab label="Page Review" value="2" />
+                            {/* <Tab label="Page Review" value="2" /> */}
                         </TabList>
                     </Box>
                     <TabPanel
@@ -460,7 +462,14 @@ export default class Editor_Right extends React.Component {
                             overflow: "scroll",
                         }}
                     >
-                        {html_beautify(this.state.tmpHTMLBody)}
+                        {/* {html_beautify(this.state.tmpHTMLBody)} */}
+                        <CopyBlock
+                            language="html"
+                            text={html_beautify(this.state.tmpHTMLBody)}
+                            codeBlock
+                            theme={dracula}
+                            showLineNumbers={false}
+                        />
                     </TabPanel>
                     <TabPanel
                         value="2"

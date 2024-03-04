@@ -2,6 +2,20 @@ import * as React from "react";
 import { Box, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+
+import Accordion from "@mui/material/Accordion";
+import AccordionActions from "@mui/material/AccordionActions";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
+import { CopyBlock, dracula } from "react-code-blocks";
+
 import { UnderLineMiniTitle } from "../component/page_style/project_style";
 import ScanDurations from "./project_ext_scan_durations";
 import "../assets/css/threats.css";
@@ -9,7 +23,7 @@ import "../assets/css/threats.css";
 class ProjectVulnerabilities extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { rows: [] };
+        this.state = { rows: [], openDetails: false, threatDetails: [] };
         this.columns = [
             {
                 field: "Serverity",
@@ -63,49 +77,20 @@ class ProjectVulnerabilities extends React.Component {
         ];
     }
 
-    rows = [
-        {
-            id: 1,
-            Serverity: "Info",
-            Score: "5.5",
-            Name: "SSH",
-            Family: "Misc",
-            Count: "4",
-        },
-        {
-            id: 2,
-            Serverity: "Low",
-            Score: "5.5",
-            Name: "wordpress",
-            Family: "Firewalls",
-            Count: "3",
-        },
-        {
-            id: 3,
-            Serverity: "Medium",
-            Score: "5.5",
-            Name: "word",
-            Family: "Web Servers",
-            Count: "5",
-        },
-        {
-            id: 4,
-            Serverity: "High",
-            Score: "5.5",
-            Name: "wordpress",
-            Family: "General",
-            Count: "3",
-        },
-        {
-            id: 5,
-            Serverity: "Critical",
-            Score: "5.5",
-            Name: "wordpress",
-            Family: "General",
-            Count: "3",
-        },
-    ];
+    closeDetails = () => {
+        this.setState({ openDetails: false });
+    };
 
+    threatslistRowSelect = (params, event, details) => {
+        const list = [];
+
+        this.props.inputData.result.forEach((element) => {
+            if (element.info.name == params.row.Name) {
+                list.push(element);
+            }
+        });
+        this.setState({ openDetails: true, threatDetails: list });
+    };
     threatslist = () => {
         return (
             <div style={{ height: "100%", width: "100%" }}>
@@ -136,10 +121,93 @@ class ProjectVulnerabilities extends React.Component {
                             paginationModel: { page: 0, pageSize: 10 },
                         },
                     }}
+                    checkboxSelection={false}
+                    onRowClick={this.threatslistRowSelect}
                     pageSizeOptions={[5, 10, 15]}
-                    checkboxSelection
                 />
             </div>
+        );
+    };
+
+    genVulnerabilitiesDetails = () => {
+        console.log(this.state.threatDetails);
+        return (
+            this.state.threatDetails.length > 0 && (
+                <Dialog
+                    fullWidth={true}
+                    maxWidth={"xl"}
+                    open={this.state.openDetails}
+                    onClose={this.closeDetails}
+                >
+                    <DialogTitle>
+                        {this.state.threatDetails[0].info.name}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            {this.state.threatDetails[0].info.description}
+                        </DialogContentText>
+                        <Accordion defaultExpanded>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel1-content"
+                                id="panel1-header"
+                            >
+                                Accordion 1
+                            </AccordionSummary>
+                            <AccordionDetails>
+                                Lorem ipsum dolor sit amet, consectetur
+                                adipiscing elit. Suspendisse malesuada lacus ex,
+                                sit amet blandit leo lobortis eget.
+                            </AccordionDetails>
+                        </Accordion>
+
+                        {this.state.threatDetails.map((answer, i) => {
+                            var period = answer.response.lastIndexOf("\r\n");
+                            var headerpart = answer.response.substring(
+                                0,
+                                period
+                            );
+                            var htmlpart = answer.response.substring(
+                                period + 1
+                            );
+
+                            return (
+                                <Accordion
+                                    defaultExpanded
+                                    key={"Accordion" + i}
+                                >
+                                    <AccordionSummary
+                                        expandIcon={<ExpandMoreIcon />}
+                                        aria-controls="panel1-content"
+                                    >
+                                        {answer.host}
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        Header
+                                        <CopyBlock
+                                            language="go"
+                                            text={headerpart}
+                                            codeBlock
+                                            theme={dracula}
+                                            showLineNumbers={false}
+                                        />
+                                        <CopyBlock
+                                            language="html"
+                                            text={htmlpart}
+                                            codeBlock
+                                            theme={dracula}
+                                            showLineNumbers={false}
+                                        />
+                                    </AccordionDetails>
+                                </Accordion>
+                            );
+                        })}
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.closeDetails}>Close</Button>
+                    </DialogActions>
+                </Dialog>
+            )
         );
     };
 
@@ -207,6 +275,7 @@ class ProjectVulnerabilities extends React.Component {
                         <ScanDurations></ScanDurations>
                     </Box>
                 </Box>
+                <this.genVulnerabilitiesDetails></this.genVulnerabilitiesDetails>
             </Box>
         );
     }
