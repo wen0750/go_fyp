@@ -195,6 +195,16 @@ class ProjectVulnerabilities extends React.Component {
                                 // );
                                 let curnum = i + 1;
 
+                                var subtitle = answer.host;
+                                if (answer.request && answer.type == "http") {
+                                    var tmpcal = answer.request
+                                        .split("\r\n")[0]
+                                        .split(" ")[1];
+                                    if (tmpcal != "/") {
+                                        subtitle = tmpcal;
+                                    }
+                                }
+
                                 return (
                                     <Accordion
                                         defaultExpanded
@@ -208,7 +218,7 @@ class ProjectVulnerabilities extends React.Component {
                                                 variant="h5"
                                                 color="initial"
                                             >
-                                                {curnum + ". " + answer.host}
+                                                {curnum + ". " + subtitle}
                                             </Typography>
                                         </AccordionSummary>
                                         <Divider />
