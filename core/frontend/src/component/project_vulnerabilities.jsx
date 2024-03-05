@@ -268,63 +268,77 @@ class ProjectVulnerabilities extends React.Component {
                                             >
                                                 Raw Data
                                             </Typography>
-                                            <Accordion key={"Accordion2" + i}>
-                                                <AccordionSummary
-                                                    expandIcon={
-                                                        <ExpandMoreIcon />
-                                                    }
-                                                    aria-controls="panel1-content"
+                                            {answer.request && (
+                                                <Accordion
+                                                    key={"Accordion2" + i}
                                                 >
-                                                    <Typography
-                                                        variant="subtitle2"
-                                                        gutterBottom
-                                                        sx={{
-                                                            fontWeight: "bold",
-                                                        }}
+                                                    <AccordionSummary
+                                                        expandIcon={
+                                                            <ExpandMoreIcon />
+                                                        }
+                                                        aria-controls="panel1-content"
                                                     >
-                                                        Request Header
-                                                    </Typography>
-                                                </AccordionSummary>
-                                                <AccordionDetails>
-                                                    <CopyBlock
-                                                        language="go"
-                                                        text={answer.request}
-                                                        codeBlock
-                                                        theme={dracula}
-                                                        showLineNumbers={false}
-                                                    />
-                                                </AccordionDetails>
-                                            </Accordion>
-                                            <Accordion
-                                                // defaultExpanded
-                                                key={"Accordion3" + i}
-                                            >
-                                                <AccordionSummary
-                                                    expandIcon={
-                                                        <ExpandMoreIcon />
-                                                    }
-                                                    aria-controls="panel1-content"
+                                                        <Typography
+                                                            variant="subtitle2"
+                                                            gutterBottom
+                                                            sx={{
+                                                                fontWeight:
+                                                                    "bold",
+                                                            }}
+                                                        >
+                                                            Request Header
+                                                        </Typography>
+                                                    </AccordionSummary>
+                                                    <AccordionDetails>
+                                                        <CopyBlock
+                                                            language="go"
+                                                            text={
+                                                                answer.request
+                                                            }
+                                                            codeBlock
+                                                            theme={dracula}
+                                                            showLineNumbers={
+                                                                false
+                                                            }
+                                                        />
+                                                    </AccordionDetails>
+                                                </Accordion>
+                                            )}
+                                            {headerpart && (
+                                                <Accordion
+                                                    // defaultExpanded
+                                                    key={"Accordion3" + i}
                                                 >
-                                                    <Typography
-                                                        variant="subtitle2"
-                                                        gutterBottom
-                                                        sx={{
-                                                            fontWeight: "bold",
-                                                        }}
+                                                    <AccordionSummary
+                                                        expandIcon={
+                                                            <ExpandMoreIcon />
+                                                        }
+                                                        aria-controls="panel1-content"
                                                     >
-                                                        Response Header
-                                                    </Typography>
-                                                </AccordionSummary>
-                                                <AccordionDetails>
-                                                    <CopyBlock
-                                                        language="go"
-                                                        text={headerpart}
-                                                        codeBlock
-                                                        theme={dracula}
-                                                        showLineNumbers={false}
-                                                    />
-                                                </AccordionDetails>
-                                            </Accordion>
+                                                        <Typography
+                                                            variant="subtitle2"
+                                                            gutterBottom
+                                                            sx={{
+                                                                fontWeight:
+                                                                    "bold",
+                                                            }}
+                                                        >
+                                                            Response Header
+                                                        </Typography>
+                                                    </AccordionSummary>
+                                                    <AccordionDetails>
+                                                        <CopyBlock
+                                                            language="go"
+                                                            text={headerpart}
+                                                            codeBlock
+                                                            theme={dracula}
+                                                            showLineNumbers={
+                                                                false
+                                                            }
+                                                        />
+                                                    </AccordionDetails>
+                                                </Accordion>
+                                            )}
                                         </AccordionDetails>
                                     </Accordion>
                                 );
