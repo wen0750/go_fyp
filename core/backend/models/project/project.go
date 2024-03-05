@@ -152,7 +152,7 @@ type Template struct {
 			Part string   `json:"part,omitempty"`
 		} `json:"extractors,omitempty"`
 	} `json:"http,omitempty"`
-	Local   int		`json:"local,omitempty"`
+	Local int `json:"local,omitempty"`
 }
 
 var templatesCollection *mongo.Collection
@@ -516,11 +516,11 @@ func StartScan(c *gin.Context) {
 
 		log.Printf("Final combined CVE count: %+v", combinedCVECount)
 
-		cveCountMap["info"] = combinedCVECount.Info 			//1
-		cveCountMap["low"] = combinedCVECount.Low 				//2
-		cveCountMap["medium"] = combinedCVECount.Medium			//3
-		cveCountMap["high"] = combinedCVECount.High				//4
-		cveCountMap["critical"] = combinedCVECount.Critical		//5
+		cveCountMap["info"] = combinedCVECount.Info         //1
+		cveCountMap["low"] = combinedCVECount.Low           //2
+		cveCountMap["medium"] = combinedCVECount.Medium     //3
+		cveCountMap["high"] = combinedCVECount.High         //4
+		cveCountMap["critical"] = combinedCVECount.Critical //5
 
 		filter = bson.M{"_id": id.InsertedID}
 		update = bson.M{
@@ -797,6 +797,7 @@ func GetLatestScanResultSummary(c *gin.Context, pid string) {
 	projection := bson.D{
 		{Key: "result.info.name", Value: 1},
 		{Key: "result.info.description", Value: 1},
+		{Key: "result.info.remediation", Value: 1},
 		{Key: "result.info.severityholder.severity", Value: 1},
 		{Key: "result.info.classification.cvssscore", Value: 1},
 		{Key: "result.matchername", Value: 1},
@@ -840,6 +841,7 @@ func GetScanResultByHistoryId(c *gin.Context, hid string) {
 	projection := bson.D{
 		{Key: "result.info.name", Value: 1},
 		{Key: "result.info.description", Value: 1},
+		{Key: "result.info.remediation", Value: 1},
 		{Key: "result.info.severityholder.severity", Value: 1},
 		{Key: "result.matchername", Value: 1},
 		{Key: "result.extractorname", Value: 1},

@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Typography, Divider } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
 import Dialog from "@mui/material/Dialog";
@@ -13,6 +13,8 @@ import AccordionActions from "@mui/material/AccordionActions";
 import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
+import Table from "@mui/joy/Table";
 
 import { CopyBlock, dracula } from "react-code-blocks";
 
@@ -140,68 +142,194 @@ class ProjectVulnerabilities extends React.Component {
                     onClose={this.closeDetails}
                 >
                     <DialogTitle>
-                        {this.state.threatDetails[0].info.name}
+                        <Typography variant="h5" color="initial">
+                            {this.state.threatDetails[0].info.name}
+                        </Typography>
                     </DialogTitle>
+                    <Divider />
                     <DialogContent>
-                        <DialogContentText>
-                            {this.state.threatDetails[0].info.description}
-                        </DialogContentText>
-                        <Accordion defaultExpanded>
-                            <AccordionSummary
-                                expandIcon={<ExpandMoreIcon />}
-                                aria-controls="panel1-content"
-                                id="panel1-header"
+                        <Box sx={{ mb: 5 }}>
+                            <Typography
+                                variant="h6"
+                                gutterBottom
+                                sx={{ fontWeight: "bold" }}
                             >
-                                Accordion 1
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                Lorem ipsum dolor sit amet, consectetur
-                                adipiscing elit. Suspendisse malesuada lacus ex,
-                                sit amet blandit leo lobortis eget.
-                            </AccordionDetails>
-                        </Accordion>
+                                Description
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                                {this.state.threatDetails[0].info.description}
+                            </Typography>
+                        </Box>
 
-                        {this.state.threatDetails.map((answer, i) => {
-                            var period = answer.response.lastIndexOf("\r\n");
-                            var headerpart = answer.response.substring(
-                                0,
-                                period
-                            );
-                            var htmlpart = answer.response.substring(
-                                period + 1
-                            );
+                        <Box sx={{ mb: 5 }}>
+                            <Typography
+                                variant="h6"
+                                gutterBottom
+                                sx={{ fontWeight: "bold" }}
+                            >
+                                Solution
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                                {this.state.threatDetails[0].info.remediation}
+                            </Typography>
+                        </Box>
 
-                            return (
-                                <Accordion
-                                    defaultExpanded
-                                    key={"Accordion" + i}
-                                >
-                                    <AccordionSummary
-                                        expandIcon={<ExpandMoreIcon />}
-                                        aria-controls="panel1-content"
+                        <Box>
+                            <Typography
+                                variant="h6"
+                                gutterBottom
+                                sx={{ fontWeight: "bold" }}
+                            >
+                                Output
+                            </Typography>
+
+                            {this.state.threatDetails.map((answer, i) => {
+                                var period =
+                                    answer.response.lastIndexOf("\r\n");
+                                var headerpart = answer.response.substring(
+                                    0,
+                                    period
+                                );
+                                // var htmlpart = answer.response.substring(
+                                //     period + 1
+                                // );
+                                let curnum = i + 1;
+
+                                return (
+                                    <Accordion
+                                        defaultExpanded
+                                        key={"Accordion" + i}
                                     >
-                                        {answer.host}
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        Header
-                                        <CopyBlock
-                                            language="go"
-                                            text={headerpart}
-                                            codeBlock
-                                            theme={dracula}
-                                            showLineNumbers={false}
-                                        />
-                                        <CopyBlock
-                                            language="html"
-                                            text={htmlpart}
-                                            codeBlock
-                                            theme={dracula}
-                                            showLineNumbers={false}
-                                        />
-                                    </AccordionDetails>
-                                </Accordion>
-                            );
-                        })}
+                                        <AccordionSummary
+                                            expandIcon={<ExpandMoreIcon />}
+                                            aria-controls="panel-content"
+                                        >
+                                            <Typography
+                                                variant="h5"
+                                                color="initial"
+                                            >
+                                                {curnum + ". " + answer.host}
+                                            </Typography>
+                                        </AccordionSummary>
+                                        <Divider />
+                                        <AccordionDetails>
+                                            {answer.extractedresults !=
+                                                null && (
+                                                <Box sx={{ mb: 5 }}>
+                                                    <Typography
+                                                        variant="h6"
+                                                        gutterBottom
+                                                        sx={{
+                                                            fontWeight: "bold",
+                                                        }}
+                                                    >
+                                                        Extractor
+                                                    </Typography>
+                                                    <Table borderAxis="both">
+                                                        <thead>
+                                                            <tr>
+                                                                <th
+                                                                    style={{
+                                                                        width: "40%",
+                                                                    }}
+                                                                >
+                                                                    Extractor
+                                                                    Name
+                                                                </th>
+                                                                <th>
+                                                                    Extractor
+                                                                    Result
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr key="extractedresults_table">
+                                                                <td>
+                                                                    {
+                                                                        answer.extractorname
+                                                                    }
+                                                                </td>
+                                                                <td>
+                                                                    {answer.extractedresults.join(
+                                                                        ", "
+                                                                    )}
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </Table>
+                                                </Box>
+                                            )}
+                                            <Typography
+                                                variant="h6"
+                                                gutterBottom
+                                                sx={{
+                                                    fontWeight: "bold",
+                                                }}
+                                            >
+                                                Raw Data
+                                            </Typography>
+                                            <Accordion key={"Accordion2" + i}>
+                                                <AccordionSummary
+                                                    expandIcon={
+                                                        <ExpandMoreIcon />
+                                                    }
+                                                    aria-controls="panel1-content"
+                                                >
+                                                    <Typography
+                                                        variant="subtitle2"
+                                                        gutterBottom
+                                                        sx={{
+                                                            fontWeight: "bold",
+                                                        }}
+                                                    >
+                                                        Request Header
+                                                    </Typography>
+                                                </AccordionSummary>
+                                                <AccordionDetails>
+                                                    <CopyBlock
+                                                        language="go"
+                                                        text={answer.request}
+                                                        codeBlock
+                                                        theme={dracula}
+                                                        showLineNumbers={false}
+                                                    />
+                                                </AccordionDetails>
+                                            </Accordion>
+                                            <Accordion
+                                                // defaultExpanded
+                                                key={"Accordion3" + i}
+                                            >
+                                                <AccordionSummary
+                                                    expandIcon={
+                                                        <ExpandMoreIcon />
+                                                    }
+                                                    aria-controls="panel1-content"
+                                                >
+                                                    <Typography
+                                                        variant="subtitle2"
+                                                        gutterBottom
+                                                        sx={{
+                                                            fontWeight: "bold",
+                                                        }}
+                                                    >
+                                                        Response Header
+                                                    </Typography>
+                                                </AccordionSummary>
+                                                <AccordionDetails>
+                                                    <CopyBlock
+                                                        language="go"
+                                                        text={headerpart}
+                                                        codeBlock
+                                                        theme={dracula}
+                                                        showLineNumbers={false}
+                                                    />
+                                                </AccordionDetails>
+                                            </Accordion>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                );
+                            })}
+                        </Box>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.closeDetails}>Close</Button>

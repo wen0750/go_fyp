@@ -463,7 +463,7 @@ export default class ProjectHosts extends React.Component {
                     }
 
                     switch (obj.info.severityholder.severity) {
-                        case 6:
+                        case 5:
                             // code block
                             custList[indexofip].critical += 1;
                             custList[indexofip].total += 1;
