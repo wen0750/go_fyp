@@ -19,6 +19,8 @@ import ProjectHistory from "../component/project_history";
 import ProjectThreats from "../component/project_threats";
 import "../assets/css/project_style.css";
 
+import CircularProgress from "@mui/material/CircularProgress";
+
 import globeVar from "../../GlobalVar";
 
 class ProjectItem extends React.Component {
@@ -206,8 +208,12 @@ class ProjectItem extends React.Component {
             const response = await fetch(
                 `${globeVar.backendprotocol}://${globeVar.backendhost}/project/${this.props.pid}`
             );
-            const jsonData = await response.json();
-            this.setState({ scanningResult: jsonData });
+            if (response.status == 200) {
+                const jsonData = await response.json();
+                this.setState({ scanningResult: jsonData });
+            } else {
+                this.setState({ scanningResult: jsonData });
+            }
         } catch (error) {
             console.error("Error fetching data:", error);
         }
@@ -238,66 +244,84 @@ class ProjectItem extends React.Component {
         return (
             <div>
                 <this.projectItemHeader />
-                <div style={{ paddingInline: "25px", marginTop: "25px" }}>
-                    <Box sx={{ width: "100%" }}>
-                        <this.AntTabs
-                            value={this.state.curTab}
-                            onChange={this.handleChangeBodyTab}
-                            aria-label="styled tabs example"
-                            sx={{ overflow: "overlay" }}
-                        >
-                            <this.StyledTab
-                                label="Scan Summary"
-                                {...this.a11yProps(0)}
-                            ></this.StyledTab>
-                            <this.StyledTab
-                                label="Hosts"
-                                {...this.a11yProps(1)}
-                            ></this.StyledTab>
-                            <this.StyledTab
-                                label="Vulnerabilities"
-                                {...this.a11yProps(2)}
-                            ></this.StyledTab>
-                            <this.StyledTab
-                                label="Notes"
-                                {...this.a11yProps(3)}
-                            ></this.StyledTab>
-                            <this.StyledTab
-                                label="VPT Top Threats"
-                                {...this.a11yProps(4)}
-                            ></this.StyledTab>
-                            <this.StyledTab
-                                label="History"
-                                {...this.a11yProps(5)}
-                            ></this.StyledTab>
-                        </this.AntTabs>
-                    </Box>
-                    <this.TabPanel value={this.state.curTab} index={0}>
-                        <ProjectSummary inputData={this.state.scanningResult} />
-                    </this.TabPanel>
-                    <this.TabPanel value={this.state.curTab} index={1}>
-                        <ProjectHosts inputData={this.state.scanningResult} />
-                    </this.TabPanel>
-                    <this.TabPanel value={this.state.curTab} index={2}>
-                        <ProjectVulnerabilities
-                            inputData={this.state.scanningResult}
+                {this.state.scanningResult ? (
+                    <div style={{ paddingInline: "25px", marginTop: "25px" }}>
+                        <Box sx={{ width: "100%" }}>
+                            <this.AntTabs
+                                value={this.state.curTab}
+                                onChange={this.handleChangeBodyTab}
+                                aria-label="styled tabs example"
+                                sx={{ overflow: "overlay" }}
+                            >
+                                <this.StyledTab
+                                    label="Scan Summary"
+                                    {...this.a11yProps(0)}
+                                ></this.StyledTab>
+                                <this.StyledTab
+                                    label="Hosts"
+                                    {...this.a11yProps(1)}
+                                ></this.StyledTab>
+                                <this.StyledTab
+                                    label="Vulnerabilities"
+                                    {...this.a11yProps(2)}
+                                ></this.StyledTab>
+                                <this.StyledTab
+                                    label="Notes"
+                                    {...this.a11yProps(3)}
+                                ></this.StyledTab>
+                                <this.StyledTab
+                                    label="VPT Top Threats"
+                                    {...this.a11yProps(4)}
+                                ></this.StyledTab>
+                                <this.StyledTab
+                                    label="History"
+                                    {...this.a11yProps(5)}
+                                ></this.StyledTab>
+                            </this.AntTabs>
+                        </Box>
+                        <this.TabPanel value={this.state.curTab} index={0}>
+                            <ProjectSummary
+                                inputData={this.state.scanningResult}
+                            />
+                        </this.TabPanel>
+                        <this.TabPanel value={this.state.curTab} index={1}>
+                            <ProjectHosts
+                                inputData={this.state.scanningResult}
+                            />
+                        </this.TabPanel>
+                        <this.TabPanel value={this.state.curTab} index={2}>
+                            <ProjectVulnerabilities
+                                inputData={this.state.scanningResult}
+                            />
+                        </this.TabPanel>
+                        <this.TabPanel value={this.state.curTab} index={3}>
+                            <ProjectNotes
+                                inputData={this.state.scanningResult}
+                            />
+                        </this.TabPanel>
+                        <this.TabPanel value={this.state.curTab} index={4}>
+                            <ProjectThreats
+                                inputData={this.state.scanningResult}
+                            />
+                        </this.TabPanel>
+                        <this.TabPanel value={this.state.curTab} index={5}>
+                            <ProjectHistory
+                                inputData={this.state.scanningResult}
+                                projectID={this.props.pid}
+                                onItemSelect={this.handleHistorySelect}
+                                onChangeHid={this.fetchResultWithHid}
+                            />
+                        </this.TabPanel>
+                    </div>
+                ) : (
+                    <div style={{ paddingInline: "25px", marginTop: "25px" }}>
+                        <CircularProgress
+                            color="primary"
+                            fourColor={false}
+                            variant="indeterminate"
                         />
-                    </this.TabPanel>
-                    <this.TabPanel value={this.state.curTab} index={3}>
-                        <ProjectNotes inputData={this.state.scanningResult} />
-                    </this.TabPanel>
-                    <this.TabPanel value={this.state.curTab} index={4}>
-                        <ProjectThreats inputData={this.state.scanningResult} />
-                    </this.TabPanel>
-                    <this.TabPanel value={this.state.curTab} index={5}>
-                        <ProjectHistory
-                            inputData={this.state.scanningResult}
-                            projectID={this.props.pid}
-                            onItemSelect={this.handleHistorySelect}
-                            onChangeHid={this.fetchResultWithHid}
-                        />
-                    </this.TabPanel>
-                </div>
+                    </div>
+                )}
             </div>
         );
     }
