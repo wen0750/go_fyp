@@ -129,7 +129,7 @@ export default class EditorTemplate extends React.Component {
         this.httpinfoOptionList = [
             {
                 key: 0,
-                label: "Method(Auto)",
+                label: "Method",
                 type: "TextField",
                 visible: true,
                 removable: false,
@@ -205,6 +205,17 @@ export default class EditorTemplate extends React.Component {
             return <MuiChipsInput value={chips} onChange={handleChange} />;
         };
 
+        this.Fuzzing_key_Component = () => {
+            const [chips, setChips] = React.useState([]);
+
+            const handleChange = (newChips) => {
+                setChips(newChips);
+                this.tag_inputhandler(newChips, "Fuzzing_tag1");
+            };
+
+            return <MuiChipsInput value={chips} onChange={handleChange} />;
+        };
+
         this.Payload_key_Component = () => {
             const [chips, setChips] = React.useState([]);
 
@@ -228,6 +239,12 @@ export default class EditorTemplate extends React.Component {
             this.props.dataChange(data);
         };
 
+        this.fuzzing_inputhandler = (Fuzzing, name, value) => {
+            const data = this.props.templatedata;
+            data[name] = value;
+            this.props.dataChange(data);
+        };
+
         this.TagMyComponent = () => {
             const [chips, setChips] = React.useState([]);
             const TaghandleChange = (newChips) => {
@@ -247,21 +264,6 @@ export default class EditorTemplate extends React.Component {
             },
         };
 
-        this.changeFormData = (catalog, name, value) => {
-            if (catalog in this.state.FormData) {
-                let newdata = this.state.FormData;
-                newdata[catalog][name] = value;
-                this.setState({ FormData: newdata });
-            } else {
-                let newdata = this.state.FormData;
-                newdata[catalog] = {};
-                newdata[catalog][name] = value;
-                this.setState({ FormData: newdata });
-            }
-            //this.props.dataChange(this.state.FormData);
-            console.log(this.state.FormData);
-        };
-
         this.all_changeFormData = (catalog, name, value) => {
             console.log(this.state.FormData);
             console.log(catalog);
@@ -271,11 +273,17 @@ export default class EditorTemplate extends React.Component {
                 const newdata = this.state.FormData;
                 newdata[catalog][name] = value;
                 this.setState({ FormData: newdata });
+                const data = this.props.templatedata;
+                data[name] = value;
+                this.props.dataChange(data);
             } else {
                 const newdata = this.state.FormData;
                 newdata[catalog] = {};
                 newdata[catalog][name] = value;
                 this.setState({ FormData: newdata });
+                const data = this.props.templatedata;
+                data[name] = value;
+                this.props.dataChange(data);
             }
             //this.props.dataChange(this.state.FormData);
             console.log(this.state.FormData);
@@ -290,11 +298,17 @@ export default class EditorTemplate extends React.Component {
                 const newdata = this.state.FormData;
                 newdata[catalog][name] = value;
                 this.setState({ FormData: newdata });
+                const data = this.props.templatedata;
+                data[name] = value;
+                this.props.dataChange(data);
             } else {
                 const newdata = this.state.FormData;
                 newdata[catalog] = {};
                 newdata[catalog][name] = value;
                 this.setState({ FormData: newdata });
+                const data = this.props.templatedata;
+                data[name] = value;
+                this.props.dataChange(data);
             }
             //this.props.dataChange(this.state.FormData);
             console.log(this.state.FormData);
@@ -549,18 +563,19 @@ export default class EditorTemplate extends React.Component {
                                 <TabList
                                     onChange={this.left_Options_Type_Change}
                                 >
-                                    <Tab label="Base HTTP" value="1" />
-                                    <Tab label="Raw" value="2" />
+                                    <Tab label="NULL" value="1" />
+                                    <Tab label="Base HTTP" value="2" />
+                                    <Tab label="Raw" value="3" />
                                 </TabList>
                             </Box>
-                            <TabPanel value="1">
+                            <TabPanel value="2">
                                 <FormTableFormat
                                     catalog="Options"
                                     opts={this.httpinfoOptionList}
                                     callback={this.info_inputhandler}
                                 ></FormTableFormat>
                             </TabPanel>
-                            <TabPanel value="2">
+                            <TabPanel value="3">
                                 <FormTableFormat
                                     catalog="options"
                                     opts={this.RawinfoOptionList}
@@ -663,7 +678,16 @@ export default class EditorTemplate extends React.Component {
                         columns={{ xs: 4, sm: 8, md: 12 }}
                     ></Grid>
                     <Grid container spacing={2}>
-                        <RadioGroup horizontal>
+                        <RadioGroup 
+                            onChange={(event) =>
+                                this.all_changeFormData(
+                                    "Fuzzing",
+                                    "part",
+                                    event
+                                )
+                            }
+                            callback={this.info_inputhandler}
+                            horizontal>
                             {data.length <= 2 ? (
                                 <RadioButton
                                     rootColor="Gray"
@@ -688,7 +712,6 @@ export default class EditorTemplate extends React.Component {
                                 rootColor="Gray"
                                 value="Pitchfork"
                                 iconSize={20}
-                                callback={this.info_inputhandler}
                             >
                                 Pitchfork
                             </RadioButton>
@@ -696,7 +719,6 @@ export default class EditorTemplate extends React.Component {
                                 rootColor="Gray"
                                 value="Clusterbomb"
                                 iconSize={20}
-                                callback={this.info_inputhandler}
                             >
                                 Clusterbomb
                             </RadioButton>
@@ -742,12 +764,14 @@ export default class EditorTemplate extends React.Component {
                                     event
                                 )
                             }
+                            callback={this.fuzzing_inputhandler}
                             horizontal
                         >
                             <RadioButton
                                 rootColor="Gray"
                                 value="query"
                                 iconSize={20}
+                                callback={this.fuzzing_inputhandler}
                             >
                                 query
                             </RadioButton>
@@ -755,6 +779,7 @@ export default class EditorTemplate extends React.Component {
                                 rootColor="Gray"
                                 value="path"
                                 iconSize={20}
+                                callback={this.fuzzing_inputhandler}
                             >
                                 path
                             </RadioButton>
@@ -762,6 +787,7 @@ export default class EditorTemplate extends React.Component {
                                 rootColor="Gray"
                                 value="header"
                                 iconSize={20}
+                                callback={this.fuzzing_inputhandler}
                             >
                                 header
                             </RadioButton>
@@ -769,13 +795,15 @@ export default class EditorTemplate extends React.Component {
                                 rootColor="Gray"
                                 value="body"
                                 iconSize={20}
+                                callback={this.fuzzing_inputhandler}
                             >
                                 body
                             </RadioButton>
-                            <RadioButton
+                            <RadioButton 
                                 rootColor="Gray"
                                 value="cookie"
                                 iconSize={20}
+                                callback={this.fuzzing_inputhandler}
                             >
                                 cookie
                             </RadioButton>
@@ -804,6 +832,7 @@ export default class EditorTemplate extends React.Component {
                                 rootColor="Gray"
                                 value="replace"
                                 iconSize={20}
+                                callback={this.info_inputhandler}
                             >
                                 replace
                             </RadioButton>
@@ -811,6 +840,7 @@ export default class EditorTemplate extends React.Component {
                                 rootColor="Gray"
                                 value="prefix"
                                 iconSize={20}
+                                callback={this.info_inputhandler}
                             >
                                 prefix
                             </RadioButton>
@@ -818,6 +848,7 @@ export default class EditorTemplate extends React.Component {
                                 rootColor="Gray"
                                 value="postfix"
                                 iconSize={20}
+                                callback={this.info_inputhandler}
                             >
                                 postfix
                             </RadioButton>
@@ -825,6 +856,7 @@ export default class EditorTemplate extends React.Component {
                                 rootColor="Gray"
                                 value="body"
                                 iconSize={20}
+                                callback={this.info_inputhandler}
                             >
                                 body
                             </RadioButton>
@@ -853,6 +885,7 @@ export default class EditorTemplate extends React.Component {
                                 rootColor="Gray"
                                 value="Multiple"
                                 iconSize={20}
+                                callback={this.info_inputhandler}
                             >
                                 Multiple
                             </RadioButton>
@@ -860,6 +893,7 @@ export default class EditorTemplate extends React.Component {
                                 rootColor="Gray"
                                 value="Single"
                                 iconSize={20}
+                                callback={this.info_inputhandler}
                             >
                                 Single
                             </RadioButton>
@@ -881,21 +915,22 @@ export default class EditorTemplate extends React.Component {
                                     label="Fuzz"
                                     onChange={(event) => {
                                         handleChange(event);
-                                        this.fuzzing_changeFormData(
+                                        this.all_changeFormData(
                                             "Fuzzing",
                                             "Fuzz",
                                             event
                                         );
                                     }}
+                                    callback={this.info_inputhandler}
                                 >
-                                    <MenuItem value={1}>keys</MenuItem>
-                                    <MenuItem value={2}>keys-regex</MenuItem>
-                                    <MenuItem value={3}>values</MenuItem>
+                                    <MenuItem value={"keys"}>keys</MenuItem>
+                                    <MenuItem value={"keys-regex"}>keys-regex</MenuItem>
+                                    <MenuItem value={"values"}>values</MenuItem>
                                 </Select>
                             </FormControl>
                         </Grid>
                         <Grid item xs={8}>
-                            <this.MyComponent />
+                            <this.Fuzzing_key_Component />
                         </Grid>
                     </Grid>
                 </CardContent>

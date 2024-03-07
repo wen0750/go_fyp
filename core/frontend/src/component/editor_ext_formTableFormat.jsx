@@ -64,7 +64,13 @@ export default class FormTableFormat extends React.Component {
             }
 
             if (event.target.catalog == "Options") {
-                this.props.callback(this.props.classification, event.target.name, [
+                this.props.callback(this.props.option, event.target.name, [
+                    event.target.value,
+                ]);
+            }
+
+            if (event.target.catalog == "Fuzzing") {
+                this.props.callback(this.props.fuzzing, event.target.name, [
                     event.target.value,
                 ]);
             }
