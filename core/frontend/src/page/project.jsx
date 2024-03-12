@@ -317,7 +317,6 @@ class ProjectItem extends React.Component {
                     <div style={{ paddingInline: "25px", marginTop: "25px" }}>
                         <CircularProgress
                             color="primary"
-                            fourColor={false}
                             variant="indeterminate"
                         />
                     </div>
