@@ -471,7 +471,7 @@ export default class Editor_Right extends React.Component {
                             showLineNumbers={false}
                         />
                     </TabPanel>
-                    <TabPanel
+                    {/* <TabPanel
                         value="2"
                         sx={{
                             padding: 0,
@@ -485,7 +485,7 @@ export default class Editor_Right extends React.Component {
                                 __html: this.state.tmpHTMLBody,
                             }}
                         ></div>
-                    </TabPanel>
+                    </TabPanel> */}
                 </TabContext>
                 <Grid container spacing={2} sx={{ paddingRight: "5px" }}>
                     <Grid item xs={4}>
