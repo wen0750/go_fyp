@@ -142,9 +142,11 @@ class ProjectThreats extends React.Component {
                         id: indexid,
                         serverity: element.info.severityholder.severity,
                         name: element.info.name,
-                        score: element.info.classification
-                            ? element.info.classification.cvssscore
-                            : 0,
+                        score:
+                            element.info.classification &&
+                            element.info.classification.cvssscore > 0
+                                ? element.info.classification.cvssscore
+                                : "N/A",
                         count: 1,
                     });
                     indexid++;
