@@ -1,4 +1,5 @@
 import * as React from "react";
+import ReactDOM from "react-dom";
 import { Box, Button, Typography, Divider } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
@@ -16,7 +17,8 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import Table from "@mui/joy/Table";
 
-import { CopyBlock, dracula } from "react-code-blocks";
+import { CodeBlock, dracula } from "react-code-blocks";
+import { html_beautify } from "js-beautify";
 
 import { UnderLineMiniTitle } from "../component/page_style/project_style";
 import ScanDurations from "./project_ext_scan_durations";
@@ -91,7 +93,15 @@ class ProjectVulnerabilities extends React.Component {
                 list.push(element);
             }
         });
-        this.setState({ openDetails: true, threatDetails: list });
+        this.setState({
+            openDetails: true,
+            threatDetails: list,
+            popupList: Array.apply(null, { length: list.length }).map(function (
+                x
+            ) {
+                return false;
+            }),
+        });
     };
     threatslist = () => {
         return (
@@ -132,7 +142,8 @@ class ProjectVulnerabilities extends React.Component {
     };
 
     genVulnerabilitiesDetails = () => {
-        console.log(this.state.threatDetails);
+        console.log(this.state.popupList);
+        const newpop = [];
         return (
             this.state.threatDetails.length > 0 && (
                 <Dialog
@@ -141,10 +152,17 @@ class ProjectVulnerabilities extends React.Component {
                     open={this.state.openDetails}
                     onClose={this.closeDetails}
                 >
-                    <DialogTitle>
-                        <Typography variant="h5" color="initial">
-                            {this.state.threatDetails[0].info.name}
-                        </Typography>
+                    <DialogTitle
+                        sx={{
+                            margin: 0,
+                            fontWeight: 400,
+                            fontSize: "1.5rem",
+                            lineHeight: 1.334,
+                            letterSpacing: "0em",
+                            color: "initial",
+                        }}
+                    >
+                        {this.state.threatDetails[0].info.name}
                     </DialogTitle>
                     <Divider />
                     <DialogContent>
@@ -196,12 +214,16 @@ class ProjectVulnerabilities extends React.Component {
                                 let curnum = i + 1;
 
                                 var subtitle = answer.host;
+                                var extention = "";
                                 if (answer.request && answer.type == "http") {
                                     var tmpcal = answer.request
                                         .split("\r\n")[0]
                                         .split(" ")[1];
                                     if (tmpcal != "/") {
                                         subtitle = tmpcal;
+
+                                        var re = /(?:\.([^.]+))?$/;
+                                        extention = re.exec(tmpcal)[1];
                                     }
                                 }
 
@@ -300,16 +322,15 @@ class ProjectVulnerabilities extends React.Component {
                                                         </Typography>
                                                     </AccordionSummary>
                                                     <AccordionDetails>
-                                                        <CopyBlock
-                                                            language="go"
+                                                        <CodeBlock
                                                             text={
                                                                 answer.request
                                                             }
-                                                            codeBlock
-                                                            theme={dracula}
+                                                            language="go"
                                                             showLineNumbers={
                                                                 false
                                                             }
+                                                            theme={dracula}
                                                         />
                                                     </AccordionDetails>
                                                 </Accordion>
@@ -337,14 +358,49 @@ class ProjectVulnerabilities extends React.Component {
                                                         </Typography>
                                                     </AccordionSummary>
                                                     <AccordionDetails>
-                                                        <CopyBlock
-                                                            language="go"
+                                                        <CodeBlock
                                                             text={headerpart}
-                                                            codeBlock
-                                                            theme={dracula}
+                                                            language="go"
                                                             showLineNumbers={
                                                                 false
                                                             }
+                                                            theme={dracula}
+                                                        />
+                                                    </AccordionDetails>
+                                                </Accordion>
+                                            )}
+                                            {extention == "txt" && (
+                                                <Accordion
+                                                    // defaultExpanded
+                                                    key={"Accordion4" + i}
+                                                >
+                                                    <AccordionSummary
+                                                        expandIcon={
+                                                            <ExpandMoreIcon />
+                                                        }
+                                                        aria-controls="panel1-content"
+                                                    >
+                                                        <Typography
+                                                            variant="subtitle4"
+                                                            gutterBottom
+                                                            sx={{
+                                                                fontWeight:
+                                                                    "bold",
+                                                            }}
+                                                        >
+                                                            Response Body
+                                                        </Typography>
+                                                    </AccordionSummary>
+                                                    <AccordionDetails>
+                                                        <CodeBlock
+                                                            text={answer.response.substring(
+                                                                period + 1
+                                                            )}
+                                                            language="go"
+                                                            showLineNumbers={
+                                                                false
+                                                            }
+                                                            theme={dracula}
                                                         />
                                                     </AccordionDetails>
                                                 </Accordion>
@@ -372,9 +428,11 @@ class ProjectVulnerabilities extends React.Component {
                 list.push({
                     id: indexid,
                     Serverity: element.info.severityholder.severity,
-                    Score: element.info.hasOwnProperty("classification")
-                        ? element.info.classification.cvssscore
-                        : 0,
+                    Score:
+                        element.info.hasOwnProperty("classification") &&
+                        element.info.classification.cvssscore > 0
+                            ? element.info.classification.cvssscore
+                            : "N/A",
                     Name: element.info.name,
                     Family: "General",
                     Count: 1,
