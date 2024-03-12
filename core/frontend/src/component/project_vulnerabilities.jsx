@@ -24,10 +24,64 @@ import { UnderLineMiniTitle } from "../component/page_style/project_style";
 import ScanDurations from "./project_ext_scan_durations";
 import "../assets/css/threats.css";
 
+class MyWindowPortal extends React.PureComponent {
+    constructor(props) {
+        super(props);
+        this.containerEl = null;
+        this.externalWindow = null;
+    }
+
+    componentDidMount() {
+        // Create a new window, a div, and append it to the window
+        // The div **MUST** be created by the window it is to be
+        // appended to or it will fail in Edge with a "Permission Denied"
+        // or similar error.
+        // See: https://github.com/rmariuzzo/react-new-window/issues/12#issuecomment-386992550
+        this.externalWindow = window.open(
+            "",
+            "",
+            "width=600,height=400,left=200,top=200"
+        );
+        this.containerEl = this.externalWindow.document.createElement("div");
+        this.externalWindow.document.body.appendChild(this.containerEl);
+
+        this.externalWindow.document.title = "A React portal window";
+
+        // update the state in the parent component if the user closes the
+        // new window
+        this.externalWindow.addEventListener("beforeunload", () => {
+            this.props.closeWindowPortal;
+        });
+    }
+
+    componentWillUnmount() {
+        // This will fire when this.state.showWindowPortal in the parent component becomes false
+        // So we tidy up by just closing the window
+        this.externalWindow.close();
+    }
+
+    render() {
+        // The first render occurs before componentDidMount (where we open
+        // the new window), so our container may be null, in this case
+        // render nothing.
+        if (!this.containerEl) {
+            return null;
+        }
+
+        // Append props.children to the container <div> in the new window
+        return ReactDOM.createPortal(this.props.children, this.containerEl);
+    }
+}
+
 class ProjectVulnerabilities extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { rows: [], openDetails: false, threatDetails: [] };
+        this.state = {
+            rows: [],
+            openDetails: false,
+            threatDetails: [],
+            popupList: [],
+        };
         this.columns = [
             {
                 field: "Serverity",
@@ -405,6 +459,45 @@ class ProjectVulnerabilities extends React.Component {
                                                     </AccordionDetails>
                                                 </Accordion>
                                             )}
+
+                                            <Button
+                                                variant="contained"
+                                                onClick={() =>
+                                                    this.toggleWindowPortal(i)
+                                                }
+                                                sx={{ my: 2 }}
+                                            >
+                                                Get Detail
+                                            </Button>
+
+                                            {this.state.popupList[i] ==
+                                                true && (
+                                                <MyWindowPortal
+                                                    rkey={i}
+                                                    closeWindowPortal={() =>
+                                                        this.closeWindowPortal(
+                                                            i
+                                                        )
+                                                    }
+                                                >
+                                                    <h1>this is {i}</h1>
+                                                    <p>
+                                                        Even though I render in
+                                                        a different window, I
+                                                        share state!
+                                                    </p>
+
+                                                    <button
+                                                        onClick={() =>
+                                                            this.closeWindowPortal(
+                                                                i
+                                                            )
+                                                        }
+                                                    >
+                                                        Close me!
+                                                    </button>
+                                                </MyWindowPortal>
+                                            )}
                                         </AccordionDetails>
                                     </Accordion>
                                 );
@@ -417,6 +510,18 @@ class ProjectVulnerabilities extends React.Component {
                 </Dialog>
             )
         );
+    };
+
+    toggleWindowPortal = (k) => {
+        const nv = this.state.popupList;
+        nv[k] = !nv[k];
+        this.setState({ popupList: nv });
+    };
+
+    closeWindowPortal = (k) => {
+        const nv = this.state.popupList;
+        nv[k] = false;
+        this.setState({ popupList: nv });
     };
 
     componentDidMount() {
