@@ -18,7 +18,27 @@ import {
     TablePagination,
     TableRow,
     TableSortLabel,
+    Divider,
+    Button,
 } from "@mui/material";
+
+import Chip from "@mui/material-next/Chip";
+
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+
+import Accordion from "@mui/material/Accordion";
+import AccordionActions from "@mui/material/AccordionActions";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
+import { CodeBlock, dracula } from "react-code-blocks";
+import { html_beautify } from "js-beautify";
+import NewWindow from "react-new-window";
 
 import PropTypes from "prop-types";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -29,6 +49,8 @@ import { alpha } from "@mui/material/styles";
 
 import StackedBar from "./project_ext_stackedBar";
 import ScanDurations from "./project_ext_scan_durations";
+
+import TableB from "@mui/joy/Table";
 
 export default class ProjectHosts extends React.Component {
     constructor(props) {
@@ -43,6 +65,10 @@ export default class ProjectHosts extends React.Component {
             showStackedBar: 0,
             vulnerabilities: [],
             result: props.inputData,
+            rows: [],
+            openDetails: false,
+            threatDetails: [],
+            popupList: [],
         };
 
         this.headCells = [
@@ -206,6 +232,391 @@ export default class ProjectHosts extends React.Component {
         );
     };
 
+    closeDetails = () => {
+        this.setState({ openDetails: false });
+    };
+
+    genVulnerabilitiesDetails = () => {
+        const newpop = [];
+        return (
+            this.state.threatDetails.length > 0 && (
+                <Dialog
+                    fullWidth={true}
+                    maxWidth={"xl"}
+                    open={this.state.openDetails}
+                    onClose={this.closeDetails}
+                >
+                    <DialogTitle
+                        sx={{
+                            margin: 0,
+                            fontWeight: 400,
+                            fontSize: "1.5rem",
+                            lineHeight: 1.334,
+                            letterSpacing: "0em",
+                            color: "initial",
+                        }}
+                    >
+                        {this.state.threatDetails[0].host}
+                    </DialogTitle>
+                    <Divider />
+                    <DialogContent>
+                        <Box>
+                            {this.state.threatDetails.map((answer, i) => {
+                                var period =
+                                    answer.response.lastIndexOf("\r\n");
+                                var headerpart = answer.response.substring(
+                                    0,
+                                    period
+                                );
+                                // var htmlpart = answer.response.substring(
+                                //     period + 1
+                                // );
+                                let curnum = i + 1;
+
+                                var riskcolor = "";
+                                var riskname = "";
+
+                                switch (answer.info.severityholder.severity) {
+                                    case 5:
+                                        // code block
+                                        riskcolor = "warning";
+                                        riskname = "Critcal";
+                                        break;
+                                    case 4:
+                                        // code block
+                                        riskcolor = "warning";
+                                        riskname = "High";
+                                        break;
+                                    case 3:
+                                        // info
+                                        riskcolor = "error";
+                                        riskname = "Medium";
+                                        break;
+                                    case 2:
+                                        // code block
+                                        riskcolor = "warning";
+                                        riskname = "Low";
+                                        break;
+                                    case 1:
+                                        // code block
+                                        riskcolor = "info";
+                                        riskname = "Info";
+                                        break;
+                                    case 0:
+                                        break;
+                                }
+
+                                var subtitle = answer.host;
+                                var extention = "";
+                                if (answer.request && answer.type == "http") {
+                                    var tmpcal = answer.request
+                                        .split("\r\n")[0]
+                                        .split(" ")[1];
+                                    if (tmpcal != "/") {
+                                        var re = /(?:\.([^.]+))?$/;
+                                        extention = re.exec(tmpcal)[1];
+                                    }
+                                }
+
+                                return (
+                                    <Accordion
+                                        defaultExpanded
+                                        key={"Accordion" + i}
+                                    >
+                                        <AccordionSummary
+                                            expandIcon={<ExpandMoreIcon />}
+                                            aria-controls="panel-content"
+                                        >
+                                            <Typography
+                                                variant="h5"
+                                                color="initial"
+                                            >
+                                                <Chip
+                                                    color={riskcolor}
+                                                    label={riskname}
+                                                />
+                                                {"  "}
+                                                {curnum +
+                                                    ". " +
+                                                    answer.info.name}
+                                            </Typography>
+                                        </AccordionSummary>
+                                        <Divider />
+                                        <AccordionDetails>
+                                            <Box sx={{ mb: 5 }}>
+                                                <Typography
+                                                    variant="h6"
+                                                    gutterBottom
+                                                    sx={{ fontWeight: "bold" }}
+                                                >
+                                                    Description
+                                                </Typography>
+                                                <Typography
+                                                    variant="body1"
+                                                    gutterBottom
+                                                >
+                                                    {
+                                                        this.state
+                                                            .threatDetails[0]
+                                                            .info.description
+                                                    }
+                                                </Typography>
+                                            </Box>
+
+                                            <Box sx={{ mb: 5 }}>
+                                                <Typography
+                                                    variant="h6"
+                                                    gutterBottom
+                                                    sx={{ fontWeight: "bold" }}
+                                                >
+                                                    Solution
+                                                </Typography>
+                                                <Typography
+                                                    variant="body1"
+                                                    gutterBottom
+                                                >
+                                                    {
+                                                        this.state
+                                                            .threatDetails[0]
+                                                            .info.remediation
+                                                    }
+                                                </Typography>
+                                            </Box>
+
+                                            <Typography
+                                                variant="h6"
+                                                gutterBottom
+                                                sx={{ fontWeight: "bold" }}
+                                            >
+                                                Output
+                                            </Typography>
+                                            <Divider />
+
+                                            <Box sx={{ my: 3 }}>
+                                                Target Host : {answer.host}
+                                            </Box>
+
+                                            {answer.extractedresults !=
+                                                null && (
+                                                <Box sx={{ mb: 5 }}>
+                                                    <Typography
+                                                        variant="h6"
+                                                        gutterBottom
+                                                        sx={{
+                                                            fontWeight: "bold",
+                                                        }}
+                                                    >
+                                                        Extractor
+                                                    </Typography>
+                                                    <TableB borderAxis="both">
+                                                        <thead>
+                                                            <tr>
+                                                                <th
+                                                                    style={{
+                                                                        width: "40%",
+                                                                    }}
+                                                                >
+                                                                    Extractor
+                                                                    Name
+                                                                </th>
+                                                                <th>
+                                                                    Extractor
+                                                                    Result
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr key="extractedresults_table">
+                                                                <td>
+                                                                    {
+                                                                        answer.extractorname
+                                                                    }
+                                                                </td>
+                                                                <td>
+                                                                    {answer.extractedresults.join(
+                                                                        ", "
+                                                                    )}
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </TableB>
+                                                </Box>
+                                            )}
+                                            <Typography
+                                                variant="h6"
+                                                gutterBottom
+                                                sx={{
+                                                    fontWeight: "bold",
+                                                    mt: 3,
+                                                }}
+                                            >
+                                                Raw Data
+                                            </Typography>
+                                            {answer.request && (
+                                                <Accordion
+                                                    key={"Accordion2" + i}
+                                                >
+                                                    <AccordionSummary
+                                                        expandIcon={
+                                                            <ExpandMoreIcon />
+                                                        }
+                                                        aria-controls="panel1-content"
+                                                    >
+                                                        <Typography
+                                                            variant="subtitle2"
+                                                            gutterBottom
+                                                            sx={{
+                                                                fontWeight:
+                                                                    "bold",
+                                                            }}
+                                                        >
+                                                            Request Header
+                                                        </Typography>
+                                                    </AccordionSummary>
+                                                    <AccordionDetails>
+                                                        <CodeBlock
+                                                            text={
+                                                                answer.request
+                                                            }
+                                                            language="go"
+                                                            showLineNumbers={
+                                                                false
+                                                            }
+                                                            theme={dracula}
+                                                        />
+                                                    </AccordionDetails>
+                                                </Accordion>
+                                            )}
+                                            {headerpart && (
+                                                <Accordion
+                                                    // defaultExpanded
+                                                    key={"Accordion3" + i}
+                                                >
+                                                    <AccordionSummary
+                                                        expandIcon={
+                                                            <ExpandMoreIcon />
+                                                        }
+                                                        aria-controls="panel1-content"
+                                                    >
+                                                        <Typography
+                                                            variant="subtitle2"
+                                                            gutterBottom
+                                                            sx={{
+                                                                fontWeight:
+                                                                    "bold",
+                                                            }}
+                                                        >
+                                                            Response Header
+                                                        </Typography>
+                                                    </AccordionSummary>
+                                                    <AccordionDetails>
+                                                        <CodeBlock
+                                                            text={headerpart}
+                                                            language="go"
+                                                            showLineNumbers={
+                                                                false
+                                                            }
+                                                            theme={dracula}
+                                                        />
+                                                    </AccordionDetails>
+                                                </Accordion>
+                                            )}
+                                            {extention == "txt" && (
+                                                <Accordion
+                                                    // defaultExpanded
+                                                    key={"Accordion4" + i}
+                                                >
+                                                    <AccordionSummary
+                                                        expandIcon={
+                                                            <ExpandMoreIcon />
+                                                        }
+                                                        aria-controls="panel1-content"
+                                                    >
+                                                        <Typography
+                                                            variant="subtitle4"
+                                                            gutterBottom
+                                                            sx={{
+                                                                fontWeight:
+                                                                    "bold",
+                                                            }}
+                                                        >
+                                                            Response Body
+                                                        </Typography>
+                                                    </AccordionSummary>
+                                                    <AccordionDetails>
+                                                        <CodeBlock
+                                                            text={answer.response.substring(
+                                                                period + 1
+                                                            )}
+                                                            language="go"
+                                                            showLineNumbers={
+                                                                false
+                                                            }
+                                                            theme={dracula}
+                                                        />
+                                                    </AccordionDetails>
+                                                </Accordion>
+                                            )}
+
+                                            <Button
+                                                variant="contained"
+                                                onClick={() =>
+                                                    this.toggleWindowPortal(i)
+                                                }
+                                                sx={{ my: 2 }}
+                                            >
+                                                Get Detail
+                                            </Button>
+
+                                            {this.state.popupList[i] ==
+                                                true && (
+                                                <NewWindow
+                                                    title={
+                                                        "Raw Respone of " +
+                                                        this.state
+                                                            .threatDetails[0]
+                                                            .info.name +
+                                                        " - " +
+                                                        subtitle
+                                                    }
+                                                    closeOnUnmount={false}
+                                                >
+                                                    <CodeBlock
+                                                        text={html_beautify(
+                                                            answer.response
+                                                        )}
+                                                        language="go"
+                                                        showLineNumbers={false}
+                                                        theme={dracula}
+                                                    />
+                                                </NewWindow>
+                                            )}
+                                        </AccordionDetails>
+                                    </Accordion>
+                                );
+                            })}
+                        </Box>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.closeDetails}>Close</Button>
+                    </DialogActions>
+                </Dialog>
+            )
+        );
+    };
+
+    toggleWindowPortal = (k) => {
+        const nv = this.state.popupList;
+        nv[k] = !nv[k];
+        this.setState({ popupList: nv });
+    };
+
+    closeWindowPortal = (k) => {
+        const nv = this.state.popupList;
+        nv[k] = false;
+        this.setState({ popupList: nv });
+    };
+
     EnhancedTable = () => {
         const setRowsPerPage = (newValue) => {
             this.setState({ rowsPerPage: newValue });
@@ -264,7 +675,7 @@ export default class ProjectHosts extends React.Component {
             setSelected([]);
         };
 
-        const handleClick = (event, name) => {
+        const handleClick = (event, name, hostname) => {
             const selectedIndex = selected.indexOf(name);
             let newSelected = [];
 
@@ -281,7 +692,26 @@ export default class ProjectHosts extends React.Component {
                 );
             }
 
-            setSelected(newSelected);
+            const list = [];
+            this.state.result.result.forEach((element) => {
+                if (
+                    element.host == hostname ||
+                    hostname == element.host.split(":")[0]
+                ) {
+                    list.push(element);
+                }
+            });
+
+            this.setState({
+                // selected: newSelected,
+                openDetails: true,
+                threatDetails: list,
+                popupList: Array.apply(null, { length: list.length }).map(
+                    function (x) {
+                        return false;
+                    }
+                ),
+            });
         };
 
         const handleChangePage = (event, newPage) => {
@@ -345,7 +775,11 @@ export default class ProjectHosts extends React.Component {
                                         <TableRow
                                             hover
                                             onClick={(event) =>
-                                                handleClick(event, row.ip)
+                                                handleClick(
+                                                    event,
+                                                    row.ip,
+                                                    row.host
+                                                )
                                             }
                                             role="checkbox"
                                             aria-checked={isItemSelected}
@@ -509,6 +943,7 @@ export default class ProjectHosts extends React.Component {
                 <Box sx={{ width: 3 / 10, padding: "0 25px" }}>
                     <ScanDurations></ScanDurations>
                 </Box>
+                <this.genVulnerabilitiesDetails></this.genVulnerabilitiesDetails>
             </Box>
         );
     }

@@ -1,5 +1,4 @@
 import * as React from "react";
-import ReactDOM from "react-dom";
 import { Box, Button, Typography, Divider } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
@@ -19,59 +18,11 @@ import Table from "@mui/joy/Table";
 
 import { CodeBlock, dracula } from "react-code-blocks";
 import { html_beautify } from "js-beautify";
+import NewWindow from "react-new-window";
 
 import { UnderLineMiniTitle } from "../component/page_style/project_style";
 import ScanDurations from "./project_ext_scan_durations";
 import "../assets/css/threats.css";
-
-class MyWindowPortal extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        this.containerEl = null;
-        this.externalWindow = null;
-    }
-
-    componentDidMount() {
-        // Create a new window, a div, and append it to the window
-        // The div **MUST** be created by the window it is to be
-        // appended to or it will fail in Edge with a "Permission Denied"
-        // or similar error.
-        // See: https://github.com/rmariuzzo/react-new-window/issues/12#issuecomment-386992550
-        this.externalWindow = window.open(
-            "",
-            "",
-            "width=600,height=400,left=200,top=200"
-        );
-        this.containerEl = this.externalWindow.document.createElement("div");
-        this.externalWindow.document.body.appendChild(this.containerEl);
-
-        this.externalWindow.document.title = "A React portal window";
-
-        // update the state in the parent component if the user closes the
-        // new window
-        this.externalWindow.addEventListener("beforeunload", () => {
-            this.props.closeWindowPortal;
-        });
-    }
-
-    componentWillUnmount() {
-        // This will fire when this.state.showWindowPortal in the parent component becomes false
-        // So we tidy up by just closing the window
-        this.externalWindow.close();
-    }
-
-    render() {
-        // The first render occurs before componentDidMount (where we open
-        // the new window), so our container may be null, in this case
-        // render nothing.
-        if (!this.containerEl) {
-            return null;
-        }
-
-        // Append props.children to the container <div> in the new window
-        return ReactDOM.createPortal(this.props.children, this.containerEl);
-    }
-}
 
 class ProjectVulnerabilities extends React.Component {
     constructor(props) {
@@ -196,7 +147,6 @@ class ProjectVulnerabilities extends React.Component {
     };
 
     genVulnerabilitiesDetails = () => {
-        console.log(this.state.popupList);
         const newpop = [];
         return (
             this.state.threatDetails.length > 0 && (
@@ -472,31 +422,26 @@ class ProjectVulnerabilities extends React.Component {
 
                                             {this.state.popupList[i] ==
                                                 true && (
-                                                <MyWindowPortal
-                                                    rkey={i}
-                                                    closeWindowPortal={() =>
-                                                        this.closeWindowPortal(
-                                                            i
-                                                        )
+                                                <NewWindow
+                                                    title={
+                                                        "Raw Respone of " +
+                                                        this.state
+                                                            .threatDetails[0]
+                                                            .info.name +
+                                                        " - " +
+                                                        subtitle
                                                     }
+                                                    closeOnUnmount={false}
                                                 >
-                                                    <h1>this is {i}</h1>
-                                                    <p>
-                                                        Even though I render in
-                                                        a different window, I
-                                                        share state!
-                                                    </p>
-
-                                                    <button
-                                                        onClick={() =>
-                                                            this.closeWindowPortal(
-                                                                i
-                                                            )
-                                                        }
-                                                    >
-                                                        Close me!
-                                                    </button>
-                                                </MyWindowPortal>
+                                                    <CodeBlock
+                                                        text={html_beautify(
+                                                            answer.response
+                                                        )}
+                                                        language="go"
+                                                        showLineNumbers={false}
+                                                        theme={dracula}
+                                                    />
+                                                </NewWindow>
                                             )}
                                         </AccordionDetails>
                                     </Accordion>
