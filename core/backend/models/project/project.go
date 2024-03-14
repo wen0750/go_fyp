@@ -81,6 +81,11 @@ type ScanRequest struct {
 	Host []string `json:"host"`
 }
 
+// From 127.0.0.1:8888/project/startScan
+type StopScanItem struct {
+	PID string `json:"PID"`
+}
+
 // for delete
 type InputDeleteProject struct {
 	Fid string `json:"fid"`
@@ -575,6 +580,40 @@ func StartScan(c *gin.Context) {
 	}()
 	c.JSON(200, gin.H{"message": "Scan started"})
 
+}
+
+func StopScan(c *gin.Context) {
+	var req StopScanItem
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	pidObjectID, err := primitive.ObjectIDFromHex(req.PID)
+	if err != nil {
+		log.Printf("Error converting PID to ObjectID: %s", err.Error())
+		return
+	}
+
+	filter := bson.M{"project": bson.M{"$elemMatch": bson.M{"pid": pidObjectID}}}
+	update := bson.M{
+		"$set": bson.M{
+			"project.$.status": "idle",
+		},
+	}
+
+	result, err := folderCollection.UpdateOne(context.Background(), filter, update)
+
+	if err != nil {
+		log.Printf("Error updating folder collection for PID %s: %s", req.PID, err.Error())
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
+	} else {
+		log.Printf("Scan was cancel, pid : %s", req.PID)
+		log.Printf("UpdateOne Result: Matched Count = %v, Modified Count = %v", result.MatchedCount, result.ModifiedCount)
+		c.JSON(200, gin.H{"message": "Scan was cancel"})
+		return
+	}
 }
 
 func createYAMLFile(template Template) (string, error) {

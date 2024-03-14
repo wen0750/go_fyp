@@ -355,11 +355,7 @@ export default class ProjectHosts extends React.Component {
                                                     variant="body1"
                                                     gutterBottom
                                                 >
-                                                    {
-                                                        this.state
-                                                            .threatDetails[0]
-                                                            .info.description
-                                                    }
+                                                    {answer.info.description}
                                                 </Typography>
                                             </Box>
 
@@ -375,11 +371,7 @@ export default class ProjectHosts extends React.Component {
                                                     variant="body1"
                                                     gutterBottom
                                                 >
-                                                    {
-                                                        this.state
-                                                            .threatDetails[0]
-                                                            .info.remediation
-                                                    }
+                                                    {answer.info.remediation}
                                                 </Typography>
                                             </Box>
 
@@ -693,7 +685,10 @@ export default class ProjectHosts extends React.Component {
             }
 
             const list = [];
+            console.log(this.state.result.result);
+
             this.state.result.result.forEach((element) => {
+                console.log([element.host, hostname]);
                 if (
                     element.host == hostname ||
                     hostname == element.host.split(":")[0]
@@ -740,6 +735,7 @@ export default class ProjectHosts extends React.Component {
                   )
                 : 0;
 
+        console.log(this.state.vulnerabilities);
         const visibleRows = React.useMemo(
             () =>
                 this.stableSort(

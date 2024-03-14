@@ -279,7 +279,12 @@ class ProjectFolder extends React.Component {
                             <IconButton
                                 aria-label="take action for this project"
                                 onClick={() =>
-                                    this.handleAction(param.row.pid, "Pause")
+                                    this.handleAction(
+                                        param.row.poc,
+                                        "Pause",
+                                        param.row.host,
+                                        param.row.pid
+                                    )
                                 }
                             >
                                 <PauseIcon />
@@ -289,7 +294,12 @@ class ProjectFolder extends React.Component {
                             <IconButton
                                 aria-label="take action for this project"
                                 onClick={() =>
-                                    this.handleAction(param.row.pid, "Stop")
+                                    this.handleAction(
+                                        param.row.poc,
+                                        "Stop",
+                                        param.row.host,
+                                        param.row.pid
+                                    )
                                 }
                             >
                                 <StopIcon />
@@ -299,7 +309,12 @@ class ProjectFolder extends React.Component {
                             <IconButton
                                 aria-label="take action for this project"
                                 onClick={() =>
-                                    this.handleAction(param.row.pid, "Restart")
+                                    this.handleAction(
+                                        param.row.poc,
+                                        "Restart",
+                                        param.row.host,
+                                        param.row.pid
+                                    )
                                 }
                             >
                                 <ReplayIcon />
@@ -314,7 +329,12 @@ class ProjectFolder extends React.Component {
                             <IconButton
                                 aria-label="take action for this project"
                                 onClick={() =>
-                                    this.handleAction(param.row.pid, "Resume")
+                                    this.handleAction(
+                                        param.row.poc,
+                                        "Resume",
+                                        param.row.host,
+                                        param.row.pid
+                                    )
                                 }
                             >
                                 <PlayArrowIcon />
@@ -324,7 +344,12 @@ class ProjectFolder extends React.Component {
                             <IconButton
                                 aria-label="take action for this project"
                                 onClick={() =>
-                                    this.handleAction(param.row.pid, "Stop")
+                                    this.handleAction(
+                                        param.row.poc,
+                                        "Stop",
+                                        param.row.host,
+                                        param.row.pid
+                                    )
                                 }
                             >
                                 <StopIcon />
@@ -334,7 +359,12 @@ class ProjectFolder extends React.Component {
                             <IconButton
                                 aria-label="take action for this project"
                                 onClick={() =>
-                                    this.handleAction(param.row.pid, "Restart")
+                                    this.handleAction(
+                                        param.row.poc,
+                                        "Restart",
+                                        param.row.host,
+                                        param.row.pid
+                                    )
                                 }
                             >
                                 <ReplayIcon />
@@ -406,7 +436,7 @@ class ProjectFolder extends React.Component {
                 break;
             case "Stop":
                 newRows[rowIndex].status = "idle";
-                // this.projectActionStop(id);
+                this.projectActionStop(pid);
                 break;
             case "Resume":
                 newRows[rowIndex].status = "scanning";
@@ -419,7 +449,7 @@ class ProjectFolder extends React.Component {
         }
 
         // Update the state with the new rows
-        this.setState({ rows: newRows });
+        this.setState({ folderContent: newRows });
         console.log(`Action button clicked for id: ${poc}`);
     };
 
@@ -443,7 +473,20 @@ class ProjectFolder extends React.Component {
     };
 
     projectActionPause = () => {};
-    projectActionStop = () => {};
+    projectActionStop = (pid) => {
+        fetch(
+            `${globeVar.backendprotocol}://${globeVar.backendhost}/project/stopScan`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    pid: pid,
+                }),
+            }
+        );
+    };
     projectActionResume = () => {};
     projectActionRestart = () => {};
 
