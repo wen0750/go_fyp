@@ -27,6 +27,9 @@ import { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Tooltip from "@mui/material/Tooltip";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import { useTheme } from '@mui/material/styles';
+import Chip from '@mui/material/Chip';
+import OutlinedInput from '@mui/material/OutlinedInput';
 
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
@@ -130,7 +133,8 @@ export default class EditorTemplate extends React.Component {
             {
                 key: 0,
                 label: "Method",
-                type: "TextField",
+                type: "SigleSelect",
+                value: ["Get", "Post", "Put", "Delect"],
                 visible: true,
                 removable: false,
                 tooltip: "Method is the HTTP Request Method.",
@@ -162,32 +166,6 @@ export default class EditorTemplate extends React.Component {
                 visible: true,
                 removable: false,
                 tooltip: "Raw contains HTTP Requests in Raw format.",
-            },
-        ];
-        this.Type_Status = [
-            {
-                key: 0,
-                label: "Status",
-                type: "TextField",
-                visible: true,
-                removable: false,
-                tooltip: "Status Code received from the Server",
-            },
-            {
-                key: 1,
-                label: "Status",
-                type: "TextField",
-                visible: true,
-                removable: false,
-                tooltip: "Status Code received from the Server",
-            },
-            {
-                key: 2,
-                label: "Status:",
-                type: "TextField",
-                visible: true,
-                removable: false,
-                tooltip: "Status Code received from the Server",
             },
         ];
 
@@ -939,6 +917,19 @@ export default class EditorTemplate extends React.Component {
     };
 
     PartMatchers = () => {
+        const theme = useTheme();
+        const [personName, setPersonName] = React.useState([]);
+      
+        const statehandleChange = (event) => {
+          const {
+            target: { value },
+          } = event;
+          setPersonName(
+            // On autofill we get a stringified value.
+            typeof value === 'string' ? value.split(',') : value,
+          );
+        };
+
         const [data, setData] = useState([{ key: "", tab: "" }]);
 
         const handleClick = () => {
@@ -957,6 +948,34 @@ export default class EditorTemplate extends React.Component {
             deleteVal.splice(i, 1);
             setData(deleteVal);
         };
+
+        const ITEM_HEIGHT = 48;
+        const ITEM_PADDING_TOP = 8;
+        const MenuProps = {
+        PaperProps: {
+            style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+            },
+        },
+        };
+
+        const names = [
+            '100',
+            '200',
+            '300',
+            '400',
+            '500',
+        ];
+          
+        function getStyles(name, personName, theme) {
+            return {
+              fontWeight:
+                personName.indexOf(name) === -1
+                  ? theme.typography.fontWeightRegular
+                  : theme.typography.fontWeightMedium,
+            };
+        }
 
         return (
             <Card sx={{ my: 2 }}>
@@ -1017,10 +1036,35 @@ export default class EditorTemplate extends React.Component {
                                     </TabList>
                                 </Box>
                                 <TabPanel value="1">
-                                    <FormTableFormat
-                                        catalog="Options"
-                                        opts={this.Type_Status}
-                                    ></FormTableFormat>
+                                    <FormControl sx={{ m: 1, width: 300 }}>
+                                        <InputLabel id="demo-multiple-chip-label">State</InputLabel>
+                                        <Select
+                                            labelId="demo-multiple-chip-label"
+                                            id="demo-multiple-chip"
+                                            multiple
+                                            value={personName}
+                                            onChange={statehandleChange}
+                                            input={<OutlinedInput id="select-multiple-chip" label="Chip" />}
+                                            renderValue={(selected) => (
+                                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                                                {selected.map((value) => (
+                                                    <Chip key={value} label={value} />
+                                                ))}
+                                                </Box>
+                                            )}
+                                            MenuProps={MenuProps}
+                                        >
+                                        {names.map((name) => (
+                                            <MenuItem
+                                                key={name}
+                                                value={name}
+                                                style={getStyles(name, personName, theme)}
+                                            >
+                                                {name}
+                                            </MenuItem>
+                                        ))}
+                                        </Select>
+                                    </FormControl>
                                 </TabPanel>
                                 <TabPanel value="2">
                                     <CardContent>
