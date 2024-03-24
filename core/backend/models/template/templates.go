@@ -80,7 +80,7 @@ type Template struct {
 			Part string   `json:"part,omitempty"`
 		} `json:"extractors,omitempty"`
 	} `json:"http,omitempty"`
-	Local   int		`json:"local,omitempty"`
+	Local int `json:"local,omitempty"`
 }
 
 var templatesCollection *mongo.Collection
@@ -172,83 +172,81 @@ func GetTemplatesDetails(c *gin.Context) {
 	c.JSON(http.StatusOK, templates)
 }
 
-
 func MoveYAMLFilesToDB(srcDir string) error {
-    return filepath.Walk(srcDir, func(path string, info os.FileInfo, err error) error {
-        if err != nil {
-            log.Println("Error accessing path:", path, err)
-            return err
-        }
+	return filepath.Walk(srcDir, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			log.Println("Error accessing path:", path, err)
+			return err
+		}
 
-        // Skip directories
-        if info.IsDir() {
-            return nil
-        }
+		// Skip directories
+		if info.IsDir() {
+			return nil
+		}
 
-        if filepath.Ext(path) == ".yaml" {
-            fmt.Printf("Processing file: %s\n", path)
+		if filepath.Ext(path) == ".yaml" {
+			fmt.Printf("Processing file: %s\n", path)
 
-            // Read the YAML file
-            yamlData, err := os.ReadFile(path)
-            if err != nil {
-                log.Println("Error reading file:", err)
-                return nil // Continue with the next file
-            }
+			// Read the YAML file
+			yamlData, err := os.ReadFile(path)
+			if err != nil {
+				log.Println("Error reading file:", err)
+				return nil // Continue with the next file
+			}
 
-            // Parse YAML file into Template struct
-            var tmpl Template
-            err = yaml.Unmarshal(yamlData, &tmpl)
-            if err != nil {
-                log.Println("Error unmarshaling YAML:", err)
-                return nil // Continue with the next file
-            }
+			// Parse YAML file into Template struct
+			var tmpl Template
+			err = yaml.Unmarshal(yamlData, &tmpl)
+			if err != nil {
+				log.Println("Error unmarshaling YAML:", err)
+				return nil // Continue with the next file
+			}
 
-            // Convert struct to JSON
-            jsonData, err := json.Marshal(tmpl)
-            if err != nil {
-                log.Println("Error marshaling JSON:", err)
-                return nil // Continue with the next file
-            }
+			// Convert struct to JSON
+			jsonData, err := json.Marshal(tmpl)
+			if err != nil {
+				log.Println("Error marshaling JSON:", err)
+				return nil // Continue with the next file
+			}
 
-            // Save to DB
-            err = saveToDB(templatesCollection, jsonData)
-            if err != nil {
-                log.Println("Error saving to DB:", err)
-                return nil // Continue with the next file
-            }
+			// Save to DB
+			err = saveToDB(templatesCollection, jsonData)
+			if err != nil {
+				log.Println("Error saving to DB:", err)
+				return nil // Continue with the next file
+			}
 
-            fmt.Printf("Saved template with ID: %s\n", tmpl.ID)
-        }
+			fmt.Printf("Saved template with ID: %s\n", tmpl.ID)
+		}
 
-        return nil
-    })
+		return nil
+	})
 }
 
 func saveToDB(collection *mongo.Collection, jsonData []byte) error {
-    ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-    defer cancel()
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 
-    var tmpl Template
-    if err := json.Unmarshal(jsonData, &tmpl); err != nil {
-        log.Printf("Error unmarshaling JSON data into Template struct: %v", err)
-        return err
-    }
+	var tmpl Template
+	if err := json.Unmarshal(jsonData, &tmpl); err != nil {
+		log.Printf("Error unmarshaling JSON data into Template struct: %v", err)
+		return err
+	}
 
-    // Create a filter for an existing document with the same ID
-    filter := bson.M{"id": tmpl.ID}
-    // Convert the struct to BSON for the update
-    update := bson.M{"$set": tmpl}
-    // Set the upsert option to true - this creates a new document if one does not exist
-    opts := options.Update().SetUpsert(true)
+	// Create a filter for an existing document with the same ID
+	filter := bson.M{"id": tmpl.ID}
+	// Convert the struct to BSON for the update
+	update := bson.M{"$set": tmpl}
+	// Set the upsert option to true - this creates a new document if one does not exist
+	opts := options.Update().SetUpsert(true)
 
-    // Update an existing document or insert a new one if it doesn't exist
-    _, err := collection.UpdateOne(ctx, filter, update, opts)
-    if err != nil {
-        log.Printf("Error upserting BSON data into MongoDB: %v", err)
-        return err
-    }
+	// Update an existing document or insert a new one if it doesn't exist
+	_, err := collection.UpdateOne(ctx, filter, update, opts)
+	if err != nil {
+		log.Printf("Error upserting BSON data into MongoDB: %v", err)
+		return err
+	}
 
-    log.Printf("Upserted template with ID: %s", tmpl.ID)
-    return nil
+	log.Printf("Upserted template with ID: %s", tmpl.ID)
+	return nil
 }
-

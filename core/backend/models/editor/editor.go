@@ -75,7 +75,7 @@ type Template struct {
 			Part string   `json:"part,omitempty"`
 		} `json:"extractors,omitempty"`
 	} `json:"http,omitempty"`
-	Local   int		`json:"local,omitempty"`
+	Local int `json:"local,omitempty"`
 }
 
 var collection *mongo.Collection
@@ -148,12 +148,12 @@ func SaveToDB(c *gin.Context) {
 
 	// Read the JSON body
 	if err := c.ShouldBindJSON(&template); err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{
-            "error": "Invalid JSON data",
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error":   "Invalid JSON data",
 			"details": err.Error(),
-        })
-        return
-    }
+		})
+		return
+	}
 
 	template.Local = 1
 
@@ -217,7 +217,6 @@ func SaveToDB(c *gin.Context) {
 		}
 	}
 }
-
 
 //upload page
 func UploadToDB(c *gin.Context) {
