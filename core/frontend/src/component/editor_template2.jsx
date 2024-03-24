@@ -5,6 +5,7 @@ import { experimentalStyled as styled } from "@mui/material/styles";
 import { Container } from "@mui/material";
 
 import "../assets/css/editor.css";
+import { CodeBlock, dracula } from "react-code-blocks";
 
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
@@ -63,11 +64,7 @@ function CustomAutocomplete(props) {
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
                 {props.label}
-                <Tooltip
-                    title={props.description}
-                    placement="right"
-                    sx={{ zIndex: 20, ml: 1 }}
-                >
+                <Tooltip title={props.description} placement="right" sx={{ zIndex: 20, ml: 1 }}>
                     <HelpOutlineIcon color="action" />
                 </Tooltip>
             </FormLabel>
@@ -88,11 +85,7 @@ function CustomAutocompleteMC(props) {
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
                 {props.label}
-                <Tooltip
-                    title={props.description}
-                    placement="right"
-                    sx={{ zIndex: 20, ml: 1 }}
-                >
+                <Tooltip title={props.description} placement="right" sx={{ zIndex: 20, ml: 1 }}>
                     <HelpOutlineIcon color="action" />
                 </Tooltip>
             </FormLabel>
@@ -117,11 +110,7 @@ function CustomSelectionBox(props) {
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
                 {firstCharToUpper(props.label)}{" "}
-                <Tooltip
-                    title={props.description}
-                    placement="right"
-                    sx={{ zIndex: 20, ml: 1 }}
-                >
+                <Tooltip title={props.description} placement="right" sx={{ zIndex: 20, ml: 1 }}>
                     <HelpOutlineIcon color="action" />
                 </Tooltip>
             </FormLabel>
@@ -150,11 +139,7 @@ function CustomRadioButtons() {
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
                 {props.label}
-                <Tooltip
-                    title={props.description}
-                    placement="right"
-                    sx={{ zIndex: 20, ml: 1 }}
-                >
+                <Tooltip title={props.description} placement="right" sx={{ zIndex: 20, ml: 1 }}>
                     <HelpOutlineIcon color="action" />
                 </Tooltip>
             </FormLabel>
@@ -210,11 +195,7 @@ function CustomTextInputBox(props) {
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
                 {firstCharToUpper(props.label)}{" "}
-                <Tooltip
-                    title={props.description}
-                    placement="right"
-                    sx={{ zIndex: 20, ml: 1 }}
-                >
+                <Tooltip title={props.description} placement="right" sx={{ zIndex: 20, ml: 1 }}>
                     <HelpOutlineIcon color="action" />
                 </Tooltip>
             </FormLabel>
@@ -232,11 +213,7 @@ function CustomTextareaInputBox(props) {
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
                 {firstCharToUpper(props.label)}
-                <Tooltip
-                    title={props.description}
-                    placement="right"
-                    sx={{ zIndex: 20, ml: 1 }}
-                >
+                <Tooltip title={props.description} placement="right" sx={{ zIndex: 20, ml: 1 }}>
                     <HelpOutlineIcon color="action" />
                 </Tooltip>
             </FormLabel>
@@ -269,9 +246,7 @@ function ControlledDropdown(props) {
                                 }}
                             >
                                 {item.label}
-                                <ListItemDecorator>
-                                    {item.enabled === true && <CheckIcon />}
-                                </ListItemDecorator>
+                                <ListItemDecorator>{item.enabled === true && <CheckIcon />}</ListItemDecorator>
                             </MenuItem>
                         ))}
                     </List>
@@ -288,11 +263,8 @@ function GroupControlledDropdown(props) {
                 {Object.entries(props.options).map(([name, animals], index) => (
                     <>
                         <List sx={{ width: 1 }}>
-                            <ListItem id={`select-group-${name}`} sticky>
-                                <Typography
-                                    level="body-xs"
-                                    textTransform="uppercase"
-                                >
+                            <ListItem id={`select-group-${name}`} sx={{ my: 0 }} sticky>
+                                <Typography level="body-xs" textTransform="uppercase">
                                     {name} ({animals.length})
                                 </Typography>
                             </ListItem>
@@ -303,16 +275,16 @@ function GroupControlledDropdown(props) {
                                     role="menuitemradio"
                                     aria-checked={anim.enabled}
                                     onClick={() => {
-                                        props.onChange(ix);
+                                        if (index == 0) {
+                                            props.onXChange();
+                                        } else {
+                                            props.onChange(ix);
+                                        }
                                     }}
                                     sx={{ p: 0, m: 0 }}
                                 >
                                     <ListItem sx={{ m: 0 }}>
-                                        <ListItemDecorator>
-                                            {anim.enabled === true && (
-                                                <CheckIcon />
-                                            )}
-                                        </ListItemDecorator>
+                                        <ListItemDecorator>{anim.enabled === true && <CheckIcon />}</ListItemDecorator>
                                         {anim.label}
                                     </ListItem>
                                 </MenuItem>
@@ -352,12 +324,7 @@ function CustomCard(props) {
             </Typography>
             <Divider inset="none" />
             <CardContent>
-                <Grid
-                    container
-                    spacing={{ xs: 2, md: 3 }}
-                    columns={{ xs: 4, sm: 8, md: 12 }}
-                    sx={{ flexGrow: 1 }}
-                >
+                <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} sx={{ flexGrow: 1 }}>
                     {props.children}
                 </Grid>
             </CardContent>
@@ -563,65 +530,235 @@ export default class EditorTemplate extends React.Component {
                 common: [
                     {
                         label: "Accept",
-                        description:
-                            "The Accept header defines the media types that the client is able to accept from the server. For instance, Accept: application/json, text/html indicates that the client prefers JSON or HTML responses. This information allows the server to send a resource representation that meets the client’s needs.",
+                        description: "s",
                         component: Input,
                         enabled: false,
+                        value: "",
+                        issuer: "builtin",
                     },
                     {
-                        label: "User-Agent",
-                        description:
-                            "The User-Agent header identifies the web browser or client application that is making the request, which enables the server to tailor its response to the client. For instance, if the User-Agent header indicates that the request is coming from the Chrome browser, the server may include CSS prefixes for CSS properties that are compatible with Chrome.",
+                        label: "Accept-Charset",
+                        description: "",
                         component: Input,
                         enabled: false,
+                        value: "",
+                        issuer: "builtin",
+                    },
+                    {
+                        label: "Accept-Datetime",
+                        description: "",
+                        component: Input,
+                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
+                    },
+                    {
+                        label: "Accept-Encoding",
+                        description: "",
+                        component: Input,
+                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
+                    },
+                    {
+                        label: "Accept-Language",
+                        description: "",
+                        component: Input,
+                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
                     },
                     {
                         label: "Authorization",
-                        description: "impact s",
+                        description: "",
                         component: Input,
                         enabled: false,
-                    },
-                    {
-                        label: "Content-Type",
-                        description: "impact s",
-                        component: Input,
-                        enabled: false,
-                    },
-                    {
-                        label: "Cookie",
-                        description: "impact s",
-                        component: Input,
-                        enabled: false,
-                    },
-                    {
-                        label: "Content-Type",
-                        description: "impact s",
-                        component: Input,
-                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
                     },
                     {
                         label: "Cache-Control",
-                        description: "impact s",
+                        description: "",
                         component: Input,
                         enabled: false,
+                        value: "",
+                        issuer: "builtin",
                     },
                     {
-                        label: "Server",
-                        description: "impact s",
+                        label: "Connection",
+                        description: "",
                         component: Input,
                         enabled: false,
-                    },
-                    {
-                        label: "Set-Cookie",
-                        description: "impact s",
-                        component: Input,
-                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
                     },
                     {
                         label: "Content-Length",
-                        description: "impact s",
+                        description: "",
                         component: Input,
                         enabled: false,
+                        value: "",
+                        issuer: "builtin",
+                    },
+                    {
+                        label: "Content-MD5",
+                        description: "",
+                        component: Input,
+                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
+                    },
+                    {
+                        label: "Content-Type",
+                        description: "",
+                        component: Input,
+                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
+                    },
+                    {
+                        label: "Cookie",
+                        description: "",
+                        component: Input,
+                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
+                    },
+                    {
+                        label: "Date",
+                        description: "",
+                        component: Input,
+                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
+                    },
+                    {
+                        label: "Expect",
+                        description: "",
+                        component: Input,
+                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
+                    },
+                    {
+                        label: "Forwarded",
+                        description: "",
+                        component: Input,
+                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
+                    },
+                    {
+                        label: "From",
+                        description: "",
+                        component: Input,
+                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
+                    },
+                    {
+                        label: "Host",
+                        description: "",
+                        component: Input,
+                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
+                    },
+                    {
+                        label: "If-Match",
+                        description: "",
+                        component: Input,
+                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
+                    },
+                    {
+                        label: "If-Modified-Since",
+                        description: "",
+                        component: Input,
+                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
+                    },
+                    {
+                        label: "If-None-Match",
+                        description: "",
+                        component: Input,
+                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
+                    },
+                    {
+                        label: "If-Range",
+                        description: "",
+                        component: Input,
+                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
+                    },
+                    {
+                        label: "If-Unmodified-Since",
+                        description: "",
+                        component: Input,
+                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
+                    },
+                    {
+                        label: "Max-Forwards",
+                        description: "",
+                        component: Input,
+                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
+                    },
+                    {
+                        label: "Origin",
+                        description: "",
+                        component: Input,
+                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
+                    },
+                    {
+                        label: "Pragma",
+                        description: "",
+                        component: Input,
+                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
+                    },
+                    {
+                        label: "Proxy-Authorization",
+                        description: "",
+                        component: Input,
+                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
+                    },
+                    {
+                        label: "Referer",
+                        description: "",
+                        component: Input,
+                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
+                    },
+                    {
+                        label: "Upgrade",
+                        description: "",
+                        component: Input,
+                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
+                    },
+                    {
+                        label: "User-Agent",
+                        description: "",
+                        component: Input,
+                        enabled: false,
+                        value: "",
+                        issuer: "builtin",
                     },
                 ],
             },
@@ -662,20 +799,17 @@ export default class EditorTemplate extends React.Component {
 
     onchange_information_option = (key) => {
         const old = this.state.info_optional_list;
-
         old[key].enabled = !old[key].enabled;
         this.setState({ info_optional_list: old });
     };
     onchange_classification_option = (key) => {
         const old = this.state.classification_optional_list;
-
         old[key].enabled = !old[key].enabled;
         this.setState({ classification_optional_list: old });
     };
     onchange_http_request_option = (key) => {
         const old = this.state.http_request_optional_list;
         var newHROC = 0;
-
         old.common[key].enabled = !old.common[key].enabled;
         if (old.common[key].enabled) {
             newHROC = this.state.httpRequestOptionCounter + 1;
@@ -687,239 +821,205 @@ export default class EditorTemplate extends React.Component {
             httpRequestOptionCounter: newHROC,
         });
     };
+    onXchange_http_request_option = () => {
+        const old = this.state.http_request_optional_list;
+        var newHROC = this.state.httpRequestOptionCounter + 1;
+        old.common.push({
+            label: "",
+            description: "s",
+            component: Input,
+            enabled: true,
+            value: "",
+            issuer: "custom",
+        });
+        this.setState({
+            http_request_optional_list: old,
+            httpRequestOptionCounter: newHROC,
+        });
+    };
+    onTableChange_http_request_option = (key, local, value) => {
+        const old = this.state.http_request_optional_list;
+        old.common[key][local] = value;
+        console.log(local);
+        console.log(value);
+        console.log(old.common);
+        this.setState({
+            http_request_optional_list: old,
+        });
+    };
 
     render() {
         return (
             <Container maxWidth="lg" sx={{ mx: 0, px: 0 }}>
-                <CustomCard
-                    title={"Information"}
-                    description={
-                        "Info contains metadata information about a template"
-                    }
-                >
+                <CustomCard title={"Information"} description={"Info contains metadata information about a template"}>
                     <Grid xs={4}>
-                        <CustomTextInputBox
-                            label={"name"}
-                            description={"s"}
-                            onChange={this.onchange_information}
-                        ></CustomTextInputBox>
+                        <CustomTextInputBox label={"name"} description={"s"} onChange={this.onchange_information}></CustomTextInputBox>
                     </Grid>
                     <Grid xs={4}>
-                        <CustomTextInputBox
-                            label={"author"}
-                            description={"s"}
-                            onChange={this.onchange_information}
-                        ></CustomTextInputBox>
+                        <CustomTextInputBox label={"author"} description={"s"} onChange={this.onchange_information}></CustomTextInputBox>
                     </Grid>
                     <Grid xs={4}>
                         <CustomSelectionBox
                             label={"severity"}
-                            options={[
-                                "info",
-                                "low",
-                                "medium",
-                                "high",
-                                "critical",
-                                "",
-                            ]}
+                            options={["info", "low", "medium", "high", "critical", ""]}
                             onChange={this.onchange_information}
                         ></CustomSelectionBox>
                     </Grid>
 
                     <Grid xs={12}>
-                        <CustomAutocompleteMC
-                            label={"Tag"}
-                            description={"Tag"}
-                            onChange={this.onchange_information}
-                        ></CustomAutocompleteMC>
+                        <CustomAutocompleteMC label={"Tag"} description={"Tag"} onChange={this.onchange_information}></CustomAutocompleteMC>
                     </Grid>
                     <Grid xs={12}>
-                        <CustomTextareaInputBox
-                            label={"description"}
-                            description={"description"}
-                            onChange={this.onchange_information}
-                        ></CustomTextareaInputBox>
+                        <CustomTextareaInputBox label={"description"} description={"description"} onChange={this.onchange_information}></CustomTextareaInputBox>
                     </Grid>
 
                     {this.state.info_optional_list.map((val, i) => {
                         if (val.enabled == true) {
                             return (
                                 <Grid xs={12}>
-                                    <val.component
-                                        label={val.label}
-                                        description={val.description}
-                                        onChange={this.onchange_information}
-                                    />
+                                    <val.component label={val.label} description={val.description} onChange={this.onchange_information} />
                                 </Grid>
                             );
                         }
                     })}
                     <Grid xs={4}>
-                        <ControlledDropdown
-                            options={this.state.info_optional_list}
-                            onChange={this.onchange_information_option}
-                        ></ControlledDropdown>
+                        <ControlledDropdown options={this.state.info_optional_list} onChange={this.onchange_information_option}></ControlledDropdown>
                     </Grid>
                 </CustomCard>
 
-                <CustomCard
-                    title={"classification"}
-                    description={
-                        "Info contains metadata information about a template"
-                    }
-                >
+                <CustomCard title={"classification"} description={"Info contains metadata information about a template"}>
                     <Grid xs={4}>
-                        <CustomTextInputBox
-                            label={"cwe-id"}
-                            description={"sss"}
-                            onChange={this.onchange_classification}
-                        ></CustomTextInputBox>
+                        <CustomTextInputBox label={"cwe-id"} description={"sss"} onChange={this.onchange_classification}></CustomTextInputBox>
                     </Grid>
                     <Grid xs={8}>
-                        <CustomAutocomplete
-                            label={"cve-id"}
-                            description={"fff"}
-                            onChange={this.onchange_classification}
-                        ></CustomAutocomplete>
+                        <CustomAutocomplete label={"cve-id"} description={"fff"} onChange={this.onchange_classification}></CustomAutocomplete>
                     </Grid>
                     {this.state.classification_optional_list.map((val, i) => {
                         if (val.enabled == true) {
                             return (
                                 <Grid xs={4}>
-                                    <val.component
-                                        label={val.label}
-                                        description={val.description}
-                                        onChange={this.onchange_classification}
-                                    />
+                                    <val.component label={val.label} description={val.description} onChange={this.onchange_classification} />
                                 </Grid>
                             );
                         }
                     })}
                     <Grid xs={4}>
-                        <ControlledDropdown
-                            options={this.state.classification_optional_list}
-                            onChange={this.onchange_classification_option}
-                        ></ControlledDropdown>
+                        <ControlledDropdown options={this.state.classification_optional_list} onChange={this.onchange_classification_option}></ControlledDropdown>
                     </Grid>
                 </CustomCard>
 
-                <CustomCard
-                    title={"Request"}
-                    description={
-                        "Info contains metadata information about a template"
-                    }
-                >
+                <CustomCard title={"Request"} description={"Info contains metadata information about a template"}>
                     <Grid xs={4}>
-                        <CustomSelectionBox
-                            label={"method"}
-                            description={"sss"}
-                            options={["GET", "POST"]}
-                            onChange={this.onchange_http}
-                        ></CustomSelectionBox>
+                        <CustomSelectionBox label={"method"} description={"sss"} options={["GET", "POST"]} onChange={this.onchange_http}></CustomSelectionBox>
                     </Grid>
 
-                    {this.state.userinput.http &&
-                        this.state.userinput.http.method &&
-                        this.state.userinput.http.method == "GET" &&
-                        this.state.httpRequestOptionCounter == 0 && (
-                            <Grid xs={12}>
-                                <CustomTextareaInputBox
-                                    label={"path"}
-                                    description={"sss"}
-                                    options={["GET", "POST"]}
-                                    onChange={this.onchange_http}
-                                ></CustomTextareaInputBox>
-                            </Grid>
-                        )}
-                    {this.state.userinput.http &&
-                        this.state.userinput.http.method &&
-                        this.state.userinput.http.method == "POST" && (
-                            <Grid xs={12}>
-                                <CustomSelectionBox
-                                    label={"method"}
-                                    description={"sss"}
-                                    options={["GET", "POST"]}
-                                    onChange={this.onchange_http}
-                                ></CustomSelectionBox>
-                            </Grid>
-                        )}
-                    {this.state.userinput.http &&
-                        this.state.userinput.http.method &&
-                        this.state.httpRequestOptionCounter > 0 && (
-                            <Grid xs={12}>
-                                <Table borderAxis={"xBetween"} sx={{ p: 1 }}>
-                                    <thead>
-                                        <tr>
-                                            <th style={{ width: "20%" }}>t</th>
-                                            <th>Header Value</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {this.state.http_request_optional_list.common.map(
-                                            (header, hi) => {
-                                                if (header.enabled) {
-                                                    return (
-                                                        <tr key={header.label}>
-                                                            <th scope="row">
-                                                                <FormLabel>
-                                                                    {
-                                                                        header.label
-                                                                    }
-                                                                    <Tooltip
-                                                                        title={
-                                                                            header.description
-                                                                        }
-                                                                        placement="right"
-                                                                        sx={{
-                                                                            zIndex: 20,
-                                                                            ml: 1,
-                                                                        }}
-                                                                    >
-                                                                        <HelpOutlineIcon color="action" />
-                                                                    </Tooltip>
-                                                                </FormLabel>
-                                                            </th>
-                                                            <td>
-                                                                <header.component
-                                                                    size="lg"
-                                                                    // onChange={}
-                                                                />
-                                                            </td>
-                                                        </tr>
-                                                    );
-                                                }
+                    {this.state.userinput.http && this.state.userinput.http.method && this.state.userinput.http.method == "GET" && this.state.httpRequestOptionCounter == 0 && (
+                        <Grid xs={12}>
+                            <CustomTextareaInputBox
+                                label={"path"}
+                                description={"sss"}
+                                options={["GET", "POST"]}
+                                value={"{{base}}"}
+                                onChange={this.onchange_http}
+                            ></CustomTextareaInputBox>
+                        </Grid>
+                    )}
+                    {this.state.userinput.http && this.state.userinput.http.method && (this.state.httpRequestOptionCounter > 0 || this.state.userinput.http.method == "POST") && (
+                        <Grid xs={12}>
+                            <Table borderAxis={"xBetween"} sx={{ p: 1 }}>
+                                <thead>
+                                    <tr>
+                                        <th style={{ width: "20%" }}>Header Name</th>
+                                        <th>Header Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {this.state.http_request_optional_list.common.map((header, hi) => {
+                                        if (header.enabled) {
+                                            if (header.issuer == "custom") {
+                                                return (
+                                                    <tr key={header.label}>
+                                                        <th scope="row">
+                                                            <header.component
+                                                                size="lg"
+                                                                onBlur={(event) => this.onTableChange_http_request_option(hi, "label", event.target.value)}
+                                                                defaultValue={this.state.http_request_optional_list.common[hi].label}
+                                                                ref={this.state.http_request_optional_list.common[hi].label}
+                                                            />
+                                                        </th>
+                                                        <td>
+                                                            <header.component
+                                                                size="lg"
+                                                                onBlur={(event) => this.onTableChange_http_request_option(hi, "value", event.target.value)}
+                                                                defaultValue={this.state.http_request_optional_list.common[hi].value}
+                                                                ref={this.state.http_request_optional_list.common[hi].value}
+                                                            />
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            } else {
+                                                return (
+                                                    <tr key={header.label}>
+                                                        <th scope="row">
+                                                            <FormLabel>
+                                                                {header.label}
+                                                                <Tooltip
+                                                                    title={header.description}
+                                                                    placement="right"
+                                                                    sx={{
+                                                                        zIndex: 20,
+                                                                        ml: 1,
+                                                                    }}
+                                                                >
+                                                                    <HelpOutlineIcon color="action" />
+                                                                </Tooltip>
+                                                            </FormLabel>
+                                                        </th>
+                                                        <td>
+                                                            <header.component
+                                                                onBlur={(event) => console.log(event)}
+                                                                size="lg"
+                                                                // onChange={}
+                                                            />
+                                                        </td>
+                                                    </tr>
+                                                );
                                             }
-                                        )}
-                                    </tbody>
-                                </Table>
-                            </Grid>
-                        )}
+                                        }
+                                    })}
+                                </tbody>
+                            </Table>
+                        </Grid>
+                    )}
 
                     {this.state.info_optional_list.map((val, i) => {
                         if (val.enabled == true) {
                             return (
                                 <Grid xs={12}>
-                                    <val.component
-                                        label={val.label}
-                                        description={val.description}
-                                        onChange={this.onchange_information}
-                                    />
+                                    <val.component label={val.label} description={val.description} onChange={this.onchange_information} />
                                 </Grid>
                             );
                         }
                     })}
 
-                    {this.state.userinput.http &&
-                        this.state.userinput.http.method && (
-                            <Grid xs={4}>
-                                <GroupControlledDropdown
-                                    options={
-                                        this.state.http_request_optional_list
-                                    }
-                                    onChange={this.onchange_http_request_option}
-                                ></GroupControlledDropdown>
-                            </Grid>
-                        )}
+                    {this.state.userinput.http && this.state.userinput.http.method && (
+                        <Grid xs={4}>
+                            <GroupControlledDropdown
+                                options={this.state.http_request_optional_list}
+                                onXChange={this.onXchange_http_request_option}
+                                onChange={this.onchange_http_request_option}
+                            ></GroupControlledDropdown>
+                        </Grid>
+                    )}
+
+                    {this.state.userinput.http && this.state.userinput.http.method && (this.state.httpRequestOptionCounter > 0 || this.state.userinput.http.method == "POST") && (
+                        <Grid xs={12}>
+                            <Divider sx={{ my: 1 }} />
+                            <Typography level="body">Output</Typography>
+
+                            <CodeBlock text={"GET /file-manager/ HTTP/1.1\nHost: {{Hostname}}\nCookie: clp-fm={{session}}"} language="go" showLineNumbers={false} theme={dracula} />
+                        </Grid>
+                    )}
                 </CustomCard>
             </Container>
         );
