@@ -853,10 +853,18 @@ export default class EditorTemplate extends React.Component {
             <Container maxWidth="lg" sx={{ mx: 0, px: 0 }}>
                 <CustomCard title={"Information"} description={"Info contains metadata information about a template"}>
                     <Grid xs={4}>
-                        <CustomTextInputBox label={"name"} description={"s"} onChange={this.onchange_information}></CustomTextInputBox>
+                        <CustomTextInputBox
+                            label={"name"}
+                            description={"s"}
+                            onChange={this.onchange_information}
+                        ></CustomTextInputBox>
                     </Grid>
                     <Grid xs={4}>
-                        <CustomTextInputBox label={"author"} description={"s"} onChange={this.onchange_information}></CustomTextInputBox>
+                        <CustomTextInputBox
+                            label={"author"}
+                            description={"s"}
+                            onChange={this.onchange_information}
+                        ></CustomTextInputBox>
                     </Grid>
                     <Grid xs={4}>
                         <CustomSelectionBox
@@ -867,136 +875,207 @@ export default class EditorTemplate extends React.Component {
                     </Grid>
 
                     <Grid xs={12}>
-                        <CustomAutocompleteMC label={"Tag"} description={"Tag"} onChange={this.onchange_information}></CustomAutocompleteMC>
+                        <CustomAutocompleteMC
+                            label={"Tag"}
+                            description={"Tag"}
+                            onChange={this.onchange_information}
+                        ></CustomAutocompleteMC>
                     </Grid>
                     <Grid xs={12}>
-                        <CustomTextareaInputBox label={"description"} description={"description"} onChange={this.onchange_information}></CustomTextareaInputBox>
+                        <CustomTextareaInputBox
+                            label={"description"}
+                            description={"description"}
+                            onChange={this.onchange_information}
+                        ></CustomTextareaInputBox>
                     </Grid>
 
                     {this.state.info_optional_list.map((val, i) => {
                         if (val.enabled == true) {
                             return (
                                 <Grid xs={12}>
-                                    <val.component label={val.label} description={val.description} onChange={this.onchange_information} />
+                                    <val.component
+                                        label={val.label}
+                                        description={val.description}
+                                        onChange={this.onchange_information}
+                                    />
                                 </Grid>
                             );
                         }
                     })}
                     <Grid xs={4}>
-                        <ControlledDropdown options={this.state.info_optional_list} onChange={this.onchange_information_option}></ControlledDropdown>
+                        <ControlledDropdown
+                            options={this.state.info_optional_list}
+                            onChange={this.onchange_information_option}
+                        ></ControlledDropdown>
                     </Grid>
                 </CustomCard>
 
-                <CustomCard title={"classification"} description={"Info contains metadata information about a template"}>
+                <CustomCard
+                    title={"classification"}
+                    description={"Info contains metadata information about a template"}
+                >
                     <Grid xs={4}>
-                        <CustomTextInputBox label={"cwe-id"} description={"sss"} onChange={this.onchange_classification}></CustomTextInputBox>
+                        <CustomTextInputBox
+                            label={"cwe-id"}
+                            description={"sss"}
+                            onChange={this.onchange_classification}
+                        ></CustomTextInputBox>
                     </Grid>
                     <Grid xs={8}>
-                        <CustomAutocomplete label={"cve-id"} description={"fff"} onChange={this.onchange_classification}></CustomAutocomplete>
+                        <CustomAutocomplete
+                            label={"cve-id"}
+                            description={"fff"}
+                            onChange={this.onchange_classification}
+                        ></CustomAutocomplete>
                     </Grid>
                     {this.state.classification_optional_list.map((val, i) => {
                         if (val.enabled == true) {
                             return (
                                 <Grid xs={4}>
-                                    <val.component label={val.label} description={val.description} onChange={this.onchange_classification} />
+                                    <val.component
+                                        label={val.label}
+                                        description={val.description}
+                                        onChange={this.onchange_classification}
+                                    />
                                 </Grid>
                             );
                         }
                     })}
                     <Grid xs={4}>
-                        <ControlledDropdown options={this.state.classification_optional_list} onChange={this.onchange_classification_option}></ControlledDropdown>
+                        <ControlledDropdown
+                            options={this.state.classification_optional_list}
+                            onChange={this.onchange_classification_option}
+                        ></ControlledDropdown>
                     </Grid>
                 </CustomCard>
 
                 <CustomCard title={"Request"} description={"Info contains metadata information about a template"}>
                     <Grid xs={4}>
-                        <CustomSelectionBox label={"method"} description={"sss"} options={["GET", "POST"]} onChange={this.onchange_http}></CustomSelectionBox>
+                        <CustomSelectionBox
+                            label={"method"}
+                            description={"sss"}
+                            options={["GET", "POST"]}
+                            onChange={this.onchange_http}
+                        ></CustomSelectionBox>
                     </Grid>
 
-                    {this.state.userinput.http && this.state.userinput.http.method && this.state.userinput.http.method == "GET" && this.state.httpRequestOptionCounter == 0 && (
-                        <Grid xs={12}>
-                            <CustomTextareaInputBox
-                                label={"path"}
-                                description={"sss"}
-                                options={["GET", "POST"]}
-                                value={"{{base}}"}
-                                onChange={this.onchange_http}
-                            ></CustomTextareaInputBox>
-                        </Grid>
-                    )}
-                    {this.state.userinput.http && this.state.userinput.http.method && (this.state.httpRequestOptionCounter > 0 || this.state.userinput.http.method == "POST") && (
-                        <Grid xs={12}>
-                            <Table borderAxis={"xBetween"} sx={{ p: 1 }}>
-                                <thead>
-                                    <tr>
-                                        <th style={{ width: "20%" }}>Header Name</th>
-                                        <th>Header Value</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {this.state.http_request_optional_list.common.map((header, hi) => {
-                                        if (header.enabled) {
-                                            if (header.issuer == "custom") {
-                                                return (
-                                                    <tr key={header.label}>
-                                                        <th scope="row">
-                                                            <header.component
-                                                                size="lg"
-                                                                onBlur={(event) => this.onTableChange_http_request_option(hi, "label", event.target.value)}
-                                                                defaultValue={this.state.http_request_optional_list.common[hi].label}
-                                                                ref={this.state.http_request_optional_list.common[hi].label}
-                                                            />
-                                                        </th>
-                                                        <td>
-                                                            <header.component
-                                                                size="lg"
-                                                                onBlur={(event) => this.onTableChange_http_request_option(hi, "value", event.target.value)}
-                                                                defaultValue={this.state.http_request_optional_list.common[hi].value}
-                                                                ref={this.state.http_request_optional_list.common[hi].value}
-                                                            />
-                                                        </td>
-                                                    </tr>
-                                                );
-                                            } else {
-                                                return (
-                                                    <tr key={header.label}>
-                                                        <th scope="row">
-                                                            <FormLabel>
-                                                                {header.label}
-                                                                <Tooltip
-                                                                    title={header.description}
-                                                                    placement="right"
-                                                                    sx={{
-                                                                        zIndex: 20,
-                                                                        ml: 1,
-                                                                    }}
-                                                                >
-                                                                    <HelpOutlineIcon color="action" />
-                                                                </Tooltip>
-                                                            </FormLabel>
-                                                        </th>
-                                                        <td>
-                                                            <header.component
-                                                                onBlur={(event) => console.log(event)}
-                                                                size="lg"
-                                                                // onChange={}
-                                                            />
-                                                        </td>
-                                                    </tr>
-                                                );
+                    {this.state.userinput.http &&
+                        this.state.userinput.http.method &&
+                        this.state.userinput.http.method == "GET" &&
+                        this.state.httpRequestOptionCounter == 0 && (
+                            <Grid xs={12}>
+                                <CustomTextareaInputBox
+                                    label={"path"}
+                                    description={"sss"}
+                                    options={["GET", "POST"]}
+                                    value={"{{base}}"}
+                                    onChange={this.onchange_http}
+                                ></CustomTextareaInputBox>
+                            </Grid>
+                        )}
+                    {this.state.userinput.http &&
+                        this.state.userinput.http.method &&
+                        (this.state.httpRequestOptionCounter > 0 || this.state.userinput.http.method == "POST") && (
+                            <Grid xs={12}>
+                                <Table borderAxis={"xBetween"} sx={{ p: 1 }}>
+                                    <thead>
+                                        <tr>
+                                            <th style={{ width: "20%" }}>Header Name</th>
+                                            <th>Header Value</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {this.state.http_request_optional_list.common.map((header, hi) => {
+                                            if (header.enabled) {
+                                                if (header.issuer == "custom") {
+                                                    return (
+                                                        <tr key={header.label}>
+                                                            <th scope="row">
+                                                                <header.component
+                                                                    size="lg"
+                                                                    onBlur={(event) =>
+                                                                        this.onTableChange_http_request_option(
+                                                                            hi,
+                                                                            "label",
+                                                                            event.target.value
+                                                                        )
+                                                                    }
+                                                                    defaultValue={
+                                                                        this.state.http_request_optional_list.common[hi]
+                                                                            .label
+                                                                    }
+                                                                    ref={
+                                                                        this.state.http_request_optional_list.common[hi]
+                                                                            .label
+                                                                    }
+                                                                />
+                                                            </th>
+                                                            <td>
+                                                                <header.component
+                                                                    size="lg"
+                                                                    onBlur={(event) =>
+                                                                        this.onTableChange_http_request_option(
+                                                                            hi,
+                                                                            "value",
+                                                                            event.target.value
+                                                                        )
+                                                                    }
+                                                                    defaultValue={
+                                                                        this.state.http_request_optional_list.common[hi]
+                                                                            .value
+                                                                    }
+                                                                    ref={
+                                                                        this.state.http_request_optional_list.common[hi]
+                                                                            .value
+                                                                    }
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                } else {
+                                                    return (
+                                                        <tr key={header.label}>
+                                                            <th scope="row">
+                                                                <FormLabel>
+                                                                    {header.label}
+                                                                    <Tooltip
+                                                                        title={header.description}
+                                                                        placement="right"
+                                                                        sx={{
+                                                                            zIndex: 20,
+                                                                            ml: 1,
+                                                                        }}
+                                                                    >
+                                                                        <HelpOutlineIcon color="action" />
+                                                                    </Tooltip>
+                                                                </FormLabel>
+                                                            </th>
+                                                            <td>
+                                                                <header.component
+                                                                    onBlur={(event) => console.log(event)}
+                                                                    size="lg"
+                                                                    // onChange={}
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                }
                                             }
-                                        }
-                                    })}
-                                </tbody>
-                            </Table>
-                        </Grid>
-                    )}
+                                        })}
+                                    </tbody>
+                                </Table>
+                            </Grid>
+                        )}
 
                     {this.state.info_optional_list.map((val, i) => {
                         if (val.enabled == true) {
                             return (
                                 <Grid xs={12}>
-                                    <val.component label={val.label} description={val.description} onChange={this.onchange_information} />
+                                    <val.component
+                                        label={val.label}
+                                        description={val.description}
+                                        onChange={this.onchange_information}
+                                    />
                                 </Grid>
                             );
                         }
@@ -1012,14 +1091,21 @@ export default class EditorTemplate extends React.Component {
                         </Grid>
                     )}
 
-                    {this.state.userinput.http && this.state.userinput.http.method && (this.state.httpRequestOptionCounter > 0 || this.state.userinput.http.method == "POST") && (
-                        <Grid xs={12}>
-                            <Divider sx={{ my: 1 }} />
-                            <Typography level="body">Output</Typography>
+                    {this.state.userinput.http &&
+                        this.state.userinput.http.method &&
+                        (this.state.httpRequestOptionCounter > 0 || this.state.userinput.http.method == "POST") && (
+                            <Grid xs={12}>
+                                <Divider sx={{ my: 1 }} />
+                                <Typography level="body">Output</Typography>
 
-                            <CodeBlock text={"GET /file-manager/ HTTP/1.1\nHost: {{Hostname}}\nCookie: clp-fm={{session}}"} language="go" showLineNumbers={false} theme={dracula} />
-                        </Grid>
-                    )}
+                                <CodeBlock
+                                    text={"GET /file-manager/ HTTP/1.1\nHost: {{Hostname}}\nCookie: clp-fm={{session}}"}
+                                    language="go"
+                                    showLineNumbers={false}
+                                    theme={dracula}
+                                />
+                            </Grid>
+                        )}
                 </CustomCard>
             </Container>
         );
