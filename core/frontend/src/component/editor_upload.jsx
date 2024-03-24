@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import {
-    Card,
-    CardHeader,
-    CardContent,
-    Container,
-    Typography,
-} from "@mui/material";
+import { Card, CardHeader, CardContent, Container, Typography } from "@mui/material";
 
 import globeVar from "../../GlobalVar";
 
@@ -53,10 +47,7 @@ const DropZone = (props) => {
         }
 
         // Check if file is .yaml or .json file
-        if (
-            file &&
-            (file.name.endsWith(".yaml") || file.name.endsWith(".json"))
-        ) {
+        if (file && (file.name.endsWith(".yaml") || file.name.endsWith(".json"))) {
             setErrorMessage(""); // Clear error message
             const reader = new FileReader();
 
@@ -64,17 +55,12 @@ const DropZone = (props) => {
                 const fileContent = event.target.result;
                 console.log(fileContent);
                 // Store uploaded file
-                setUploadedFiles([
-                    ...uploadedFiles,
-                    { name: file.name, content: fileContent },
-                ]);
+                setUploadedFiles([...uploadedFiles, { name: file.name, content: fileContent }]);
             };
 
             reader.readAsText(file);
         } else {
-            setErrorMessage(
-                "Can't upload. Use an template in one of these formats: .json or .yaml "
-            ); // Set error message
+            setErrorMessage("Can't upload. Use an template in one of these formats: .json or .yaml "); // Set error message
         }
     };
 
@@ -86,9 +72,7 @@ const DropZone = (props) => {
 
     const handleDelete = (fileToDelete) => {
         // Remove the file from the list of uploaded files
-        const updatedFiles = uploadedFiles.filter(
-            (file) => file.name !== fileToDelete.name
-        );
+        const updatedFiles = uploadedFiles.filter((file) => file.name !== fileToDelete.name);
         setUploadedFiles(updatedFiles);
     };
 
@@ -100,21 +84,14 @@ const DropZone = (props) => {
 
     const SubmitToDB = (uploadedFile) => {
         var data = new FormData();
-        data.append(
-            "file",
-            new Blob([uploadedFile.content], { type: uploadedFile.type }),
-            uploadedFile.name
-        );
+        data.append("file", new Blob([uploadedFile.content], { type: uploadedFile.type }), uploadedFile.name);
 
         //change ip & port, should be set to server-side IP
 
-        fetch(
-            `${globeVar.backendprotocol}://${globeVar.backendhost}/editor/submit`,
-            {
-                method: "POST",
-                body: data,
-            }
-        )
+        fetch(`${globeVar.backendprotocol}://${globeVar.backendhost}/editor/submit`, {
+            method: "POST",
+            body: data,
+        })
             .then((response) => {
                 if (response.ok) {
                     return response.json();
@@ -137,18 +114,10 @@ const DropZone = (props) => {
                 let htmlContent;
                 if (data.action === "created") {
                     title = "Template Created Successfully";
-                    htmlContent =
-                        "<strong>UID:</strong> " +
-                        data.id +
-                        "<br>" +
-                        "This is the <strong>UID</strong> in the Database, you can save it for later search";
+                    htmlContent = "<strong>UID:</strong> " + data.id + "<br>" + "This is the <strong>UID</strong> in the Database, you can save it for later search";
                 } else {
                     title = "Template Updated Successfully";
-                    htmlContent =
-                        "<strong>Template Name:</strong> " +
-                        data.id +
-                        "<br>" +
-                        "It is updated in the Database, you can check it anytime";
+                    htmlContent = "<strong>Template Name:</strong> " + data.id + "<br>" + "It is updated in the Database, you can check it anytime";
                 }
 
                 // Show a message box to let the user know the Inserted ID
@@ -228,27 +197,16 @@ const DropZone = (props) => {
                         <li key={index}>
                             <span
                                 style={{
-                                    fontFamily:
-                                        "'Fira Code', Consolas, 'Courier New', monospace",
+                                    fontFamily: "'Fira Code', Consolas, 'Courier New', monospace",
                                 }}
                             >
                                 {file.name}
                             </span>
 
-                            <button
-                                className={`styled-delete-button${
-                                    submitted.includes(file) ? " fade-out" : ""
-                                }`}
-                                onClick={() => handleDelete(file)}
-                            >
+                            <button className={`styled-delete-button${submitted.includes(file) ? " fade-out" : ""}`} onClick={() => handleDelete(file)}>
                                 Delete
                             </button>
-                            <button
-                                className={`styled-submit-button${
-                                    submitted.includes(file) ? " fade-out" : ""
-                                }`}
-                                onClick={() => handleSubmit(file)}
-                            >
+                            <button className={`styled-submit-button${submitted.includes(file) ? " fade-out" : ""}`} onClick={() => handleSubmit(file)}>
                                 Submit
                             </button>
                         </li>
@@ -285,11 +243,7 @@ export default class EditorUpload extends React.Component {
                 <CardHeader title="Submit your own Template for others" />
                 <CardContent>
                     <DropZone />
-                    <Grid
-                        container="container"
-                        spacing={2}
-                        columns={{ xs: 4, sm: 8, md: 12 }}
-                    ></Grid>
+                    <Grid container="container" spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}></Grid>
                 </CardContent>
             </Card>
         );

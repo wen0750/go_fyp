@@ -51,35 +51,23 @@ export default class FormTableFormat extends React.Component {
             console.log(event.target.name);
             console.log(event.target.value);
             if (event.target.name == "reference") {
-                this.props.callback(this.props.catalog, event.target.name, [
-                    event.target.value,
-                ]);
+                this.props.callback(this.props.catalog, event.target.name, [event.target.value]);
                 return null;
             }
 
             if (event.target.catalog == "classification") {
-                this.props.callback(this.props.classification, event.target.name, [
-                    event.target.value,
-                ]);
+                this.props.callback(this.props.classification, event.target.name, [event.target.value]);
             }
 
             if (event.target.catalog == "Options") {
-                this.props.callback(this.props.option, event.target.name, [
-                    event.target.value,
-                ]);
+                this.props.callback(this.props.option, event.target.name, [event.target.value]);
             }
 
             if (event.target.catalog == "Fuzzing") {
-                this.props.callback(this.props.fuzzing, event.target.name, [
-                    event.target.value,
-                ]);
+                this.props.callback(this.props.fuzzing, event.target.name, [event.target.value]);
             }
 
-            this.props.callback(
-                this.props.catalog,
-                event.target.name,
-                event.target.value
-            );
+            this.props.callback(this.props.catalog, event.target.name, event.target.value);
         };
         this.defaultTheme = createTheme();
         this.theme = createTheme({
@@ -104,13 +92,10 @@ export default class FormTableFormat extends React.Component {
     // fatch data
     fetchTagData = async () => {
         try {
-            const response = await fetch(
-                `${globeVar.backendprotocol}://${globeVar.backendhost}/tag/file`,
-                {
-                    signal: AbortSignal.timeout(8000),
-                    method: "POST",
-                }
-            );
+            const response = await fetch(`${globeVar.backendprotocol}://${globeVar.backendhost}/tag/file`, {
+                signal: AbortSignal.timeout(8000),
+                method: "POST",
+            });
         } catch (error) {
             console.log("backend server error");
             return [];
@@ -120,13 +105,10 @@ export default class FormTableFormat extends React.Component {
     fetchCveData = async () => {
         try {
             const data = await (
-                await fetch(
-                    `${globeVar.backendprotocol}://${globeVar.backendhost}/cve/lists`,
-                    {
-                        signal: AbortSignal.timeout(8000),
-                        method: "POST",
-                    }
-                )
+                await fetch(`${globeVar.backendprotocol}://${globeVar.backendhost}/cve/lists`, {
+                    signal: AbortSignal.timeout(8000),
+                    method: "POST",
+                })
             ).json();
             console.log(data.result);
             if (data.result == null) {
@@ -147,16 +129,13 @@ export default class FormTableFormat extends React.Component {
         } else {
             try {
                 const data = await (
-                    await fetch(
-                        `${globeVar.backendprotocol}://${globeVar.backendhost}/cve/search`,
-                        {
-                            signal: AbortSignal.timeout(8000),
-                            method: "POST",
-                            body: JSON.stringify({
-                                keyword: indata,
-                            }),
-                        }
-                    )
+                    await fetch(`${globeVar.backendprotocol}://${globeVar.backendhost}/cve/search`, {
+                        signal: AbortSignal.timeout(8000),
+                        method: "POST",
+                        body: JSON.stringify({
+                            keyword: indata,
+                        }),
+                    })
                 ).json();
                 console.log(data.result);
                 this.setState({ cveOpt: data.result });
@@ -175,16 +154,11 @@ export default class FormTableFormat extends React.Component {
     optsBtn = () => {
         return (
             <Grid sx={{ width: 1 / 3 }}>
-                <FormControl
-                    variant="outlined"
-                    sx={{ width: 1, height: "56px" }}
-                >
+                <FormControl variant="outlined" sx={{ width: 1, height: "56px" }}>
                     <ThemeProvider theme={this.theme} sx={{ width: 1 }}>
                         <Button
                             id="basiceee-button"
-                            aria-controls={
-                                this.state.open ? "basic-menu" : undefined
-                            }
+                            aria-controls={this.state.open ? "basic-menu" : undefined}
                             aria-haspopup="true"
                             aria-expanded={this.state.open ? "true" : undefined}
                             onClick={this.optsBtnMenu_open}
@@ -211,14 +185,9 @@ export default class FormTableFormat extends React.Component {
             >
                 {this.state.optionalItemList.map((data) => {
                     return (
-                        <MenuItem
-                            ket={data.key}
-                            data-key={data.key}
-                            onClick={this.optsBtnMenuOpt_click}
-                        >
+                        <MenuItem ket={data.key} data-key={data.key} onClick={this.optsBtnMenuOpt_click}>
                             {data.label}
-                            {data.visible === false &&
-                            data.removable === true ? null : (
+                            {data.visible === false && data.removable === true ? null : (
                                 <ListItemIcon>
                                     <Check />
                                 </ListItemIcon>
@@ -243,11 +212,7 @@ export default class FormTableFormat extends React.Component {
         } else {
             this.removableBtn_changevisible(itemIndex, false);
             this.removableBtn_formate();
-            this.props.callback(
-                this.props.catalog,
-                this.state.optionalItemList[itemIndex].label,
-                null
-            );
+            this.props.callback(this.props.catalog, this.state.optionalItemList[itemIndex].label, null);
         }
     };
 
@@ -255,9 +220,7 @@ export default class FormTableFormat extends React.Component {
         return (
             <Grid sx={{ width: 1 / 3 }}>
                 <FormControl variant="outlined" sx={{ width: 1 }}>
-                    <InputLabel htmlFor="outlined-adornment-password">
-                        {label}
-                    </InputLabel>
+                    <InputLabel htmlFor="outlined-adornment-password">{label}</InputLabel>
                     <OutlinedInput
                         id="outlined-adornment-password"
                         type="text"
@@ -265,12 +228,7 @@ export default class FormTableFormat extends React.Component {
                         onChange={this.handleOnChange}
                         endAdornment={
                             <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    data-key={key}
-                                    onClick={this.removableBtn_drop}
-                                    edge="end"
-                                >
+                                <IconButton aria-label="toggle password visibility" data-key={key} onClick={this.removableBtn_drop} edge="end">
                                     <DeleteIcon />
                                 </IconButton>
                             </InputAdornment>
@@ -298,16 +256,10 @@ export default class FormTableFormat extends React.Component {
         }
     };
     removableBtn_drop = (e) => {
-        let itemIndex = this.findOptionalItemIndex(
-            e.currentTarget.getAttribute("data-key")
-        );
+        let itemIndex = this.findOptionalItemIndex(e.currentTarget.getAttribute("data-key"));
         this.removableBtn_changevisible(itemIndex, false);
         this.removableBtn_formate();
-        this.props.callback(
-            this.props.catalog,
-            this.state.optionalItemList[itemIndex].label,
-            null
-        );
+        this.props.callback(this.props.catalog, this.state.optionalItemList[itemIndex].label, null);
     };
     removableBtn_changevisible = (itemIndex, visible) => {
         let items = this.state.optionalItemList;
@@ -319,11 +271,7 @@ export default class FormTableFormat extends React.Component {
 
     render() {
         return (
-            <Grid
-                container="container"
-                spacing={2}
-                columns={{ xs: 4, sm: 8, md: 12 }}
-            >
+            <Grid container="container" spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
                 {this.props.opts.map((data) => {
                     return (() => {
                         if (data.visible === true) {
@@ -339,17 +287,8 @@ export default class FormTableFormat extends React.Component {
                                         InputProps={{
                                             endAdornment: (
                                                 <InputAdornment position="start">
-                                                    <Tooltip
-                                                        title={
-                                                            <h1>
-                                                                {data.tooltip}
-                                                            </h1>
-                                                        }
-                                                        variant="plain"
-                                                    >
-                                                        <HelpOutlineIcon
-                                                            fontSize={"large"}
-                                                        />
+                                                    <Tooltip title={<h1>{data.tooltip}</h1>} variant="plain">
+                                                        <HelpOutlineIcon fontSize={"large"} />
                                                     </Tooltip>
                                                 </InputAdornment>
                                             ),
@@ -365,18 +304,8 @@ export default class FormTableFormat extends React.Component {
                                         InputProps={{
                                             endAdornment: (
                                                 <InputAdornment>
-                                                    <Tooltip
-                                                        placement="right"
-                                                        title={
-                                                            <h1>
-                                                                {data.tooltip}
-                                                            </h1>
-                                                        }
-                                                        variant="plain"
-                                                    >
-                                                        <HelpOutlineIcon
-                                                            fontSize={"large"}
-                                                        />
+                                                    <Tooltip placement="right" title={<h1>{data.tooltip}</h1>} variant="plain">
+                                                        <HelpOutlineIcon fontSize={"large"} />
                                                     </Tooltip>
                                                 </InputAdornment>
                                             ),
@@ -395,17 +324,8 @@ export default class FormTableFormat extends React.Component {
                                         InputProps={{
                                             endAdornment: (
                                                 <InputAdornment position="start">
-                                                    <Tooltip
-                                                        title={
-                                                            <h1>
-                                                                {data.tooltip}
-                                                            </h1>
-                                                        }
-                                                        variant="plain"
-                                                    >
-                                                        <HelpOutlineIcon
-                                                            fontSize={"large"}
-                                                        />
+                                                    <Tooltip title={<h1>{data.tooltip}</h1>} variant="plain">
+                                                        <HelpOutlineIcon fontSize={"large"} />
                                                     </Tooltip>
                                                 </InputAdornment>
                                             ),
@@ -423,17 +343,8 @@ export default class FormTableFormat extends React.Component {
                                         InputProps={{
                                             endAdornment: (
                                                 <InputAdornment position="start">
-                                                    <Tooltip
-                                                        title={
-                                                            <h1>
-                                                                {data.tooltip}
-                                                            </h1>
-                                                        }
-                                                        variant="plain"
-                                                    >
-                                                        <HelpOutlineIcon
-                                                            fontSize={"large"}
-                                                        />
+                                                    <Tooltip title={<h1>{data.tooltip}</h1>} variant="plain">
+                                                        <HelpOutlineIcon fontSize={"large"} />
                                                     </Tooltip>
                                                 </InputAdornment>
                                             ),
@@ -454,74 +365,39 @@ export default class FormTableFormat extends React.Component {
                                         sx={{ width: 300 }}
                                         options={this.state.cveOpt}
                                         autoHighlight
-                                        getOptionLabel={(option) =>
-                                            option.CveMetadata.CveID
-                                        }
+                                        getOptionLabel={(option) => option.CveMetadata.CveID}
                                         renderOption={(props, option) => {
                                             if (option != null) {
-                                                console.log(
-                                                    option.Containers.Cna
-                                                );
-                                                if (
-                                                    option.Containers.Cna
-                                                        .Descriptions == null
-                                                ) {
-                                                    option.Containers.Cna.Descriptions =
-                                                        [];
-                                                    option.Containers.Cna.Descriptions[0] =
-                                                        {
-                                                            Value: "no descriptions ...",
-                                                        };
+                                                console.log(option.Containers.Cna);
+                                                if (option.Containers.Cna.Descriptions == null) {
+                                                    option.Containers.Cna.Descriptions = [];
+                                                    option.Containers.Cna.Descriptions[0] = {
+                                                        Value: "no descriptions ...",
+                                                    };
                                                 }
                                                 return (
                                                     <Box
                                                         component="div"
                                                         sx={{
                                                             display: "flex",
-                                                            flexDirection:
-                                                                "column",
-                                                            alignContent:
-                                                                "flexStart",
+                                                            flexDirection: "column",
+                                                            alignContent: "flexStart",
                                                         }}
                                                         {...props}
                                                     >
-                                                        <Typography
-                                                            variant="button"
-                                                            display="block"
-                                                            gutterBottom
-                                                        >
-                                                            {
-                                                                option
-                                                                    .CveMetadata
-                                                                    .CveID
-                                                            }
+                                                        <Typography variant="button" display="block" gutterBottom>
+                                                            {option.CveMetadata.CveID}
                                                         </Typography>
-                                                        <Typography
-                                                            variant="body2"
-                                                            gutterBottom
-                                                        >
-                                                            {option.Containers
-                                                                .Cna
-                                                                .Descriptions[0]
-                                                                .Value <= 69
-                                                                ? option
-                                                                      .Containers
-                                                                      .Cna
-                                                                      .Descriptions[0]
-                                                                      .Value
-                                                                : option.Containers.Cna.Descriptions[0].Value.substr(
-                                                                      0,
-                                                                      69
-                                                                  ) + "..."}
+                                                        <Typography variant="body2" gutterBottom>
+                                                            {option.Containers.Cna.Descriptions[0].Value <= 69
+                                                                ? option.Containers.Cna.Descriptions[0].Value
+                                                                : option.Containers.Cna.Descriptions[0].Value.substr(0, 69) + "..."}
                                                         </Typography>
                                                     </Box>
                                                 );
                                             }
                                         }}
-                                        onInputChange={(
-                                            event,
-                                            newInputValue
-                                        ) => {
+                                        onInputChange={(event, newInputValue) => {
                                             this.searchCveData(newInputValue);
                                         }}
                                         renderInput={(params) => (
@@ -530,8 +406,7 @@ export default class FormTableFormat extends React.Component {
                                                 label={data.label}
                                                 inputProps={{
                                                     ...params.inputProps,
-                                                    autoComplete:
-                                                        "new-password", // disable autocomplete and autofill
+                                                    autoComplete: "new-password", // disable autocomplete and autofill
                                                 }}
                                             />
                                         )}
@@ -552,74 +427,39 @@ export default class FormTableFormat extends React.Component {
                                         sx={{ width: 300 }}
                                         options={this.state.cveOpt}
                                         autoHighlight
-                                        getOptionLabel={(option) =>
-                                            option.CveMetadata.CveID
-                                        }
+                                        getOptionLabel={(option) => option.CveMetadata.CveID}
                                         renderOption={(props, option) => {
                                             if (option != null) {
-                                                console.log(
-                                                    option.Containers.Cna
-                                                );
-                                                if (
-                                                    option.Containers.Cna
-                                                        .Descriptions == null
-                                                ) {
-                                                    option.Containers.Cna.Descriptions =
-                                                        [];
-                                                    option.Containers.Cna.Descriptions[0] =
-                                                        {
-                                                            Value: "no descriptions ...",
-                                                        };
+                                                console.log(option.Containers.Cna);
+                                                if (option.Containers.Cna.Descriptions == null) {
+                                                    option.Containers.Cna.Descriptions = [];
+                                                    option.Containers.Cna.Descriptions[0] = {
+                                                        Value: "no descriptions ...",
+                                                    };
                                                 }
                                                 return (
                                                     <Box
                                                         component="div"
                                                         sx={{
                                                             display: "flex",
-                                                            flexDirection:
-                                                                "column",
-                                                            alignContent:
-                                                                "flexStart",
+                                                            flexDirection: "column",
+                                                            alignContent: "flexStart",
                                                         }}
                                                         {...props}
                                                     >
-                                                        <Typography
-                                                            variant="button"
-                                                            display="block"
-                                                            gutterBottom
-                                                        >
-                                                            {
-                                                                option
-                                                                    .CveMetadata
-                                                                    .CveID
-                                                            }
+                                                        <Typography variant="button" display="block" gutterBottom>
+                                                            {option.CveMetadata.CveID}
                                                         </Typography>
-                                                        <Typography
-                                                            variant="body2"
-                                                            gutterBottom
-                                                        >
-                                                            {option.Containers
-                                                                .Cna
-                                                                .Descriptions[0]
-                                                                .Value <= 69
-                                                                ? option
-                                                                      .Containers
-                                                                      .Cna
-                                                                      .Descriptions[0]
-                                                                      .Value
-                                                                : option.Containers.Cna.Descriptions[0].Value.substr(
-                                                                      0,
-                                                                      69
-                                                                  ) + "..."}
+                                                        <Typography variant="body2" gutterBottom>
+                                                            {option.Containers.Cna.Descriptions[0].Value <= 69
+                                                                ? option.Containers.Cna.Descriptions[0].Value
+                                                                : option.Containers.Cna.Descriptions[0].Value.substr(0, 69) + "..."}
                                                         </Typography>
                                                     </Box>
                                                 );
                                             }
                                         }}
-                                        onInputChange={(
-                                            event,
-                                            newInputValue
-                                        ) => {
+                                        onInputChange={(event, newInputValue) => {
                                             this.searchTagData(newInputValue);
                                         }}
                                         renderInput={(params) => (
@@ -628,8 +468,7 @@ export default class FormTableFormat extends React.Component {
                                                 label={data.label}
                                                 inputProps={{
                                                     ...params.inputProps,
-                                                    autoComplete:
-                                                        "new-password", // disable autocomplete and autofill
+                                                    autoComplete: "new-password", // disable autocomplete and autofill
                                                 }}
                                             />
                                         )}
@@ -639,10 +478,7 @@ export default class FormTableFormat extends React.Component {
                             }
 
                             return (
-                                <Grid
-                                    data-key={data.key}
-                                    sx={{ width: `${defwidth}` }}
-                                >
+                                <Grid data-key={data.key} sx={{ width: `${defwidth}` }}>
                                     {element}
                                 </Grid>
                             );

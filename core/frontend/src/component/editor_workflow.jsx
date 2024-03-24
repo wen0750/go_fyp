@@ -2,17 +2,7 @@ import * as React from "react";
 
 import { experimentalStyled as styled } from "@mui/material/styles";
 
-import {
-    Card,
-    CardHeader,
-    CardContent,
-    CardActions,
-    Typography,
-    Button,
-    Box,
-    TextField,
-    Container,
-} from "@mui/material";
+import { Card, CardHeader, CardContent, CardActions, Typography, Button, Box, TextField, Container } from "@mui/material";
 
 import Grid from "@mui/material/Unstable_Grid2";
 import "../assets/css/editor.css";
@@ -43,11 +33,7 @@ export default class EditorWorkflow extends React.Component {
                 <CardHeader title="+ Workflows" />
                 <hr />
                 <CardContent>
-                    <Grid
-                        container="container"
-                        spacing={2}
-                        columns={{ xs: 4, sm: 8, md: 12 }}
-                    >
+                    <Grid container="container" spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
                         <Grid item="item" xs={4}>
                             <TextField label="+ Template" />
                         </Grid>

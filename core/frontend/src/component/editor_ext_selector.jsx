@@ -41,25 +41,16 @@ export default class SigleSelect extends React.Component {
     render() {
         return (
             <FormControl sx={{ width: "100%" }}>
-                <InputLabel id="demo-multiple-chip-label">
-                    {this.props.label}
-                </InputLabel>
+                <InputLabel id="demo-multiple-chip-label">{this.props.label}</InputLabel>
                 <Select
                     labelId="demo-multiple-chip-label"
                     id="demo-multiple-chip"
                     value={this.state.option}
                     onChange={this.handleChange}
                     name={this.props.label}
-                    input={
-                        <OutlinedInput
-                            id="select-multiple-chip"
-                            label={this.props.label}
-                        />
-                    }
+                    input={<OutlinedInput id="select-multiple-chip" label={this.props.label} />}
                     renderValue={(selected) => (
-                        <Box
-                            sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}
-                        >
+                        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                             {selected.map((value) => (
                                 <span>{value}</span>
                             ))}

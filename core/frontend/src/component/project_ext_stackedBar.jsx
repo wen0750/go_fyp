@@ -110,13 +110,7 @@ const App = (props) => {
     if (props.isOpen) {
         return (
             <div style={{ width: "100%" }}>
-                <Chart
-                    options={options}
-                    series={series}
-                    type="bar"
-                    width="100%"
-                    height="80"
-                />
+                <Chart options={options} series={series} type="bar" width="100%" height="80" />
             </div>
         );
     } else {

@@ -2,13 +2,7 @@ import * as React from "react";
 
 import { experimentalStyled as styled } from "@mui/material/styles";
 
-import {
-    Card,
-    CardHeader,
-    CardContent,
-    TextField,
-    Container,
-} from "@mui/material";
+import { Card, CardHeader, CardContent, TextField, Container } from "@mui/material";
 
 import Grid from "@mui/material/Unstable_Grid2";
 import "../assets/css/editor.css";
@@ -39,11 +33,7 @@ export default class EditorVariables extends React.Component {
                 <CardHeader title="+ Variables" />
                 <hr />
                 <CardContent>
-                    <Grid
-                        container="container"
-                        spacing={2}
-                        columns={{ xs: 4, sm: 8, md: 12 }}
-                    >
+                    <Grid container="container" spacing={2} columns={{ xs: 4, sm: 8, md: 12 }}>
                         <Grid item="item" xs={4}>
                             <TextField label="+ a1" />
                         </Grid>

@@ -24,12 +24,7 @@ export default class EditorAction extends React.Component {
             },
         };
         this.names = ["info", "high", "medium", "critical", "low", "unknown"];
-        this.classification = [
-            "cvss-metrics",
-            "cvss-score",
-            "cve-id",
-            "cwe-id",
-        ];
+        this.classification = ["cvss-metrics", "cvss-score", "cve-id", "cwe-id"];
     }
 
     FileUploadPage = () => {
@@ -47,22 +42,19 @@ export default class EditorAction extends React.Component {
     ondatasubmit = () => {
         //change ip & port, should be set to server-side IP
         //this is hard-coded
-        fetch(
-            `${globeVar.backendprotocol}://${globeVar.backendhost}/editor/download`,
-            {
-                method: "POST",
-                body: JSON.stringify({
-                    ID: "Test",
-                    Info: {
-                        Name: "abc",
-                        Author: "FYP",
-                    },
-                }),
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8",
+        fetch(`${globeVar.backendprotocol}://${globeVar.backendhost}/editor/download`, {
+            method: "POST",
+            body: JSON.stringify({
+                ID: "Test",
+                Info: {
+                    Name: "abc",
+                    Author: "FYP",
                 },
-            }
-        )
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+            },
+        })
             .then((response) => {
                 if (response.ok) {
                     // If the response is successful, create a button to download file
@@ -90,21 +82,16 @@ export default class EditorAction extends React.Component {
         //change ip & port, should be set to server-side IP
         //this is hard-coded
         console.log(this.props.input);
-        fetch(
-            `${globeVar.backendprotocol}://${globeVar.backendhost}/editor/save`,
-            {
-                method: "POST",
-                body: JSON.stringify({
-                    id: String(Date.now()+28800000),
-                    info: this.props.input,
-    
-                    
-                }),
-                headers: {
-                    "Content-type": "application/json; charset=UTF-8",
-                },
-            }
-        )
+        fetch(`${globeVar.backendprotocol}://${globeVar.backendhost}/editor/save`, {
+            method: "POST",
+            body: JSON.stringify({
+                id: String(Date.now() + 28800000),
+                info: this.props.input,
+            }),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8",
+            },
+        })
             .then((response) => {
                 if (response.ok) {
                     return response.json();
@@ -123,18 +110,10 @@ export default class EditorAction extends React.Component {
                 let htmlContent;
                 if (data.action === "created") {
                     title = "Template Created Successfully";
-                    htmlContent =
-                        "<strong>UID:</strong> " +
-                        data.id +
-                        "<br>" +
-                        "This is the <strong>UID</strong> in the Database, you can save it for later search";
+                    htmlContent = "<strong>UID:</strong> " + data.id + "<br>" + "This is the <strong>UID</strong> in the Database, you can save it for later search";
                 } else {
                     title = "Template Updated Successfully";
-                    htmlContent =
-                        "<strong>Template Name:</strong> " +
-                        data.id +
-                        "<br>" +
-                        "It is updated in the Database, you can check it anytime";
+                    htmlContent = "<strong>Template Name:</strong> " + data.id + "<br>" + "It is updated in the Database, you can check it anytime";
                 }
 
                 // Show a message box to let the user know the Inserted ID
@@ -170,29 +149,17 @@ export default class EditorAction extends React.Component {
                     }}
                 >
                     <div>
-                        <Button
-                            variant="contained"
-                            component="label"
-                            size="medium"
-                        >
+                        <Button variant="contained" component="label" size="medium">
                             Import & Edit
                             <input type="file" hidden />
                         </Button>
                         <Button variant="contained" size="medium">
                             Clear
                         </Button>
-                        <Button
-                            variant="contained"
-                            onClick={this.saveToMongo}
-                            size="medium"
-                        >
+                        <Button variant="contained" onClick={this.saveToMongo} size="medium">
                             Save To Database
                         </Button>
-                        <Button
-                            variant="contained"
-                            onClick={this.ondatasubmit}
-                            size="medium"
-                        >
+                        <Button variant="contained" onClick={this.ondatasubmit} size="medium">
                             Download
                         </Button>
                     </div>

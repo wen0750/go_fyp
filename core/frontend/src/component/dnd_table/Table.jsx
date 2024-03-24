@@ -1,21 +1,8 @@
 import React, { useMemo, useState } from "react";
 import styled from "styled-components";
-import {
-    closestCenter,
-    DndContext,
-    DragOverlay,
-    KeyboardSensor,
-    MouseSensor,
-    TouchSensor,
-    useSensor,
-    useSensors,
-} from "@dnd-kit/core";
+import { closestCenter, DndContext, DragOverlay, KeyboardSensor, MouseSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
-import {
-    arrayMove,
-    SortableContext,
-    verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
+import { arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { useTable } from "react-table";
 import { DraggableTableRow } from "./DraggableTableRow";
 import { StaticTableRow } from "./StaticTableRow";
@@ -33,16 +20,11 @@ export function Table({ columns, data, setData }) {
     const items = useMemo(() => data?.map(({ id }) => id), [data]);
     // const items = useMemo(() => );
     // Use the state and functions returned from useTable to build your UI
-    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-        useTable({
-            columns,
-            data,
-        });
-    const sensors = useSensors(
-        useSensor(MouseSensor, {}),
-        useSensor(TouchSensor, {}),
-        useSensor(KeyboardSensor, {})
-    );
+    const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable({
+        columns,
+        data,
+    });
+    const sensors = useSensors(useSensor(MouseSensor, {}), useSensor(TouchSensor, {}), useSensor(KeyboardSensor, {}));
 
     function handleDragStart(event) {
         setActiveId(event.active.id);
@@ -93,27 +75,16 @@ export function Table({ columns, data, setData }) {
                     {headerGroups.map((headerGroup) => (
                         <tr {...headerGroup.getHeaderGroupProps()}>
                             {headerGroup.headers.map((column) => (
-                                <th {...column.getHeaderProps()}>
-                                    {column.render("Header")}
-                                </th>
+                                <th {...column.getHeaderProps()}>{column.render("Header")}</th>
                             ))}
                         </tr>
                     ))}
                 </thead>
                 <tbody {...getTableBodyProps()}>
-                    <SortableContext
-                        items={items}
-                        strategy={verticalListSortingStrategy}
-                    >
+                    <SortableContext items={items} strategy={verticalListSortingStrategy}>
                         {rows.map((row, i) => {
                             prepareRow(row);
-                            return (
-                                <DraggableTableRow
-                                    key={row.original.id}
-                                    row={row}
-                                    dataInput={handleDataInput}
-                                />
-                            );
+                            return <DraggableTableRow key={row.original.id} row={row} dataInput={handleDataInput} />;
                         })}
                     </SortableContext>
                 </tbody>

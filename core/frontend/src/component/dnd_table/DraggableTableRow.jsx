@@ -21,14 +21,7 @@ const TableData = styled.td`
 `;
 
 export const DraggableTableRow = ({ row, dataInput }) => {
-    const {
-        attributes,
-        listeners,
-        transform,
-        transition,
-        setNodeRef,
-        isDragging,
-    } = useSortable({
+    const { attributes, listeners, transform, transition, setNodeRef, isDragging } = useSortable({
         id: row.original.id,
     });
     const style = {
@@ -56,16 +49,7 @@ export const DraggableTableRow = ({ row, dataInput }) => {
                     }
                     return (
                         <TableData {...cell.getCellProps()}>
-                            <Input
-                                value={cell.value}
-                                onChange={(event) =>
-                                    dataInput(
-                                        row.id,
-                                        cell.column.id,
-                                        event.target.value
-                                    )
-                                }
-                            />
+                            <Input value={cell.value} onChange={(event) => dataInput(row.id, cell.column.id, event.target.value)} />
                         </TableData>
                     );
                 })

@@ -1,14 +1,5 @@
 import * as React from "react";
-import {
-    Box,
-    Button,
-    ButtonGroup,
-    Menu,
-    MenuItem,
-    Tab,
-    Tabs,
-    Typography,
-} from "@mui/material";
+import { Box, Button, ButtonGroup, Menu, MenuItem, Tab, Tabs, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import { ProjectHeader } from "../component/page_style/project_style";
 import ProjectSummary from "../component/project_summary";
@@ -36,31 +27,29 @@ class ProjectItem extends React.Component {
         };
     }
 
-    StyledTab = styled((props) => <Tab disableRipple {...props} />)(
-        ({ theme }) => ({
-            textTransform: "none",
-            fontWeight: theme.typography.fontWeightRegular,
-            fontSize: theme.typography.pxToRem(15),
-            marginRight: theme.spacing(1),
-            color: "#0d6efd",
-            background: "0 0",
-            border: "1px solid transparent",
-            borderTopLeftRadius: "0.25rem",
-            borderTopRightRadius: "0.25rem",
-            padding: ".5rem 1rem",
-            textDecoration: "none",
-            transition: `color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out`,
-            "&.Mui-selected": {
-                color: "#495057",
-                backgroundColor: "#fff",
-                borderColor: "#dee2e6 #dee2e6 #fff",
-                marginBottom: "-2px",
-            },
-            "&.Mui-focusVisible": {
-                backgroundColor: "rgba(100, 95, 228, 0.32)",
-            },
-        })
-    );
+    StyledTab = styled((props) => <Tab disableRipple {...props} />)(({ theme }) => ({
+        textTransform: "none",
+        fontWeight: theme.typography.fontWeightRegular,
+        fontSize: theme.typography.pxToRem(15),
+        marginRight: theme.spacing(1),
+        color: "#0d6efd",
+        background: "0 0",
+        border: "1px solid transparent",
+        borderTopLeftRadius: "0.25rem",
+        borderTopRightRadius: "0.25rem",
+        padding: ".5rem 1rem",
+        textDecoration: "none",
+        transition: `color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out`,
+        "&.Mui-selected": {
+            color: "#495057",
+            backgroundColor: "#fff",
+            borderColor: "#dee2e6 #dee2e6 #fff",
+            marginBottom: "-2px",
+        },
+        "&.Mui-focusVisible": {
+            backgroundColor: "rgba(100, 95, 228, 0.32)",
+        },
+    }));
     AntTabs = styled(Tabs)({
         borderBottom: "1px solid #dee2e6",
 
@@ -84,13 +73,7 @@ class ProjectItem extends React.Component {
         const { children, value, index, ...other } = props;
 
         return (
-            <div
-                role="tabpanel"
-                hidden={value !== index}
-                id={`simple-tabpanel-${index}`}
-                aria-labelledby={`simple-tab-${index}`}
-                {...other}
-            >
+            <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} aria-labelledby={`simple-tab-${index}`} {...other}>
                 {value === index && <Box sx={{ pt: 3 }}>{children}</Box>}
             </div>
         );
@@ -129,33 +112,17 @@ class ProjectItem extends React.Component {
                 <ProjectHeader>
                     <h1>
                         {this.Capitalize(this.props.name)}
-                        <b style={{ fontSize: "20px" }}>
-                            {this.state.subtitle
-                                ? " ( " +
-                                  new Date(
-                                      this.state.subtitle * 1000
-                                  ).toLocaleString() +
-                                  " )"
-                                : ""}
-                        </b>
+                        <b style={{ fontSize: "20px" }}>{this.state.subtitle ? " ( " + new Date(this.state.subtitle * 1000).toLocaleString() + " )" : ""}</b>
                     </h1>
                     <div>
-                        <ButtonGroup
-                            variant="outlined"
-                            aria-label="outlined button group"
-                            sx={{ px: 3 }}
-                        >
+                        <ButtonGroup variant="outlined" aria-label="outlined button group" sx={{ px: 3 }}>
                             <Button>Configure</Button>
                             <Button>Audit Trail</Button>
                         </ButtonGroup>
 
                         <Button
                             id="demo-positioned-button"
-                            aria-controls={
-                                this.state.open
-                                    ? "demo-positioned-menu"
-                                    : undefined
-                            }
+                            aria-controls={this.state.open ? "demo-positioned-menu" : undefined}
                             variant="outlined"
                             aria-haspopup="true"
                             aria-expanded={this.state.open ? "true" : undefined}
@@ -178,22 +145,12 @@ class ProjectItem extends React.Component {
                                 horizontal: "left",
                             }}
                         >
-                            <MenuItem onClick={this.handleCloseHeaderButton}>
-                                Profile
-                            </MenuItem>
-                            <MenuItem onClick={this.handleCloseHeaderButton}>
-                                My account
-                            </MenuItem>
-                            <MenuItem onClick={this.handleCloseHeaderButton}>
-                                Logout
-                            </MenuItem>
+                            <MenuItem onClick={this.handleCloseHeaderButton}>Profile</MenuItem>
+                            <MenuItem onClick={this.handleCloseHeaderButton}>My account</MenuItem>
+                            <MenuItem onClick={this.handleCloseHeaderButton}>Logout</MenuItem>
                         </Menu>
 
-                        <ButtonGroup
-                            variant="outlined"
-                            aria-label="outlined button group"
-                            sx={{ px: 3 }}
-                        >
+                        <ButtonGroup variant="outlined" aria-label="outlined button group" sx={{ px: 3 }}>
                             <Button>Report</Button>
                             <Button>Export</Button>
                         </ButtonGroup>
@@ -205,9 +162,7 @@ class ProjectItem extends React.Component {
 
     fetchScanningResult = async () => {
         try {
-            const response = await fetch(
-                `${globeVar.backendprotocol}://${globeVar.backendhost}/project/${this.props.pid}`
-            );
+            const response = await fetch(`${globeVar.backendprotocol}://${globeVar.backendhost}/project/${this.props.pid}`);
             if (response.status == 200) {
                 const jsonData = await response.json();
                 this.setState({ scanningResult: jsonData });
@@ -221,9 +176,7 @@ class ProjectItem extends React.Component {
 
     fetchResultWithHid = async (hid) => {
         try {
-            const response = await fetch(
-                `${globeVar.backendprotocol}://${globeVar.backendhost}/historyOne/${hid}`
-            );
+            const response = await fetch(`${globeVar.backendprotocol}://${globeVar.backendhost}/historyOne/${hid}`);
             const jsonData = await response.json();
             this.setState({ scanningResult: jsonData, curTab: 0 });
         } catch (error) {
@@ -247,62 +200,29 @@ class ProjectItem extends React.Component {
                 {this.state.scanningResult ? (
                     <div style={{ paddingInline: "25px", marginTop: "25px" }}>
                         <Box sx={{ width: "100%" }}>
-                            <this.AntTabs
-                                value={this.state.curTab}
-                                onChange={this.handleChangeBodyTab}
-                                aria-label="styled tabs example"
-                                sx={{ overflow: "overlay" }}
-                            >
-                                <this.StyledTab
-                                    label="Scan Summary"
-                                    {...this.a11yProps(0)}
-                                ></this.StyledTab>
-                                <this.StyledTab
-                                    label="Hosts"
-                                    {...this.a11yProps(1)}
-                                ></this.StyledTab>
-                                <this.StyledTab
-                                    label="Vulnerabilities"
-                                    {...this.a11yProps(2)}
-                                ></this.StyledTab>
-                                <this.StyledTab
-                                    label="Notes"
-                                    {...this.a11yProps(3)}
-                                ></this.StyledTab>
-                                <this.StyledTab
-                                    label="VPT Top Threats"
-                                    {...this.a11yProps(4)}
-                                ></this.StyledTab>
-                                <this.StyledTab
-                                    label="History"
-                                    {...this.a11yProps(5)}
-                                ></this.StyledTab>
+                            <this.AntTabs value={this.state.curTab} onChange={this.handleChangeBodyTab} aria-label="styled tabs example" sx={{ overflow: "overlay" }}>
+                                <this.StyledTab label="Scan Summary" {...this.a11yProps(0)}></this.StyledTab>
+                                <this.StyledTab label="Hosts" {...this.a11yProps(1)}></this.StyledTab>
+                                <this.StyledTab label="Vulnerabilities" {...this.a11yProps(2)}></this.StyledTab>
+                                <this.StyledTab label="Notes" {...this.a11yProps(3)}></this.StyledTab>
+                                <this.StyledTab label="VPT Top Threats" {...this.a11yProps(4)}></this.StyledTab>
+                                <this.StyledTab label="History" {...this.a11yProps(5)}></this.StyledTab>
                             </this.AntTabs>
                         </Box>
                         <this.TabPanel value={this.state.curTab} index={0}>
-                            <ProjectSummary
-                                inputData={this.state.scanningResult}
-                            />
+                            <ProjectSummary inputData={this.state.scanningResult} />
                         </this.TabPanel>
                         <this.TabPanel value={this.state.curTab} index={1}>
-                            <ProjectHosts
-                                inputData={this.state.scanningResult}
-                            />
+                            <ProjectHosts inputData={this.state.scanningResult} />
                         </this.TabPanel>
                         <this.TabPanel value={this.state.curTab} index={2}>
-                            <ProjectVulnerabilities
-                                inputData={this.state.scanningResult}
-                            />
+                            <ProjectVulnerabilities inputData={this.state.scanningResult} />
                         </this.TabPanel>
                         <this.TabPanel value={this.state.curTab} index={3}>
-                            <ProjectNotes
-                                inputData={this.state.scanningResult}
-                            />
+                            <ProjectNotes inputData={this.state.scanningResult} />
                         </this.TabPanel>
                         <this.TabPanel value={this.state.curTab} index={4}>
-                            <ProjectThreats
-                                inputData={this.state.scanningResult}
-                            />
+                            <ProjectThreats inputData={this.state.scanningResult} />
                         </this.TabPanel>
                         <this.TabPanel value={this.state.curTab} index={5}>
                             <ProjectHistory
@@ -315,10 +235,7 @@ class ProjectItem extends React.Component {
                     </div>
                 ) : (
                     <div style={{ paddingInline: "25px", marginTop: "25px" }}>
-                        <CircularProgress
-                            color="primary"
-                            variant="indeterminate"
-                        />
+                        <CircularProgress color="primary" variant="indeterminate" />
                     </div>
                 )}
             </div>

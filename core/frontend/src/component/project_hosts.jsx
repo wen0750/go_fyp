@@ -98,9 +98,7 @@ export default class ProjectHosts extends React.Component {
     };
 
     getComparator = (order, orderBy) => {
-        return order === "desc"
-            ? (a, b) => this.descendingComparator(a, b, orderBy)
-            : (a, b) => -this.descendingComparator(a, b, orderBy);
+        return order === "desc" ? (a, b) => this.descendingComparator(a, b, orderBy) : (a, b) => -this.descendingComparator(a, b, orderBy);
     };
 
     stableSort = (array, comparator) => {
@@ -116,14 +114,7 @@ export default class ProjectHosts extends React.Component {
     };
 
     EnhancedTableHead = (props) => {
-        const {
-            onSelectAllClick,
-            order,
-            orderBy,
-            numSelected,
-            rowCount,
-            onRequestSort,
-        } = props;
+        const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
         const createSortHandler = (property) => (event) => {
             onRequestSort(event, property);
         };
@@ -134,9 +125,7 @@ export default class ProjectHosts extends React.Component {
                     <TableCell padding="checkbox">
                         <Checkbox
                             color="primary"
-                            indeterminate={
-                                numSelected > 0 && numSelected < rowCount
-                            }
+                            indeterminate={numSelected > 0 && numSelected < rowCount}
                             checked={rowCount > 0 && numSelected === rowCount}
                             onChange={onSelectAllClick}
                             inputProps={{
@@ -148,26 +137,14 @@ export default class ProjectHosts extends React.Component {
                         <TableCell
                             key={headCell.id}
                             align={headCell.numeric ? "right" : "left"}
-                            padding={
-                                headCell.disablePadding ? "none" : "normal"
-                            }
-                            sortDirection={
-                                orderBy === headCell.id ? order : false
-                            }
+                            padding={headCell.disablePadding ? "none" : "normal"}
+                            sortDirection={orderBy === headCell.id ? order : false}
                         >
-                            <TableSortLabel
-                                active={orderBy === headCell.id}
-                                direction={
-                                    orderBy === headCell.id ? order : "asc"
-                                }
-                                onClick={createSortHandler(headCell.id)}
-                            >
+                            <TableSortLabel active={orderBy === headCell.id} direction={orderBy === headCell.id ? order : "asc"} onClick={createSortHandler(headCell.id)}>
                                 {headCell.label}
                                 {orderBy === headCell.id ? (
                                     <Box component="span" sx={visuallyHidden}>
-                                        {order === "desc"
-                                            ? "sorted descending"
-                                            : "sorted ascending"}
+                                        {order === "desc" ? "sorted descending" : "sorted ascending"}
                                     </Box>
                                 ) : null}
                             </TableSortLabel>
@@ -187,30 +164,16 @@ export default class ProjectHosts extends React.Component {
                     pl: { sm: 2 },
                     pr: { xs: 1, sm: 1 },
                     ...(numSelected > 0 && {
-                        bgcolor: (theme) =>
-                            alpha(
-                                theme.palette.primary.main,
-                                theme.palette.action.activatedOpacity
-                            ),
+                        bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
                     }),
                 }}
             >
                 {numSelected > 0 ? (
-                    <Typography
-                        sx={{ flex: "1 1 100%" }}
-                        color="inherit"
-                        variant="subtitle1"
-                        component="div"
-                    >
+                    <Typography sx={{ flex: "1 1 100%" }} color="inherit" variant="subtitle1" component="div">
                         {numSelected} selected
                     </Typography>
                 ) : (
-                    <Typography
-                        sx={{ flex: "1 1 100%" }}
-                        variant="h6"
-                        id="tableTitle"
-                        component="div"
-                    >
+                    <Typography sx={{ flex: "1 1 100%" }} variant="h6" id="tableTitle" component="div">
                         Vulnerabilities
                     </Typography>
                 )}
@@ -240,12 +203,7 @@ export default class ProjectHosts extends React.Component {
         const newpop = [];
         return (
             this.state.threatDetails.length > 0 && (
-                <Dialog
-                    fullWidth={true}
-                    maxWidth={"xl"}
-                    open={this.state.openDetails}
-                    onClose={this.closeDetails}
-                >
+                <Dialog fullWidth={true} maxWidth={"xl"} open={this.state.openDetails} onClose={this.closeDetails}>
                     <DialogTitle
                         sx={{
                             margin: 0,
@@ -262,12 +220,8 @@ export default class ProjectHosts extends React.Component {
                     <DialogContent>
                         <Box>
                             {this.state.threatDetails.map((answer, i) => {
-                                var period =
-                                    answer.response.lastIndexOf("\r\n");
-                                var headerpart = answer.response.substring(
-                                    0,
-                                    period
-                                );
+                                var period = answer.response.lastIndexOf("\r\n");
+                                var headerpart = answer.response.substring(0, period);
                                 // var htmlpart = answer.response.substring(
                                 //     period + 1
                                 // );
@@ -309,9 +263,7 @@ export default class ProjectHosts extends React.Component {
                                 var subtitle = answer.host;
                                 var extention = "";
                                 if (answer.request && answer.type == "http") {
-                                    var tmpcal = answer.request
-                                        .split("\r\n")[0]
-                                        .split(" ")[1];
+                                    var tmpcal = answer.request.split("\r\n")[0].split(" ")[1];
                                     if (tmpcal != "/") {
                                         var re = /(?:\.([^.]+))?$/;
                                         extention = re.exec(tmpcal)[1];
@@ -319,77 +271,42 @@ export default class ProjectHosts extends React.Component {
                                 }
 
                                 return (
-                                    <Accordion
-                                        defaultExpanded
-                                        key={"Accordion" + i}
-                                    >
-                                        <AccordionSummary
-                                            expandIcon={<ExpandMoreIcon />}
-                                            aria-controls="panel-content"
-                                        >
-                                            <Typography
-                                                variant="h5"
-                                                color="initial"
-                                            >
-                                                <Chip
-                                                    color={riskcolor}
-                                                    label={riskname}
-                                                />
+                                    <Accordion defaultExpanded key={"Accordion" + i}>
+                                        <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel-content">
+                                            <Typography variant="h5" color="initial">
+                                                <Chip color={riskcolor} label={riskname} />
                                                 {"  "}
-                                                {curnum +
-                                                    ". " +
-                                                    answer.info.name}
+                                                {curnum + ". " + answer.info.name}
                                             </Typography>
                                         </AccordionSummary>
                                         <Divider />
                                         <AccordionDetails>
                                             <Box sx={{ mb: 5 }}>
-                                                <Typography
-                                                    variant="h6"
-                                                    gutterBottom
-                                                    sx={{ fontWeight: "bold" }}
-                                                >
+                                                <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold" }}>
                                                     Description
                                                 </Typography>
-                                                <Typography
-                                                    variant="body1"
-                                                    gutterBottom
-                                                >
+                                                <Typography variant="body1" gutterBottom>
                                                     {answer.info.description}
                                                 </Typography>
                                             </Box>
 
                                             <Box sx={{ mb: 5 }}>
-                                                <Typography
-                                                    variant="h6"
-                                                    gutterBottom
-                                                    sx={{ fontWeight: "bold" }}
-                                                >
+                                                <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold" }}>
                                                     Solution
                                                 </Typography>
-                                                <Typography
-                                                    variant="body1"
-                                                    gutterBottom
-                                                >
+                                                <Typography variant="body1" gutterBottom>
                                                     {answer.info.remediation}
                                                 </Typography>
                                             </Box>
 
-                                            <Typography
-                                                variant="h6"
-                                                gutterBottom
-                                                sx={{ fontWeight: "bold" }}
-                                            >
+                                            <Typography variant="h6" gutterBottom sx={{ fontWeight: "bold" }}>
                                                 Output
                                             </Typography>
                                             <Divider />
 
-                                            <Box sx={{ my: 3 }}>
-                                                Target Host : {answer.host}
-                                            </Box>
+                                            <Box sx={{ my: 3 }}>Target Host : {answer.host}</Box>
 
-                                            {answer.extractedresults !=
-                                                null && (
+                                            {answer.extractedresults != null && (
                                                 <Box sx={{ mb: 5 }}>
                                                     <Typography
                                                         variant="h6"
@@ -408,27 +325,15 @@ export default class ProjectHosts extends React.Component {
                                                                         width: "40%",
                                                                     }}
                                                                 >
-                                                                    Extractor
-                                                                    Name
+                                                                    Extractor Name
                                                                 </th>
-                                                                <th>
-                                                                    Extractor
-                                                                    Result
-                                                                </th>
+                                                                <th>Extractor Result</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <tr key="extractedresults_table">
-                                                                <td>
-                                                                    {
-                                                                        answer.extractorname
-                                                                    }
-                                                                </td>
-                                                                <td>
-                                                                    {answer.extractedresults.join(
-                                                                        ", "
-                                                                    )}
-                                                                </td>
+                                                                <td>{answer.extractorname}</td>
+                                                                <td>{answer.extractedresults.join(", ")}</td>
                                                             </tr>
                                                         </tbody>
                                                     </TableB>
@@ -445,37 +350,20 @@ export default class ProjectHosts extends React.Component {
                                                 Raw Data
                                             </Typography>
                                             {answer.request && (
-                                                <Accordion
-                                                    key={"Accordion2" + i}
-                                                >
-                                                    <AccordionSummary
-                                                        expandIcon={
-                                                            <ExpandMoreIcon />
-                                                        }
-                                                        aria-controls="panel1-content"
-                                                    >
+                                                <Accordion key={"Accordion2" + i}>
+                                                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content">
                                                         <Typography
                                                             variant="subtitle2"
                                                             gutterBottom
                                                             sx={{
-                                                                fontWeight:
-                                                                    "bold",
+                                                                fontWeight: "bold",
                                                             }}
                                                         >
                                                             Request Header
                                                         </Typography>
                                                     </AccordionSummary>
                                                     <AccordionDetails>
-                                                        <CodeBlock
-                                                            text={
-                                                                answer.request
-                                                            }
-                                                            language="go"
-                                                            showLineNumbers={
-                                                                false
-                                                            }
-                                                            theme={dracula}
-                                                        />
+                                                        <CodeBlock text={answer.request} language="go" showLineNumbers={false} theme={dracula} />
                                                     </AccordionDetails>
                                                 </Accordion>
                                             )}
@@ -484,32 +372,19 @@ export default class ProjectHosts extends React.Component {
                                                     // defaultExpanded
                                                     key={"Accordion3" + i}
                                                 >
-                                                    <AccordionSummary
-                                                        expandIcon={
-                                                            <ExpandMoreIcon />
-                                                        }
-                                                        aria-controls="panel1-content"
-                                                    >
+                                                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content">
                                                         <Typography
                                                             variant="subtitle2"
                                                             gutterBottom
                                                             sx={{
-                                                                fontWeight:
-                                                                    "bold",
+                                                                fontWeight: "bold",
                                                             }}
                                                         >
                                                             Response Header
                                                         </Typography>
                                                     </AccordionSummary>
                                                     <AccordionDetails>
-                                                        <CodeBlock
-                                                            text={headerpart}
-                                                            language="go"
-                                                            showLineNumbers={
-                                                                false
-                                                            }
-                                                            theme={dracula}
-                                                        />
+                                                        <CodeBlock text={headerpart} language="go" showLineNumbers={false} theme={dracula} />
                                                     </AccordionDetails>
                                                 </Accordion>
                                             )}
@@ -518,69 +393,30 @@ export default class ProjectHosts extends React.Component {
                                                     // defaultExpanded
                                                     key={"Accordion4" + i}
                                                 >
-                                                    <AccordionSummary
-                                                        expandIcon={
-                                                            <ExpandMoreIcon />
-                                                        }
-                                                        aria-controls="panel1-content"
-                                                    >
+                                                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content">
                                                         <Typography
                                                             variant="subtitle4"
                                                             gutterBottom
                                                             sx={{
-                                                                fontWeight:
-                                                                    "bold",
+                                                                fontWeight: "bold",
                                                             }}
                                                         >
                                                             Response Body
                                                         </Typography>
                                                     </AccordionSummary>
                                                     <AccordionDetails>
-                                                        <CodeBlock
-                                                            text={answer.response.substring(
-                                                                period + 1
-                                                            )}
-                                                            language="go"
-                                                            showLineNumbers={
-                                                                false
-                                                            }
-                                                            theme={dracula}
-                                                        />
+                                                        <CodeBlock text={answer.response.substring(period + 1)} language="go" showLineNumbers={false} theme={dracula} />
                                                     </AccordionDetails>
                                                 </Accordion>
                                             )}
 
-                                            <Button
-                                                variant="contained"
-                                                onClick={() =>
-                                                    this.toggleWindowPortal(i)
-                                                }
-                                                sx={{ my: 2 }}
-                                            >
+                                            <Button variant="contained" onClick={() => this.toggleWindowPortal(i)} sx={{ my: 2 }}>
                                                 Get Detail
                                             </Button>
 
-                                            {this.state.popupList[i] ==
-                                                true && (
-                                                <NewWindow
-                                                    title={
-                                                        "Raw Respone of " +
-                                                        this.state
-                                                            .threatDetails[0]
-                                                            .info.name +
-                                                        " - " +
-                                                        subtitle
-                                                    }
-                                                    closeOnUnmount={false}
-                                                >
-                                                    <CodeBlock
-                                                        text={html_beautify(
-                                                            answer.response
-                                                        )}
-                                                        language="go"
-                                                        showLineNumbers={false}
-                                                        theme={dracula}
-                                                    />
+                                            {this.state.popupList[i] == true && (
+                                                <NewWindow title={"Raw Respone of " + this.state.threatDetails[0].info.name + " - " + subtitle} closeOnUnmount={false}>
+                                                    <CodeBlock text={html_beautify(answer.response)} language="go" showLineNumbers={false} theme={dracula} />
                                                 </NewWindow>
                                             )}
                                         </AccordionDetails>
@@ -634,8 +470,7 @@ export default class ProjectHosts extends React.Component {
             this.setState({ order: newValue });
         };
 
-        const { order, orderBy, selected, page, dense, rowsPerPage } =
-            this.state;
+        const { order, orderBy, selected, page, dense, rowsPerPage } = this.state;
 
         this.EnhancedTableHead.propTypes = {
             numSelected: PropTypes.number.isRequired,
@@ -658,9 +493,7 @@ export default class ProjectHosts extends React.Component {
 
         const handleSelectAllClick = (event) => {
             if (event.target.checked) {
-                const newSelected = this.state.vulnerabilities.map(
-                    (n) => n.name
-                );
+                const newSelected = this.state.vulnerabilities.map((n) => n.name);
                 setSelected(newSelected);
                 return;
             }
@@ -678,10 +511,7 @@ export default class ProjectHosts extends React.Component {
             } else if (selectedIndex === selected.length - 1) {
                 newSelected = newSelected.concat(selected.slice(0, -1));
             } else if (selectedIndex > 0) {
-                newSelected = newSelected.concat(
-                    selected.slice(0, selectedIndex),
-                    selected.slice(selectedIndex + 1)
-                );
+                newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
             }
 
             const list = [];
@@ -689,10 +519,7 @@ export default class ProjectHosts extends React.Component {
 
             this.state.result.result.forEach((element) => {
                 console.log([element.host, hostname]);
-                if (
-                    element.host == hostname ||
-                    hostname == element.host.split(":")[0]
-                ) {
+                if (element.host == hostname || hostname == element.host.split(":")[0]) {
                     list.push(element);
                 }
             });
@@ -701,11 +528,9 @@ export default class ProjectHosts extends React.Component {
                 // selected: newSelected,
                 openDetails: true,
                 threatDetails: list,
-                popupList: Array.apply(null, { length: list.length }).map(
-                    function (x) {
-                        return false;
-                    }
-                ),
+                popupList: Array.apply(null, { length: list.length }).map(function (x) {
+                    return false;
+                }),
             });
         };
 
@@ -726,22 +551,11 @@ export default class ProjectHosts extends React.Component {
         const isSelected = (name) => selected.indexOf(name) !== -1;
 
         // Avoid a layout jump when reaching the last page with empty rows.
-        const emptyRows =
-            page > 0
-                ? Math.max(
-                      0,
-                      (1 + page) * rowsPerPage -
-                          this.state.vulnerabilities.length
-                  )
-                : 0;
+        const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - this.state.vulnerabilities.length) : 0;
 
         console.log(this.state.vulnerabilities);
         const visibleRows = React.useMemo(
-            () =>
-                this.stableSort(
-                    this.state.vulnerabilities,
-                    this.getComparator(order, orderBy)
-                ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+            () => this.stableSort(this.state.vulnerabilities, this.getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
             [order, orderBy, page, rowsPerPage]
         );
 
@@ -750,11 +564,7 @@ export default class ProjectHosts extends React.Component {
                 <Paper sx={{ width: "100%", mb: 2 }}>
                     <this.EnhancedTableToolbar numSelected={selected.length} />
                     <TableContainer>
-                        <Table
-                            sx={{ minWidth: 750 }}
-                            aria-labelledby="tableTitle"
-                            size={dense ? "small" : "medium"}
-                        >
+                        <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={dense ? "small" : "medium"}>
                             <this.EnhancedTableHead
                                 numSelected={selected.length}
                                 order={order}
@@ -770,13 +580,7 @@ export default class ProjectHosts extends React.Component {
                                     return (
                                         <TableRow
                                             hover
-                                            onClick={(event) =>
-                                                handleClick(
-                                                    event,
-                                                    row.ip,
-                                                    row.host
-                                                )
-                                            }
+                                            onClick={(event) => handleClick(event, row.ip, row.host)}
                                             role="checkbox"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
@@ -789,17 +593,11 @@ export default class ProjectHosts extends React.Component {
                                                     color="primary"
                                                     checked={isItemSelected}
                                                     inputProps={{
-                                                        "aria-labelledby":
-                                                            labelId,
+                                                        "aria-labelledby": labelId,
                                                     }}
                                                 />
                                             </TableCell>
-                                            <TableCell
-                                                component="th"
-                                                id={labelId}
-                                                scope="row"
-                                                padding="none"
-                                            >
+                                            <TableCell component="th" id={labelId} scope="row" padding="none">
                                                 {row.host ? row.host : row.ip}
                                             </TableCell>
                                             <TableCell
@@ -809,13 +607,7 @@ export default class ProjectHosts extends React.Component {
                                                     padding: 0,
                                                 }}
                                             >
-                                                <StackedBar
-                                                    rowData={row}
-                                                    isOpen={
-                                                        this.state
-                                                            .showStackedBar
-                                                    }
-                                                ></StackedBar>
+                                                <StackedBar rowData={row} isOpen={this.state.showStackedBar}></StackedBar>
                                             </TableCell>
                                         </TableRow>
                                     );
@@ -823,8 +615,7 @@ export default class ProjectHosts extends React.Component {
                                 {emptyRows > 0 && (
                                     <TableRow
                                         style={{
-                                            height:
-                                                (dense ? 33 : 53) * emptyRows,
+                                            height: (dense ? 33 : 53) * emptyRows,
                                         }}
                                     >
                                         <TableCell colSpan={6} />
@@ -843,12 +634,7 @@ export default class ProjectHosts extends React.Component {
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
                 </Paper>
-                <FormControlLabel
-                    control={
-                        <Switch checked={dense} onChange={handleChangeDense} />
-                    }
-                    label="Dense padding"
-                />
+                <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" />
             </Box>
         );
     };
@@ -932,9 +718,7 @@ export default class ProjectHosts extends React.Component {
         return (
             <Box component="div" sx={{ display: "flex" }}>
                 <Box sx={{ width: 7 / 10 }}>
-                    <this.EnhancedTable
-                        style={{ width: "75%" }}
-                    ></this.EnhancedTable>
+                    <this.EnhancedTable style={{ width: "75%" }}></this.EnhancedTable>
                 </Box>
                 <Box sx={{ width: 3 / 10, padding: "0 25px" }}>
                     <ScanDurations></ScanDurations>

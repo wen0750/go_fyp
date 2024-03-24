@@ -1,26 +1,7 @@
 import * as React from "react";
 
-import {
-    Box,
-    Toolbar,
-    Typography,
-    Paper,
-    Checkbox,
-    IconButton,
-    Tooltip,
-    FormControlLabel,
-    Switch,
-} from "@mui/material";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TablePagination,
-    TableRow,
-    TableSortLabel,
-} from "@mui/material";
+import { Box, Toolbar, Typography, Paper, Checkbox, IconButton, Tooltip, FormControlLabel, Switch } from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel } from "@mui/material";
 
 import PropTypes from "prop-types";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -84,9 +65,7 @@ export default class ProjectHistory extends React.Component {
     };
 
     getComparator = (order, orderBy) => {
-        return order === "desc"
-            ? (a, b) => this.descendingComparator(a, b, orderBy)
-            : (a, b) => -this.descendingComparator(a, b, orderBy);
+        return order === "desc" ? (a, b) => this.descendingComparator(a, b, orderBy) : (a, b) => -this.descendingComparator(a, b, orderBy);
     };
 
     stableSort = (array, comparator) => {
@@ -103,14 +82,7 @@ export default class ProjectHistory extends React.Component {
     };
 
     EnhancedTableHead = (props) => {
-        const {
-            onSelectAllClick,
-            order,
-            orderBy,
-            numSelected,
-            rowCount,
-            onRequestSort,
-        } = props;
+        const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
         const createSortHandler = (property) => (event) => {
             onRequestSort(event, property);
         };
@@ -121,9 +93,7 @@ export default class ProjectHistory extends React.Component {
                     <TableCell padding="checkbox">
                         <Checkbox
                             color="primary"
-                            indeterminate={
-                                numSelected > 0 && numSelected < rowCount
-                            }
+                            indeterminate={numSelected > 0 && numSelected < rowCount}
                             checked={rowCount > 0 && numSelected === rowCount}
                             onChange={onSelectAllClick}
                             inputProps={{
@@ -135,26 +105,14 @@ export default class ProjectHistory extends React.Component {
                         <TableCell
                             key={headCell.id}
                             align={headCell.numeric ? "right" : "left"}
-                            padding={
-                                headCell.disablePadding ? "none" : "normal"
-                            }
-                            sortDirection={
-                                orderBy === headCell.id ? order : false
-                            }
+                            padding={headCell.disablePadding ? "none" : "normal"}
+                            sortDirection={orderBy === headCell.id ? order : false}
                         >
-                            <TableSortLabel
-                                active={orderBy === headCell.id}
-                                direction={
-                                    orderBy === headCell.id ? order : "asc"
-                                }
-                                onClick={createSortHandler(headCell.id)}
-                            >
+                            <TableSortLabel active={orderBy === headCell.id} direction={orderBy === headCell.id ? order : "asc"} onClick={createSortHandler(headCell.id)}>
                                 {headCell.label}
                                 {orderBy === headCell.id ? (
                                     <Box component="span" sx={visuallyHidden}>
-                                        {order === "desc"
-                                            ? "sorted descending"
-                                            : "sorted ascending"}
+                                        {order === "desc" ? "sorted descending" : "sorted ascending"}
                                     </Box>
                                 ) : null}
                             </TableSortLabel>
@@ -174,30 +132,16 @@ export default class ProjectHistory extends React.Component {
                     pl: { sm: 2 },
                     pr: { xs: 1, sm: 1 },
                     ...(numSelected > 0 && {
-                        bgcolor: (theme) =>
-                            alpha(
-                                theme.palette.primary.main,
-                                theme.palette.action.activatedOpacity
-                            ),
+                        bgcolor: (theme) => alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
                     }),
                 }}
             >
                 {numSelected > 0 ? (
-                    <Typography
-                        sx={{ flex: "1 1 100%" }}
-                        color="inherit"
-                        variant="subtitle1"
-                        component="div"
-                    >
+                    <Typography sx={{ flex: "1 1 100%" }} color="inherit" variant="subtitle1" component="div">
                         {numSelected} selected
                     </Typography>
                 ) : (
-                    <Typography
-                        sx={{ flex: "1 1 100%" }}
-                        variant="h6"
-                        id="tableTitle"
-                        component="div"
-                    >
+                    <Typography sx={{ flex: "1 1 100%" }} variant="h6" id="tableTitle" component="div">
                         Scan History
                     </Typography>
                 )}
@@ -244,8 +188,7 @@ export default class ProjectHistory extends React.Component {
             this.setState({ order: newValue });
         };
 
-        const { order, orderBy, selected, page, dense, rowsPerPage } =
-            this.state;
+        const { order, orderBy, selected, page, dense, rowsPerPage } = this.state;
 
         this.EnhancedTableHead.propTypes = {
             numSelected: PropTypes.number.isRequired,
@@ -287,10 +230,7 @@ export default class ProjectHistory extends React.Component {
             } else if (selectedIndex === selected.length - 1) {
                 newSelected = newSelected.concat(selected.slice(0, -1));
             } else if (selectedIndex > 0) {
-                newSelected = newSelected.concat(
-                    selected.slice(0, selectedIndex),
-                    selected.slice(selectedIndex + 1)
-                );
+                newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
             }
             this.props.onChangeHid(newSelected);
             setSelected(newSelected);
@@ -312,17 +252,10 @@ export default class ProjectHistory extends React.Component {
         const isSelected = (Start_Time) => selected.indexOf(Start_Time) !== -1;
 
         // Avoid a layout jump when reaching the last page with empty rows.
-        const emptyRows =
-            page > 0
-                ? Math.max(0, (1 + page) * rowsPerPage - props.data.length)
-                : 0;
+        const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.data.length) : 0;
 
         const visibleRows = React.useMemo(
-            () =>
-                this.stableSort(
-                    props.data,
-                    this.getComparator(order, orderBy)
-                ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+            () => this.stableSort(props.data, this.getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
             [order, orderBy, page, rowsPerPage]
         );
 
@@ -331,11 +264,7 @@ export default class ProjectHistory extends React.Component {
                 <Paper sx={{ width: "100%", mb: 2 }}>
                     <this.EnhancedTableToolbar numSelected={selected.length} />
                     <TableContainer>
-                        <Table
-                            sx={{ minWidth: 750 }}
-                            aria-labelledby="tableTitle"
-                            size={dense ? "small" : "medium"}
-                        >
+                        <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={dense ? "small" : "medium"}>
                             <this.EnhancedTableHead
                                 numSelected={selected.length}
                                 order={order}
@@ -352,13 +281,7 @@ export default class ProjectHistory extends React.Component {
                                     return (
                                         <TableRow
                                             hover
-                                            onClick={(event) =>
-                                                handleClick(
-                                                    event,
-                                                    row._id,
-                                                    row.startTime
-                                                )
-                                            }
+                                            onClick={(event) => handleClick(event, row._id, row.startTime)}
                                             role="checkbox"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
@@ -371,40 +294,18 @@ export default class ProjectHistory extends React.Component {
                                                     color="primary"
                                                     checked={isItemSelected}
                                                     inputProps={{
-                                                        "aria-labelledby":
-                                                            labelId,
+                                                        "aria-labelledby": labelId,
                                                     }}
                                                 />
                                             </TableCell>
-                                            <TableCell
-                                                component="th"
-                                                id={labelId}
-                                                scope="row"
-                                                padding="none"
-                                            >
-                                                {new Date(
-                                                    row.startTime * 1000
-                                                ).toLocaleString()}
+                                            <TableCell component="th" id={labelId} scope="row" padding="none">
+                                                {new Date(row.startTime * 1000).toLocaleString()}
                                             </TableCell>
-                                            <TableCell
-                                                component="th"
-                                                id={labelId}
-                                                scope="row"
-                                                padding="none"
-                                            >
-                                                {new Date(
-                                                    row.endTime * 1000
-                                                ).toLocaleString()}
+                                            <TableCell component="th" id={labelId} scope="row" padding="none">
+                                                {new Date(row.endTime * 1000).toLocaleString()}
                                             </TableCell>
-                                            <TableCell
-                                                component="th"
-                                                id={labelId}
-                                                scope="row"
-                                                padding="none"
-                                            >
-                                                {row.status == "idle"
-                                                    ? "Finish"
-                                                    : row.status}
+                                            <TableCell component="th" id={labelId} scope="row" padding="none">
+                                                {row.status == "idle" ? "Finish" : row.status}
                                             </TableCell>
                                         </TableRow>
                                     );
@@ -422,21 +323,14 @@ export default class ProjectHistory extends React.Component {
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
                 </Paper>
-                <FormControlLabel
-                    control={
-                        <Switch checked={dense} onChange={handleChangeDense} />
-                    }
-                    label="Dense padding"
-                />
+                <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" />
             </Box>
         );
     };
 
     fetchHistoryRecord = async () => {
         try {
-            const response = await fetch(
-                `${globeVar.backendprotocol}://${globeVar.backendhost}/historyList/${this.props.projectID}`
-            );
+            const response = await fetch(`${globeVar.backendprotocol}://${globeVar.backendhost}/historyList/${this.props.projectID}`);
             const jsonData = await response.json();
             if (this.state.historyRecord != jsonData) {
                 this.setState({ historyRecord: jsonData, display: true });
@@ -453,14 +347,7 @@ export default class ProjectHistory extends React.Component {
     render() {
         return (
             <Box component="div" sx={{ display: "flex" }}>
-                <Box sx={{ width: "70%" }}>
-                    {this.state.display && (
-                        <this.EnhancedTable
-                            data={this.state.historyRecord}
-                            style={{ width: "75%" }}
-                        ></this.EnhancedTable>
-                    )}
-                </Box>
+                <Box sx={{ width: "70%" }}>{this.state.display && <this.EnhancedTable data={this.state.historyRecord} style={{ width: "75%" }}></this.EnhancedTable>}</Box>
 
                 <Box sx={{ width: "30%", padding: "0 25px" }}>
                     <ScanDurations></ScanDurations>

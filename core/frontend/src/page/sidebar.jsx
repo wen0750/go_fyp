@@ -9,22 +9,10 @@ function App() {
             <Sidebar>
                 <Routes>
                     <Route path="/" element={<DynamicItem page="folder" />} />
-                    <Route
-                        path={"/folder/:fid"}
-                        element={<DynamicItem page="folder" />}
-                    />
-                    <Route
-                        path={"/project/:pid"}
-                        element={<DynamicItem page="project" />}
-                    />
-                    <Route
-                        path={"/editor/:eid"}
-                        element={<DynamicItem page="editor" />}
-                    />
-                    <Route
-                        path={"/terminal/:id"}
-                        element={<DynamicItem page="terminal" />}
-                    />
+                    <Route path={"/folder/:fid"} element={<DynamicItem page="folder" />} />
+                    <Route path={"/project/:pid"} element={<DynamicItem page="project" />} />
+                    <Route path={"/editor/:eid"} element={<DynamicItem page="editor" />} />
+                    <Route path={"/terminal/:id"} element={<DynamicItem page="terminal" />} />
                 </Routes>
             </Sidebar>
         </div>

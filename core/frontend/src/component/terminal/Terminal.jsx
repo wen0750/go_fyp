@@ -5,15 +5,7 @@
  * <a href="https://github.com/abderox">abderox</a>
  */
 
-import {
-    AppBar,
-    Box,
-    IconButton,
-    Toolbar,
-    Typography,
-    useMediaQuery,
-    useTheme,
-} from "@mui/material";
+import { AppBar, Box, IconButton, Toolbar, Typography, useMediaQuery, useTheme } from "@mui/material";
 import React from "react";
 
 const Terminal = ({ title = "My Terminal", handleClose, rebootTerminal }) => {
@@ -28,11 +20,7 @@ const Terminal = ({ title = "My Terminal", handleClose, rebootTerminal }) => {
     const reff = React.useRef(null);
     const [history, setHistory] = React.useState([]);
     const [historyIndex, setHistoryIndex] = React.useState(0);
-    const [initialCommand, setInitialCommand] = React.useState(
-        `Notlunix\\github\\>${username ? username : "guest"}@${title
-            .toLowerCase()
-            .replace(" ", "")}:~$ `
-    );
+    const [initialCommand, setInitialCommand] = React.useState(`Notlunix\\github\\>${username ? username : "guest"}@${title.toLowerCase().replace(" ", "")}:~$ `);
     const [width, setWidth] = React.useState(2 / 3);
     const [height, setHeight] = React.useState(2 / 3);
     const draggableRef = React.useRef(null);
@@ -104,11 +92,7 @@ const Terminal = ({ title = "My Terminal", handleClose, rebootTerminal }) => {
         setMessage(`Logging out... \n`);
         setTimeout(() => {
             // some logic like dispatching logout action
-            setInitialCommand(
-                `Notlunix\\github\\>guest@${title
-                    .toLowerCase()
-                    .replace(" ", "")}:~$ `
-            );
+            setInitialCommand(`Notlunix\\github\\>guest@${title.toLowerCase().replace(" ", "")}:~$ `);
         }, 3000);
     };
 
@@ -137,9 +121,7 @@ const Terminal = ({ title = "My Terminal", handleClose, rebootTerminal }) => {
 
     const listeUserPermissions = () => {
         return permissions?.map((permission) => {
-            return `--------${permission.name}--------\n${permission?.roles
-                .map((role) => role.name)
-                .join("\n")}`;
+            return `--------${permission.name}--------\n${permission?.roles.map((role) => role.name).join("\n")}`;
         });
     };
 
@@ -153,8 +135,7 @@ const Terminal = ({ title = "My Terminal", handleClose, rebootTerminal }) => {
     const handleCommand = (command) => {
         let output = `%%%%% ${command.trim()} ************`;
         if (command === "") {
-            output +=
-                'Please enter a command or type "help" to see the list of commands.\n';
+            output += 'Please enter a command or type "help" to see the list of commands.\n';
             setOutputValue((prevOutput) => prevOutput + output);
             return;
         }
@@ -315,29 +296,18 @@ const Terminal = ({ title = "My Terminal", handleClose, rebootTerminal }) => {
                 px: "8px",
             }}
         >
-            <Box
-                className="terminal-content"
-                ref={reff}
-                sx={{ color: "aliceblue" }}
-            >
-                <Typography
-                    component={"pre"}
-                >{`------------- ${today.toLocaleString()} -------------`}</Typography>
+            <Box className="terminal-content" ref={reff} sx={{ color: "aliceblue" }}>
+                <Typography component={"pre"}>{`------------- ${today.toLocaleString()} -------------`}</Typography>
                 <Typography component={"pre"}>© 2023 abderox</Typography>
                 <Typography component={"pre"}>
                     Developed by :
-                    <a
-                        style={{ color: "skyblue", textDecoration: "none" }}
-                        href={"https://github.com/abderox"}
-                    >
+                    <a style={{ color: "skyblue", textDecoration: "none" }} href={"https://github.com/abderox"}>
                         {" "}
                         {`https://github.com/abderox`}
                     </a>
                 </Typography>
                 <Typography component={"pre"}>Version : 1.1.0</Typography>
-                <Typography component={"pre"}>
-                    Current user : {username ? username : "Guest"}
-                </Typography>
+                <Typography component={"pre"}>Current user : {username ? username : "Guest"}</Typography>
                 <div>
                     {message !== "" && <pre>{message}</pre>}
                     <pre>{`Welcome to ${title} ! Type "help" to see the list of commands.\n`}</pre>
@@ -353,19 +323,9 @@ const Terminal = ({ title = "My Terminal", handleClose, rebootTerminal }) => {
                                                     fontWeight: "bold",
                                                 }}
                                             >{`${initialCommand}`}</span>
-                                            <span
-                                                style={{ color: "white" }}
-                                            >{`${
-                                                item
-                                                    .split("************")
-                                                    ?.at(0) ?? ""
-                                            }`}</span>
+                                            <span style={{ color: "white" }}>{`${item.split("************")?.at(0) ?? ""}`}</span>
                                         </pre>
-                                        <pre>
-                                            {item
-                                                .split("************")
-                                                ?.at(1) ?? ""}
-                                        </pre>
+                                        <pre>{item.split("************")?.at(1) ?? ""}</pre>
                                     </React.Fragment>
                                 )
                             );

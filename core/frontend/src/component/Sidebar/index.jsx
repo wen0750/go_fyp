@@ -1,14 +1,6 @@
 import React, { useState } from "react";
 
-import {
-    Children,
-    SidebarContainer,
-    SidebarWrapper,
-    SidebarLogoWrapper,
-    SidebarLogo,
-    SidebarBrand,
-    SidebarToggler,
-} from "./SidebarStyles";
+import { Children, SidebarContainer, SidebarWrapper, SidebarLogoWrapper, SidebarLogo, SidebarBrand, SidebarToggler } from "./SidebarStyles";
 import BrandLogo from "./BrandLogo.svg";
 import { DehazeRoundedIcon } from "../sidebar_icon";
 
@@ -37,17 +29,11 @@ export default function Sidebar({ children }) {
                             <span className="app-brand-logo demo">
                                 <img src={BrandLogo} alt="Brand logo" />
                             </span>
-                            <SidebarBrand
-                                displaySidebar={displaySidebar}
-                                className="app__brand__text"
-                            >
+                            <SidebarBrand displaySidebar={displaySidebar} className="app__brand__text">
                                 Frest
                             </SidebarBrand>
                         </SidebarLogo>
-                        <SidebarToggler
-                            displaySidebar={displaySidebar}
-                            onClick={handleSidebarDisplay}
-                        >
+                        <SidebarToggler displaySidebar={displaySidebar} onClick={handleSidebarDisplay}>
                             <DehazeRoundedIcon />
                         </SidebarToggler>
                     </SidebarLogoWrapper>

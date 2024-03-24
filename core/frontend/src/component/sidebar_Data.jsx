@@ -1,9 +1,4 @@
-import {
-    FolderCopyRoundedIcon,
-    LayoutIcon,
-    DrawRoundedIcon,
-    TerminalIcon,
-} from "./sidebar_icon";
+import { FolderCopyRoundedIcon, LayoutIcon, DrawRoundedIcon, TerminalIcon } from "./sidebar_icon";
 
 import globeVar from "../../GlobalVar";
 
@@ -38,13 +33,10 @@ const dataFetch = async () => {
     var list = [];
     try {
         const data = await (
-            await fetch(
-                `${globeVar.backendprotocol}://${globeVar.backendhost}/folder/list`,
-                {
-                    signal: AbortSignal.timeout(8000),
-                    method: "POST",
-                }
-            )
+            await fetch(`${globeVar.backendprotocol}://${globeVar.backendhost}/folder/list`, {
+                signal: AbortSignal.timeout(8000),
+                method: "POST",
+            })
         ).json();
 
         if (data) {

@@ -1,18 +1,6 @@
 import * as React from "react";
 
-import {
-    Box,
-    Typography,
-    Paper,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TablePagination,
-    TableRow,
-    TableSortLabel,
-} from "@mui/material";
+import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel } from "@mui/material";
 
 import PropTypes from "prop-types";
 import { visuallyHidden } from "@mui/utils";
@@ -52,9 +40,7 @@ export default class ProjectNotes extends React.Component {
     };
 
     getComparator = (order, orderBy) => {
-        return order === "desc"
-            ? (a, b) => this.descendingComparator(a, b, orderBy)
-            : (a, b) => -this.descendingComparator(a, b, orderBy);
+        return order === "desc" ? (a, b) => this.descendingComparator(a, b, orderBy) : (a, b) => -this.descendingComparator(a, b, orderBy);
     };
 
     stableSort = (array, comparator) => {
@@ -70,14 +56,7 @@ export default class ProjectNotes extends React.Component {
     };
 
     EnhancedTableHead = (props) => {
-        const {
-            onSelectAllClick,
-            order,
-            orderBy,
-            numSelected,
-            rowCount,
-            onRequestSort,
-        } = props;
+        const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } = props;
         const createSortHandler = (property) => (event) => {
             onRequestSort(event, property);
         };
@@ -89,26 +68,14 @@ export default class ProjectNotes extends React.Component {
                         <TableCell
                             key={headCell.id}
                             align={headCell.numeric ? "right" : "left"}
-                            padding={
-                                headCell.disablePadding ? "none" : "normal"
-                            }
-                            sortDirection={
-                                orderBy === headCell.id ? order : false
-                            }
+                            padding={headCell.disablePadding ? "none" : "normal"}
+                            sortDirection={orderBy === headCell.id ? order : false}
                         >
-                            <TableSortLabel
-                                active={orderBy === headCell.id}
-                                direction={
-                                    orderBy === headCell.id ? order : "asc"
-                                }
-                                onClick={createSortHandler(headCell.id)}
-                            >
+                            <TableSortLabel active={orderBy === headCell.id} direction={orderBy === headCell.id ? order : "asc"} onClick={createSortHandler(headCell.id)}>
                                 {headCell.label}
                                 {orderBy === headCell.id ? (
                                     <Box component="span" sx={visuallyHidden}>
-                                        {order === "desc"
-                                            ? "sorted descending"
-                                            : "sorted ascending"}
+                                        {order === "desc" ? "sorted descending" : "sorted ascending"}
                                     </Box>
                                 ) : null}
                             </TableSortLabel>
@@ -177,10 +144,7 @@ export default class ProjectNotes extends React.Component {
             } else if (selectedIndex === selected.length - 1) {
                 newSelected = newSelected.concat(selected.slice(0, -1));
             } else if (selectedIndex > 0) {
-                newSelected = newSelected.concat(
-                    selected.slice(0, selectedIndex),
-                    selected.slice(selectedIndex + 1)
-                );
+                newSelected = newSelected.concat(selected.slice(0, selectedIndex), selected.slice(selectedIndex + 1));
             }
 
             setSelected(newSelected);
@@ -198,17 +162,10 @@ export default class ProjectNotes extends React.Component {
         const isSelected = (name) => selected.indexOf(name) !== -1;
 
         // Avoid a layout jump when reaching the last page with empty rows.
-        const emptyRows =
-            page > 0
-                ? Math.max(0, (1 + page) * rowsPerPage - this.state.rows.length)
-                : 0;
+        const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - this.state.rows.length) : 0;
 
         const visibleRows = React.useMemo(
-            () =>
-                this.stableSort(
-                    this.state.rows,
-                    this.getComparator(order, orderBy)
-                ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+            () => this.stableSort(this.state.rows, this.getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
             [order, orderBy, page, rowsPerPage]
         );
 
@@ -216,11 +173,7 @@ export default class ProjectNotes extends React.Component {
             <Box sx={{ width: "100%" }}>
                 <Paper sx={{ width: "100%", mb: 2 }}>
                     <TableContainer>
-                        <Table
-                            sx={{ minWidth: 750 }}
-                            aria-labelledby="tableTitle"
-                            size={"medium"}
-                        >
+                        <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={"medium"}>
                             <this.EnhancedTableHead
                                 numSelected={selected.length}
                                 order={order}
@@ -236,9 +189,7 @@ export default class ProjectNotes extends React.Component {
                                     return (
                                         <TableRow
                                             hover
-                                            onClick={(event) =>
-                                                handleClick(event, row.name)
-                                            }
+                                            onClick={(event) => handleClick(event, row.name)}
                                             role="checkbox"
                                             aria-checked={isItemSelected}
                                             tabIndex={-1}
@@ -250,13 +201,7 @@ export default class ProjectNotes extends React.Component {
                                                 margin: "15px",
                                             }}
                                         >
-                                            <TableCell
-                                                component="th"
-                                                id={labelId}
-                                                scope="row"
-                                                padding="none"
-                                                sx={{ paddingInline: "15px" }}
-                                            >
+                                            <TableCell component="th" id={labelId} scope="row" padding="none" sx={{ paddingInline: "15px" }}>
                                                 <Typography
                                                     variant="h6"
                                                     sx={{
@@ -267,11 +212,7 @@ export default class ProjectNotes extends React.Component {
                                                 >
                                                     {row.Name}
                                                 </Typography>
-                                                <Typography
-                                                    variant="subtitle2"
-                                                    sx={{ color: "black" }}
-                                                    gutterBottom
-                                                >
+                                                <Typography variant="subtitle2" sx={{ color: "black" }} gutterBottom>
                                                     {row.Description}
                                                 </Typography>
                                             </TableCell>
@@ -309,9 +250,7 @@ export default class ProjectNotes extends React.Component {
             const list = [];
             var indexid = 0;
             props.inputData.result.forEach((element) => {
-                let ixid = list.find(
-                    (value) => value.Name == element.info.name
-                );
+                let ixid = list.find((value) => value.Name == element.info.name);
                 if (!ixid) {
                     list.push({
                         id: indexid,

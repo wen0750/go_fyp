@@ -1,22 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-import {
-    closestCenter,
-    DndContext,
-    DragOverlay,
-    KeyboardSensor,
-    MouseSensor,
-    TouchSensor,
-    useSensor,
-    useSensors,
-} from "@dnd-kit/core";
-import {
-    useSortable,
-    arrayMove,
-    SortableContext,
-    verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
+import { closestCenter, DndContext, DragOverlay, KeyboardSensor, MouseSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { useSortable, arrayMove, SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 
@@ -55,8 +41,7 @@ export default class Dnd_Table extends React.Component {
         `;
 
         this.StyledStaticTableRow = styled.tr`
-            box-shadow: rgb(0 0 0 / 10%) 0px 20px 25px -5px,
-                rgb(0 0 0 / 30%) 0px 10px 10px -5px;
+            box-shadow: rgb(0 0 0 / 10%) 0px 20px 25px -5px, rgb(0 0 0 / 30%) 0px 10px 10px -5px;
             outline: #3e1eb3 solid 1px;
         `;
 
@@ -126,32 +111,18 @@ export default class Dnd_Table extends React.Component {
                         return (
                             <this.StyledStaticData {...cell.getCellProps()}>
                                 <DragHandle isDragging />
-                                <input
-                                    type="checkbox"
-                                    defaultChecked={cell.value}
-                                />
+                                <input type="checkbox" defaultChecked={cell.value} />
                             </this.StyledStaticData>
                         );
                     }
-                    return (
-                        <this.StyledStaticData {...cell.getCellProps()}>
-                            {cell.render("Cell")}
-                        </this.StyledStaticData>
-                    );
+                    return <this.StyledStaticData {...cell.getCellProps()}>{cell.render("Cell")}</this.StyledStaticData>;
                 })}
             </this.StyledStaticTableRow>
         );
     };
 
     DraggableTableRow = ({ row, dataInput }) => {
-        const {
-            attributes,
-            listeners,
-            transform,
-            transition,
-            setNodeRef,
-            isDragging,
-        } = useSortable({
+        const { attributes, listeners, transform, transition, setNodeRef, isDragging } = useSortable({
             id: row.original.id,
         });
         const style = {
@@ -162,19 +133,14 @@ export default class Dnd_Table extends React.Component {
         return (
             <tr ref={setNodeRef} style={style} {...row.getRowProps()}>
                 {isDragging ? (
-                    <this.DraggingRow colSpan={row.cells.length}>
-                        &nbsp;
-                    </this.DraggingRow>
+                    <this.DraggingRow colSpan={row.cells.length}>&nbsp;</this.DraggingRow>
                 ) : (
                     row.cells.map((cell, i) => {
                         console.log(row.id);
                         if (i === 0) {
                             return (
                                 <this.TableData {...cell.getCellProps()}>
-                                    <this.DragHandle
-                                        {...attributes}
-                                        {...listeners}
-                                    />
+                                    <this.DragHandle {...attributes} {...listeners} />
                                     <input
                                         type="checkbox"
                                         defaultChecked={cell.value}
@@ -185,16 +151,7 @@ export default class Dnd_Table extends React.Component {
                         }
                         return (
                             <this.TableData {...cell.getCellProps()}>
-                                <Input
-                                    value={cell.value}
-                                    onChange={(event) =>
-                                        dataInput(
-                                            row.id,
-                                            cell.column.id,
-                                            event.target.value
-                                        )
-                                    }
-                                />
+                                <Input value={cell.value} onChange={(event) => dataInput(row.id, cell.column.id, event.target.value)} />
                             </this.TableData>
                         );
                     })
@@ -214,26 +171,14 @@ export default class Dnd_Table extends React.Component {
     }
 
     render() {
-        const {
-            getTableProps,
-            getTableBodyProps,
-            headerGroups,
-            rows,
-            prepareRow,
-        } = useTable(this.props.columns, this.props.data);
-        const sensors = useSensors(
-            useSensor(MouseSensor, {}),
-            useSensor(TouchSensor, {}),
-            useSensor(KeyboardSensor, {})
-        );
+        const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } = useTable(this.props.columns, this.props.data);
+        const sensors = useSensors(useSensor(MouseSensor, {}), useSensor(TouchSensor, {}), useSensor(KeyboardSensor, {}));
 
         const selectedRow = useMemo(() => {
             if (!this.state.activeId) {
                 return null;
             }
-            const row = rows.find(
-                ({ original }) => original.id === this.state.activeId
-            );
+            const row = rows.find(({ original }) => original.id === this.state.activeId);
             prepareRow(row);
             return row;
         }, [this.state.activeId, rows, prepareRow]);
@@ -252,27 +197,16 @@ export default class Dnd_Table extends React.Component {
                         {headerGroups.map((headerGroup) => (
                             <tr {...headerGroup.getHeaderGroupProps()}>
                                 {headerGroup.headers.map((column) => (
-                                    <th {...column.getHeaderProps()}>
-                                        {column.render("Header")}
-                                    </th>
+                                    <th {...column.getHeaderProps()}>{column.render("Header")}</th>
                                 ))}
                             </tr>
                         ))}
                     </thead>
                     <tbody {...getTableBodyProps()}>
-                        <SortableContext
-                            items={items}
-                            strategy={verticalListSortingStrategy}
-                        >
+                        <SortableContext items={items} strategy={verticalListSortingStrategy}>
                             {rows.map((row, i) => {
                                 prepareRow(row);
-                                return (
-                                    <this.DraggableTableRow
-                                        key={row.original.id}
-                                        row={row}
-                                        dataInput={this.handleDataInput}
-                                    />
-                                );
+                                return <this.DraggableTableRow key={row.original.id} row={row} dataInput={this.handleDataInput} />;
                             })}
                         </SortableContext>
                     </tbody>

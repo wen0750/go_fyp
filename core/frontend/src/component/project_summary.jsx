@@ -11,10 +11,7 @@ import Typography from "@mui/material/Typography";
 import CanvasJSReact from "@canvasjs/react-charts";
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-import {
-    CustScanDetails,
-    MiniTitle,
-} from "../component/page_style/project_style";
+import { CustScanDetails, MiniTitle } from "../component/page_style/project_style";
 
 export default class ProjectSummary extends React.Component {
     constructor(props) {
@@ -53,21 +50,11 @@ export default class ProjectSummary extends React.Component {
                     }}
                     title="green iguana"
                 >
-                    <Typography
-                        gutterBottom
-                        variant="h3"
-                        component="div"
-                        sx={{ m: 0, color: "white" }}
-                    >
+                    <Typography gutterBottom variant="h3" component="div" sx={{ m: 0, color: "white" }}>
                         {cvalue}
                     </Typography>
                 </CardMedia>
-                <Typography
-                    gutterBottom
-                    variant="p"
-                    component="div"
-                    sx={{ textAlign: "center" }}
-                >
+                <Typography gutterBottom variant="p" component="div" sx={{ textAlign: "center" }}>
                     {cname}
                 </Typography>
             </Card>
@@ -79,57 +66,29 @@ export default class ProjectSummary extends React.Component {
             <CustScanDetails className="custscandetails">
                 <div>
                     <div>
-                        <img
-                            src="../image/vulnerabilities/vulnerabilities_4.png"
-                            alt=""
-                        />
-                        <p>
-                            {this.state.result
-                                ? this.state.result.cvecount.critical
-                                : ""}
-                        </p>
+                        <img src="../image/vulnerabilities/vulnerabilities_4.png" alt="" />
+                        <p>{this.state.result ? this.state.result.cvecount.critical : ""}</p>
                     </div>
                     <h5>Cirtical Vulnerabilities</h5>
                 </div>
                 <div>
                     <div>
-                        <img
-                            src="../image/vulnerabilities/vulnerabilities_3.png"
-                            alt=""
-                        />
-                        <p>
-                            {this.state.result
-                                ? this.state.result.cvecount.high
-                                : ""}
-                        </p>
+                        <img src="../image/vulnerabilities/vulnerabilities_3.png" alt="" />
+                        <p>{this.state.result ? this.state.result.cvecount.high : ""}</p>
                     </div>
                     <h5>High Vulnerabilities</h5>
                 </div>
                 <div>
                     <div>
-                        <img
-                            src="../image/vulnerabilities/vulnerabilities_2.png"
-                            alt=""
-                        />
-                        <p>
-                            {this.state.result
-                                ? this.state.result.cvecount.medium
-                                : ""}
-                        </p>
+                        <img src="../image/vulnerabilities/vulnerabilities_2.png" alt="" />
+                        <p>{this.state.result ? this.state.result.cvecount.medium : ""}</p>
                     </div>
                     <h5>Medium Vulnerabilities</h5>
                 </div>
                 <div>
                     <div>
-                        <img
-                            src="../image/vulnerabilities/vulnerabilities_1.png"
-                            alt=""
-                        />
-                        <p>
-                            {this.state.result
-                                ? this.state.result.cvecount.low
-                                : ""}
-                        </p>
+                        <img src="../image/vulnerabilities/vulnerabilities_1.png" alt="" />
+                        <p>{this.state.result ? this.state.result.cvecount.low : ""}</p>
                     </div>
                     <h5>Low Vulnerabilities</h5>
                 </div>
@@ -159,9 +118,7 @@ export default class ProjectSummary extends React.Component {
         const templateName = "";
 
         if (this.state.result != null) {
-            startt = new Date(
-                this.state.result.startTime * 1000
-            ).toLocaleString();
+            startt = new Date(this.state.result.startTime * 1000).toLocaleString();
             endt = new Date(this.state.result.endTime * 1000).toLocaleString();
             // templateName = "";
         }
@@ -172,8 +129,7 @@ export default class ProjectSummary extends React.Component {
                 <p>CVSS_Socre: </p>
                 <div>
                     <p>Scan Template:</p>
-                    {this.state.result &&
-                        this.formateArrayToList(this.state.result.result)}
+                    {this.state.result && this.formateArrayToList(this.state.result.result)}
                 </div>
                 <p>Scan Start: {startt}</p>
                 <p>Scan End: {endt}</p>
@@ -284,10 +240,7 @@ export default class ProjectSummary extends React.Component {
         return (
             <div style={{ display: "flex" }}>
                 <this.mediaCard cname="SCAN DURATION" cvalue={scan_duration} />
-                <this.mediaCard
-                    cname="MEDIAN SCAN TIME PER HOST"
-                    cvalue={scanTimePerHost}
-                />
+                <this.mediaCard cname="MEDIAN SCAN TIME PER HOST" cvalue={scanTimePerHost} />
                 {/* <this.mediaCard cname="MAX SCAN TIME" cvalue="00:00:00" /> */}
             </div>
         );

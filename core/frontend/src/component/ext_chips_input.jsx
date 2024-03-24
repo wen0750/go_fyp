@@ -56,10 +56,7 @@ export default function InputTags(props) {
     };
     const handleOnSubmit = (e) => {
         e.preventDefault();
-        if (
-            tagRef.current.value != "" &&
-            !tags.includes(tagRef.current.value)
-        ) {
+        if (tagRef.current.value != "" && !tags.includes(tagRef.current.value)) {
             SetTags([...tags, tagRef.current.value]);
             props.cbFunc([...tags, tagRef.current.value]);
             tagRef.current.value = "";
@@ -73,9 +70,7 @@ export default function InputTags(props) {
                     inputRef={tagRef}
                     variant="outlined"
                     label="Enter Hosts"
-                    placeholder={
-                        tags.length < 5 ? "Enter host(s) (eg. 8.8.8.8)" : ""
-                    }
+                    placeholder={tags.length < 5 ? "Enter host(s) (eg. 8.8.8.8)" : ""}
                     InputProps={{
                         startAdornment: (
                             <Box
@@ -87,13 +82,7 @@ export default function InputTags(props) {
                                 }}
                             >
                                 {tags.map((data, index) => {
-                                    return (
-                                        <Tags
-                                            data={data}
-                                            handleDelete={handleDelete}
-                                            key={index}
-                                        />
-                                    );
+                                    return <Tags data={data} handleDelete={handleDelete} key={index} />;
                                 })}
                             </Box>
                         ),
