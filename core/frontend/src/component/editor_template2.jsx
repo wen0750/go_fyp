@@ -45,9 +45,13 @@ import ArrowRight from "@mui/icons-material/ArrowRight";
 import ArrowDropDown from "@mui/icons-material/ArrowDropDown";
 import Dropdown from "@mui/joy/Dropdown";
 
+// Table
+import Table from "@mui/joy/Table";
+
 // icon
 import AddIcon from "@mui/icons-material/Add";
 import CheckIcon from "@mui/icons-material/Check";
+import { common } from "@mui/material/colors";
 
 function firstCharToUpper(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
@@ -255,7 +259,7 @@ function ControlledDropdown(props) {
             <Menu sx={{ minWidth: 160, "--ListItemDecorator-size": "24px" }}>
                 <ListItem nested sx={{ width: 1, p: 0 }}>
                     <List aria-label="Font sizes" sx={{ width: 1 }}>
-                        {props.option.map((item, ix) => (
+                        {props.options.map((item, ix) => (
                             <MenuItem
                                 key={item.label + ix}
                                 // role="menuitemradio"
@@ -264,14 +268,58 @@ function ControlledDropdown(props) {
                                     props.onChange(ix);
                                 }}
                             >
+                                {item.label}
                                 <ListItemDecorator>
                                     {item.enabled === true && <CheckIcon />}
                                 </ListItemDecorator>
-                                {item.label}
                             </MenuItem>
                         ))}
                     </List>
                 </ListItem>
+            </Menu>
+        </Dropdown>
+    );
+}
+function GroupControlledDropdown(props) {
+    return (
+        <Dropdown>
+            <MenuButton startDecorator={<AddIcon />}>More Options</MenuButton>
+            <Menu sx={{ minWidth: 180, "--ListItemDecorator-size": "24px" }}>
+                {Object.entries(props.options).map(([name, animals], index) => (
+                    <>
+                        <List sx={{ width: 1 }}>
+                            <ListItem id={`select-group-${name}`} sticky>
+                                <Typography
+                                    level="body-xs"
+                                    textTransform="uppercase"
+                                >
+                                    {name} ({animals.length})
+                                </Typography>
+                            </ListItem>
+
+                            {animals.map((anim, ix) => (
+                                <MenuItem
+                                    key={"sss" + ix}
+                                    role="menuitemradio"
+                                    aria-checked={anim.enabled}
+                                    onClick={() => {
+                                        props.onChange(ix);
+                                    }}
+                                    sx={{ p: 0, m: 0 }}
+                                >
+                                    <ListItem sx={{ m: 0 }}>
+                                        <ListItemDecorator>
+                                            {anim.enabled === true && (
+                                                <CheckIcon />
+                                            )}
+                                        </ListItemDecorator>
+                                        {anim.label}
+                                    </ListItem>
+                                </MenuItem>
+                            ))}
+                        </List>
+                    </>
+                ))}
             </Menu>
         </Dropdown>
     );
@@ -449,6 +497,7 @@ export default class EditorTemplate extends React.Component {
         super(props);
         this.state = {
             userinput: {},
+            httpRequestOptionCounter: 0,
             info_optional_list: [
                 {
                     label: "impact",
@@ -501,6 +550,81 @@ export default class EditorTemplate extends React.Component {
                     enabled: false,
                 },
             ],
+            http_request_optional_list: {
+                custom: [
+                    {
+                        label: "add",
+                        description:
+                            "The Accept header defines the media types that the client is able to accept from the server. For instance, Accept: application/json, text/html indicates that the client prefers JSON or HTML responses. This information allows the server to send a resource representation that meets the client’s needs.",
+                        component: Input,
+                        enabled: false,
+                    },
+                ],
+                common: [
+                    {
+                        label: "Accept",
+                        description:
+                            "The Accept header defines the media types that the client is able to accept from the server. For instance, Accept: application/json, text/html indicates that the client prefers JSON or HTML responses. This information allows the server to send a resource representation that meets the client’s needs.",
+                        component: Input,
+                        enabled: false,
+                    },
+                    {
+                        label: "User-Agent",
+                        description:
+                            "The User-Agent header identifies the web browser or client application that is making the request, which enables the server to tailor its response to the client. For instance, if the User-Agent header indicates that the request is coming from the Chrome browser, the server may include CSS prefixes for CSS properties that are compatible with Chrome.",
+                        component: Input,
+                        enabled: false,
+                    },
+                    {
+                        label: "Authorization",
+                        description: "impact s",
+                        component: Input,
+                        enabled: false,
+                    },
+                    {
+                        label: "Content-Type",
+                        description: "impact s",
+                        component: Input,
+                        enabled: false,
+                    },
+                    {
+                        label: "Cookie",
+                        description: "impact s",
+                        component: Input,
+                        enabled: false,
+                    },
+                    {
+                        label: "Content-Type",
+                        description: "impact s",
+                        component: Input,
+                        enabled: false,
+                    },
+                    {
+                        label: "Cache-Control",
+                        description: "impact s",
+                        component: Input,
+                        enabled: false,
+                    },
+                    {
+                        label: "Server",
+                        description: "impact s",
+                        component: Input,
+                        enabled: false,
+                    },
+                    {
+                        label: "Set-Cookie",
+                        description: "impact s",
+                        component: Input,
+                        enabled: false,
+                    },
+                    {
+                        label: "Content-Length",
+                        description: "impact s",
+                        component: Input,
+                        enabled: false,
+                    },
+                ],
+            },
         };
     }
 
@@ -547,6 +671,21 @@ export default class EditorTemplate extends React.Component {
 
         old[key].enabled = !old[key].enabled;
         this.setState({ classification_optional_list: old });
+    };
+    onchange_http_request_option = (key) => {
+        const old = this.state.http_request_optional_list;
+        var newHROC = 0;
+
+        old.common[key].enabled = !old.common[key].enabled;
+        if (old.common[key].enabled) {
+            newHROC = this.state.httpRequestOptionCounter + 1;
+        } else {
+            newHROC = this.state.httpRequestOptionCounter - 1;
+        }
+        this.setState({
+            http_request_optional_list: old,
+            httpRequestOptionCounter: newHROC,
+        });
     };
 
     render() {
@@ -617,7 +756,7 @@ export default class EditorTemplate extends React.Component {
                     })}
                     <Grid xs={4}>
                         <ControlledDropdown
-                            option={this.state.info_optional_list}
+                            options={this.state.info_optional_list}
                             onChange={this.onchange_information_option}
                         ></ControlledDropdown>
                     </Grid>
@@ -658,7 +797,7 @@ export default class EditorTemplate extends React.Component {
                     })}
                     <Grid xs={4}>
                         <ControlledDropdown
-                            option={this.state.classification_optional_list}
+                            options={this.state.classification_optional_list}
                             onChange={this.onchange_classification_option}
                         ></ControlledDropdown>
                     </Grid>
@@ -678,9 +817,11 @@ export default class EditorTemplate extends React.Component {
                             onChange={this.onchange_http}
                         ></CustomSelectionBox>
                     </Grid>
+
                     {this.state.userinput.http &&
                         this.state.userinput.http.method &&
-                        this.state.userinput.http.method == "GET" && (
+                        this.state.userinput.http.method == "GET" &&
+                        this.state.httpRequestOptionCounter == 0 && (
                             <Grid xs={12}>
                                 <CustomTextareaInputBox
                                     label={"path"}
@@ -700,6 +841,83 @@ export default class EditorTemplate extends React.Component {
                                     options={["GET", "POST"]}
                                     onChange={this.onchange_http}
                                 ></CustomSelectionBox>
+                            </Grid>
+                        )}
+                    {this.state.userinput.http &&
+                        this.state.userinput.http.method &&
+                        this.state.httpRequestOptionCounter > 0 && (
+                            <Grid xs={12}>
+                                <Table borderAxis={"xBetween"} sx={{ p: 1 }}>
+                                    <thead>
+                                        <tr>
+                                            <th style={{ width: "20%" }}>t</th>
+                                            <th>Header Value</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {this.state.http_request_optional_list.common.map(
+                                            (header, hi) => {
+                                                if (header.enabled) {
+                                                    return (
+                                                        <tr key={header.label}>
+                                                            <th scope="row">
+                                                                <FormLabel>
+                                                                    {
+                                                                        header.label
+                                                                    }
+                                                                    <Tooltip
+                                                                        title={
+                                                                            header.description
+                                                                        }
+                                                                        placement="right"
+                                                                        sx={{
+                                                                            zIndex: 20,
+                                                                            ml: 1,
+                                                                        }}
+                                                                    >
+                                                                        <HelpOutlineIcon color="action" />
+                                                                    </Tooltip>
+                                                                </FormLabel>
+                                                            </th>
+                                                            <td>
+                                                                <header.component
+                                                                    size="lg"
+                                                                    // onChange={}
+                                                                />
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                }
+                                            }
+                                        )}
+                                    </tbody>
+                                </Table>
+                            </Grid>
+                        )}
+
+                    {this.state.info_optional_list.map((val, i) => {
+                        if (val.enabled == true) {
+                            return (
+                                <Grid xs={12}>
+                                    <val.component
+                                        label={val.label}
+                                        description={val.description}
+                                        onChange={this.onchange_information}
+                                    />
+                                </Grid>
+                            );
+                        }
+                    })}
+
+                    {this.state.userinput.http &&
+                        this.state.userinput.http.method && (
+                            <Grid xs={4}>
+                                <GroupControlledDropdown
+                                    options={
+                                        this.state.http_request_optional_list
+                                    }
+                                    onChange={this.onchange_http_request_option}
+                                ></GroupControlledDropdown>
                             </Grid>
                         )}
                 </CustomCard>
