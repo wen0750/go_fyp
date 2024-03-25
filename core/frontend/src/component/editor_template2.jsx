@@ -894,6 +894,16 @@ export default class EditorTemplate extends React.Component {
             httpRequestOptionCounter: this.state.httpRequestOptionCounter - 1,
         });
     };
+    reset_http_request_option = (key) => {
+        console.log(key);
+        const old = this.state.http_request_optional_list;
+        old.common[key].value = "";
+        old.common[key].enabled = false;
+        this.setState({
+            http_request_optional_list: old,
+            httpRequestOptionCounter: this.state.httpRequestOptionCounter - 1,
+        });
+    };
     format_http_request = () => {
         var txt = "";
         var last = "";
@@ -1139,6 +1149,15 @@ export default class EditorTemplate extends React.Component {
                                                                     }
                                                                     size="lg"
                                                                 />
+                                                            </td>
+                                                            <td>
+                                                                <Button
+                                                                    onClick={() => this.reset_http_request_option(hi)}
+                                                                    variant="plain"
+                                                                    color="danger"
+                                                                >
+                                                                    <DeleteIcon />
+                                                                </Button>
                                                             </td>
                                                         </tr>
                                                     );
