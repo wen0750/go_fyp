@@ -84,7 +84,7 @@ function CustomAutocompleteMC(props) {
     return (
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
-                {props.label}
+                {firstCharToUpper(props.label)}
                 <Tooltip title={props.description} placement="right" sx={{ zIndex: 20, ml: 1 }}>
                     <HelpOutlineIcon color="action" />
                 </Tooltip>
@@ -233,24 +233,25 @@ function ControlledDropdown(props) {
     return (
         <Dropdown>
             <MenuButton startDecorator={<AddIcon />}>More Options</MenuButton>
-            <Menu sx={{ minWidth: 160, "--ListItemDecorator-size": "24px" }}>
-                <ListItem nested sx={{ width: 1, p: 0 }}>
-                    <List aria-label="Font sizes" sx={{ width: 1 }}>
-                        {props.options.map((item, ix) => (
-                            <MenuItem
-                                key={item.label + ix}
-                                // role="menuitemradio"
-                                aria-checked={item.enabled}
-                                onClick={() => {
-                                    props.onChange(ix);
-                                }}
-                            >
-                                {item.label}
+            <Menu sx={{ minWidth: 180, "--ListItemDecorator-size": "24px" }}>
+                <List sx={{ width: 1 }} key={props.key + "_optionlist"}>
+                    {props.options.map((item, ix) => (
+                        <MenuItem
+                            key={item.label + ix}
+                            role="menuitemradio"
+                            aria-checked={item.enabled}
+                            onClick={() => {
+                                props.onChange(ix);
+                            }}
+                            sx={{ p: 0, m: 0 }}
+                        >
+                            <ListItem sx={{ m: 0 }}>
                                 <ListItemDecorator>{item.enabled === true && <CheckIcon />}</ListItemDecorator>
-                            </MenuItem>
-                        ))}
-                    </List>
-                </ListItem>
+                                {item.label}
+                            </ListItem>
+                        </MenuItem>
+                    ))}
+                </List>
             </Menu>
         </Dropdown>
     );
@@ -262,7 +263,7 @@ function GroupControlledDropdown(props) {
             <Menu sx={{ minWidth: 180, "--ListItemDecorator-size": "24px" }}>
                 {Object.entries(props.options).map(([name, animals], index) => (
                     <>
-                        <List sx={{ width: 1 }}>
+                        <List sx={{ width: 1 }} key={props.key + "_optionlist"}>
                             <ListItem id={`select-group-${name}`} sx={{ my: 0 }} sticky>
                                 <Typography level="body-xs" textTransform="uppercase">
                                     {name} ({animals.length})
@@ -876,7 +877,7 @@ export default class EditorTemplate extends React.Component {
 
                     <Grid xs={12}>
                         <CustomAutocompleteMC
-                            label={"Tag"}
+                            label={"tag"}
                             description={"Tag"}
                             onChange={this.onchange_information}
                         ></CustomAutocompleteMC>
@@ -904,6 +905,7 @@ export default class EditorTemplate extends React.Component {
                     })}
                     <Grid xs={4}>
                         <ControlledDropdown
+                            key={"information"}
                             options={this.state.info_optional_list}
                             onChange={this.onchange_information_option}
                         ></ControlledDropdown>
@@ -911,7 +913,7 @@ export default class EditorTemplate extends React.Component {
                 </CustomCard>
 
                 <CustomCard
-                    title={"classification"}
+                    title={"Classification"}
                     description={"Info contains metadata information about a template"}
                 >
                     <Grid xs={4}>
@@ -943,6 +945,7 @@ export default class EditorTemplate extends React.Component {
                     })}
                     <Grid xs={4}>
                         <ControlledDropdown
+                            key={"classification"}
                             options={this.state.classification_optional_list}
                             onChange={this.onchange_classification_option}
                         ></ControlledDropdown>
@@ -1067,23 +1070,10 @@ export default class EditorTemplate extends React.Component {
                             </Grid>
                         )}
 
-                    {this.state.info_optional_list.map((val, i) => {
-                        if (val.enabled == true) {
-                            return (
-                                <Grid xs={12}>
-                                    <val.component
-                                        label={val.label}
-                                        description={val.description}
-                                        onChange={this.onchange_information}
-                                    />
-                                </Grid>
-                            );
-                        }
-                    })}
-
                     {this.state.userinput.http && this.state.userinput.http.method && (
                         <Grid xs={4}>
                             <GroupControlledDropdown
+                                key={"http_request"}
                                 options={this.state.http_request_optional_list}
                                 onXChange={this.onXchange_http_request_option}
                                 onChange={this.onchange_http_request_option}
