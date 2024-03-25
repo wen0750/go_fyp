@@ -24,6 +24,7 @@ import Grid from "@mui/joy/Grid";
 import Box from "@mui/joy/Box";
 import Tooltip from "@mui/joy/Tooltip";
 import Button from "@mui/joy/Button";
+import IconButton from "@mui/joy/IconButton";
 
 // input option
 import Radio from "@mui/joy/Radio";
@@ -52,10 +53,20 @@ import Table from "@mui/joy/Table";
 // icon
 import AddIcon from "@mui/icons-material/Add";
 import CheckIcon from "@mui/icons-material/Check";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { common } from "@mui/material/colors";
 
 function firstCharToUpper(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
+}
+function generateString(length) {
+    let result = " ";
+    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
 }
 
 // options components
@@ -277,7 +288,11 @@ function GroupControlledDropdown(props) {
                                     aria-checked={anim.enabled}
                                     onClick={() => {
                                         if (index == 0) {
-                                            props.onXChange();
+                                            if (ix == 0) {
+                                                props.onXChange("array");
+                                            } else {
+                                                props.onXChange("object");
+                                            }
                                         } else {
                                             props.onChange(ix);
                                         }
@@ -521,7 +536,14 @@ export default class EditorTemplate extends React.Component {
             http_request_optional_list: {
                 custom: [
                     {
-                        label: "add",
+                        label: "add Value",
+                        description:
+                            "The Accept header defines the media types that the client is able to accept from the server. For instance, Accept: application/json, text/html indicates that the client prefers JSON or HTML responses. This information allows the server to send a resource representation that meets the client’s needs.",
+                        component: Input,
+                        enabled: false,
+                    },
+                    {
+                        label: "add Field & Value",
                         description:
                             "The Accept header defines the media types that the client is able to accept from the server. For instance, Accept: application/json, text/html indicates that the client prefers JSON or HTML responses. This information allows the server to send a resource representation that meets the client’s needs.",
                         component: Input,
@@ -808,6 +830,7 @@ export default class EditorTemplate extends React.Component {
         old[key].enabled = !old[key].enabled;
         this.setState({ classification_optional_list: old });
     };
+
     onchange_http_request_option = (key) => {
         const old = this.state.http_request_optional_list;
         var newHROC = 0;
@@ -822,17 +845,31 @@ export default class EditorTemplate extends React.Component {
             httpRequestOptionCounter: newHROC,
         });
     };
-    onXchange_http_request_option = () => {
+    onXchange_http_request_option = (type) => {
         const old = this.state.http_request_optional_list;
         var newHROC = this.state.httpRequestOptionCounter + 1;
-        old.common.push({
-            label: "",
-            description: "s",
-            component: Input,
-            enabled: true,
-            value: "",
-            issuer: "custom",
-        });
+        if (type == "array") {
+            old.common.push({
+                label: "a_" + generateString(5),
+                description: "s",
+                component: Input,
+                enabled: true,
+                value: "",
+                issuer: "custom",
+                type: type,
+            });
+        } else {
+            old.common.push({
+                label: "",
+                description: "s",
+                component: Input,
+                enabled: true,
+                value: "",
+                issuer: "custom",
+                type: type,
+            });
+        }
+
         this.setState({
             http_request_optional_list: old,
             httpRequestOptionCounter: newHROC,
@@ -847,6 +884,32 @@ export default class EditorTemplate extends React.Component {
         this.setState({
             http_request_optional_list: old,
         });
+    };
+    remove_http_request_option = (key) => {
+        console.log(key);
+        const old = this.state.http_request_optional_list;
+        delete old.common[key];
+        this.setState({
+            http_request_optional_list: old,
+            httpRequestOptionCounter: this.state.httpRequestOptionCounter - 1,
+        });
+    };
+    format_http_request = () => {
+        var txt = "";
+        var last = "";
+        this.state.http_request_optional_list;
+        for (let x in this.state.http_request_optional_list.common) {
+            let s = this.state.http_request_optional_list.common[x];
+            console.log(x);
+            if (s.enabled) {
+                if (s.issuer == "custom" && s.type == "array") {
+                    last += "\n" + s.value + "\n";
+                } else {
+                    txt += s.label + ": " + s.value + "\n";
+                }
+            }
+        }
+        return txt + last;
     };
 
     render() {
@@ -985,6 +1048,7 @@ export default class EditorTemplate extends React.Component {
                                         <tr>
                                             <th style={{ width: "20%" }}>Header Name</th>
                                             <th>Header Value</th>
+                                            <th style={{ width: "7%" }}></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -994,26 +1058,28 @@ export default class EditorTemplate extends React.Component {
                                                     return (
                                                         <tr key={header.label}>
                                                             <th scope="row">
-                                                                <header.component
-                                                                    size="lg"
-                                                                    onBlur={(event) =>
-                                                                        this.onTableChange_http_request_option(
-                                                                            hi,
-                                                                            "label",
-                                                                            event.target.value
-                                                                        )
-                                                                    }
-                                                                    defaultValue={
-                                                                        this.state.http_request_optional_list.common[hi]
-                                                                            .label
-                                                                    }
-                                                                    ref={
-                                                                        this.state.http_request_optional_list.common[hi]
-                                                                            .label
-                                                                    }
-                                                                />
+                                                                {header.type == "object" && (
+                                                                    <header.component
+                                                                        size="lg"
+                                                                        onBlur={(event) =>
+                                                                            this.onTableChange_http_request_option(
+                                                                                hi,
+                                                                                "label",
+                                                                                event.target.value
+                                                                            )
+                                                                        }
+                                                                        defaultValue={
+                                                                            this.state.http_request_optional_list
+                                                                                .common[hi].label
+                                                                        }
+                                                                        ref={
+                                                                            this.state.http_request_optional_list
+                                                                                .common[hi].label
+                                                                        }
+                                                                    />
+                                                                )}
                                                             </th>
-                                                            <td>
+                                                            <td sx={{ display: "flex" }}>
                                                                 <header.component
                                                                     size="lg"
                                                                     onBlur={(event) =>
@@ -1032,6 +1098,15 @@ export default class EditorTemplate extends React.Component {
                                                                             .value
                                                                     }
                                                                 />
+                                                            </td>
+                                                            <td>
+                                                                <Button
+                                                                    onClick={() => this.remove_http_request_option(hi)}
+                                                                    variant="plain"
+                                                                    color="danger"
+                                                                >
+                                                                    <DeleteIcon />
+                                                                </Button>
                                                             </td>
                                                         </tr>
                                                     );
@@ -1055,9 +1130,14 @@ export default class EditorTemplate extends React.Component {
                                                             </th>
                                                             <td>
                                                                 <header.component
-                                                                    onBlur={(event) => console.log(event)}
+                                                                    onBlur={(event) =>
+                                                                        this.onTableChange_http_request_option(
+                                                                            hi,
+                                                                            "value",
+                                                                            event.target.value
+                                                                        )
+                                                                    }
                                                                     size="lg"
-                                                                    // onChange={}
                                                                 />
                                                             </td>
                                                         </tr>
@@ -1089,7 +1169,7 @@ export default class EditorTemplate extends React.Component {
                                 <Typography level="body">Output</Typography>
 
                                 <CodeBlock
-                                    text={"GET /file-manager/ HTTP/1.1\nHost: {{Hostname}}\nCookie: clp-fm={{session}}"}
+                                    text={this.format_http_request()}
                                     language="go"
                                     showLineNumbers={false}
                                     theme={dracula}
