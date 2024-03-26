@@ -34,6 +34,7 @@ import Option from "@mui/joy/Option";
 import Textarea from "@mui/joy/Textarea";
 import Checkbox from "@mui/joy/Checkbox";
 import Autocomplete from "@mui/joy/Autocomplete";
+import Switch from "@mui/joy/Switch";
 
 // drop down menu
 import MenuButton from "@mui/joy/MenuButton";
@@ -83,7 +84,6 @@ function CustomAutocomplete(props) {
                 placeholder="Decorators"
                 options={top100Films}
                 onChange={(event, newValue) => {
-                    console.log(event);
                     props.onChange(props.label, newValue);
                 }}
                 size="lg"
@@ -108,7 +108,6 @@ function CustomAutocompleteMC(props) {
                 getOptionLabel={(option) => option.label}
                 defaultValue={[top100Films[13]]}
                 onChange={(event, newValue) => {
-                    console.log(event);
                     props.onChange(props.label, newValue);
                 }}
                 size="lg"
@@ -201,6 +200,35 @@ function CustomRadioButtons() {
         </FormControl>
     );
 }
+function CustomSwitchButtons(props) {
+    const [checked, setChecked] = React.useState(false);
+    return (
+        <FormControl orientation="horizontal" sx={{ width: 300, justifyContent: "space-between" }}>
+            <div>
+                <FormLabel>
+                    {props.label}
+                    <Tooltip title={props.description} placement="right" sx={{ zIndex: 20, ml: 1 }}>
+                        <HelpOutlineIcon color="action" />
+                    </Tooltip>
+                </FormLabel>
+            </div>
+            <Switch
+                checked={props.value}
+                onChange={(event) => props.onChange(props.ikey, props.local, event.target.checked)}
+                color={checked ? "success" : "neutral"}
+                variant={checked ? "solid" : "outlined"}
+                endDecorator={checked ? "On" : "Off"}
+                slotProps={{
+                    endDecorator: {
+                        sx: {
+                            minWidth: 24,
+                        },
+                    },
+                }}
+            />
+        </FormControl>
+    );
+}
 function CustomTextInputBox(props) {
     return (
         <FormControl sx={{ gridColumn: "1/-1" }}>
@@ -245,7 +273,7 @@ function ControlledDropdown(props) {
         <Dropdown>
             <MenuButton startDecorator={<AddIcon />}>More Options</MenuButton>
             <Menu sx={{ minWidth: 180, "--ListItemDecorator-size": "24px" }}>
-                <List sx={{ width: 1 }} key={props.key + "_optionlist"}>
+                <List sx={{ width: 1 }} key={props.ukey + "_optionlist"}>
                     {props.options.map((item, ix) => (
                         <MenuItem
                             key={item.label + ix}
@@ -274,7 +302,7 @@ function GroupControlledDropdown(props) {
             <Menu sx={{ minWidth: 180, "--ListItemDecorator-size": "24px" }}>
                 {Object.entries(props.options).map(([name, animals], index) => (
                     <>
-                        <List sx={{ width: 1 }} key={props.key + "_optionlist"}>
+                        <List sx={{ width: 1 }} key={props.ukey + "_optionlist"}>
                             <ListItem id={`select-group-${name}`} sx={{ my: 0 }} sticky>
                                 <Typography level="body-xs" textTransform="uppercase">
                                     {name} ({animals.length})
@@ -481,6 +509,7 @@ export default class EditorTemplate extends React.Component {
         this.state = {
             userinput: {},
             httpRequestOptionCounter: 0,
+            multipleMatchersCount: 0,
             info_optional_list: [
                 {
                     label: "impact",
@@ -785,6 +814,92 @@ export default class EditorTemplate extends React.Component {
                     },
                 ],
             },
+            matchers_optional_list: [
+                {
+                    label: "status",
+                    description: "",
+                    component: "",
+                    value: [],
+                    valueOption: [],
+                    condition: "",
+                    conditionOption: ["and", "or"],
+                    isNegative: false,
+                    isInternal: false,
+                    enabled: false,
+                },
+                {
+                    label: "word",
+                    description: "",
+                    component: "",
+                    value: [],
+                    valueOption: [],
+                    condition: "",
+                    conditionOption: ["and", "or"],
+                    isNegative: false,
+                    isInternal: false,
+                    enabled: false,
+                },
+                {
+                    label: "regex",
+                    description: "",
+                    component: "",
+                    value: [],
+                    valueOption: [],
+                    condition: "",
+                    conditionOption: ["and", "or"],
+                    isNegative: false,
+                    isInternal: false,
+                    enabled: false,
+                },
+                {
+                    label: "dsl",
+                    description: "",
+                    component: "",
+                    value: [],
+                    valueOption: [],
+                    condition: "",
+                    conditionOption: ["and", "or"],
+                    isNegative: false,
+                    isInternal: false,
+                    enabled: false,
+                },
+                {
+                    label: "xpath",
+                    description: "",
+                    component: "",
+                    value: [],
+                    valueOption: [],
+                    condition: "",
+                    conditionOption: ["and", "or"],
+                    isNegative: false,
+                    isInternal: false,
+                    enabled: false,
+                },
+                {
+                    label: "binary",
+                    description: "",
+                    component: "",
+                    value: [],
+                    valueOption: [],
+                    condition: "",
+                    conditionOption: ["and", "or"],
+                    isNegative: false,
+                    isInternal: false,
+                    enabled: false,
+                },
+                {
+                    label: "size",
+                    description: "",
+                    component: "",
+                    value: [],
+                    valueOption: [],
+                    condition: "",
+                    conditionOption: ["and", "or"],
+                    isNegative: false,
+                    isInternal: false,
+                    enabled: false,
+                },
+            ],
         };
     }
 
@@ -795,7 +910,6 @@ export default class EditorTemplate extends React.Component {
             old["info"] = {};
         }
         old["info"][key] = value;
-        console.log(old);
         this.setState({ userinput: old });
     };
     onchange_classification = (key, value) => {
@@ -807,7 +921,6 @@ export default class EditorTemplate extends React.Component {
             old["info"]["classification"] = {};
         }
         old["info"]["classification"][key] = value;
-        console.log(old);
         this.setState({ userinput: old });
     };
     onchange_http = (key, value) => {
@@ -816,7 +929,6 @@ export default class EditorTemplate extends React.Component {
             old["http"] = {};
         }
         old["http"][key] = value;
-        console.log(old);
         this.setState({ userinput: old });
     };
 
@@ -830,7 +942,13 @@ export default class EditorTemplate extends React.Component {
         old[key].enabled = !old[key].enabled;
         this.setState({ classification_optional_list: old });
     };
+    onchange_matchers_option = (key) => {
+        const old = this.state.matchers_optional_list;
+        old[key].enabled = !old[key].enabled;
+        this.setState({ matchers_optional_list: old });
+    };
 
+    // Request Change Handler
     onchange_http_request_option = (key) => {
         const old = this.state.http_request_optional_list;
         var newHROC = 0;
@@ -878,15 +996,11 @@ export default class EditorTemplate extends React.Component {
     onTableChange_http_request_option = (key, local, value) => {
         const old = this.state.http_request_optional_list;
         old.common[key][local] = value;
-        console.log(local);
-        console.log(value);
-        console.log(old.common);
         this.setState({
             http_request_optional_list: old,
         });
     };
     remove_http_request_option = (key) => {
-        console.log(key);
         const old = this.state.http_request_optional_list;
         delete old.common[key];
         this.setState({
@@ -895,7 +1009,6 @@ export default class EditorTemplate extends React.Component {
         });
     };
     reset_http_request_option = (key) => {
-        console.log(key);
         const old = this.state.http_request_optional_list;
         old.common[key].value = "";
         old.common[key].enabled = false;
@@ -910,7 +1023,6 @@ export default class EditorTemplate extends React.Component {
         this.state.http_request_optional_list;
         for (let x in this.state.http_request_optional_list.common) {
             let s = this.state.http_request_optional_list.common[x];
-            console.log(x);
             if (s.enabled) {
                 if (s.issuer == "custom" && s.type == "array") {
                     last += "\n" + s.value + "\n";
@@ -920,6 +1032,22 @@ export default class EditorTemplate extends React.Component {
             }
         }
         return txt + last;
+    };
+
+    // Matchers Change Handler
+    onXchange_matchers_option = (key, local, value) => {
+        const old = this.state.matchers_optional_list;
+        old[key][local] = value;
+        this.setState({
+            matchers_optional_list: old,
+        });
+    };
+    add_matchers_type_value = (key) => {
+        const old = this.state.matchers_optional_list;
+        old[key].value.push("");
+        this.setState({
+            matchers_optional_list: old,
+        });
     };
 
     render() {
@@ -978,7 +1106,7 @@ export default class EditorTemplate extends React.Component {
                     })}
                     <Grid xs={4}>
                         <ControlledDropdown
-                            key={"information"}
+                            ukey={"information"}
                             options={this.state.info_optional_list}
                             onChange={this.onchange_information_option}
                         ></ControlledDropdown>
@@ -1018,7 +1146,7 @@ export default class EditorTemplate extends React.Component {
                     })}
                     <Grid xs={4}>
                         <ControlledDropdown
-                            key={"classification"}
+                            ukey={"classification"}
                             options={this.state.classification_optional_list}
                             onChange={this.onchange_classification_option}
                         ></ControlledDropdown>
@@ -1172,7 +1300,7 @@ export default class EditorTemplate extends React.Component {
                     {this.state.userinput.http && this.state.userinput.http.method && (
                         <Grid xs={4}>
                             <GroupControlledDropdown
-                                key={"http_request"}
+                                ukey={"http_request"}
                                 options={this.state.http_request_optional_list}
                                 onXChange={this.onXchange_http_request_option}
                                 onChange={this.onchange_http_request_option}
@@ -1195,6 +1323,91 @@ export default class EditorTemplate extends React.Component {
                                 />
                             </Grid>
                         )}
+                </CustomCard>
+
+                <CustomCard title={"matchers"} description={"Info contains metadata information about a template"}>
+                    {this.state.matchers_optional_list.map((val, i) => {
+                        if (val.enabled == true) {
+                            return (
+                                <Grid xs={6}>
+                                    <Card key={"matchers_type_" + val.label} variant="soft" sx={{ w: "100%" }}>
+                                        <Typography
+                                            level="title-lg"
+                                            endDecorator={
+                                                <Tooltip title={val.description} placement="right">
+                                                    <HelpOutlineIcon color="action" />
+                                                </Tooltip>
+                                            }
+                                        >
+                                            {val.label}
+                                        </Typography>
+                                        <Divider inset="none" />
+                                        <CardContent>
+                                            <Grid sx={{ p: 0, mb: 1 }}>
+                                                <CustomSwitchButtons
+                                                    label={"Internal Matchers"}
+                                                    description={
+                                                        "When writing multi-protocol or flow based templates, there might be a case where we need to validate/match first request then proceed to next request"
+                                                    }
+                                                    value={val.isInternal}
+                                                    onChange={this.onXchange_matchers_option}
+                                                    ikey={i}
+                                                    local={"isInternal"}
+                                                ></CustomSwitchButtons>
+                                                <CustomSwitchButtons
+                                                    label={"Negative Matchers"}
+                                                    description={
+                                                        "All types of matchers also support negative conditions, mostly useful when you look for a match with an exclusions"
+                                                    }
+                                                    value={val.isNegative}
+                                                    onChange={this.onXchange_matchers_option}
+                                                    ikey={i}
+                                                    local={"isNegative"}
+                                                ></CustomSwitchButtons>
+                                            </Grid>
+                                            <Divider />
+                                            <Grid container spacing={2} sx={{ flexGrow: 1 }}>
+                                                <Grid xs={2}>Values</Grid>
+                                                <Grid xs={10}>
+                                                    {val.value.map((typeval, si) => {
+                                                        return (
+                                                            <Box display="flex" alignItems="center" sx={{ mb: 1 }}>
+                                                                <Input></Input>
+                                                                <Button
+                                                                    // onClick={() => this.reset_http_request_option(hi)}
+                                                                    variant="plain"
+                                                                    color="danger"
+                                                                >
+                                                                    <DeleteIcon />
+                                                                </Button>
+                                                            </Box>
+                                                        );
+                                                    })}
+                                                </Grid>
+                                            </Grid>
+                                            <Grid sx={{ p: 0, mt: 1 }}>
+                                                <Button
+                                                    color="primary"
+                                                    variant="outlined"
+                                                    startDecorator={<AddIcon />}
+                                                    onClick={() => this.add_matchers_type_value(i)}
+                                                >
+                                                    Add {val.label}
+                                                </Button>
+                                            </Grid>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            );
+                        }
+                    })}
+                    <Grid xs={4}>
+                        <ControlledDropdown
+                            ukey={"matchers"}
+                            options={this.state.matchers_optional_list}
+                            onChange={this.onchange_matchers_option}
+                        ></ControlledDropdown>
+                    </Grid>
                 </CustomCard>
             </Container>
         );
