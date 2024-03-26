@@ -201,7 +201,6 @@ function CustomRadioButtons() {
     );
 }
 function CustomSwitchButtons(props) {
-    const [checked, setChecked] = React.useState(false);
     return (
         <FormControl orientation="horizontal" sx={{ width: 300, justifyContent: "space-between" }}>
             <div>
@@ -215,9 +214,9 @@ function CustomSwitchButtons(props) {
             <Switch
                 checked={props.value}
                 onChange={(event) => props.onChange(props.ikey, props.local, event.target.checked)}
-                color={checked ? "success" : "neutral"}
-                variant={checked ? "solid" : "outlined"}
-                endDecorator={checked ? "On" : "Off"}
+                color={props.value ? "success" : "neutral"}
+                variant={props.value ? "solid" : "outlined"}
+                endDecorator={props.value ? "On" : "Off"}
                 slotProps={{
                     endDecorator: {
                         sx: {
