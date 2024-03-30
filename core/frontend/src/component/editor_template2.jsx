@@ -34,6 +34,7 @@ import Option from "@mui/joy/Option";
 import Textarea from "@mui/joy/Textarea";
 import Checkbox from "@mui/joy/Checkbox";
 import Autocomplete from "@mui/joy/Autocomplete";
+import AutocompleteOption from "@mui/joy/AutocompleteOption";
 import Switch from "@mui/joy/Switch";
 
 // drop down menu
@@ -41,6 +42,7 @@ import MenuButton from "@mui/joy/MenuButton";
 import List from "@mui/joy/List";
 import ListItem from "@mui/joy/ListItem";
 import ListItemDecorator from "@mui/joy/ListItemDecorator";
+import ListItemContent from "@mui/joy/ListItemContent";
 import ListDivider from "@mui/joy/ListDivider";
 import Menu from "@mui/joy/Menu";
 import MenuItem from "@mui/joy/MenuItem";
@@ -106,9 +108,69 @@ function CustomAutocompleteMC(props) {
                 placeholder={props.label}
                 options={top100Films}
                 getOptionLabel={(option) => option.label}
-                defaultValue={[top100Films[13]]}
                 onChange={(event, newValue) => {
                     props.onChange(props.label, newValue);
+                }}
+                size="lg"
+            />
+        </FormControl>
+    );
+}
+function CustomAutocompleteFreeMC(props) {
+    return (
+        <FormControl sx={{ gridColumn: "1/-1" }}>
+            <FormLabel>
+                {firstCharToUpper(props.label)}
+                <Tooltip title={props.description} placement="right" sx={{ zIndex: 20, ml: 1 }}>
+                    <HelpOutlineIcon color="action" />
+                </Tooltip>
+            </FormLabel>
+            <Autocomplete
+                multiple
+                freeSolo
+                id={props.label}
+                placeholder={props.label}
+                options={["Last input 1", "Last input 2", "Last input 3", "Last input 4", "Last input 5"]}
+                // getOptionLabel={(option) => option.label}
+                onChange={(event, newValue) => {
+                    props.onChange(props.ikey, props.label, newValue);
+                }}
+                size="lg"
+            />
+        </FormControl>
+    );
+}
+function MatchingPartAutocompleteMC(props) {
+    return (
+        <FormControl sx={{ gridColumn: "1/-1" }}>
+            <FormLabel>
+                {firstCharToUpper(props.label)}
+                <Tooltip title={props.description} placement="right" sx={{ zIndex: 20, ml: 1 }}>
+                    <HelpOutlineIcon color="action" />
+                </Tooltip>
+            </FormLabel>
+            <Autocomplete
+                multiple
+                disableClearable
+                id={props.label}
+                placeholder={props.label}
+                options={props.options}
+                getOptionLabel={(option) => option.label}
+                renderOption={(props, option) => (
+                    <AutocompleteOption {...props}>
+                        <ListItemContent sx={{ fontSize: "sm" }}>
+                            {option.label}
+                            <Typography level="body-xs">{option.description}</Typography>
+                        </ListItemContent>
+                    </AutocompleteOption>
+                )}
+                onChange={(event, newValue) => {
+                    var tmpstr = "";
+                    newValue.forEach((val) => {
+                        tmpstr = tmpstr + val.label + ",";
+                    });
+                    tmpstr = tmpstr.substring(0, tmpstr.length - 1);
+                    props.onChange(props.ikey, props.label, tmpstr);
                 }}
                 size="lg"
             />
@@ -200,9 +262,76 @@ function CustomRadioButtons() {
         </FormControl>
     );
 }
+
+function ConditionRadioButtons(props) {
+    return (
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2, my: 1 }}>
+            <Typography id="segmented-controls-example" fontWeight="lg" fontSize="sm">
+                <FormLabel>
+                    Condition
+                    <Tooltip title={"Condition xxxxxxx"} placement="right" sx={{ zIndex: 20, ml: 1 }}>
+                        <HelpOutlineIcon color="action" />
+                    </Tooltip>
+                </FormLabel>
+            </Typography>
+            <RadioGroup
+                orientation="horizontal"
+                aria-labelledby="segmented-controls-example"
+                name="justify"
+                value={props.value}
+                onChange={(event) => props.onChange(props.ikey, "condition", event.target.value)}
+                sx={{
+                    minHeight: 48,
+                    padding: "4px",
+                    borderRadius: "12px",
+                    bgcolor: "var(--joy-palette-neutral-400, #9FA6AD)",
+                    "--RadioGroup-gap": "4px",
+                    "--Radio-actionRadius": "8px",
+                }}
+            >
+                {["or", "and"].map((item) => (
+                    <Radio
+                        key={item}
+                        color="neutral"
+                        value={item}
+                        disableIcon
+                        label={item.toUpperCase()}
+                        variant="plain"
+                        disabled={item == "and" && props.options.length === 1 && props.options[0] === "or"}
+                        sx={{
+                            px: 2,
+                            alignItems: "center",
+                            ...(item === "and" && props.options.length === 1 && props.options[0] === "or"
+                                ? {
+                                      bgcolor: "grey",
+                                      opacity: 0.5,
+                                      borderRadius: "8px",
+                                  }
+                                : {}),
+                        }}
+                        slotProps={{
+                            action: ({ checked }) => ({
+                                sx: {
+                                    ...(checked && {
+                                        bgcolor: "background.surface",
+                                        boxShadow: "sm",
+                                        "&:hover": {
+                                            bgcolor: "background.surface",
+                                        },
+                                    }),
+                                },
+                            }),
+                        }}
+                    />
+                ))}
+            </RadioGroup>
+        </Box>
+    );
+}
+
 function CustomSwitchButtons(props) {
     return (
-        <FormControl orientation="horizontal" sx={{ width: 300, justifyContent: "space-between" }}>
+        <FormControl orientation="horizontal" sx={{ width: 1, justifyContent: "space-between" }}>
             <div>
                 <FormLabel>
                     {props.label}
@@ -505,10 +634,32 @@ const top100Films = [
 export default class EditorTemplate extends React.Component {
     constructor(props) {
         super(props);
+
+        this.matchersPartOpts = [
+            { label: "template-id", description: "ID of the template executed" },
+            { label: "template-info", description: "Info Block of the template executed" },
+            { label: "template-path", description: "Path of the template executed" },
+            { label: "host", description: "Host is the input to the template" },
+            { label: "matched", description: "Matched is the input which was matched upon" },
+            { label: "type", description: "Type is the type of request made" },
+            { label: "request", description: "HTTP request made from the client" },
+            { label: "response", description: "HTTP response received from server" },
+            { label: "status_code", description: "Status Code received from the Server" },
+            { label: "body", description: "HTTP response body received from server (default)" },
+            { label: "content_length", description: "HTTP Response content length" },
+            { label: "header", description: "HTTP response headers" },
+            { label: "all_headers", description: "HTTP response headers" },
+            { label: "duration", description: "HTTP request time duration" },
+            { label: "all", description: "HTTP response body + headers" },
+            { label: "cookies_from_response", description: "HTTP response cookies in name:value format" },
+            { label: "headers_from_response", description: "HTTP response headers in name:value format" },
+        ];
+
         this.state = {
             userinput: {},
             httpRequestOptionCounter: 0,
             multipleMatchersCount: 0,
+
             info_optional_list: [
                 {
                     label: "impact",
@@ -819,9 +970,82 @@ export default class EditorTemplate extends React.Component {
                     description: "",
                     component: "",
                     value: [],
-                    valueOption: [],
-                    condition: "",
-                    conditionOption: ["and", "or"],
+                    valueOption: [
+                        {
+                            code: 100,
+                            label: "Continue",
+                            description:
+                                "The server has received the request headers and the client should proceed to send the request body.",
+                        },
+                        {
+                            code: 101,
+                            label: "Switching Protocols",
+                            description: "The server is changing protocols according to the client's request.",
+                        },
+                        { code: 200, label: "OK", description: "The request was successful." },
+                        {
+                            code: 201,
+                            label: "Created",
+                            description: "The request has been fulfilled, and a new resource is created.",
+                        },
+                        {
+                            code: 204,
+                            label: "No Content",
+                            description:
+                                "The server successfully processed the request, but there is no content to return.",
+                        },
+                        {
+                            code: 301,
+                            label: "Moved Permanently",
+                            description: "The requested resource has been permanently moved to a new location.",
+                        },
+                        {
+                            code: 302,
+                            label: "Found",
+                            description: "The requested resource temporarily resides under a different URL.",
+                        },
+                        {
+                            code: 304,
+                            label: "Not Modified",
+                            description: "Indicates that the resource has not been modified since the last request.",
+                        },
+                        {
+                            code: 400,
+                            label: "Bad Request",
+                            description: "The server cannot process the request due to a client error.",
+                        },
+                        { code: 401, label: "Unauthorized", description: "The request requires user authentication." },
+                        {
+                            code: 403,
+                            label: "Forbidden",
+                            description: "The server understood the request, but refuses to authorize it.",
+                        },
+                        {
+                            code: 404,
+                            label: "Not Found",
+                            description: "The requested resource could not be found on the server.",
+                        },
+                        {
+                            code: 500,
+                            label: "Internal Server Error",
+                            description:
+                                "A generic error message indicating that the server encountered an unexpected condition.",
+                        },
+                        {
+                            code: 502,
+                            label: "Bad Gateway",
+                            description:
+                                "The server received an invalid response from an upstream server while processing the request.",
+                        },
+                        {
+                            code: 503,
+                            label: "Service Unavailable",
+                            description:
+                                "The server is currently unable to handle the request due to temporary overloading or maintenance.",
+                        },
+                    ],
+                    condition: "or",
+                    conditionOptions: ["or"],
                     isNegative: false,
                     isInternal: false,
                     enabled: false,
@@ -832,8 +1056,9 @@ export default class EditorTemplate extends React.Component {
                     component: "",
                     value: [],
                     valueOption: [],
-                    condition: "",
-                    conditionOption: ["and", "or"],
+                    condition: "or",
+                    conditionOptions: ["and", "or"],
+                    part: "",
                     isNegative: false,
                     isInternal: false,
                     enabled: false,
@@ -844,8 +1069,9 @@ export default class EditorTemplate extends React.Component {
                     component: "",
                     value: [],
                     valueOption: [],
-                    condition: "",
-                    conditionOption: ["and", "or"],
+                    condition: "or",
+                    conditionOptions: ["and", "or"],
+                    part: "",
                     isNegative: false,
                     isInternal: false,
                     enabled: false,
@@ -856,8 +1082,9 @@ export default class EditorTemplate extends React.Component {
                     component: "",
                     value: [],
                     valueOption: [],
-                    condition: "",
-                    conditionOption: ["and", "or"],
+                    condition: "or",
+                    conditionOptions: ["and", "or"],
+                    part: "",
                     isNegative: false,
                     isInternal: false,
                     enabled: false,
@@ -868,8 +1095,9 @@ export default class EditorTemplate extends React.Component {
                     component: "",
                     value: [],
                     valueOption: [],
-                    condition: "",
-                    conditionOption: ["and", "or"],
+                    condition: "or",
+                    conditionOptions: ["and", "or"],
+                    part: "",
                     isNegative: false,
                     isInternal: false,
                     enabled: false,
@@ -880,8 +1108,9 @@ export default class EditorTemplate extends React.Component {
                     component: "",
                     value: [],
                     valueOption: [],
-                    condition: "",
-                    conditionOption: ["and", "or"],
+                    condition: "or",
+                    conditionOptions: ["and", "or"],
+                    part: "",
                     isNegative: false,
                     isInternal: false,
                     enabled: false,
@@ -892,8 +1121,9 @@ export default class EditorTemplate extends React.Component {
                     component: "",
                     value: [],
                     valueOption: [],
-                    condition: "",
-                    conditionOption: ["and", "or"],
+                    condition: "or",
+                    conditionOptions: ["and", "or"],
+                    part: "",
                     isNegative: false,
                     isInternal: false,
                     enabled: false,
@@ -902,7 +1132,7 @@ export default class EditorTemplate extends React.Component {
         };
     }
 
-    // Event Handler
+    // Event Handler for User Input Fields (save to database)
     onchange_information = (key, value) => {
         const old = this.state.userinput;
         if (old["info"] === undefined) {
@@ -931,6 +1161,7 @@ export default class EditorTemplate extends React.Component {
         this.setState({ userinput: old });
     };
 
+    // Event Handler for User Input Fields (show/hide)
     onchange_information_option = (key) => {
         const old = this.state.info_optional_list;
         old[key].enabled = !old[key].enabled;
@@ -942,8 +1173,15 @@ export default class EditorTemplate extends React.Component {
         this.setState({ classification_optional_list: old });
     };
     onchange_matchers_option = (key) => {
-        const old = this.state.matchers_optional_list;
-        old[key].enabled = !old[key].enabled;
+        const old = [...this.state.matchers_optional_list];
+        if (key > 6) {
+            // delete old[key];
+            old[key].enabled = !old[key].enabled;
+        } else {
+            const taget = { ...old[key] };
+            old.push(taget);
+            old[old.length - 1].enabled = true;
+        }
         this.setState({ matchers_optional_list: old });
     };
 
@@ -1037,13 +1275,7 @@ export default class EditorTemplate extends React.Component {
     onXchange_matchers_option = (key, local, value) => {
         const old = this.state.matchers_optional_list;
         old[key][local] = value;
-        this.setState({
-            matchers_optional_list: old,
-        });
-    };
-    add_matchers_type_value = (key) => {
-        const old = this.state.matchers_optional_list;
-        old[key].value.push("");
+        console.log(old);
         this.setState({
             matchers_optional_list: old,
         });
@@ -1329,7 +1561,7 @@ export default class EditorTemplate extends React.Component {
                         if (val.enabled == true) {
                             return (
                                 <Grid xs={6}>
-                                    <Card key={"matchers_type_" + val.label} variant="soft" sx={{ w: "100%" }}>
+                                    <Card key={"matchers_type_" + i + val.label} variant="soft" sx={{ w: "100%" }}>
                                         <Typography
                                             level="title-lg"
                                             endDecorator={
@@ -1338,7 +1570,7 @@ export default class EditorTemplate extends React.Component {
                                                 </Tooltip>
                                             }
                                         >
-                                            {val.label}
+                                            {firstCharToUpper(val.label)}
                                         </Typography>
                                         <Divider inset="none" />
                                         <CardContent>
@@ -1365,35 +1597,74 @@ export default class EditorTemplate extends React.Component {
                                                 ></CustomSwitchButtons>
                                             </Grid>
                                             <Divider />
-                                            <Grid container spacing={2} sx={{ flexGrow: 1 }}>
-                                                <Grid xs={2}>Values</Grid>
-                                                <Grid xs={10}>
-                                                    {val.value.map((typeval, si) => {
-                                                        return (
-                                                            <Box display="flex" alignItems="center" sx={{ mb: 1 }}>
-                                                                <Input></Input>
-                                                                <Button
-                                                                    // onClick={() => this.reset_http_request_option(hi)}
-                                                                    variant="plain"
-                                                                    color="danger"
-                                                                >
-                                                                    <DeleteIcon />
-                                                                </Button>
-                                                            </Box>
-                                                        );
-                                                    })}
+                                            <Grid>
+                                                {val.label != "status" && (
+                                                    <MatchingPartAutocompleteMC
+                                                        ikey={i}
+                                                        label={"part"}
+                                                        description={"Select the part of the request"}
+                                                        options={this.matchersPartOpts}
+                                                        onChange={this.onXchange_matchers_option}
+                                                    />
+                                                )}
+                                                <ConditionRadioButtons
+                                                    value={val.condition}
+                                                    options={val.conditionOptions}
+                                                    onChange={this.onXchange_matchers_option}
+                                                    ikey={i}
+                                                />
+                                            </Grid>
+                                            <Divider />
+                                            {val.label == "status" && (
+                                                <Grid container marginTop={1}>
+                                                    <Autocomplete
+                                                        multiple
+                                                        freeSolo
+                                                        disableClearable
+                                                        id={val.label}
+                                                        placeholder={val.label}
+                                                        options={val.valueOption}
+                                                        getOptionLabel={(option) => {
+                                                            return typeof option == "string"
+                                                                ? option
+                                                                : option.code + " - " + option.label;
+                                                        }}
+                                                        onChange={(event, newValue) => {
+                                                            const tmparray = [];
+                                                            newValue.forEach((xval, xi) => {
+                                                                if (typeof xval == "string") {
+                                                                    if (!tmparray.includes(parseInt(xval))) {
+                                                                        tmparray.push(parseInt(xval));
+                                                                    }
+                                                                } else {
+                                                                    if (!tmparray.includes(xval.code)) {
+                                                                        tmparray.push(xval.code);
+                                                                    }
+                                                                }
+                                                            });
+                                                            this.onXchange_matchers_option(i, val.label, tmparray);
+                                                        }}
+                                                        renderOption={(props, option) => (
+                                                            <AutocompleteOption {...props}>
+                                                                <ListItemContent sx={{ fontSize: "sm" }}>
+                                                                    {option.code + " - " + option.label}
+                                                                    <Typography level="body-xs">
+                                                                        {option.description}
+                                                                    </Typography>
+                                                                </ListItemContent>
+                                                            </AutocompleteOption>
+                                                        )}
+                                                        size="lg"
+                                                    />
                                                 </Grid>
-                                            </Grid>
-                                            <Grid sx={{ p: 0, mt: 1 }}>
-                                                <Button
-                                                    color="primary"
-                                                    variant="outlined"
-                                                    startDecorator={<AddIcon />}
-                                                    onClick={() => this.add_matchers_type_value(i)}
-                                                >
-                                                    Add {val.label}
-                                                </Button>
-                                            </Grid>
+                                            )}
+                                            {val.label != "status" && (
+                                                <CustomAutocompleteFreeMC
+                                                    label={val.label}
+                                                    onChange={this.onXchange_matchers_option}
+                                                    ikey={i}
+                                                ></CustomAutocompleteFreeMC>
+                                            )}
                                         </CardContent>
                                     </Card>
                                 </Grid>
