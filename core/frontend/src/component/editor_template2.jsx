@@ -140,7 +140,30 @@ function CustomAutocompleteFreeMC(props) {
         </FormControl>
     );
 }
-function MatchingPartAutocompleteMC(props) {
+function CustomAutocompleteFree(props) {
+    return (
+        <FormControl sx={{ gridColumn: "1/-1" }}>
+            <FormLabel>
+                {firstCharToUpper(props.label)}
+                <Tooltip title={props.description} placement="right" sx={{ zIndex: 20, ml: 1 }}>
+                    <HelpOutlineIcon color="action" />
+                </Tooltip>
+            </FormLabel>
+            <Autocomplete
+                freeSolo
+                id={props.label}
+                placeholder={props.label}
+                options={props.options}
+                // getOptionLabel={(option) => option.label}
+                onChange={(event, newValue) => {
+                    props.onChange(props.ikey, props.label, newValue);
+                }}
+                size="lg"
+            />
+        </FormControl>
+    );
+}
+function PartAutocompleteMC(props) {
     return (
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
@@ -151,6 +174,43 @@ function MatchingPartAutocompleteMC(props) {
             </FormLabel>
             <Autocomplete
                 multiple
+                disableClearable
+                id={props.label}
+                placeholder={props.label}
+                options={props.options}
+                getOptionLabel={(option) => option.label}
+                renderOption={(props, option) => (
+                    <AutocompleteOption {...props}>
+                        <ListItemContent sx={{ fontSize: "sm" }}>
+                            {option.label}
+                            <Typography level="body-xs">{option.description}</Typography>
+                        </ListItemContent>
+                    </AutocompleteOption>
+                )}
+                onChange={(event, newValue) => {
+                    var tmpstr = "";
+                    newValue.forEach((val) => {
+                        tmpstr = tmpstr + val.label + ",";
+                    });
+                    tmpstr = tmpstr.substring(0, tmpstr.length - 1);
+                    props.onChange(props.ikey, props.label, tmpstr);
+                }}
+                size="lg"
+            />
+        </FormControl>
+    );
+}
+function ExtractorAutocomplete(props) {
+    return (
+        <FormControl sx={{ gridColumn: "1/-1" }}>
+            <FormLabel>
+                {firstCharToUpper(props.label)}
+                <Tooltip title={props.description} placement="right" sx={{ zIndex: 20, ml: 1 }}>
+                    <HelpOutlineIcon color="action" />
+                </Tooltip>
+            </FormLabel>
+            <Autocomplete
+                freeSolo
                 disableClearable
                 id={props.label}
                 placeholder={props.label}
@@ -391,6 +451,7 @@ function CustomTextareaInputBox(props) {
                 onChange={(event) => {
                     props.onChange(props.label, event.target.value);
                 }}
+                defaultValue={props.value}
             />
         </FormControl>
     );
@@ -658,8 +719,8 @@ export default class EditorTemplate extends React.Component {
         this.state = {
             userinput: {},
             httpRequestOptionCounter: 0,
-            multipleMatchersCount: 0,
-
+            matchersConditionCounter: 0,
+            matchersCondition: "or",
             info_optional_list: [
                 {
                     label: "impact",
@@ -968,8 +1029,6 @@ export default class EditorTemplate extends React.Component {
                 {
                     label: "status",
                     description: "",
-                    component: "",
-                    value: [],
                     valueOption: [
                         {
                             code: 100,
@@ -1053,8 +1112,6 @@ export default class EditorTemplate extends React.Component {
                 {
                     label: "word",
                     description: "",
-                    component: "",
-                    value: [],
                     valueOption: [],
                     condition: "or",
                     conditionOptions: ["and", "or"],
@@ -1066,8 +1123,6 @@ export default class EditorTemplate extends React.Component {
                 {
                     label: "regex",
                     description: "",
-                    component: "",
-                    value: [],
                     valueOption: [],
                     condition: "or",
                     conditionOptions: ["and", "or"],
@@ -1079,8 +1134,6 @@ export default class EditorTemplate extends React.Component {
                 {
                     label: "dsl",
                     description: "",
-                    component: "",
-                    value: [],
                     valueOption: [],
                     condition: "or",
                     conditionOptions: ["and", "or"],
@@ -1092,8 +1145,6 @@ export default class EditorTemplate extends React.Component {
                 {
                     label: "xpath",
                     description: "",
-                    component: "",
-                    value: [],
                     valueOption: [],
                     condition: "or",
                     conditionOptions: ["and", "or"],
@@ -1105,8 +1156,6 @@ export default class EditorTemplate extends React.Component {
                 {
                     label: "binary",
                     description: "",
-                    component: "",
-                    value: [],
                     valueOption: [],
                     condition: "or",
                     conditionOptions: ["and", "or"],
@@ -1118,13 +1167,64 @@ export default class EditorTemplate extends React.Component {
                 {
                     label: "size",
                     description: "",
-                    component: "",
-                    value: [],
                     valueOption: [],
                     condition: "or",
                     conditionOptions: ["and", "or"],
                     part: "",
                     isNegative: false,
+                    isInternal: false,
+                    enabled: false,
+                },
+            ],
+            extractors_optional_list: [
+                {
+                    label: "regex",
+                    description: "",
+                    valueOption: [],
+                    part: "",
+                    group: "",
+                    name: "",
+                    isInternal: false,
+                    enabled: false,
+                },
+                {
+                    label: "dsl",
+                    description: "",
+                    valueOption: [],
+                    part: "",
+                    group: "",
+                    name: "",
+                    isInternal: false,
+                    enabled: false,
+                },
+                {
+                    label: "xpath",
+                    description: "",
+                    valueOption: [],
+                    part: "",
+                    group: "",
+                    name: "",
+                    attribute: "value",
+                    isInternal: false,
+                    enabled: false,
+                },
+                {
+                    label: "kval",
+                    description: "",
+                    valueOption: [],
+                    part: "",
+                    group: "",
+                    name: "",
+                    isInternal: false,
+                    enabled: false,
+                },
+                {
+                    label: "json",
+                    description: "",
+                    valueOption: [],
+                    part: "",
+                    group: "",
+                    name: "",
                     isInternal: false,
                     enabled: false,
                 },
@@ -1174,7 +1274,26 @@ export default class EditorTemplate extends React.Component {
     };
     onchange_matchers_option = (key) => {
         const old = [...this.state.matchers_optional_list];
+        var mcc = this.state.matchersConditionCounter;
         if (key > 6) {
+            // delete old[key];
+            old[key].enabled = !old[key].enabled;
+            if (old[key].enabled) {
+                mcc++;
+            } else {
+                mcc--;
+            }
+        } else {
+            const taget = { ...old[key] };
+            old.push(taget);
+            old[old.length - 1].enabled = true;
+            mcc++;
+        }
+        this.setState({ matchers_optional_list: old, matchersConditionCounter: mcc });
+    };
+    onchange_extractors_option = (key) => {
+        const old = [...this.state.extractors_optional_list];
+        if (key > 4) {
             // delete old[key];
             old[key].enabled = !old[key].enabled;
         } else {
@@ -1182,7 +1301,7 @@ export default class EditorTemplate extends React.Component {
             old.push(taget);
             old[old.length - 1].enabled = true;
         }
-        this.setState({ matchers_optional_list: old });
+        this.setState({ extractors_optional_list: old });
     };
 
     // Request Change Handler
@@ -1279,6 +1398,77 @@ export default class EditorTemplate extends React.Component {
         this.setState({
             matchers_optional_list: old,
         });
+    };
+    onChangeMatcherCondition = (key, local, value) => {
+        this.setState({ matchersCondition: value });
+    };
+
+    // Extractors Change Handler
+    onXchange_Extractors_option = (key, local, value) => {
+        const old = this.state.extractors_optional_list;
+        old[key][local] = value;
+        console.log(old);
+        this.setState({
+            extractors_optional_list: old,
+        });
+    };
+
+    saveToDataBase = () => {
+        const user_input = {};
+
+        if (this.state.userinput.hasOwnProperty("info")) {
+            user_input["info"] = this.state.userinput.info;
+        }
+
+        user_input["http"] = {};
+        console.log(this.state.userinput.http);
+        if (this.state.userinput.hasOwnProperty("info") && this.state.userinput.http.hasOwnProperty("method")) {
+            if (this.state.httpRequestOptionCounter < 2 && this.state.userinput.http.method == "GET") {
+                user_input["http"] = {
+                    method: this.state.userinput.http.method,
+                    path: this.state.userinput.http.path,
+                };
+            } else {
+                let http_raw_request = this.format_http_request();
+                user_input["http"] = {
+                    raw: [http_raw_request],
+                };
+            }
+        } else {
+        }
+
+        if (this.state.matchersConditionCounter > 1 && this.state.matchersCondition != "") {
+            user_input["http"]["matchers-condition"] = this.state.matchersCondition;
+        }
+
+        user_input["http"]["matchers"] = [];
+        for (let x in this.state.matchers_optional_list) {
+            const t = this.state.matchers_optional_list[x];
+            if (this.state.matchers_optional_list[x].enabled) {
+                const matcherCO = {};
+                matcherCO["type"] = t.label;
+                if (t.label !== "status") {
+                    if (t.part != "") {
+                        matcherCO["part"] = t.part;
+                    }
+                    if (t[t.label].length > 1) {
+                        matcherCO["condition"] = t.condition;
+                    }
+                }
+
+                if (t["isInternal"]) {
+                    matcherCO["negative"] = t.isNegative;
+                }
+                if (t["isInternal"]) {
+                    matcherCO["internal"] = t.isInternal;
+                }
+                matcherCO[t.label] = t[t.label];
+                user_input["http"]["matchers"].push(matcherCO);
+            }
+        }
+
+        // console.log(this.state.extractors_optional_list);
+        console.log(user_input);
     };
 
     render() {
@@ -1557,6 +1747,17 @@ export default class EditorTemplate extends React.Component {
                 </CustomCard>
 
                 <CustomCard title={"matchers"} description={"Info contains metadata information about a template"}>
+                    {this.state.matchersConditionCounter > 1 && (
+                        <Grid xs={12}>
+                            <ConditionRadioButtons
+                                value={this.state.matchersCondition}
+                                options={["or", "and"]}
+                                onChange={this.onChangeMatcherCondition}
+                                ikey={0}
+                            />
+                            <Divider inset="none" />
+                        </Grid>
+                    )}
                     {this.state.matchers_optional_list.map((val, i) => {
                         if (val.enabled == true) {
                             return (
@@ -1597,9 +1798,9 @@ export default class EditorTemplate extends React.Component {
                                                 ></CustomSwitchButtons>
                                             </Grid>
                                             <Divider />
-                                            <Grid>
+                                            <Grid sx={{ p: 0, mb: 0 }}>
                                                 {val.label != "status" && (
-                                                    <MatchingPartAutocompleteMC
+                                                    <PartAutocompleteMC
                                                         ikey={i}
                                                         label={"part"}
                                                         description={"Select the part of the request"}
@@ -1655,6 +1856,7 @@ export default class EditorTemplate extends React.Component {
                                                             </AutocompleteOption>
                                                         )}
                                                         size="lg"
+                                                        sx={{ width: "100%" }}
                                                     />
                                                 </Grid>
                                             )}
@@ -1679,6 +1881,125 @@ export default class EditorTemplate extends React.Component {
                         ></ControlledDropdown>
                     </Grid>
                 </CustomCard>
+
+                <CustomCard
+                    title={"Extractors"}
+                    description={
+                        "Extractors can be used to extract and display in results a match from the response returned by a module."
+                    }
+                >
+                    {this.state.extractors_optional_list.map((val, i) => {
+                        if (val.enabled == true) {
+                            return (
+                                <Grid xs={6}>
+                                    <Card key={"matchers_type_" + i + val.label} variant="soft" sx={{ w: "100%" }}>
+                                        <Typography
+                                            level="title-lg"
+                                            endDecorator={
+                                                <Tooltip title={val.description} placement="right">
+                                                    <HelpOutlineIcon color="action" />
+                                                </Tooltip>
+                                            }
+                                        >
+                                            {firstCharToUpper(val.label)}
+                                        </Typography>
+                                        <Divider inset="none" />
+                                        <CardContent>
+                                            <Grid sx={{ p: 0, mb: 1 }}>
+                                                <CustomSwitchButtons
+                                                    label={"Dynamic Extractor"}
+                                                    description={
+                                                        "If you want to use extractor as a dynamic variable, you must enable this to avoid printing extracted values in the terminal."
+                                                    }
+                                                    value={val.isInternal}
+                                                    onChange={this.onXchange_Extractors_option}
+                                                    ikey={i}
+                                                    local={"isInternal"}
+                                                ></CustomSwitchButtons>
+                                            </Grid>
+                                            <Divider />
+                                            <Grid sx={{ p: 0, mb: 0 }}>
+                                                <CustomAutocompleteFree
+                                                    ikey={i}
+                                                    label={"name"}
+                                                    description={""}
+                                                    options={[
+                                                        "Last input 1",
+                                                        "Last input 2",
+                                                        "Last input 3",
+                                                        "Last input 4",
+                                                        "Last input 5",
+                                                    ]}
+                                                    onChange={this.onXchange_Extractors_option}
+                                                ></CustomAutocompleteFree>
+                                                {val.label != "dsl" && (
+                                                    <PartAutocompleteMC
+                                                        ikey={i}
+                                                        label={"part"}
+                                                        description={"Select the part of the request"}
+                                                        options={this.matchersPartOpts}
+                                                        onChange={this.onXchange_Extractors_option}
+                                                    />
+                                                )}
+                                                {(val.label == "regex" || val.label == "json") && (
+                                                    <CustomAutocompleteFree
+                                                        ikey={i}
+                                                        label={"group"}
+                                                        description={
+                                                            "# group defines the matching group being used. # In GO the 'match' is the full array of all matches and submatches. # match[0] is the full match. # match[n] is the submatches. Most often we'd want match[1] as depicted below"
+                                                        }
+                                                        options={[
+                                                            "Last input 1",
+                                                            "Last input 2",
+                                                            "Last input 3",
+                                                            "Last input 4",
+                                                            "Last input 5",
+                                                        ]}
+                                                        onChange={this.onXchange_Extractors_option}
+                                                    />
+                                                )}
+                                            </Grid>
+                                            <Divider sx={{ my: 2 }} />
+                                            {val.label == "xpath" && (
+                                                <CustomAutocompleteFree
+                                                    ikey={i}
+                                                    label={"attribute"}
+                                                    description={""}
+                                                    options={[
+                                                        "Last input 1",
+                                                        "Last input 2",
+                                                        "Last input 3",
+                                                        "Last input 4",
+                                                        "Last input 5",
+                                                    ]}
+                                                    onChange={this.onXchange_Extractors_option}
+                                                />
+                                            )}
+                                            <CustomAutocompleteFreeMC
+                                                ikey={i}
+                                                label={val.label}
+                                                description={val.description}
+                                                options={this.matchersPartOpts}
+                                                onChange={this.onXchange_Extractors_option}
+                                            ></CustomAutocompleteFreeMC>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            );
+                        }
+                    })}
+                    <Grid xs={4}>
+                        <ControlledDropdown
+                            ukey={"extractors"}
+                            options={this.state.extractors_optional_list}
+                            onChange={this.onchange_extractors_option}
+                        ></ControlledDropdown>
+                    </Grid>
+                </CustomCard>
+
+                <Grid>
+                    <Button onClick={this.saveToDataBase}>Save</Button>
+                </Grid>
             </Container>
         );
     }
