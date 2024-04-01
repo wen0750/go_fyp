@@ -72,7 +72,12 @@ type Template struct {
 			Type string   `json:"type,omitempty"`
 			Name string   `json:"name,omitempty"`
 			Json []string `json:"json,omitempty"`
+			Regex     []string `json:"regex,omitempty"`
 			Part string   `json:"part,omitempty"`
+			Words     []string `json:"words,omitempty"`
+			Dsl       []string `json:"dsl,omitempty"`
+			Condition string   `json:"condition,omitempty"`
+			Status    []int    `json:"status,omitempty"`
 		} `json:"extractors,omitempty"`
 	} `json:"http,omitempty"`
 	Local int `json:"local,omitempty"`
