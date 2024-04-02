@@ -30,10 +30,14 @@ type Template struct {
 		Description string   `json:"description,omitempty"`
 		Remediation string   `json:"remediation,omitempty"`
 		Reference   []string `json:"reference,omitempty"`
+		Impact 		string	 `json:"impact,omitempty"`
 
 		Classification struct {
 			CvssMetrics string  `json:"cvss-metrics,omitempty"`
 			CvssScore   float64 `json:"cvss-score,omitempty"`
+			Cpe 		string  `json:"cpe,omitempty"`
+			EpssScore  float64  `json:"epss-score,omitempty"`
+			EpssPercentile  string  `json:"epss-percentile,omitempty"`
 			CveID       string  `json:"cve-id,omitempty"`
 			CweID       string  `json:"cwe-id,omitempty"`
 		} `json:"classification,omitempty"`
