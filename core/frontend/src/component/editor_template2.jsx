@@ -722,6 +722,7 @@ export default class EditorTemplate extends React.Component {
         ];
 
         this.state = {
+            firstRun: true,
             cveOpt: [],
             userinput: {},
             httpRequestOptionCounter: 0,
@@ -1603,7 +1604,9 @@ export default class EditorTemplate extends React.Component {
     };
 
     render() {
-        this.fetchCveData();
+        if (this.state.firstRun) {
+            this.fetchCveData();
+        }
         return (
             <Container maxWidth="lg" sx={{ mx: 0, px: 0 }}>
                 <CustomCard title={"Information"} description={"Info contains metadata information about a template"}>
