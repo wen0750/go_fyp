@@ -724,19 +724,19 @@ export default class EditorTemplate extends React.Component {
             info_optional_list: [
                 {
                     label: "impact",
-                    description: "impact s",
+                    description: "Impact of the template",
                     component: CustomTextareaInputBox,
                     enabled: false,
                 },
                 {
                     label: "remediation",
-                    description: "impact s",
+                    description: "You can go in-depth here on how to mitigate the problem found by this template.",
                     component: CustomTextareaInputBox,
                     enabled: false,
                 },
                 {
                     label: "reference",
-                    description: "impact s",
+                    description: "Reference is another popular tag to define external reference links for the template.",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
@@ -744,31 +744,31 @@ export default class EditorTemplate extends React.Component {
             classification_optional_list: [
                 {
                     label: "cvss-metrics",
-                    description: "impact s",
+                    description: "CVSS Metrics for the template. Examples:cvss-metrics: 3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
                 {
                     label: "cvss-score",
-                    description: "impact s",
+                    description: "CVSS Score for the template. Examples:cvss-score: 9.8",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
                 {
                     label: "cpe",
-                    description: "impact s",
+                    description: "CPE for the template. Examples:cpe: cpe:/a:vendor:product:version",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
                 {
                     label: "epss-score",
-                    description: "impact s",
+                    description: "EPSS Score for the template.Examples: epss-score: 0.42509",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
                 {
                     label: "epss-percentile",
-                    description: "impact s",
+                    description: "EPSS Percentile for the template. Examples:epss-percentile: 0.42509",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
@@ -793,7 +793,7 @@ export default class EditorTemplate extends React.Component {
                 common: [
                     {
                         label: "Accept",
-                        description: "s",
+                        description: "The Accept header defines the media types that the client is able to accept from the server. For instance, Accept: application/json, text/html indicates that the client prefers JSON or HTML responses. This information allows the server to send a resource representation that meets the client’s needs.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -801,7 +801,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "Accept-Charset",
-                        description: "",
+                        description: "The Accept-Charset HTTP header specifies the character sets the client can understand. It helps the server determine the appropriate character set for the response.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -809,7 +809,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "Accept-Datetime",
-                        description: "",
+                        description: "The Accept-Datetime HTTP header is used by a client to indicate a preferred date and time format. It allows the server to provide a response based on the client's specified date and time format, facilitating content retrieval or versioning based on specific timestamps.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -817,7 +817,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "Accept-Encoding",
-                        description: "",
+                        description: "The Accept-Encoding HTTP header is used by a client to indicate the compression algorithms it supports. It allows the server to compress the response using the preferred algorithm, reducing data transfer size. Common values include gzip and deflate, enabling efficient data transmission between the client and server.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -825,7 +825,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "Accept-Language",
-                        description: "",
+                        description: "The Accept-Language HTTP header is used by a client to indicate the preferred language for the response. It allows the server to tailor the content based on the client's language preference. The header value typically includes language codes like en for English or fr for French.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -833,7 +833,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "Authorization",
-                        description: "",
+                        description: "The Authorization HTTP header is used to include credentials or tokens in a request to authenticate the client with the server. It is commonly used in authentication schemes like Basic or Bearer, allowing the server to verify the client's identity and grant access to protected resources.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -841,7 +841,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "Cache-Control",
-                        description: "",
+                        description: "The Cache-Control header controls caching behavior in the client’s browser or intermediate caches. It defines how the response can be cached, when it expires, and how it should be revalidated. For example, Cache-Control: max-age=3600, public instructs the client to cache the response for a maximum of 3600 seconds (1 hour) and allows caching by public caches.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -849,7 +849,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "Connection",
-                        description: "",
+                        description: "The Connection HTTP header is used to control the behavior of the connection between the client and server. It can indicate whether the connection should be kept alive for subsequent requests, closed after completing the current request, or upgraded to a different protocol, such as WebSocket.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -857,7 +857,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "Content-Length",
-                        description: "",
+                        description: "The Content-Length HTTP header specifies the size of the entity body in the request or response message. It indicates the length of the content being sent or received in bytes. This allows the recipient to accurately read and process the message without unnecessary buffering or truncation.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -865,7 +865,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "Content-MD5",
-                        description: "",
+                        description: "The Content-MD5 HTTP header provides a base64-encoded MD5 hash of the entity body in the request or response. It is used for integrity checking to ensure that the content has not been modified during transit. The recipient can compare the computed MD5 hash with the provided value for verification.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -873,7 +873,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "Content-Type",
-                        description: "",
+                        description: "The Content-Type HTTP header specifies the media type or MIME type of the content in the request or response. It indicates how the content should be interpreted and processed. Common values include text/html for HTML documents, application/json for JSON data, and image/jpeg for JPEG images.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -881,7 +881,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "Cookie",
-                        description: "",
+                        description: "The client can use the Cookie header to send previously stored cookies back to the server. The server then uses these cookies to associate the request with a specific user or session. This header plays an important role in delivering personalized experiences, as it enables the server to remember a user’s login state or language preference.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -889,7 +889,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "Date",
-                        description: "",
+                        description: "The Date HTTP header indicates the date and time when the request was generated or the response was sent. It helps in synchronization, caching, and determining the freshness of the resource. The date format follows the HTTP-date format specified by RFC 7231.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -897,7 +897,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "Expect",
-                        description: "",
+                        description: "The Expect HTTP header specifies certain expectations that the client has for the server's behavior. It is typically used to indicate whether the client expects the server to meet specific conditions before processing the request, such as validating the request with a certain precondition or performing specific actions.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -905,7 +905,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "Forwarded",
-                        description: "",
+                        description: "The Forwarded HTTP header is used to indicate the chain of proxies or intermediaries through which the request has passed. It helps to track the client's original IP address, allowing servers to identify the client's location and handle requests accordingly, especially in the presence of multiple proxies or load balancers.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -913,7 +913,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "From",
-                        description: "",
+                        description: "The From HTTP header allows the client to provide the email address or contact information of the user or client making the request. It can be used for informational or logging purposes, enabling the server to identify the sender of the request or potentially contact them if necessary.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -921,7 +921,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "Host",
-                        description: "",
+                        description: "The Host HTTP header specifies the domain name or IP address of the server the client is attempting to communicate with. It is required in HTTP/1.1 requests and allows the server to determine which website or resource is being requested when multiple domains are hosted on the same server.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -929,7 +929,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "If-Match",
-                        description: "",
+                        description: "The If-Match HTTP header is used in conditional requests to ensure that the requested resource matches a specific entity tag (ETag) value. It allows the client to check if the resource has been modified since a previous request and avoid overwriting changes made by other clients.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -937,7 +937,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "If-Modified-Since",
-                        description: "",
+                        description: "The If-Modified-Since HTTP header is used in conditional requests to check if a resource has been modified since a specific date and time. It allows the server to determine whether to send the full response or respond with a 304 Not Modified status code, indicating that the cached version can be used.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -945,7 +945,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "If-None-Match",
-                        description: "",
+                        description: "The If-None-Match HTTP header is used in conditional requests to check if a resource has not been modified since a specific entity tag (ETag) value. It allows the server to determine whether to send the full response or respond with a 304 Not Modified status code, indicating that the cached version can be used.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -1518,14 +1518,14 @@ export default class EditorTemplate extends React.Component {
                     <Grid xs={4}>
                         <CustomTextInputBox
                             label={"name"}
-                            description={"s"}
+                            description={"Name should be good short summary that identifies what the template does."}
                             onChange={this.onchange_information}
                         ></CustomTextInputBox>
                     </Grid>
                     <Grid xs={4}>
                         <CustomTextInputBox
                             label={"author"}
-                            description={"s"}
+                            description={"Author of the template."}
                             onChange={this.onchange_information}
                         ></CustomTextInputBox>
                     </Grid>
@@ -1539,8 +1539,13 @@ export default class EditorTemplate extends React.Component {
 
                     <Grid xs={12}>
                         <CustomAutocompleteMC
+<<<<<<< Updated upstream
                             label={"tags"}
                             description={"Tag"}
+=======
+                            label={"tag"}
+                            description={"This allows you to set some custom tags to a template, depending on the purpose like cve, rce etc. This allows nuclei to identify templates with your input tags and only run them."}
+>>>>>>> Stashed changes
                             onChange={this.onchange_information}
                         ></CustomAutocompleteMC>
                     </Grid>
