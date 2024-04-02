@@ -1522,7 +1522,7 @@ export default class EditorTemplate extends React.Component {
             if (this.state.httpRequestOptionCounter < 2 && this.state.userinput.http.method == "GET") {
                 user_input["http"] = {
                     method: this.state.userinput.http.method,
-                    path: this.state.userinput.http.path,
+                    path: [this.state.userinput.http.path],
                 };
             } else {
                 let http_raw_request = this.format_http_request();
@@ -1597,6 +1597,8 @@ export default class EditorTemplate extends React.Component {
                 user_input["http"]["extractors"].push(extractorCO);
             }
         }
+
+        user_input["http"] = [user_input["http"]];
 
         // console.log(this.state.extractors_optional_list);
         // console.log();
@@ -1731,7 +1733,7 @@ export default class EditorTemplate extends React.Component {
                                     label={"path"}
                                     description={"Path of the template executed"}
                                     options={["GET", "POST"]}
-                                    value={"{{base}}"}
+                                    value={"{{basURL}}/"}
                                     onChange={this.onchange_http}
                                 ></CustomTextareaInputBox>
                             </Grid>
