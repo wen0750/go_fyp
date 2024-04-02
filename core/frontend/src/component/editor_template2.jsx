@@ -1311,7 +1311,6 @@ export default class EditorTemplate extends React.Component {
         } else {
             old["info"][key] = [value];
         }
-        old["info"][key] = value;
         this.setState({ userinput: old });
     };
     onchange_classification = (key, value) => {
