@@ -36,12 +36,10 @@ class Editor extends React.Component {
 
     setUserInput = (newData) => {
         console.log(newData);
+        newData["id"] = String(Date.now() + 28800000);
         fetch(`${globeVar.backendprotocol}://${globeVar.backendhost}/editor/save`, {
             method: "POST",
-            body: JSON.stringify({
-                id: String(Date.now() + 28800000),
-                info: newData,
-            }),
+            body: JSON.stringify(newData),
             headers: {
                 "Content-type": "application/json; charset=UTF-8",
             },
