@@ -1418,11 +1418,22 @@ export default class EditorTemplate extends React.Component {
 
         if (this.state.userinput.hasOwnProperty("info")) {
             user_input["info"] = this.state.userinput.info;
+
+            if (user_input["info"].hasOwnProperty("tags")) {
+                var tmpstr = "";
+                user_input["info"]["tags"].map((value) => {
+                    tmpstr += value.label + ",";
+                });
+                user_input["info"]["tags"] = tmpstr.slice(0, -1);
+            }
         }
 
         user_input["http"] = {};
-        console.log(this.state.userinput.http);
-        if (this.state.userinput.hasOwnProperty("info") && this.state.userinput.http.hasOwnProperty("method")) {
+        if (
+            this.state.userinput.hasOwnProperty("info") &&
+            this.state.userinput.hasOwnProperty("http") &&
+            this.state.userinput.http.hasOwnProperty("method")
+        ) {
             if (this.state.httpRequestOptionCounter < 2 && this.state.userinput.http.method == "GET") {
                 user_input["http"] = {
                     method: this.state.userinput.http.method,
@@ -1441,10 +1452,11 @@ export default class EditorTemplate extends React.Component {
             user_input["http"]["matchers-condition"] = this.state.matchersCondition;
         }
 
+        // Matchers formatting
         user_input["http"]["matchers"] = [];
         for (let x in this.state.matchers_optional_list) {
             const t = this.state.matchers_optional_list[x];
-            if (this.state.matchers_optional_list[x].enabled) {
+            if (t.enabled) {
                 const matcherCO = {};
                 matcherCO["type"] = t.label;
                 if (t.label !== "status") {
@@ -1467,8 +1479,36 @@ export default class EditorTemplate extends React.Component {
             }
         }
 
+        // Extractors formatting
+        user_input["http"]["extractors"] = [];
+        for (let x in this.state.extractors_optional_list) {
+            const j = this.state.extractors_optional_list[x];
+            if (j.enabled) {
+                const extractorCO = {};
+                extractorCO["type"] = j.label;
+                if (j.label !== "dsl") {
+                    if (j.part != "") {
+                        extractorCO["part"] = j.part;
+                    }
+                }
+                if (j.label == "xpath") {
+                    if (j.part != "") {
+                        extractorCO["attribute"] = j.attribute;
+                    }
+                }
+                if (j.label == "regex" || j.label == "json") {
+                    if (j.group != "") {
+                        extractorCO["group"] = j.group;
+                    }
+                }
+                extractorCO[j.label] = j[j.label];
+                user_input["http"]["extractors"].push(extractorCO);
+            }
+        }
+
         // console.log(this.state.extractors_optional_list);
-        console.log(user_input);
+        // console.log();
+        this.props.onChange(user_input);
     };
 
     render() {
@@ -1499,7 +1539,7 @@ export default class EditorTemplate extends React.Component {
 
                     <Grid xs={12}>
                         <CustomAutocompleteMC
-                            label={"tag"}
+                            label={"tags"}
                             description={"Tag"}
                             onChange={this.onchange_information}
                         ></CustomAutocompleteMC>
