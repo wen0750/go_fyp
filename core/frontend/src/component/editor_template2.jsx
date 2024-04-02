@@ -953,7 +953,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "If-Range",
-                        description: "",
+                        description: "The If-Range HTTP header is used in conditional requests to specify a range of a resource that the client already has. It allows the server to determine whether to send the full response or a partial response based on the range specified and the current state of the resource.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -961,7 +961,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "If-Unmodified-Since",
-                        description: "",
+                        description: "The If-Unmodified-Since HTTP header is used in conditional requests to check if a resource has not been modified since a specific date and time. It allows the server to determine whether to process the request or respond with a 412 Precondition Failed status code if the resource has been modified.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -969,7 +969,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "Max-Forwards",
-                        description: "",
+                        description: "The Max-Forwards HTTP header is used in tracing requests to limit the number of times a request can be forwarded by intermediaries. It helps prevent infinite request loops by specifying the maximum number of times the request can be forwarded before it is stopped or rejected.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -977,7 +977,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "Origin",
-                        description: "",
+                        description: "The Origin HTTP header indicates the origin of a cross-origin request, consisting of the scheme, host, and port. It is used in CORS (Cross-Origin Resource Sharing) to protect against unauthorized access and allows servers to determine if a request should be allowed based on the requesting origin.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -985,7 +985,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "Pragma",
-                        description: "",
+                        description: "The Pragma HTTP header is used for backward compatibility with older HTTP/1.0 caches. It can include directives like no-cache to instruct caches not to serve cached responses and to always forward the request to the origin server for fresh content. However, it is generally superseded by the more widely supported Cache-Control header in HTTP/1.1.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -993,7 +993,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "Proxy-Authorization",
-                        description: "",
+                        description: "The Proxy-Authorization HTTP header is used by a client to provide authentication credentials to a proxy server. It allows the client to authenticate itself with the proxy server using the specified credentials, enabling access to restricted resources through the proxy.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -1001,7 +1001,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "Referer",
-                        description: "",
+                        description: "The Proxy-Authorization HTTP header is used by a client to provide authentication credentials to a proxy server. It allows the client to authenticate itself with the proxy server using the specified credentials, enabling access to restricted resources through the proxy.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -1009,7 +1009,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "Upgrade",
-                        description: "",
+                        description: "The Upgrade HTTP header is used in a client request to indicate a desire to switch to a different protocol or version. It allows the client to request an upgrade from the current protocol, such as HTTP/1.1 to HTTP/2 or from HTTP to WebSocket, enabling more efficient communication or additional features.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -1017,7 +1017,7 @@ export default class EditorTemplate extends React.Component {
                     },
                     {
                         label: "User-Agent",
-                        description: "",
+                        description: "The User-Agent HTTP header provides information about the client application or user agent making the request. It typically includes details such as the name, version, and operating system of the client, allowing the server to tailor the response or provide content suitable for the client's capabilities.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -1028,7 +1028,7 @@ export default class EditorTemplate extends React.Component {
             matchers_optional_list: [
                 {
                     label: "status",
-                    description: "",
+                    description: "A status code is a three-digit number included in an HTTP response that indicates the outcome of the server's processing of a request. It provides a standardized way to communicate the success, failure, or other conditions related to the request, helping clients understand and handle the response appropriately.",
                     valueOption: [
                         {
                             code: 100,
@@ -1111,7 +1111,7 @@ export default class EditorTemplate extends React.Component {
                 },
                 {
                     label: "word",
-                    description: "",
+                    description: "Words contains word patterns required to be present in the response part.",
                     valueOption: [],
                     condition: "or",
                     conditionOptions: ["and", "or"],
@@ -1122,7 +1122,7 @@ export default class EditorTemplate extends React.Component {
                 },
                 {
                     label: "regex",
-                    description: "",
+                    description: "Regex contains Regular Expression patterns required to be present in the response part.",
                     valueOption: [],
                     condition: "or",
                     conditionOptions: ["and", "or"],
@@ -1133,7 +1133,7 @@ export default class EditorTemplate extends React.Component {
                 },
                 {
                     label: "dsl",
-                    description: "",
+                    description: "DSL are the dsl expressions that will be evaluated as part of nuclei matching rules.",
                     valueOption: [],
                     condition: "or",
                     conditionOptions: ["and", "or"],
@@ -1144,7 +1144,7 @@ export default class EditorTemplate extends React.Component {
                 },
                 {
                     label: "xpath",
-                    description: "",
+                    description: "XPath are the xpath queries expressions that will be evaluated against the response part.",
                     valueOption: [],
                     condition: "or",
                     conditionOptions: ["and", "or"],
@@ -1155,7 +1155,7 @@ export default class EditorTemplate extends React.Component {
                 },
                 {
                     label: "binary",
-                    description: "",
+                    description: "Binary are the binary patterns required to be present in the response part.",
                     valueOption: [],
                     condition: "or",
                     conditionOptions: ["and", "or"],
@@ -1166,7 +1166,7 @@ export default class EditorTemplate extends React.Component {
                 },
                 {
                     label: "size",
-                    description: "",
+                    description: "Size is the acceptable size for the response",
                     valueOption: [],
                     condition: "or",
                     conditionOptions: ["and", "or"],
@@ -1179,7 +1179,7 @@ export default class EditorTemplate extends React.Component {
             extractors_optional_list: [
                 {
                     label: "regex",
-                    description: "",
+                    description: "Regex contains Regular Expression patterns required to be present in the response part.",
                     valueOption: [],
                     part: "",
                     group: "",
@@ -1189,7 +1189,7 @@ export default class EditorTemplate extends React.Component {
                 },
                 {
                     label: "dsl",
-                    description: "",
+                    description: "DSL are the dsl expressions that will be evaluated as part of nuclei matching rules.",
                     valueOption: [],
                     part: "",
                     group: "",
@@ -1199,7 +1199,7 @@ export default class EditorTemplate extends React.Component {
                 },
                 {
                     label: "xpath",
-                    description: "",
+                    description: "XPath are the xpath queries expressions that will be evaluated against the response part.",
                     valueOption: [],
                     part: "",
                     group: "",
@@ -1210,7 +1210,7 @@ export default class EditorTemplate extends React.Component {
                 },
                 {
                     label: "kval",
-                    description: "",
+                    description: "Extract key: value/key=value formatted data from Response Header/Cookie",
                     valueOption: [],
                     part: "",
                     group: "",
@@ -1220,7 +1220,7 @@ export default class EditorTemplate extends React.Component {
                 },
                 {
                     label: "json",
-                    description: "",
+                    description: "A json extractor example to extract value of id object from JSON block.",
                     valueOption: [],
                     part: "",
                     group: "",
@@ -1325,7 +1325,7 @@ export default class EditorTemplate extends React.Component {
         if (type == "array") {
             old.common.push({
                 label: "a_" + generateString(5),
-                description: "s",
+                description: "http_request_option",
                 component: Input,
                 enabled: true,
                 value: "",
@@ -1335,7 +1335,7 @@ export default class EditorTemplate extends React.Component {
         } else {
             old.common.push({
                 label: "",
-                description: "s",
+                description: "http_request_option",
                 component: Input,
                 enabled: true,
                 value: "",
@@ -1539,13 +1539,8 @@ export default class EditorTemplate extends React.Component {
 
                     <Grid xs={12}>
                         <CustomAutocompleteMC
-<<<<<<< Updated upstream
                             label={"tags"}
                             description={"Tag"}
-=======
-                            label={"tag"}
-                            description={"This allows you to set some custom tags to a template, depending on the purpose like cve, rce etc. This allows nuclei to identify templates with your input tags and only run them."}
->>>>>>> Stashed changes
                             onChange={this.onchange_information}
                         ></CustomAutocompleteMC>
                     </Grid>
@@ -1586,14 +1581,14 @@ export default class EditorTemplate extends React.Component {
                     <Grid xs={4}>
                         <CustomTextInputBox
                             label={"cwe-id"}
-                            description={"sss"}
+                            description={"CWE ID for the template. Examples:cwe-id: CWE-22"}
                             onChange={this.onchange_classification}
                         ></CustomTextInputBox>
                     </Grid>
                     <Grid xs={8}>
                         <CustomAutocomplete
                             label={"cve-id"}
-                            description={"fff"}
+                            description={"CVE ID for the template. Examples:cve-id: CVE-2020-14420"}
                             onChange={this.onchange_classification}
                         ></CustomAutocomplete>
                     </Grid>
@@ -1623,7 +1618,7 @@ export default class EditorTemplate extends React.Component {
                     <Grid xs={4}>
                         <CustomSelectionBox
                             label={"method"}
-                            description={"sss"}
+                            description={"Request contains a http request to be made from a template"}
                             options={["GET", "POST"]}
                             onChange={this.onchange_http}
                         ></CustomSelectionBox>
@@ -1636,7 +1631,7 @@ export default class EditorTemplate extends React.Component {
                             <Grid xs={12}>
                                 <CustomTextareaInputBox
                                     label={"path"}
-                                    description={"sss"}
+                                    description={"Path of the template executed"}
                                     options={["GET", "POST"]}
                                     value={"{{base}}"}
                                     onChange={this.onchange_http}
@@ -1967,7 +1962,7 @@ export default class EditorTemplate extends React.Component {
                                                 <CustomAutocompleteFree
                                                     ikey={i}
                                                     label={"name"}
-                                                    description={""}
+                                                    description={"Name is the optional name of the request.If a name is specified, all the named request in a template can be matched upon in a combined manner allowing multi-request based matchers."}
                                                     options={[
                                                         "Last input 1",
                                                         "Last input 2",
@@ -2009,7 +2004,7 @@ export default class EditorTemplate extends React.Component {
                                                 <CustomAutocompleteFree
                                                     ikey={i}
                                                     label={"attribute"}
-                                                    description={""}
+                                                    description={"XPath are the xpath queries expressions that will be evaluated against the response part."}
                                                     options={[
                                                         "Last input 1",
                                                         "Last input 2",
