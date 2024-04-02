@@ -1292,7 +1292,7 @@ export default class EditorTemplate extends React.Component {
             });
             if (this.state.cveOpt.length != list.length) {
                 console.log(list);
-                this.setState({ cveOpt: list });
+                this.setState({ cveOpt: list, firstRun: false });
             }
             return list;
         } catch (error) {
