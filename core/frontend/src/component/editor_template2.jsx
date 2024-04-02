@@ -59,6 +59,8 @@ import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { common } from "@mui/material/colors";
 
+import globeVar from "../../GlobalVar";
+
 function isNumeric(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
 }
@@ -87,7 +89,7 @@ function CustomAutocomplete(props) {
             </FormLabel>
             <Autocomplete
                 placeholder="Decorators"
-                options={top100Films}
+                options={props.options}
                 onChange={(event, newValue) => {
                     props.onChange(props.label, newValue);
                 }}
@@ -720,6 +722,7 @@ export default class EditorTemplate extends React.Component {
         ];
 
         this.state = {
+            cveOpt: [],
             userinput: {},
             httpRequestOptionCounter: 0,
             matchersConditionCounter: 0,
@@ -1271,6 +1274,32 @@ export default class EditorTemplate extends React.Component {
         };
     }
 
+    fetchCveData = async () => {
+        try {
+            const data = await (
+                await fetch(`${globeVar.backendprotocol}://${globeVar.backendhost}/cve/search`, {
+                    signal: AbortSignal.timeout(8000),
+                    method: "POST",
+                    body: JSON.stringify({
+                        keyword: "CVE-2023",
+                    }),
+                })
+            ).json();
+            const list = [];
+            data.result.map((item) => {
+                list.push({ label: item.CveMetadata.CveID });
+            });
+            if (this.state.cveOpt.length != list.length) {
+                console.log(list);
+                this.setState({ cveOpt: list });
+            }
+            return list;
+        } catch (error) {
+            console.log("backend server error");
+            return [];
+        }
+    };
+
     // Event Handler for User Input Fields (save to database)
     onchange_information = (key, value) => {
         const old = this.state.userinput;
@@ -1299,6 +1328,8 @@ export default class EditorTemplate extends React.Component {
                 old["info"]["classification"][key] = parseFloat(value);
             } else {
             }
+        } else if (key == "cve-id") {
+            old["info"]["classification"][key] = value.label;
         } else {
             old["info"]["classification"][key] = value;
         }
@@ -1512,7 +1543,12 @@ export default class EditorTemplate extends React.Component {
             const t = this.state.matchers_optional_list[x];
             if (t.enabled) {
                 const matcherCO = {};
-                matcherCO["type"] = t.label;
+
+                if (t.label != "words") {
+                    matcherCO["type"] = t.label;
+                } else {
+                    matcherCO["type"] = "word";
+                }
                 if (t.label !== "status") {
                     if (t.part != "") {
                         matcherCO["part"] = t.part;
@@ -1528,7 +1564,9 @@ export default class EditorTemplate extends React.Component {
                 if (t["isInternal"]) {
                     matcherCO["internal"] = t.isInternal;
                 }
+
                 matcherCO[t.label] = t[t.label];
+
                 user_input["http"]["matchers"].push(matcherCO);
             }
         }
@@ -1566,6 +1604,7 @@ export default class EditorTemplate extends React.Component {
     };
 
     render() {
+        this.fetchCveData();
         return (
             <Container maxWidth="lg" sx={{ mx: 0, px: 0 }}>
                 <CustomCard title={"Information"} description={"Info contains metadata information about a template"}>
@@ -1644,6 +1683,7 @@ export default class EditorTemplate extends React.Component {
                     <Grid xs={8}>
                         <CustomAutocomplete
                             label={"cve-id"}
+                            options={this.state.cveOpt}
                             description={"CVE ID for the template. Examples:cve-id: CVE-2020-14420"}
                             onChange={this.onchange_classification}
                         ></CustomAutocomplete>
