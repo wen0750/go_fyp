@@ -1036,7 +1036,7 @@ export default class EditorTemplate extends React.Component {
                     {
                         label: "Referer",
                         description:
-                            "The Proxy-Authorization HTTP header is used by a client to provide authentication credentials to a proxy server. It allows the client to authenticate itself with the proxy server using the specified credentials, enabling access to restricted resources through the proxy.",
+                            "The Referer HTTP header is used to indicate the URL of the referring page from which the current request originated. It allows servers to track the source of traffic and provide contextual information, often used for analytics or redirection purposes.",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -2093,7 +2093,7 @@ export default class EditorTemplate extends React.Component {
                                                         ikey={i}
                                                         label={"group"}
                                                         description={
-                                                            "# group defines the matching group being used. # In GO the 'match' is the full array of all matches and submatches. # match[0] is the full match. # match[n] is the submatches. Most often we'd want match[1] as depicted below"
+                                                            "group defines the matching group being used.In GO the 'match' is the full array of all matches and submatches.match[0] is the full match.match[n] is the submatches. Most often we'd want match[1] as depicted below"
                                                         }
                                                         options={[
                                                             "Last input 1",
