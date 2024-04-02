@@ -1964,6 +1964,7 @@ export default class EditorTemplate extends React.Component {
                                             {val.label != "status" && (
                                                 <CustomAutocompleteFreeMC
                                                     label={val.label}
+                                                    description={val.description}
                                                     onChange={this.onXchange_matchers_option}
                                                     ikey={i}
                                                 ></CustomAutocompleteFreeMC>
