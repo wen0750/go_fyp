@@ -59,6 +59,9 @@ import CheckIcon from "@mui/icons-material/Check";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { common } from "@mui/material/colors";
 
+function isNumeric(n) {
+    return !isNaN(parseFloat(n)) && isFinite(n);
+}
 function firstCharToUpper(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
@@ -548,7 +551,7 @@ function CustomCard(props) {
             <Typography
                 level="title-lg"
                 endDecorator={
-                    <Tooltip title={props.description} sx={{maxWidth: 320}}placement="right">
+                    <Tooltip title={props.description} sx={{ maxWidth: 320 }} placement="right">
                         <HelpOutlineIcon color="action" />
                     </Tooltip>
                 }
@@ -1142,7 +1145,7 @@ export default class EditorTemplate extends React.Component {
                     enabled: false,
                 },
                 {
-                    label: "word",
+                    label: "words",
                     description: "Words contains word patterns required to be present in the response part.",
                     valueOption: [],
                     condition: "or",
@@ -1274,6 +1277,11 @@ export default class EditorTemplate extends React.Component {
         if (old["info"] === undefined) {
             old["info"] = {};
         }
+        if (key != "reference") {
+            old["info"][key] = value;
+        } else {
+            old["info"][key] = [value];
+        }
         old["info"][key] = value;
         this.setState({ userinput: old });
     };
@@ -1285,7 +1293,17 @@ export default class EditorTemplate extends React.Component {
         if (old["info"]["classification"] === undefined) {
             old["info"]["classification"] = {};
         }
-        old["info"]["classification"][key] = value;
+
+        if (key == "cvss-score" || key == "cvss-score") {
+            if (isNumeric(value)) {
+                old["info"]["classification"][key] = parseFloat(value);
+            } else {
+            }
+        } else {
+            old["info"]["classification"][key] = value;
+        }
+
+        console.log(old["info"]["classification"]);
         this.setState({ userinput: old });
     };
     onchange_http = (key, value) => {
@@ -1845,7 +1863,11 @@ export default class EditorTemplate extends React.Component {
                                         <Typography
                                             level="title-lg"
                                             endDecorator={
-                                                <Tooltip title={val.description} sx={{maxWidth: 320}}placement="right">
+                                                <Tooltip
+                                                    title={val.description}
+                                                    sx={{ maxWidth: 320 }}
+                                                    placement="right"
+                                                >
                                                     <HelpOutlineIcon color="action" />
                                                 </Tooltip>
                                             }
@@ -1975,7 +1997,11 @@ export default class EditorTemplate extends React.Component {
                                         <Typography
                                             level="title-lg"
                                             endDecorator={
-                                                <Tooltip title={val.description} sx={{maxWidth: 320}}placement="right">
+                                                <Tooltip
+                                                    title={val.description}
+                                                    sx={{ maxWidth: 320 }}
+                                                    placement="right"
+                                                >
                                                     <HelpOutlineIcon color="action" />
                                                 </Tooltip>
                                             }
