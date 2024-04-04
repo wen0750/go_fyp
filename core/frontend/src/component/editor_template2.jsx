@@ -29,7 +29,6 @@ import {
     PartAutocompleteMC,
     ExtractorAutocomplete,
     CustomSelectionBox,
-    CustomRadioButtons,
     ConditionRadioButtons,
     CustomSwitchButtons,
     CustomTextInputBox,
@@ -37,6 +36,7 @@ import {
     ControlledDropdown,
     GroupControlledDropdown,
     CustomCard,
+    CustomRadioButtonsForAttack,
 } from "./editor_components";
 
 // icon
@@ -89,6 +89,8 @@ export default class EditorTemplate extends React.Component {
             firstRun: true,
             cveOpt: [],
             userinput: {},
+            attack: "clusterbomb",
+            payloadCounter: 0,
             httpRequestOptionCounter: 0,
             matchersConditionCounter: 0,
             matchersCondition: "or",
@@ -889,9 +891,23 @@ export default class EditorTemplate extends React.Component {
         const old = this.state.payload_optional_list;
         old[key].enabled = !old[key].enabled;
         console.log(old);
-        this.setState({
-            payload_optional_list: old,
-        });
+        if (old[key].enabled) {
+            newHROC = this.state.httpRequestOptionCounter + 1;
+        } else {
+            newHROC = this.state.httpRequestOptionCounter - 1;
+        }
+        if (newHROC > 1 && attack == "batteringram") {
+            this.setState({
+                payload_optional_list: old,
+                payloadCounter: newHROC,
+                attack: "clusterbomb",
+            });
+        } else {
+            this.setState({
+                payload_optional_list: old,
+                payloadCounter: newHROC,
+            });
+        }
     };
     onTableChange_payload_option = (key, local, value) => {
         const old = this.state.payload_optional_list;
@@ -911,6 +927,11 @@ export default class EditorTemplate extends React.Component {
 
         this.setState({
             payload_optional_list: old,
+        });
+    };
+    onchange_attack_option = (value) => {
+        this.setState({
+            attack: value,
         });
     };
 
@@ -942,6 +963,16 @@ export default class EditorTemplate extends React.Component {
 
         // variables
         // user_input["variables"] = {};
+        // payload
+        user_input["variables"] = {};
+        for (let x in this.state.matchers_optional_list) {
+            if (x.enabled) {
+                user_input["variables"][x.label] = x.value;
+            }
+        }
+        if (user_input["variables"].length == 0) {
+            delete user_input.variables;
+        }
 
         // http request
         user_input["http"] = [{}];
@@ -1477,6 +1508,26 @@ export default class EditorTemplate extends React.Component {
                         >
                             Add Variable
                         </Button>
+                    </Grid>
+
+                    <Grid xs={12}>
+                        <Typography
+                            level="title-lg"
+                            endDecorator={
+                                <Tooltip title={""} sx={{ maxWidth: 320 }} placement="right">
+                                    <HelpOutlineIcon color="action" />
+                                </Tooltip>
+                            }
+                        >
+                            Attack mode
+                        </Typography>
+                    </Grid>
+                    <Grid xs={12}>
+                        <CustomRadioButtonsForAttack
+                            value={this.state.attack}
+                            options={this.state.payload_optional_list}
+                            onChange={this.onchange_attack_option}
+                        />
                     </Grid>
                 </CustomCard>
 

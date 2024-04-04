@@ -235,61 +235,59 @@ export function CustomSelectionBox(props) {
         </FormControl>
     );
 }
-export function CustomRadioButtons() {
-    const [justify, setJustify] = React.useState("flex-start");
+export function CustomRadioButtonsForAttack(props) {
     return (
-        <FormControl sx={{ gridColumn: "1/-1" }}>
-            <FormLabel>
-                {props.label}
-                <Tooltip title={props.description} placement="right" sx={{ maxWidth: 320, zIndex: 20, ml: 1 }}>
-                    <HelpOutlineIcon color="action" />
-                </Tooltip>
-            </FormLabel>
-
-            <RadioGroup
-                orientation="horizontal"
-                aria-labelledby="segmented-controls-example"
-                name="justify"
-                value={justify}
-                onChange={(event) => setJustify(event.target.value)}
-                sx={{
-                    minHeight: 48,
-                    padding: "4px",
-                    borderRadius: "12px",
-                    bgcolor: "neutral.softBg",
-                    "--RadioGroup-gap": "4px",
-                    "--Radio-actionRadius": "8px",
-                }}
-            >
-                {["flex-start", "center", "flex-end"].map((item) => (
-                    <Radio
-                        key={item}
-                        color="neutral"
-                        value={item}
-                        disableIcon
-                        label={item}
-                        variant="plain"
-                        sx={{
-                            px: 2,
-                            alignItems: "center",
-                        }}
-                        slotProps={{
-                            action: ({ checked }) => ({
-                                sx: {
-                                    ...(checked && {
+        <RadioGroup
+            orientation="horizontal"
+            aria-labelledby="segmented-controls-example"
+            name="justify"
+            value={props.value}
+            onChange={(event) => props.onChange(event.target.value)}
+            sx={{
+                minHeight: 48,
+                padding: "4px",
+                borderRadius: "12px",
+                bgcolor: "var(--joy-palette-neutral-400, #9FA6AD)",
+                "--RadioGroup-gap": "4px",
+                "--Radio-actionRadius": "8px",
+            }}
+        >
+            {["batteringram", "pitchfork", "clusterbomb"].map((item) => (
+                <Radio
+                    key={item}
+                    color="neutral"
+                    value={item}
+                    disableIcon
+                    label={item.toUpperCase()}
+                    variant="plain"
+                    disabled={item == "batteringram" && props.options.length > 1}
+                    sx={{
+                        px: 2,
+                        alignItems: "center",
+                        ...(item === "batteringram" && props.options.length > 1
+                            ? {
+                                  bgcolor: "grey",
+                                  opacity: 0.5,
+                                  borderRadius: "8px",
+                              }
+                            : {}),
+                    }}
+                    slotProps={{
+                        action: ({ checked }) => ({
+                            sx: {
+                                ...(checked && {
+                                    bgcolor: "background.surface",
+                                    boxShadow: "sm",
+                                    "&:hover": {
                                         bgcolor: "background.surface",
-                                        boxShadow: "sm",
-                                        "&:hover": {
-                                            bgcolor: "background.surface",
-                                        },
-                                    }),
-                                },
-                            }),
-                        }}
-                    />
-                ))}
-            </RadioGroup>
-        </FormControl>
+                                    },
+                                }),
+                            },
+                        }),
+                    }}
+                />
+            ))}
+        </RadioGroup>
     );
 }
 
