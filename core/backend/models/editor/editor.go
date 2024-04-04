@@ -73,11 +73,11 @@ type Template struct {
 		} `json:"matchers,omitempty"`
 
 		Extractors []struct {
-			Type string   `json:"type,omitempty"`
-			Name string   `json:"name,omitempty"`
-			Json []string `json:"json,omitempty"`
+			Type      string   `json:"type,omitempty"`
+			Name 	  string   `json:"name,omitempty"`
+			Json 	  []string `json:"json,omitempty"`
 			Regex     []string `json:"regex,omitempty"`
-			Part string   `json:"part,omitempty"`
+			Part 	  string   `json:"part,omitempty"`
 			Words     []string `json:"words,omitempty"`
 			Dsl       []string `json:"dsl,omitempty"`
 			Condition string   `json:"condition,omitempty"`
@@ -155,76 +155,105 @@ func Download(c *gin.Context) {
 func SaveToDB(c *gin.Context) {
 	var template Template
 
-	// Read the JSON body
-	if err := c.ShouldBindJSON(&template); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error":   "Invalid JSON data",
-			"details": err.Error(),
-		})
-		return
-	}
+    if err := c.ShouldBindJSON(&template); err != nil {
+        log.Printf("Error binding JSON: %v\n", err)
+        c.JSON(http.StatusBadRequest, gin.H{
+            "error":   "Invalid JSON data",
+            "details": err.Error(),
+        })
+        return
+    }
 
 	template.Local = 1
+
+	// Read the JSON body
+    bsonDoc, err := structToBsonM(&template)
+    if err != nil {
+        log.Printf("Error converting struct to bson.M: %v\n", err)
+        c.JSON(http.StatusInternalServerError, gin.H{
+            "error":   "Failed to save the template",
+            "details": err.Error(),
+        })
+        return
+    }
+
+
+	err = removeEmptyFieldsAndSave(c, &template)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{
+            "error":   "Failed to save the template",
+            "details": err.Error(),
+        })
+        return
+    }
+
+	log.Printf("Cleaned template: %+v\n", template) // Log the cleaned template
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	// Check for an existing document with the same ID
 	filter := bson.M{"id": template.ID}
-
 	var existingTemplate Template
-	err := collection.FindOne(ctx, filter).Decode(&existingTemplate)
 
-	// There are 3 scenarios to handle
-	// First scenario, check if Template ID does not exist, then create one
+	err = collection.FindOne(ctx, filter).Decode(&existingTemplate)
+	if err != nil && err != mongo.ErrNoDocuments {
+		log.Printf("Error finding existing template: %v\n", err) // Log the error
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error":   "Failed to retrieve existing template",
+			"details": err.Error(),
+		})
+		return
+	}
+
 	if err == mongo.ErrNoDocuments {
-		result, err := collection.InsertOne(ctx, template)
+		// Document does not exist, insert a new one
+		result, err := collection.InsertOne(ctx, bsonDoc)
 		if err != nil {
+			log.Printf("Error inserting new template: %v\n", err) // Log the error
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"error":   "Failed to save the template",
 				"details": err.Error(),
 			})
 			return
 		}
-		// Return a message to user/frontend
+		log.Printf("Template created with ID: %v\n", result.InsertedID) // Log success
 		c.JSON(http.StatusOK, gin.H{
 			"action": "created",
 			"id":     result.InsertedID,
 		})
-	} else if err != nil {
-		// If an error other than ErrNoDocuments occurred, return it
+		return
+	}
+
+	// At this point, the existing template was found
+	// Implement the logic to compare the existing template and the new template
+	// Here you need the .Equal() method to compare the two Template structs
+	// if template.Equal(existingTemplate) {
+		// No changes detected, return a conflict error
+		// log.Printf("Duplicate data - no changes detected\n") // Log the duplicate status
+		// c.JSON(http.StatusConflict, gin.H{
+		// 	"error": "Duplicate data - no changes detected",
+		// })
+		// return
+	// }
+
+	// Data is updated, perform the update operation
+	update := bson.M{"$set": template}
+	_, err = collection.UpdateOne(ctx, filter, update)
+	if err != nil {
+		log.Printf("Error updating template: %v\n", err) // Log the error
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"error":   "Failed to retrieve existing template",
+			"error":   "Failed to update the template",
 			"details": err.Error(),
 		})
 		return
-	} else {
-		// Second scenario, if the data is unchanged (duplicate), return a 409 conflict error
-		// Note: .Equal() must be a method you implement for comparing two Template objects
-		if template.Equal(existingTemplate) {
-			c.JSON(http.StatusConflict, gin.H{
-				"error": "Duplicate data - no changes detected",
-			})
-			return
-		} else {
-			// Third scenario, if data is updated, perform the update operation
-			update := bson.M{"$set": template}
-			_, err := collection.UpdateOne(ctx, filter, update)
-
-			if err != nil {
-				c.JSON(http.StatusInternalServerError, gin.H{
-					"error":   "Failed to update the template",
-					"details": err.Error(),
-				})
-				return
-			}
-			// Return a message indicating the update was successful
-			c.JSON(http.StatusOK, gin.H{
-				"action": "updated",
-				"id":     template.ID,
-			})
-		}
 	}
+
+	log.Printf("Template updated with ID: %v\n", template.ID) // Log the update success
+	c.JSON(http.StatusOK, gin.H{
+		"action": "updated",
+		"id":     template.ID,
+	})
 }
 
 //upload page
@@ -372,4 +401,132 @@ func (t Template) Equal(other Template) bool {
 		t.Info.Metadata.Verified == other.Info.Metadata.Verified &&
 		t.Info.Metadata.ShodanQuery == other.Info.Metadata.ShodanQuery &&
 		t.Info.Tags == other.Info.Tags
+}
+
+func removeEmptyFieldsAndSave(c *gin.Context, template *Template) error {
+    ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+    defer cancel()
+
+    // Marshal the struct to JSON
+    jsonData, err := json.Marshal(template)
+    if err != nil {
+        return err
+    }
+
+    // Unmarshal JSON to a map, which will omit the empty fields
+    var bsonData map[string]interface{}
+    err = json.Unmarshal(jsonData, &bsonData)
+    if err != nil {
+        return err
+    }
+
+    // Clean the bsonData map to remove nil or zero fields
+    cleanBsonMap(bsonData)
+
+    // Insert the cleaned data into MongoDB
+    _, err = collection.InsertOne(ctx, bsonData)
+    if err != nil {
+        return err
+    }
+
+    return nil
+}
+
+// cleanBsonMap recursively removes nil or zero fields from the bson map
+func cleanBsonMap(data map[string]interface{}) {
+    for k, v := range data {
+        if isZero(v) {
+            delete(data, k)
+        } else if subMap, ok := v.(map[string]interface{}); ok {
+            cleanBsonMap(subMap)
+        } else if subSlice, ok := v.([]interface{}); ok {
+            for i, sv := range subSlice {
+                if subMap, ok := sv.(map[string]interface{}); ok {
+                    cleanBsonMap(subMap)
+                } else if isZero(sv) {
+                    subSlice[i] = nil // Set nil to be able to remove it later
+                }
+            }
+            // Remove nil values from the slice
+            data[k] = removeNilValuesFromSlice(subSlice)
+        }
+    }
+}
+
+// isZero checks if the value is nil or the zero value for a type
+func isZero(v interface{}) bool {
+    return v == nil || reflect.DeepEqual(v, reflect.Zero(reflect.TypeOf(v)).Interface())
+}
+
+// removeNilValuesFromSlice creates a new slice with non-nil values
+func removeNilValuesFromSlice(slice []interface{}) []interface{} {
+    var newSlice []interface{}
+    for _, v := range slice {
+        if v != nil {
+            newSlice = append(newSlice, v)
+        }
+    }
+    return newSlice
+}
+
+func structToBsonM(v interface{}) (bson.M, error) {
+    val := reflect.ValueOf(v).Elem()
+    doc := bson.M{}
+
+    for i := 0; i < val.NumField(); i++ {
+        field := val.Field(i)
+        fieldType := val.Type().Field(i)
+        fieldName := fieldType.Name
+        jsonTag := fieldType.Tag.Get("json")
+
+        // If the json tag is "-", this field should be skipped.
+        if jsonTag == "-" {
+            continue
+        }
+
+        // If there's a json tag other than "-", use that tag name instead of the struct field name.
+        jsonTagParts := strings.Split(jsonTag, ",")
+        if jsonTagParts[0] != "" && jsonTagParts[0] != "-" {
+            fieldName = jsonTagParts[0]
+        }
+
+        // If the field is empty and the "omitempty" option is set, skip it.
+        if len(jsonTagParts) > 1 && jsonTagParts[1] == "omitempty" && isEmptyValue(field) {
+            continue
+        }
+
+        // Recursively handle nested structs.
+        if field.Kind() == reflect.Struct {
+            // If the nested struct is not nil, process it recursively.
+            nestedDoc, err := structToBsonM(field.Addr().Interface())
+            if err != nil {
+                return nil, err
+            }
+            // Only add the nested document if it's not empty.
+            if len(nestedDoc) > 0 {
+                doc[fieldName] = nestedDoc
+            }
+        } else {
+            doc[fieldName] = field.Interface()
+        }
+    }
+    return doc, nil
+}
+
+func isEmptyValue(v reflect.Value) bool {
+    switch v.Kind() {
+    case reflect.Array, reflect.Map, reflect.Slice, reflect.String:
+        return v.Len() == 0
+    case reflect.Bool:
+        return !v.Bool()
+    case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+        return v.Int() == 0
+    case reflect.Uint, reflect.Uint8, reflect.Uint16, reflect.Uint32, reflect.Uint64:
+        return v.Uint() == 0
+    case reflect.Float32, reflect.Float64:
+        return v.Float() == 0
+    case reflect.Interface, reflect.Ptr:
+        return v.IsNil()
+    }
+    return false
 }
