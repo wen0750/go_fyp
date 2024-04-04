@@ -950,10 +950,11 @@ export default class EditorTemplate extends React.Component {
 
         // info
         if (this.state.userinput.hasOwnProperty("info")) {
-            user_input["info"] = this.state.userinput.info;
+            user_input["info"] = { ...this.state.userinput.info };
 
             if (user_input["info"].hasOwnProperty("tags")) {
                 var tmpstr = "";
+                console.log(this.state.userinput.info.tags);
                 this.state.userinput.info.tags.map((value) => {
                     tmpstr += value.label + ",";
                 });
@@ -962,8 +963,6 @@ export default class EditorTemplate extends React.Component {
         }
 
         // variables
-        // user_input["variables"] = {};
-        // payload
         user_input["variables"] = {};
         for (let x in this.state.matchers_optional_list) {
             if (x.enabled) {
@@ -996,13 +995,17 @@ export default class EditorTemplate extends React.Component {
         }
 
         // payload
-        user_input["http"][0]["payload"] = {};
-        for (let x in this.state.matchers_optional_list) {
-            if (x.enabled) {
-                user_input["http"][0]["payload"][x.label] = x.value;
+        user_input["http"][0]["payloads"] = {};
+        for (let x in this.state.payload_optional_list) {
+            console.log(this.state.payload_optional_list[x]);
+            if (this.state.payload_optional_list[x].enabled) {
+                user_input["http"][0]["payloads"][this.state.payload_optional_list[x].label] =
+                    this.state.payload_optional_list[x].value;
             }
         }
-        if (user_input["http"][0]["payload"].length == 0) {
+
+        console.log(user_input["http"][0]["payloads"]);
+        if (user_input["http"][0]["payloads"].length == 0) {
             delete user_input["http"][0].payload;
         }
 
@@ -1073,7 +1076,6 @@ export default class EditorTemplate extends React.Component {
         }
 
         // console.log(this.state.extractors_optional_list);
-        // console.log();
         this.props.onChange(user_input);
     };
 
