@@ -19,6 +19,7 @@ import AutocompleteOption from "@mui/joy/AutocompleteOption";
 import ListItemContent from "@mui/joy/ListItemContent";
 import Table from "@mui/joy/Table";
 import DeleteIcon from "@mui/icons-material/Delete";
+import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
 import {
     CustomAutocomplete,
@@ -45,6 +46,9 @@ import globeVar from "../../GlobalVar";
 
 function isNumeric(n) {
     return !isNaN(parseFloat(n)) && isFinite(n);
+}
+function firstCharToUpper(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 function generateString(length) {
@@ -764,7 +768,7 @@ export default class EditorTemplate extends React.Component {
         old[key][local] = value;
         console.log(old);
         this.setState({
-            http_request_optional_list: old,
+            variables_optional_list: old,
         });
     };
     onXchange_variables_option = () => {
@@ -913,13 +917,13 @@ export default class EditorTemplate extends React.Component {
             this.state.userinput.http.hasOwnProperty("method")
         ) {
             if (this.state.httpRequestOptionCounter < 2 && this.state.userinput.http.method == "GET") {
-                user_input["http"] = {
+                user_input["http"][0] = {
                     method: this.state.userinput.http.method,
                     path: [this.state.userinput.http.path],
                 };
             } else {
                 let http_raw_request = this.format_http_request();
-                user_input["http"] = {
+                user_input["http"][0] = {
                     raw: [http_raw_request],
                 };
             }
@@ -927,11 +931,11 @@ export default class EditorTemplate extends React.Component {
         }
 
         if (this.state.matchersConditionCounter > 1 && this.state.matchersCondition != "") {
-            user_input["http"]["matchers-condition"] = this.state.matchersCondition;
+            user_input["http"][0]["matchers-condition"] = this.state.matchersCondition;
         }
 
         // Matchers formatting
-        user_input["http"]["matchers"] = [];
+        user_input["http"][0]["matchers"] = [];
         for (let x in this.state.matchers_optional_list) {
             const t = this.state.matchers_optional_list[x];
             if (t.enabled) {
@@ -960,12 +964,12 @@ export default class EditorTemplate extends React.Component {
 
                 matcherCO[t.label] = t[t.label];
 
-                user_input["http"]["matchers"].push(matcherCO);
+                user_input["http"][0]["matchers"].push(matcherCO);
             }
         }
 
         // Extractors formatting
-        user_input["http"]["extractors"] = [];
+        user_input["http"][0]["extractors"] = [];
         for (let x in this.state.extractors_optional_list) {
             const j = this.state.extractors_optional_list[x];
             if (j.enabled) {
@@ -987,7 +991,7 @@ export default class EditorTemplate extends React.Component {
                     }
                 }
                 extractorCO[j.label] = j[j.label];
-                user_input["http"]["extractors"].push(extractorCO);
+                user_input["http"][0]["extractors"].push(extractorCO);
             }
         }
 
@@ -1194,7 +1198,7 @@ export default class EditorTemplate extends React.Component {
                                     label={"path"}
                                     description={"Path of the template executed"}
                                     options={["GET", "POST"]}
-                                    value={"{{basURL}}/"}
+                                    value={"{{BaseURL}}/"}
                                     onChange={this.onchange_http}
                                 ></CustomTextareaInputBox>
                             </Grid>
@@ -1203,7 +1207,7 @@ export default class EditorTemplate extends React.Component {
                         this.state.userinput.http.method &&
                         (this.state.httpRequestOptionCounter > 0 || this.state.userinput.http.method == "POST") && (
                             <Grid xs={12}>
-                                <Table borderAxis={"xBetween"} sx={{ p: 1 }}>
+                                <Table borderAxis={"xBetween"}>
                                     <thead>
                                         <tr>
                                             <th style={{ width: "20%" }}>Header Name</th>
