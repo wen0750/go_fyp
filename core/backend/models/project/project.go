@@ -598,8 +598,8 @@ func fetchAndCreateYAMLFileFromDB(id string) (string, error) {
     }
     
     // Remove _id and local from the map.
-    delete(rawResult, "_id")  // Assuming _id is at the top level of your document.
-    delete(rawResult, "local") // Assuming local is at the top level of your document.
+    delete(rawResult, "_id")
+    delete(rawResult, "local")
 
     // Marshal the adjusted result to YAML.
     yamlData, err := yaml.Marshal(rawResult)
