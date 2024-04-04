@@ -103,70 +103,31 @@ type CVECount struct {
 }
 
 // For find
+type HTTPMatcher struct {
+	Type     string   `json:"type,omitempty" yaml:"type,omitempty"`
+	Part     string   `json:"part,omitempty" yaml:"part,omitempty"`
+	Words    []string `json:"words,omitempty" yaml:"words,omitempty"`
+}
+
+type HTTPExtractor struct {
+	Type  string   `json:"type,omitempty" yaml:"type,omitempty"`
+	Regex []string `json:"regex,omitempty" yaml:"regex,omitempty"`
+	Part  string   `json:"part,omitempty" yaml:"part,omitempty"`
+}
+
+type HTTP struct {
+	Method   string           `json:"method,omitempty" yaml:"method,omitempty"`
+	Path     []string         `json:"path,omitempty" yaml:"path,omitempty"`
+	Payloads map[string][]string `json:"payloads,omitempty" yaml:"payloads,omitempty"`
+	Matchers []HTTPMatcher    `json:"matchers,omitempty" yaml:"matchers,omitempty"`
+	Extractors []HTTPExtractor `json:"extractors,omitempty" yaml:"extractors,omitempty"`
+}
+
 type Template struct {
-	ID   string `json:"id"`
-	Info struct {
-		Name        string   `json:"name,omitempty"`
-		Author      string   `json:"author,omitempty"`
-		Severity    string   `json:"severity,omitempty"`
-		Description string   `json:"description,omitempty"`
-		Remediation string   `json:"remediation,omitempty"`
-		Reference   []string `json:"reference,omitempty"`
-		Impact 		string	 `json:"impact,omitempty"`
-
-		Classification struct {
-			CvssMetrics string  `json:"cvss-metrics,omitempty"`
-			CvssScore   float64 `json:"cvss-score,omitempty"`
-			Cpe 		string  `json:"cpe,omitempty"`
-			EpssScore  float64  `json:"epss-score,omitempty"`
-			EpssPercentile  string  `json:"epss-percentile,omitempty"`
-			CveID       string  `json:"cve-id,omitempty"`
-			CweID       string  `json:"cwe-id,omitempty"`
-		} `json:"classification,omitempty"`
-
-		Metadata struct {
-			Verified    bool   `json:"verified,omitempty"`
-			ShodanQuery string `json:"shodan-query,omitempty"`
-			MaxRequest  int    `json:"max-request,omitempty"`
-		} `json:"metadata,omitempty"`
-
-		Tags string `json:"tags,omitempty"`
-	} `json:"info,omitempty"`
-
-	Variables map[string]interface{} `json:"variables,omitempty"`
-
-	HTTP []struct {
-		Method            string            `json:"method,omitempty"`
-		Path              []string          `json:"path,omitempty"`
-		Raw               []string          `json:"raw,omitempty"`
-		Payloads          map[string]string `json:"payloads,omitempty"`
-		Threads           int               `json:"threads,omitempty"`
-		StopAtFirstMatch  bool              `json:"stop-at-first-match,omitempty"`
-		MatchersCondition string            `json:"matchers-condition,omitempty"`
-		//
-		Matchers []struct {
-			Type      string   `json:"type,omitempty"`
-			Part      string   `json:"part,omitempty"`
-			Words     []string `json:"words,omitempty"`
-			Dsl       []string `json:"dsl,omitempty"`
-			Regex     []string `json:"regex,omitempty"`
-			Condition string   `json:"condition,omitempty"`
-			Status    []int    `json:"status,omitempty"`
-		} `json:"matchers,omitempty"`
-
-		Extractors []struct {
-			Type string   `json:"type,omitempty"`
-			Name string   `json:"name,omitempty"`
-			Json []string `json:"json,omitempty"`
-			Regex     []string `json:"regex,omitempty"`
-			Part string   `json:"part,omitempty"`
-			Words     []string `json:"words,omitempty"`
-			Dsl       []string `json:"dsl,omitempty"`
-			Condition string   `json:"condition,omitempty"`
-			Status    []int    `json:"status,omitempty"`
-		} `json:"extractors,omitempty"`
-	} `json:"http,omitempty"`
-	Local int `json:"local,omitempty"`
+	ID   string                 `json:"id" yaml:"id"`
+	Info map[string]interface{} `json:"info,omitempty" yaml:"info,omitempty"`
+	HTTP []HTTP                 `json:"http,omitempty" yaml:"http,omitempty"`
+	Local int                   `json:"local,omitempty" yaml:"local,omitempty"`
 }
 
 var templatesCollection *mongo.Collection
@@ -427,8 +388,14 @@ func StartScan(c *gin.Context) {
 
 	wg.Wait() // Wait for all goroutines to finish
 
+	log.Printf("Filenames after goroutines completion: %+v", filenames)
 	// Join all filenames with comma
 	templates := strings.Join(filenames, ",")
+
+	if templates == "" {
+		log.Println("No templates were created, skipping nuclei scan")
+		return
+	}
 
 	for _, host := range req.Host {
 		_, err := hostFile.WriteString(host + "\n")
@@ -626,35 +593,30 @@ func StopScan(c *gin.Context) {
 }
 
 func createYAMLFile(template Template) (string, error) {
-	// Convert the Template object to JSON
-	jsonData, err := json.Marshal(template)
-	if err != nil {
-		return "", err
-	}
+    // Convert the Template object directly to YAML
+    yamlData, err := yaml.Marshal(template)
+    if err != nil {
+        return "", err
+    }
 
-	// Convert JSON to YAML
-	yamlData, err := yaml.JSONToYAML(jsonData)
-	if err != nil {
-		return "", err
-	}
+    // Create a temp file
+    tempFile, err := os.CreateTemp("", "template*.yaml")
+    if err != nil {
+        return "", fmt.Errorf("failed to create temporary file: %w", err)
+    }
+    defer tempFile.Close()
 
-	// Create a temp file
-	tempFile, err := os.CreateTemp("", "template*.yaml")
-	if err != nil {
-		log.Fatal(err)
-	}
+    // Write the YAML data to the temp file
+    if _, err := tempFile.Write(yamlData); err != nil {
+        return "", fmt.Errorf("failed to write to temporary file: %w", err)
+    }
 
-	// Write the YAML data to the temp file
-	if _, err := tempFile.Write(yamlData); err != nil {
-		log.Fatal(err)
-	}
+    // The temp file should be closed after writing
+    if err := tempFile.Close(); err != nil {
+        return "", fmt.Errorf("failed to close temporary file: %w", err)
+    }
 
-	// Close the file
-	if err := tempFile.Close(); err != nil {
-		log.Fatal(err)
-	}
-
-	return tempFile.Name(), nil
+    return tempFile.Name(), nil
 }
 
 func parseCVECount(jsonData string) (CVECount, error) {
