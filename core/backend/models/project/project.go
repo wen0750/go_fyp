@@ -102,25 +102,14 @@ type CVECount struct {
 	Critical int
 }
 
-// For find
-type HTTPMatcher struct {
-	Type     string   `json:"type,omitempty" yaml:"type,omitempty"`
-	Part     string   `json:"part,omitempty" yaml:"part,omitempty"`
-	Words    []string `json:"words,omitempty" yaml:"words,omitempty"`
-}
 
-type HTTPExtractor struct {
-	Type  string   `json:"type,omitempty" yaml:"type,omitempty"`
-	Regex []string `json:"regex,omitempty" yaml:"regex,omitempty"`
-	Part  string   `json:"part,omitempty" yaml:"part,omitempty"`
-}
 
 type HTTP struct {
-    Method    string            `json:"method,omitempty" yaml:"method,omitempty"`
-    Path      []string          `json:"path,omitempty" yaml:"path,omitempty"`
-    Payloads  map[string][]string `json:"payloads,omitempty" yaml:"payloads,omitempty"`
-    Matchers  []HTTPMatcher     `json:"matchers,omitempty" yaml:"matchers,omitempty"`
-    Extractors []HTTPExtractor  `json:"extractors,omitempty" yaml:"extractors,omitempty"`
+	Method    string                   `json:"method,omitempty" yaml:"method,omitempty"`
+	Path      []string                 `json:"path,omitempty" yaml:"path,omitempty"`
+	Payloads  map[string][]string      `json:"payloads,omitempty" yaml:"payloads,omitempty"`
+	Matchers  []interface{}            `json:"matchers,omitempty" yaml:"matchers,omitempty"`
+	Extractors []interface{}           `json:"extractors,omitempty" yaml:"extractors,omitempty"`
 }
 
 type Template struct {
