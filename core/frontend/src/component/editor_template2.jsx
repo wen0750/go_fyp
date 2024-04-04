@@ -954,7 +954,7 @@ export default class EditorTemplate extends React.Component {
 
             if (user_input["info"].hasOwnProperty("tags")) {
                 var tmpstr = "";
-                user_input["info"]["tags"].map((value) => {
+                this.state.userinput.info.tags.map((value) => {
                     tmpstr += value.label + ",";
                 });
                 user_input["info"]["tags"] = tmpstr.slice(0, -1);
