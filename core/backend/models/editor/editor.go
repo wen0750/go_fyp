@@ -22,68 +22,9 @@ import (
 
 // create a template structure
 type Template struct {
-	ID   string `json:"id"`
-	Info struct {
-		Name        string   `json:"name,omitempty"`
-		Author      string   `json:"author,omitempty"`
-		Severity    string   `json:"severity,omitempty"`
-		Description string   `json:"description,omitempty"`
-		Remediation string   `json:"remediation,omitempty"`
-		Reference   []string `json:"reference,omitempty"`
-		Impact 		string	 `json:"impact,omitempty"`
-
-		Classification struct {
-			CvssMetrics string  `json:"cvss-metrics,omitempty"`
-			CvssScore   float64 `json:"cvss-score,omitempty"`
-			Cpe 		string  `json:"cpe,omitempty"`
-			EpssScore  float64  `json:"epss-score,omitempty"`
-			EpssPercentile  string  `json:"epss-percentile,omitempty"`
-			CveID       string  `json:"cve-id,omitempty"`
-			CweID       string  `json:"cwe-id,omitempty"`
-		} `json:"classification,omitempty"`
-
-		Metadata struct {
-			Verified    bool   `json:"verified,omitempty"`
-			ShodanQuery string `json:"shodan-query,omitempty"`
-			MaxRequest  int    `json:"max-request,omitempty"`
-		} `json:"metadata,omitempty"`
-
-		Tags string `json:"tags,omitempty"`
-	} `json:"info,omitempty"`
-
-	Variables map[string]interface{} `json:"variables,omitempty"`
-
-	HTTP []struct {
-		Method            string            `json:"method,omitempty"`
-		Path              []string          `json:"path,omitempty"`
-		Raw               []string          `json:"raw,omitempty"`
-		Payloads          map[string]string `json:"payloads,omitempty"`
-		Threads           int               `json:"threads,omitempty"`
-		StopAtFirstMatch  bool              `json:"stop-at-first-match,omitempty"`
-		MatchersCondition string            `json:"matchers-condition,omitempty"`
-		//
-		Matchers []struct {
-			Type      string   `json:"type,omitempty"`
-			Part      string   `json:"part,omitempty"`
-			Words     []string `json:"words,omitempty"`
-			Dsl       []string `json:"dsl,omitempty"`
-			Regex     []string `json:"regex,omitempty"`
-			Condition string   `json:"condition,omitempty"`
-			Status    []int    `json:"status,omitempty"`
-		} `json:"matchers,omitempty"`
-
-		Extractors []struct {
-			Type      string   `json:"type,omitempty"`
-			Name 	  string   `json:"name,omitempty"`
-			Json 	  []string `json:"json,omitempty"`
-			Regex     []string `json:"regex,omitempty"`
-			Part 	  string   `json:"part,omitempty"`
-			Words     []string `json:"words,omitempty"`
-			Dsl       []string `json:"dsl,omitempty"`
-			Condition string   `json:"condition,omitempty"`
-			Status    []int    `json:"status,omitempty"`
-		} `json:"extractors,omitempty"`
-	} `json:"http,omitempty"`
+	ID   string                 `json:"id"`
+	Info map[string]interface{} `json:"info,omitempty"`
+	HTTP []interface{}          `json:"http,omitempty"`
 	Local int `json:"local,omitempty"`
 }
 
@@ -225,19 +166,6 @@ func SaveToDB(c *gin.Context) {
 		return
 	}
 
-	// At this point, the existing template was found
-	// Implement the logic to compare the existing template and the new template
-	// Here you need the .Equal() method to compare the two Template structs
-	// if template.Equal(existingTemplate) {
-		// No changes detected, return a conflict error
-		// log.Printf("Duplicate data - no changes detected\n") // Log the duplicate status
-		// c.JSON(http.StatusConflict, gin.H{
-		// 	"error": "Duplicate data - no changes detected",
-		// })
-		// return
-	// }
-
-	// Data is updated, perform the update operation
 	update := bson.M{"$set": template}
 	_, err = collection.UpdateOne(ctx, filter, update)
 	if err != nil {
@@ -387,20 +315,7 @@ func UploadToDB(c *gin.Context) {
 
 //return ture if the data is the same
 func (t Template) Equal(other Template) bool {
-	return t.ID == other.ID &&
-		t.Info.Name == other.Info.Name &&
-		t.Info.Author == other.Info.Author &&
-		t.Info.Severity == other.Info.Severity &&
-		t.Info.Description == other.Info.Description &&
-		t.Info.Remediation == other.Info.Remediation &&
-		reflect.DeepEqual(t.Info.Reference, other.Info.Reference) &&
-		t.Info.Classification.CvssMetrics == other.Info.Classification.CvssMetrics &&
-		t.Info.Classification.CvssScore == other.Info.Classification.CvssScore &&
-		t.Info.Classification.CveID == other.Info.Classification.CveID &&
-		t.Info.Classification.CweID == other.Info.Classification.CweID &&
-		t.Info.Metadata.Verified == other.Info.Metadata.Verified &&
-		t.Info.Metadata.ShodanQuery == other.Info.Metadata.ShodanQuery &&
-		t.Info.Tags == other.Info.Tags
+	return reflect.DeepEqual(t, other)
 }
 
 func removeEmptyFieldsAndSave(c *gin.Context, template *Template) error {
