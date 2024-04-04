@@ -102,8 +102,6 @@ type CVECount struct {
 	Critical int
 }
 
-
-
 type HTTP struct {
 	Method    string                   `json:"method,omitempty" yaml:"method,omitempty"`
 	Path      []string                 `json:"path,omitempty" yaml:"path,omitempty"`
@@ -115,6 +113,8 @@ type HTTP struct {
 type Template struct {
 	Info map[string]interface{} `json:"info,omitempty" yaml:"info,omitempty"`
 	HTTP []HTTP                 `json:"http,omitempty" yaml:"http,omitempty"`
+	Local int `json:"local,omitempty" yaml:"-"`
+	ID    primitive.ObjectID `bson:"_id,omitempty" yaml:"-"`
 }
 
 var templatesCollection *mongo.Collection
@@ -361,11 +361,18 @@ func StartScan(c *gin.Context) {
 					return
 				}
 			}
-			filename, err := createYAMLFile(result)
-			if err != nil {
-				log.Printf("Error creating YAML file for ID %s: %s\n", req.ID[idIndex], err.Error())
-				return
-			}
+
+			filename, err := fetchAndCreateYAMLFileFromDB(req.ID[idIndex])
+            if err != nil {
+                log.Printf("Error creating YAML file for ID %s: %s\n", req.ID[idIndex], err)
+                return
+            }
+
+			//filename, err := createYAMLFile(result)
+			//if err != nil {
+			//	log.Printf("Error creating YAML file for ID %s: %s\n", req.ID[idIndex], err.Error())
+			//	return
+			//}
 
 			mu.Lock()                               // Lock to prevent concurrent write to the slice
 			filenames = append(filenames, filename) // Add filename to slice
@@ -534,12 +541,12 @@ func StartScan(c *gin.Context) {
 		}
 
 		//os.Remove(hostFilePath)
-		for _, filename := range filenames {
-			err := os.Remove(filename)
-			if err != nil {
-				log.Printf("Failed to remove file %s: %s\n", filename, err)
-			}
-		}
+		//for _, filename := range filenames {
+		//	err := os.Remove(filename)
+		//	if err != nil {
+		//		log.Printf("Failed to remove file %s: %s\n", filename, err)
+		//	}
+		//}
 	}()
 	c.JSON(200, gin.H{"message": "Scan started"})
 
@@ -577,6 +584,43 @@ func StopScan(c *gin.Context) {
 		c.JSON(200, gin.H{"message": "Scan was cancel"})
 		return
 	}
+}
+
+func fetchAndCreateYAMLFileFromDB(id string) (string, error) {
+    objID, err := primitive.ObjectIDFromHex(id)
+    if err != nil {
+        return "", fmt.Errorf("error converting id to ObjectID: %w", err)
+    }
+
+    var rawResult bson.M
+    if err := templatesCollection.FindOne(context.Background(), bson.M{"_id": objID}).Decode(&rawResult); err != nil {
+        return "", fmt.Errorf("error fetching document: %w", err)
+    }
+    
+    // Remove _id and local from the map.
+    delete(rawResult, "_id")  // Assuming _id is at the top level of your document.
+    delete(rawResult, "local") // Assuming local is at the top level of your document.
+
+    // Marshal the adjusted result to YAML.
+    yamlData, err := yaml.Marshal(rawResult)
+    if err != nil {
+        return "", fmt.Errorf("error marshalling adjusted result to YAML: %w", err)
+    }
+
+    // Write the YAML data to a temp file as before.
+    tempFile, err := os.CreateTemp("", "template*.yaml")
+    if err != nil {
+        return "", fmt.Errorf("failed to create temporary file: %w", err)
+    }
+    defer tempFile.Close()
+    if _, err := tempFile.Write(yamlData); err != nil {
+        return "", fmt.Errorf("failed to write to temporary file: %w", err)
+    }
+    if err := tempFile.Close(); err != nil {
+        return "", fmt.Errorf("failed to close temporary file: %w", err)
+    }
+
+    return tempFile.Name(), nil
 }
 
 func createYAMLFile(template Template) (string, error) {
