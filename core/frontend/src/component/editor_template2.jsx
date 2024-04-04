@@ -582,6 +582,7 @@ export default class EditorTemplate extends React.Component {
                     enabled: false,
                 },
             ],
+            payload_optional_list: [],
             extractors_optional_list: [
                 {
                     label: "regex",
@@ -755,7 +756,7 @@ export default class EditorTemplate extends React.Component {
     };
 
     // Variables Change Handler
-    onchange_variables_request_option = (key) => {
+    onchange_variables_option = (key) => {
         const old = this.state.variables_optional_list;
         old[key].enabled = !old[key].enabled;
         console.log(old);
@@ -883,6 +884,36 @@ export default class EditorTemplate extends React.Component {
         this.setState({ matchersCondition: value });
     };
 
+    // payload Change Handler
+    onchange_payload_option = (key) => {
+        const old = this.state.payload_optional_list;
+        old[key].enabled = !old[key].enabled;
+        console.log(old);
+        this.setState({
+            payload_optional_list: old,
+        });
+    };
+    onTableChange_payload_option = (key, local, value) => {
+        const old = this.state.payload_optional_list;
+        old[key][local] = value;
+        console.log(old);
+        this.setState({
+            payload_optional_list: old,
+        });
+    };
+    onXchange_payload_option = () => {
+        const old = this.state.payload_optional_list;
+        old.push({
+            enabled: true,
+            label: "",
+            value: "",
+        });
+
+        this.setState({
+            payload_optional_list: old,
+        });
+    };
+
     // Extractors Change Handler
     onXchange_Extractors_option = (key, local, value) => {
         const old = this.state.extractors_optional_list;
@@ -896,6 +927,7 @@ export default class EditorTemplate extends React.Component {
     saveToDataBase = () => {
         const user_input = {};
 
+        // info
         if (this.state.userinput.hasOwnProperty("info")) {
             user_input["info"] = this.state.userinput.info;
 
@@ -908,8 +940,10 @@ export default class EditorTemplate extends React.Component {
             }
         }
 
+        // variables
         // user_input["variables"] = {};
 
+        // http request
         user_input["http"] = [{}];
         if (
             this.state.userinput.hasOwnProperty("info") &&
@@ -930,6 +964,18 @@ export default class EditorTemplate extends React.Component {
         } else {
         }
 
+        // payload
+        user_input["http"][0]["payload"] = {};
+        for (let x in this.state.matchers_optional_list) {
+            if (x.enabled) {
+                user_input["http"][0]["payload"][x.label] = x.value;
+            }
+        }
+        if (user_input["http"][0]["payload"].length == 0) {
+            delete user_input["http"][0].payload;
+        }
+
+        // Matchers
         if (this.state.matchersConditionCounter > 1 && this.state.matchersCondition != "") {
             user_input["http"][0]["matchers-condition"] = this.state.matchersCondition;
         }
@@ -1151,7 +1197,7 @@ export default class EditorTemplate extends React.Component {
                                                     </td>
                                                     <td>
                                                         <Button
-                                                            onClick={() => this.onchange_variables_request_option(hi)}
+                                                            onClick={() => this.onchange_variables_option(hi)}
                                                             variant="plain"
                                                             color="danger"
                                                         >
@@ -1350,6 +1396,88 @@ export default class EditorTemplate extends React.Component {
                                 />
                             </Grid>
                         )}
+                </CustomCard>
+
+                <CustomCard title={"Payload"} description={""}>
+                    {this.state.payload_optional_list.length > 0 && (
+                        <Grid xs={12} sx={{ py: 0 }}>
+                            <Table borderAxis={"xBetween"}>
+                                <thead>
+                                    <tr>
+                                        <th style={{ width: "25%" }}>Name</th>
+                                        <th style={{ width: "63%" }}>Value</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {this.state.payload_optional_list.map((header, hi) => {
+                                        if (header.enabled) {
+                                            return (
+                                                <tr key={"variablesrow" + hi}>
+                                                    <th>
+                                                        <Input
+                                                            size="lg"
+                                                            onBlur={(event) =>
+                                                                this.onTableChange_payload_option(
+                                                                    hi,
+                                                                    "label",
+                                                                    event.target.value
+                                                                )
+                                                            }
+                                                        />
+                                                    </th>
+                                                    <td>
+                                                        <Autocomplete
+                                                            multiple
+                                                            freeSolo
+                                                            // id={props.label}
+                                                            placeholder={header.label}
+                                                            options={[
+                                                                "Last input 1",
+                                                                "Last input 2",
+                                                                "Last input 3",
+                                                                "Last input 4",
+                                                                "Last input 5",
+                                                            ]}
+                                                            // getOptionLabel={(option) => option.label}
+                                                            onChange={(event, newValue) => {
+                                                                this.onTableChange_payload_option(
+                                                                    hi,
+                                                                    "value",
+                                                                    newValue
+                                                                );
+                                                            }}
+                                                            size="lg"
+                                                        />
+                                                    </td>
+                                                    <td>
+                                                        <Button
+                                                            onClick={() => this.onchange_payload_option(hi)}
+                                                            variant="plain"
+                                                            color="danger"
+                                                        >
+                                                            <DeleteIcon />
+                                                        </Button>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        }
+                                    })}
+                                </tbody>
+                            </Table>
+                        </Grid>
+                    )}
+
+                    <Grid xs={4}>
+                        <Button
+                            variant="outlined"
+                            color="neutral"
+                            startDecorator={<AddIcon />}
+                            onClick={this.onXchange_payload_option}
+                        >
+                            Add Variable
+                        </Button>
+                    </Grid>
                 </CustomCard>
 
                 <CustomCard title={"Matchers"} description={"Info contains metadata information about a template"}>
