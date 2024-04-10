@@ -20,6 +20,7 @@ import ListItemContent from "@mui/joy/ListItemContent";
 import Table from "@mui/joy/Table";
 import DeleteIcon from "@mui/icons-material/Delete";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import Link from '@mui/joy/Link';
 
 import {
     CustomAutocomplete,
@@ -66,23 +67,23 @@ export default class EditorTemplate extends React.Component {
         super(props);
 
         this.matchersPartOpts = [
-            { label: "template-id", description: "ID of the template executed" },
-            { label: "template-info", description: "Info Block of the template executed" },
-            { label: "template-path", description: "Path of the template executed" },
-            { label: "host", description: "Host is the input to the template" },
-            { label: "matched", description: "Matched is the input which was matched upon" },
-            { label: "type", description: "Type is the type of request made" },
-            { label: "request", description: "HTTP request made from the client" },
-            { label: "response", description: "HTTP response received from server" },
-            { label: "status_code", description: "Status Code received from the Server" },
-            { label: "body", description: "HTTP response body received from server (default)" },
-            { label: "content_length", description: "HTTP Response content length" },
-            { label: "header", description: "HTTP response headers" },
-            { label: "all_headers", description: "HTTP response headers" },
-            { label: "duration", description: "HTTP request time duration" },
-            { label: "all", description: "HTTP response body + headers" },
-            { label: "cookies_from_response", description: "HTTP response cookies in name:value format" },
-            { label: "headers_from_response", description: "HTTP response headers in name:value format" },
+            { label: "template-id", description: "ID of the template executed" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
+            { label: "template-info", description: "Info Block of the template executed" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
+            { label: "template-path", description: "Path of the template executed" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
+            { label: "host", description: "Host is the input to the template" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
+            { label: "matched", description: "Matched is the input which was matched upon" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
+            { label: "type", description: "Type is the type of request made" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
+            { label: "request", description: "HTTP request made from the client" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
+            { label: "response", description: "HTTP response received from server" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
+            { label: "status_code", description: "Status Code received from the Server" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
+            { label: "body", description: "HTTP response body received from server (default)" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
+            { label: "content_length", description: "HTTP Response content length" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
+            { label: "header", description: "HTTP response headers" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
+            { label: "all_headers", description: "HTTP response headers" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
+            { label: "duration", description: "HTTP request time duration" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
+            { label: "all", description: "HTTP response body + headers" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
+            { label: "cookies_from_response", description: "HTTP response cookies in name:value format" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
+            { label: "headers_from_response", description: "HTTP response headers in name:value format" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
         ];
 
         this.state = {
@@ -1368,6 +1369,7 @@ export default class EditorTemplate extends React.Component {
                                                                             ml: 1,
                                                                         }}
                                                                     >
+                                                                        
                                                                         <HelpOutlineIcon color="action" />
                                                                     </Tooltip>
                                                                 </FormLabel>
@@ -1419,7 +1421,10 @@ export default class EditorTemplate extends React.Component {
                         (this.state.httpRequestOptionCounter > 0 || this.state.userinput.http.method == "POST") && (
                             <Grid xs={12}>
                                 <Divider sx={{ my: 1 }} />
-                                <Typography level="body">Output</Typography>
+                                <Typography 
+                                    level="body"Output
+                                >
+                                </Typography>
 
                                 <CodeBlock
                                     text={this.format_http_request()}
@@ -1431,7 +1436,7 @@ export default class EditorTemplate extends React.Component {
                         )}
                 </CustomCard>
 
-                <CustomCard title={"Payload"} description={""}>
+                <CustomCard title={"Payload"} description={"payload"}>
                     {this.state.payload_optional_list.length > 0 && (
                         <Grid xs={12} sx={{ py: 0 }}>
                             <Table borderAxis={"xBetween"}>
@@ -1597,6 +1602,7 @@ export default class EditorTemplate extends React.Component {
                                                         description={"Select the part of the request"}
                                                         options={this.matchersPartOpts}
                                                         onChange={this.onXchange_matchers_option}
+                                                        
                                                     />
                                                 )}
                                                 <ConditionRadioButtons

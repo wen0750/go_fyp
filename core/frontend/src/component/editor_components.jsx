@@ -7,6 +7,7 @@ import Divider from "@mui/joy/Divider";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import Input from "@mui/joy/Input";
+import Link from '@mui/joy/Link';
 import Typography from "@mui/joy/Typography";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
@@ -48,7 +49,12 @@ export function CustomAutocomplete(props) {
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
                 {props.label}
-                <Tooltip title={props.description} placement="right" sx={{ maxWidth: 320, zIndex: 20, ml: 1 }}>
+                <Tooltip 
+                    title={
+                        props.description}
+                        placement="right" sx={{ maxWidth: 320, zIndex: 20, ml: 1 }}>
+                        
+                    
                     <HelpOutlineIcon color="action" />
                 </Tooltip>
             </FormLabel>
@@ -212,7 +218,24 @@ export function CustomSelectionBox(props) {
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
                 {firstCharToUpper(props.label)}{" "}
-                <Tooltip title={props.description} placement="right" sx={{ maxWidth: 320, zIndex: 20, ml: 1 }}>
+                <Tooltip 
+                    placement="right"
+                    sx={{ maxWidth: 320,zIndex: 20, ml: 1 }}
+                    title={
+                        <Typography
+                            startDecorator={
+                                <Link 
+                                underline="always"
+                                color="#D500F9"
+                                fontSize="sm"
+                                href="https://mui.com/joy-ui/react-tooltip/#common-examples">
+                                common-examples
+                                </Link>
+                            }
+                        >
+                        </Typography>
+                        
+                    } >
                     <HelpOutlineIcon color="action" />
                 </Tooltip>
             </FormLabel>
