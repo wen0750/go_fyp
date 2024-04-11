@@ -81,7 +81,7 @@ export function CustomAutocomplete(props) {
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
                 {props.label}
-                <Tooltip title={props.description} placement="right" sx={{ maxWidth: 360, zIndex: 20, ml: 1 }}>
+                <Tooltip title={formatDescription(props)} placement="right" sx={{ maxWidth: 360, zIndex: 20, ml: 1 }}>
                     <HelpOutlineIcon color="action" />
                 </Tooltip>
             </FormLabel>
@@ -101,7 +101,7 @@ export function CustomAutocompleteMC(props) {
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
                 {firstCharToUpper(props.label)}
-                <Tooltip title={props.description} placement="right" sx={{ maxWidth: 360, zIndex: 20, ml: 1 }}>
+                <Tooltip title={formatDescription(props)} placement="right" sx={{ maxWidth: 360, zIndex: 20, ml: 1 }}>
                     <HelpOutlineIcon color="action" />
                 </Tooltip>
             </FormLabel>
@@ -124,7 +124,7 @@ export function CustomAutocompleteFreeMC(props) {
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
                 {firstCharToUpper(props.label)}
-                <Tooltip title={props.description} placement="right" sx={{ maxWidth: 360, zIndex: 20, ml: 1 }}>
+                <Tooltip title={formatDescription(props)} placement="right" sx={{ maxWidth: 360, zIndex: 20, ml: 1 }}>
                     <HelpOutlineIcon color="action" />
                 </Tooltip>
             </FormLabel>
@@ -148,7 +148,7 @@ export function CustomAutocompleteFree(props) {
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
                 {firstCharToUpper(props.label)}
-                <Tooltip title={props.description} placement="right" sx={{ maxWidth: 360, zIndex: 20, ml: 1 }}>
+                <Tooltip title={formatDescription(props)} placement="right" sx={{ maxWidth: 360, zIndex: 20, ml: 1 }}>
                     <HelpOutlineIcon color="action" />
                 </Tooltip>
             </FormLabel>
@@ -171,7 +171,7 @@ export function PartAutocompleteMC(props) {
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
                 {firstCharToUpper(props.label)}
-                <Tooltip title={props.description} placement="right" sx={{ maxWidth: 360, zIndex: 20, ml: 1 }}>
+                <Tooltip title={formatDescription(props)} placement="right" sx={{ maxWidth: 360, zIndex: 20, ml: 1 }}>
                     <HelpOutlineIcon color="action" />
                 </Tooltip>
             </FormLabel>
@@ -208,7 +208,7 @@ export function ExtractorAutocomplete(props) {
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
                 {firstCharToUpper(props.label)}
-                <Tooltip title={props.description} placement="right" sx={{ maxWidth: 360, zIndex: 20, ml: 1 }}>
+                <Tooltip title={formatDescription(props)} placement="right" sx={{ maxWidth: 360, zIndex: 20, ml: 1 }}>
                     <HelpOutlineIcon color="action" />
                 </Tooltip>
             </FormLabel>
@@ -331,7 +331,7 @@ export function ConditionRadioButtons(props) {
             <Typography id="segmented-controls-example" fontWeight="lg" fontSize="sm">
                 <FormLabel>
                     Condition
-                    <Tooltip title={"Condition"} placement="right" sx={{ zIndex: 20, ml: 1 }}>
+                    <Tooltip title={formatDescription(props)} placement="right" sx={{ zIndex: 20, ml: 1 }}>
                         <HelpOutlineIcon color="action" />
                     </Tooltip>
                 </FormLabel>
@@ -554,7 +554,7 @@ export function CustomCard(props) {
             <Typography
                 level="title-lg"
                 endDecorator={
-                    <Tooltip title={props.description} sx={{ maxWidth: 360 }} placement="right">
+                    <Tooltip title={formatDescription(props)} sx={{ maxWidth: 360 }} placement="right">
                         <HelpOutlineIcon color="action" />
                     </Tooltip>
                 }

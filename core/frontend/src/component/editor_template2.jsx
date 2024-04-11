@@ -281,6 +281,7 @@ export default class EditorTemplate extends React.Component {
                         label: "Date",
                         description:
                             "The Date HTTP header indicates the date and time when the request was generated or the response was sent. It helps in synchronization, caching, and determining the freshness of the resource. The date format follows the HTTP-date format specified by RFC 7231.",
+                        descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -290,6 +291,7 @@ export default class EditorTemplate extends React.Component {
                         label: "Expect",
                         description:
                             "The Expect HTTP header specifies certain expectations that the client has for the server's behavior. It is typically used to indicate whether the client expects the server to meet specific conditions before processing the request, such as validating the request with a certain precondition or performing specific actions.",
+                        descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -299,6 +301,7 @@ export default class EditorTemplate extends React.Component {
                         label: "Forwarded",
                         description:
                             "The Forwarded HTTP header is used to indicate the chain of proxies or intermediaries through which the request has passed. It helps to track the client's original IP address, allowing servers to identify the client's location and handle requests accordingly, especially in the presence of multiple proxies or load balancers.",
+                        descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -308,6 +311,7 @@ export default class EditorTemplate extends React.Component {
                         label: "From",
                         description:
                             "The From HTTP header allows the client to provide the email address or contact information of the user or client making the request. It can be used for informational or logging purposes, enabling the server to identify the sender of the request or potentially contact them if necessary.",
+                        descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -317,6 +321,7 @@ export default class EditorTemplate extends React.Component {
                         label: "Host",
                         description:
                             "The Host HTTP header specifies the domain name or IP address of the server the client is attempting to communicate with. It is required in HTTP/1.1 requests and allows the server to determine which website or resource is being requested when multiple domains are hosted on the same server.",
+                        descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -326,7 +331,8 @@ export default class EditorTemplate extends React.Component {
                         label: "If-Match",
                         description:
                             "The If-Match HTTP header is used in conditional requests to ensure that the requested resource matches a specific entity tag (ETag) value. It allows the client to check if the resource has been modified since a previous request and avoid overwriting changes made by other clients.",
-                        component: Input,
+                            descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+                            component: Input,
                         enabled: false,
                         value: "",
                         issuer: "builtin",
@@ -335,7 +341,8 @@ export default class EditorTemplate extends React.Component {
                         label: "If-Modified-Since",
                         description:
                             "The If-Modified-Since HTTP header is used in conditional requests to check if a resource has been modified since a specific date and time. It allows the server to determine whether to send the full response or respond with a 304 Not Modified status code, indicating that the cached version can be used.",
-                        component: Input,
+                            descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+                            component: Input,
                         enabled: false,
                         value: "",
                         issuer: "builtin",
@@ -344,7 +351,8 @@ export default class EditorTemplate extends React.Component {
                         label: "If-None-Match",
                         description:
                             "The If-None-Match HTTP header is used in conditional requests to check if a resource has not been modified since a specific entity tag (ETag) value. It allows the server to determine whether to send the full response or respond with a 304 Not Modified status code, indicating that the cached version can be used.",
-                        component: Input,
+                            descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+                            component: Input,
                         enabled: false,
                         value: "",
                         issuer: "builtin",
@@ -353,7 +361,8 @@ export default class EditorTemplate extends React.Component {
                         label: "If-Range",
                         description:
                             "The If-Range HTTP header is used in conditional requests to specify a range of a resource that the client already has. It allows the server to determine whether to send the full response or a partial response based on the range specified and the current state of the resource.",
-                        component: Input,
+                            descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+                            component: Input,
                         enabled: false,
                         value: "",
                         issuer: "builtin",
@@ -362,7 +371,8 @@ export default class EditorTemplate extends React.Component {
                         label: "If-Unmodified-Since",
                         description:
                             "The If-Unmodified-Since HTTP header is used in conditional requests to check if a resource has not been modified since a specific date and time. It allows the server to determine whether to process the request or respond with a 412 Precondition Failed status code if the resource has been modified.",
-                        component: Input,
+                            descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+                            component: Input,
                         enabled: false,
                         value: "",
                         issuer: "builtin",
@@ -371,7 +381,8 @@ export default class EditorTemplate extends React.Component {
                         label: "Max-Forwards",
                         description:
                             "The Max-Forwards HTTP header is used in tracing requests to limit the number of times a request can be forwarded by intermediaries. It helps prevent infinite request loops by specifying the maximum number of times the request can be forwarded before it is stopped or rejected.",
-                        component: Input,
+                            descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+                            component: Input,
                         enabled: false,
                         value: "",
                         issuer: "builtin",
@@ -380,7 +391,8 @@ export default class EditorTemplate extends React.Component {
                         label: "Origin",
                         description:
                             "The Origin HTTP header indicates the origin of a cross-origin request, consisting of the scheme, host, and port. It is used in CORS (Cross-Origin Resource Sharing) to protect against unauthorized access and allows servers to determine if a request should be allowed based on the requesting origin.",
-                        component: Input,
+                            descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+                            component: Input,
                         enabled: false,
                         value: "",
                         issuer: "builtin",
@@ -389,7 +401,8 @@ export default class EditorTemplate extends React.Component {
                         label: "Pragma",
                         description:
                             "The Pragma HTTP header is used for backward compatibility with older HTTP/1.0 caches. It can include directives like no-cache to instruct caches not to serve cached responses and to always forward the request to the origin server for fresh content. However, it is generally superseded by the more widely supported Cache-Control header in HTTP/1.1.",
-                        component: Input,
+                            descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+                            component: Input,
                         enabled: false,
                         value: "",
                         issuer: "builtin",
@@ -398,7 +411,8 @@ export default class EditorTemplate extends React.Component {
                         label: "Proxy-Authorization",
                         description:
                             "The Proxy-Authorization HTTP header is used by a client to provide authentication credentials to a proxy server. It allows the client to authenticate itself with the proxy server using the specified credentials, enabling access to restricted resources through the proxy.",
-                        component: Input,
+                            descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+                            component: Input,
                         enabled: false,
                         value: "",
                         issuer: "builtin",
@@ -407,7 +421,8 @@ export default class EditorTemplate extends React.Component {
                         label: "Referer",
                         description:
                             "The Referer HTTP header is used to indicate the URL of the referring page from which the current request originated. It allows servers to track the source of traffic and provide contextual information, often used for analytics or redirection purposes.",
-                        component: Input,
+                            descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+                            component: Input,
                         enabled: false,
                         value: "",
                         issuer: "builtin",
@@ -416,7 +431,8 @@ export default class EditorTemplate extends React.Component {
                         label: "Upgrade",
                         description:
                             "The Upgrade HTTP header is used in a client request to indicate a desire to switch to a different protocol or version. It allows the client to request an upgrade from the current protocol, such as HTTP/1.1 to HTTP/2 or from HTTP to WebSocket, enabling more efficient communication or additional features.",
-                        component: Input,
+                            descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+                            component: Input,
                         enabled: false,
                         value: "",
                         issuer: "builtin",
@@ -425,7 +441,8 @@ export default class EditorTemplate extends React.Component {
                         label: "User-Agent",
                         description:
                             "The User-Agent HTTP header provides information about the client application or user agent making the request. It typically includes details such as the name, version, and operating system of the client, allowing the server to tailor the response or provide content suitable for the client's capabilities.",
-                        component: Input,
+                            descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+                            component: Input,
                         enabled: false,
                         value: "",
                         issuer: "builtin",
@@ -1280,7 +1297,7 @@ export default class EditorTemplate extends React.Component {
                     </Grid>
                 </CustomCard>
 
-                <CustomCard title={"Variables"} description={""}>
+                <CustomCard title={"Variables"} description={"Variables"}>
                     {this.state.variables_optional_list.length > 0 && (
                         <Grid xs={12} sx={{ py: 0 }}>
                             <Table borderAxis={"xBetween"}>
@@ -1469,8 +1486,7 @@ export default class EditorTemplate extends React.Component {
                             <Grid xs={12}>
                                 <CustomTextareaInputBox
                                     label={"path"}
-                                    description={"Path of the template executed"}
-                                    link={val.descriptionlink ? val.descriptionlink : ""}                                    
+                                    description={"Path of the template executed"}                                 
                                     options={["GET", "POST"]}
                                     value={"{{BaseURL}}/"}
                                     onChange={this.onchange_http}
@@ -1514,6 +1530,7 @@ export default class EditorTemplate extends React.Component {
                                                                             this.state.http_request_optional_list
                                                                                 .common[hi].label
                                                                         }
+                                                                        link={this.state.http_request_optional_list.common[hi].descriptionlink ? this.state.http_request_optional_list.common[hi].descriptionlink : ""}
                                                                     />
                                                                 )}
                                                             </th>
