@@ -215,49 +215,60 @@ export function ExtractorAutocomplete(props) {
 }
 export function CustomSelectionBox(props) {
     return (
-        <FormControl sx={{ gridColumn: "1/-1" }}>
-            <FormLabel>
-                {firstCharToUpper(props.label)}{" "}
-                <Tooltip 
-                    placement="right"
-                    sx={{ maxWidth: 320,zIndex: 20, ml: 1 }}
-                    title={
-                        <Typography
-                            startDecorator={
-                                <Link 
-                                underline="always"
-                                color="#D500F9"
-                                fontSize="sm"
-                                href="https://mui.com/joy-ui/react-tooltip/#common-examples">
-                                common-examples
+      <FormControl sx={{ gridColumn: "1/-1" }}>
+        <FormLabel>
+          {firstCharToUpper(props.label)}{" "}
+          <Tooltip
+                        placement="right"
+                        sx={{ maxWidth: 320, zIndex: 20, ml: 1 }}
+                        title={
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    maxWidth: 320,
+                                    justifyContent: 'center',
+                                    p: 1,
+                                }}
+                            >
+                            <Typography color="#FFFFFF">
+                                {props.description}
+                                <br/>
+                                <Link
+                                    underline="always"
+                                    fontSize="sm"
+                                    color="info"
+                                    href={props.descriptionlink}
+                                >
+                                common
                                 </Link>
-                            }
-                        >
-                        </Typography>
-                        
-                    } >
+                            </Typography>
+                            </Box>    
+                        }
+                    >
                     <HelpOutlineIcon color="action" />
-                </Tooltip>
-            </FormLabel>
-            <Select
-                size="lg"
-                key={props.label}
-                onChange={(event, newValue) => {
-                    props.onChange(props.label, newValue);
-                }}
-            >
-                {props.options &&
-                    props.options.map((data, i) => {
-                        return (
-                            <Option value={data} key={props.label + i}>
-                                {data}
-                            </Option>
-                        );
-                    })}
-            </Select>
-        </FormControl>
+                    </Tooltip>
+        </FormLabel>
+        <Select
+          size="lg"
+          key={props.label}
+          onChange={(event, newValue) => {
+            props.onChange(props.label, newValue);
+          }}
+        >
+          {props.options &&
+            props.options.map((data, i) => {
+              return (
+                <Option value={data} key={props.label + i}>
+                  {data}
+                </Option>
+              );
+            })}
+        </Select>
+      </FormControl>
     );
 }
+
 export function CustomRadioButtonsForAttack(props) {
     return (
         <RadioGroup
@@ -386,8 +397,25 @@ export function CustomSwitchButtons(props) {
             <div>
                 <FormLabel>
                     {props.label}
-                    <Tooltip title={props.description} placement="right" sx={{ maxWidth: 320, zIndex: 20, ml: 1 }}>
-                        <HelpOutlineIcon color="action" />
+                    <Tooltip
+                        placement="right"
+                        sx={{ maxWidth: 320, zIndex: 20, ml: 1 }}
+                        title={
+                        <Typography >
+                            {props.description}
+                            <br/>
+                            <Link
+                                underline="always"
+                                fontSize="sm"
+                                color="info"
+                                href={props.descriptionlink}
+                            >
+                            common-examples
+                            </Link>
+                        </Typography>
+                        }
+                    >
+                    <HelpOutlineIcon color="action" />
                     </Tooltip>
                 </FormLabel>
             </div>
@@ -413,9 +441,39 @@ export function CustomTextInputBox(props) {
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
                 {firstCharToUpper(props.label)}{" "}
-                <Tooltip title={props.description} placement="right" sx={{ maxWidth: 320, zIndex: 20, ml: 1 }}>
+                 <Tooltip
+                        placement="right"
+                        sx={{ maxWidth: 320, zIndex: 20, ml: 1 }}
+                        title={
+                            <Box
+                                sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    maxWidth: 320,
+                                    justifyContent: 'center',
+                                    p: 1,
+                                }}
+                            >
+                            <Typography color="#FFFFFF">
+                                {props.description}
+                                <br/>
+                                <Link
+                                    underline="always"
+                                    fontSize="sm"
+                                    color="info"
+                                    href={props.descriptionlink}
+                                >
+                                common-examples
+                                </Link>
+                            </Typography>
+                            </Box>    
+                        }
+                    >
                     <HelpOutlineIcon color="action" />
-                </Tooltip>
+                    </Tooltip>
+                    <Tooltip title={props.description} placement="right" sx={{ maxWidth: 320, zIndex: 20, ml: 1 }}>
+                    <HelpOutlineIcon color="action" />
+                    </Tooltip>
             </FormLabel>
             <Input
                 size="lg"

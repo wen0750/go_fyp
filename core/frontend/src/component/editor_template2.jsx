@@ -67,23 +67,23 @@ export default class EditorTemplate extends React.Component {
         super(props);
 
         this.matchersPartOpts = [
-            { label: "template-id", description: "ID of the template executed" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
-            { label: "template-info", description: "Info Block of the template executed" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
-            { label: "template-path", description: "Path of the template executed" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
-            { label: "host", description: "Host is the input to the template" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
-            { label: "matched", description: "Matched is the input which was matched upon" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
-            { label: "type", description: "Type is the type of request made" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
-            { label: "request", description: "HTTP request made from the client" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
-            { label: "response", description: "HTTP response received from server" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
-            { label: "status_code", description: "Status Code received from the Server" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
-            { label: "body", description: "HTTP response body received from server (default)" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
-            { label: "content_length", description: "HTTP Response content length" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
-            { label: "header", description: "HTTP response headers" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
-            { label: "all_headers", description: "HTTP response headers" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
-            { label: "duration", description: "HTTP request time duration" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
-            { label: "all", description: "HTTP response body + headers" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
-            { label: "cookies_from_response", description: "HTTP response cookies in name:value format" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
-            { label: "headers_from_response", description: "HTTP response headers in name:value format" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/#common-examples"},
+            { label: "template-id", description: "ID of the template executed" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
+            { label: "template-info", description: "Info Block of the template executed" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
+            { label: "template-path", description: "Path of the template executed" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
+            { label: "host", description: "Host is the input to the template" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
+            { label: "matched", description: "Matched is the input which was matched upon" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
+            { label: "type", description: "Type is the type of request made" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
+            { label: "request", description: "HTTP request made from the client" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
+            { label: "response", description: "HTTP response received from server" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
+            { label: "status_code", description: "Status Code received from the Server" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
+            { label: "body", description: "HTTP response body received from server (default)" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
+            { label: "content_length", description: "HTTP Response content length" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
+            { label: "header", description: "HTTP response headers" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
+            { label: "all_headers", description: "HTTP response headers" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
+            { label: "duration", description: "HTTP request time duration" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
+            { label: "all", description: "HTTP response body + headers" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
+            { label: "cookies_from_response", description: "HTTP response cookies in name:value format" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
+            { label: "headers_from_response", description: "HTTP response headers in name:value format" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
         ];
 
         this.state = {
@@ -105,13 +105,14 @@ export default class EditorTemplate extends React.Component {
                 {
                     label: "remediation",
                     description: "You can go in-depth here on how to mitigate the problem found by this template.",
+                    descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                     component: CustomTextareaInputBox,
                     enabled: false,
                 },
                 {
                     label: "reference",
-                    description:
-                        "Reference is another popular tag to define external reference links for the template.",
+                    description:"Reference is another popular tag to define external reference links for the template.",
+                    descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
@@ -122,30 +123,35 @@ export default class EditorTemplate extends React.Component {
                     label: "cvss-metrics",
                     description:
                         "CVSS Metrics for the template. Examples:cvss-metrics: 3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+                    descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
                 {
                     label: "cvss-score",
                     description: "CVSS Score for the template. Examples:cvss-score: 9.8",
+                    descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
                 {
                     label: "cpe",
                     description: "CPE for the template. Examples:cpe: cpe:/a:vendor:product:version",
+                    descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
                 {
                     label: "epss-score",
                     description: "EPSS Score for the template.Examples: epss-score: 0.42509",
+                    descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
                 {
                     label: "epss-percentile",
                     description: "EPSS Percentile for the template. Examples:epss-percentile: 0.42509",
+                    descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
@@ -156,6 +162,7 @@ export default class EditorTemplate extends React.Component {
                         label: "add Value",
                         description:
                             "The Accept header defines the media types that the client is able to accept from the server. For instance, Accept: application/json, text/html indicates that the client prefers JSON or HTML responses. This information allows the server to send a resource representation that meets the client’s needs.",
+                        descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                         component: Input,
                         enabled: false,
                     },
@@ -163,6 +170,7 @@ export default class EditorTemplate extends React.Component {
                         label: "add Field & Value",
                         description:
                             "The Accept header defines the media types that the client is able to accept from the server. For instance, Accept: application/json, text/html indicates that the client prefers JSON or HTML responses. This information allows the server to send a resource representation that meets the client’s needs.",
+                        descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                         component: Input,
                         enabled: false,
                     },
@@ -172,6 +180,7 @@ export default class EditorTemplate extends React.Component {
                         label: "Accept",
                         description:
                             "The Accept header defines the media types that the client is able to accept from the server. For instance, Accept: application/json, text/html indicates that the client prefers JSON or HTML responses. This information allows the server to send a resource representation that meets the client’s needs.",
+                        descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -181,6 +190,7 @@ export default class EditorTemplate extends React.Component {
                         label: "Accept-Charset",
                         description:
                             "The Accept-Charset HTTP header specifies the character sets the client can understand. It helps the server determine the appropriate character set for the response.",
+                        descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -190,6 +200,7 @@ export default class EditorTemplate extends React.Component {
                         label: "Accept-Datetime",
                         description:
                             "The Accept-Datetime HTTP header is used by a client to indicate a preferred date and time format. It allows the server to provide a response based on the client's specified date and time format, facilitating content retrieval or versioning based on specific timestamps.",
+                        descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -199,6 +210,7 @@ export default class EditorTemplate extends React.Component {
                         label: "Accept-Encoding",
                         description:
                             "The Accept-Encoding HTTP header is used by a client to indicate the compression algorithms it supports. It allows the server to compress the response using the preferred algorithm, reducing data transfer size. Common values include gzip and deflate, enabling efficient data transmission between the client and server.",
+                        descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -208,6 +220,7 @@ export default class EditorTemplate extends React.Component {
                         label: "Accept-Language",
                         description:
                             "The Accept-Language HTTP header is used by a client to indicate the preferred language for the response. It allows the server to tailor the content based on the client's language preference. The header value typically includes language codes like en for English or fr for French.",
+                        descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -217,6 +230,7 @@ export default class EditorTemplate extends React.Component {
                         label: "Authorization",
                         description:
                             "The Authorization HTTP header is used to include credentials or tokens in a request to authenticate the client with the server. It is commonly used in authentication schemes like Basic or Bearer, allowing the server to verify the client's identity and grant access to protected resources.",
+                        descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -226,6 +240,7 @@ export default class EditorTemplate extends React.Component {
                         label: "Cache-Control",
                         description:
                             "The Cache-Control header controls caching behavior in the client’s browser or intermediate caches. It defines how the response can be cached, when it expires, and how it should be revalidated. For example, Cache-Control: max-age=3600, public instructs the client to cache the response for a maximum of 3600 seconds (1 hour) and allows caching by public caches.",
+                        descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                         component: Input,
                         enabled: false,
                         value: "",
