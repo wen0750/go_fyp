@@ -294,16 +294,8 @@ export default class Editor_Right extends React.Component {
                                 <Td>{j + 1}</Td>
                                 <Td onClick={() => changeSelectData(j)}>
                                     {cell.url.split("/").at(-1) != ""
-                                        ? cell.url
-                                              .split("/")
-                                              .at(-1)
-                                              .split("?")
-                                              .at(0)
-                                        : cell.url
-                                              .split("/")
-                                              .at(-2)
-                                              .split("?")
-                                              .at(0)}
+                                        ? cell.url.split("/").at(-1).split("?").at(0)
+                                        : cell.url.split("/").at(-2).split("?").at(0)}
                                 </Td>
                             </tr>
                         ))}
@@ -348,15 +340,12 @@ export default class Editor_Right extends React.Component {
 
     fetchData = async () => {
         try {
-            const response = await fetch(
-                `${globeVar.backendprotocol}://${globeVar.backendhost}/pageresponse/capture`,
-                {
-                    method: "POST",
-                    body: JSON.stringify({
-                        url: this.state.reqURL,
-                    }),
-                }
-            );
+            const response = await fetch(`${globeVar.backendprotocol}://${globeVar.backendhost}/pageresponse/capture`, {
+                method: "POST",
+                body: JSON.stringify({
+                    url: this.state.reqURL,
+                }),
+            });
             const jsonData = await response.json();
 
             this.setState({
@@ -393,12 +382,7 @@ export default class Editor_Right extends React.Component {
                         backgroundColor: "whitesmoke",
                     }}
                 >
-                    <Stack
-                        direction="row"
-                        spacing={0}
-                        alignItems="center"
-                        justifyContent="center"
-                    >
+                    <Stack direction="row" spacing={0} alignItems="center" justifyContent="center">
                         <this.selectRequestMethod />
                         <TextField
                             fullWidth
@@ -418,10 +402,7 @@ export default class Editor_Right extends React.Component {
                     </Stack>
                     <TabContext value={this.state.requestTabsType}>
                         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                            <TabList
-                                onChange={this.RequestTabsChange}
-                                aria-label="lab API tabs example"
-                            >
+                            <TabList onChange={this.RequestTabsChange} aria-label="lab API tabs example">
                                 <Tab label="Params" value="1" />
                                 <Tab label="Auth" value="2" />
                                 <Tab label="Header" value="3" />
@@ -445,10 +426,7 @@ export default class Editor_Right extends React.Component {
                 </Box>
                 <TabContext value={this.state.responseViwerType}>
                     <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-                        <TabList
-                            onChange={this.Right_ResponseViwer_Type_Change}
-                            aria-label="lab API tabs example"
-                        >
+                        <TabList onChange={this.Right_ResponseViwer_Type_Change} aria-label="lab API tabs example">
                             <Tab label="HTML Code" value="1" />
                             {/* <Tab label="Page Review" value="2" /> */}
                         </TabList>
@@ -489,9 +467,7 @@ export default class Editor_Right extends React.Component {
                 </TabContext>
                 <Grid container spacing={2} sx={{ paddingRight: "5px" }}>
                     <Grid item xs={4}>
-                        <this.FetchDataTable
-                            changeSelectData={this.FetchDataTableClickHandler}
-                        ></this.FetchDataTable>
+                        <this.FetchDataTable changeSelectData={this.FetchDataTableClickHandler}></this.FetchDataTable>
                     </Grid>
                     <Grid item xs={8}>
                         <this.FetchedDataList

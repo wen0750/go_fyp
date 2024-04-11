@@ -44,7 +44,7 @@ function firstCharToUpper(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-function formatDescription(props) {
+export function formatDescription(props) {
     return (
         <Box
             sx={{
