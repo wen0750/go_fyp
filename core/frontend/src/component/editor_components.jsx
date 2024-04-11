@@ -65,7 +65,7 @@ function formatDescription(props) {
                     href={props.link}
                     fontSize="lg"
                     borderRadius="sm"
-                    sx={{ color: "#00ADB5", width: 140, justifyContent: "center" }}
+                    sx={{ color: "#00ADB5", width: 140, justifyContent: "center", mt: 3 }}
                 >
                     Reference
                     <LinkIcon sx={{ fontSize: 40, ml: 1 }} />
