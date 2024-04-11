@@ -20,7 +20,7 @@ import ListItemContent from "@mui/joy/ListItemContent";
 import Table from "@mui/joy/Table";
 import DeleteIcon from "@mui/icons-material/Delete";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import Link from '@mui/joy/Link';
+import Link from "@mui/joy/Link";
 
 import {
     CustomAutocomplete,
@@ -67,23 +67,91 @@ export default class EditorTemplate extends React.Component {
         super(props);
 
         this.matchersPartOpts = [
-            { label: "template-id", description: "ID of the template executed" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
-            { label: "template-info", description: "Info Block of the template executed" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
-            { label: "template-path", description: "Path of the template executed" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
-            { label: "host", description: "Host is the input to the template" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
-            { label: "matched", description: "Matched is the input which was matched upon" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
-            { label: "type", description: "Type is the type of request made" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
-            { label: "request", description: "HTTP request made from the client" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
-            { label: "response", description: "HTTP response received from server" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
-            { label: "status_code", description: "Status Code received from the Server" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
-            { label: "body", description: "HTTP response body received from server (default)" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
-            { label: "content_length", description: "HTTP Response content length" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
-            { label: "header", description: "HTTP response headers" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
-            { label: "all_headers", description: "HTTP response headers" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
-            { label: "duration", description: "HTTP request time duration" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
-            { label: "all", description: "HTTP response body + headers" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
-            { label: "cookies_from_response", description: "HTTP response cookies in name:value format" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
-            { label: "headers_from_response", description: "HTTP response headers in name:value format" ,descriptionlink: "https://mui.com/joy-ui/react-tooltip/"},
+            {
+                label: "template-id",
+                description: "ID of the template executed",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "template-info",
+                description: "Info Block of the template executed",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "template-path",
+                description: "Path of the template executed",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "host",
+                description: "Host is the input to the template",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "matched",
+                description: "Matched is the input which was matched upon",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "type",
+                description: "Type is the type of request made",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "request",
+                description: "HTTP request made from the client",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "response",
+                description: "HTTP response received from server",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "status_code",
+                description: "Status Code received from the Server",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "body",
+                description: "HTTP response body received from server (default)",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "content_length",
+                description: "HTTP Response content length",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "header",
+                description: "HTTP response headers",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "all_headers",
+                description: "HTTP response headers",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "duration",
+                description: "HTTP request time duration",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "all",
+                description: "HTTP response body + headers",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "cookies_from_response",
+                description: "HTTP response cookies in name:value format",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "headers_from_response",
+                description: "HTTP response headers in name:value format",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
         ];
 
         this.state = {
@@ -111,7 +179,8 @@ export default class EditorTemplate extends React.Component {
                 },
                 {
                     label: "reference",
-                    description:"Reference is another popular tag to define external reference links for the template.",
+                    description:
+                        "Reference is another popular tag to define external reference links for the template.",
                     descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                     component: CustomTextInputBox,
                     enabled: false,
@@ -1274,6 +1343,108 @@ export default class EditorTemplate extends React.Component {
                     </Grid>
                 </CustomCard>
 
+                <CustomCard title={"Payload"} description={"payload"}>
+                    {this.state.payload_optional_list.length > 0 && (
+                        <Grid xs={12} sx={{ py: 0 }}>
+                            <Table borderAxis={"xBetween"}>
+                                <thead>
+                                    <tr>
+                                        <th style={{ width: "25%" }}>Name</th>
+                                        <th style={{ width: "63%" }}>Value</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {this.state.payload_optional_list.map((header, hi) => {
+                                        if (header.enabled) {
+                                            return (
+                                                <tr key={"variablesrow" + hi}>
+                                                    <th>
+                                                        <Input
+                                                            size="lg"
+                                                            onBlur={(event) =>
+                                                                this.onTableChange_payload_option(
+                                                                    hi,
+                                                                    "label",
+                                                                    event.target.value
+                                                                )
+                                                            }
+                                                        />
+                                                    </th>
+                                                    <td>
+                                                        <Autocomplete
+                                                            multiple
+                                                            freeSolo
+                                                            // id={props.label}
+                                                            placeholder={header.label}
+                                                            options={[
+                                                                "Last input 1",
+                                                                "Last input 2",
+                                                                "Last input 3",
+                                                                "Last input 4",
+                                                                "Last input 5",
+                                                            ]}
+                                                            // getOptionLabel={(option) => option.label}
+                                                            onChange={(event, newValue) => {
+                                                                this.onTableChange_payload_option(
+                                                                    hi,
+                                                                    "value",
+                                                                    newValue
+                                                                );
+                                                            }}
+                                                            size="lg"
+                                                        />
+                                                    </td>
+                                                    <td>
+                                                        <Button
+                                                            onClick={() => this.onchange_payload_option(hi)}
+                                                            variant="plain"
+                                                            color="danger"
+                                                        >
+                                                            <DeleteIcon />
+                                                        </Button>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        }
+                                    })}
+                                </tbody>
+                            </Table>
+                        </Grid>
+                    )}
+
+                    <Grid xs={4}>
+                        <Button
+                            variant="outlined"
+                            color="neutral"
+                            startDecorator={<AddIcon />}
+                            onClick={this.onXchange_payload_option}
+                        >
+                            Add Variable
+                        </Button>
+                    </Grid>
+
+                    <Grid xs={12}>
+                        <Typography
+                            level="title-lg"
+                            endDecorator={
+                                <Tooltip title={""} sx={{ maxWidth: 320 }} placement="right">
+                                    <HelpOutlineIcon color="action" />
+                                </Tooltip>
+                            }
+                        >
+                            Attack mode
+                        </Typography>
+                    </Grid>
+                    <Grid xs={12}>
+                        <CustomRadioButtonsForAttack
+                            value={this.state.attack}
+                            options={this.state.payload_optional_list}
+                            onChange={this.onchange_attack_option}
+                        />
+                    </Grid>
+                </CustomCard>
+
                 <CustomCard title={"Request"} description={"Info contains metadata information about a template"}>
                     <Grid xs={4}>
                         <CustomSelectionBox
@@ -1384,7 +1555,6 @@ export default class EditorTemplate extends React.Component {
                                                                             ml: 1,
                                                                         }}
                                                                     >
-                                                                        
                                                                         <HelpOutlineIcon color="action" />
                                                                     </Tooltip>
                                                                 </FormLabel>
@@ -1436,10 +1606,7 @@ export default class EditorTemplate extends React.Component {
                         (this.state.httpRequestOptionCounter > 0 || this.state.userinput.http.method == "POST") && (
                             <Grid xs={12}>
                                 <Divider sx={{ my: 1 }} />
-                                <Typography 
-                                    level="body"Output
-                                >
-                                </Typography>
+                                <Typography level="body" Output></Typography>
 
                                 <CodeBlock
                                     text={this.format_http_request()}
@@ -1449,108 +1616,6 @@ export default class EditorTemplate extends React.Component {
                                 />
                             </Grid>
                         )}
-                </CustomCard>
-
-                <CustomCard title={"Payload"} description={"payload"}>
-                    {this.state.payload_optional_list.length > 0 && (
-                        <Grid xs={12} sx={{ py: 0 }}>
-                            <Table borderAxis={"xBetween"}>
-                                <thead>
-                                    <tr>
-                                        <th style={{ width: "25%" }}>Name</th>
-                                        <th style={{ width: "63%" }}>Value</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {this.state.payload_optional_list.map((header, hi) => {
-                                        if (header.enabled) {
-                                            return (
-                                                <tr key={"variablesrow" + hi}>
-                                                    <th>
-                                                        <Input
-                                                            size="lg"
-                                                            onBlur={(event) =>
-                                                                this.onTableChange_payload_option(
-                                                                    hi,
-                                                                    "label",
-                                                                    event.target.value
-                                                                )
-                                                            }
-                                                        />
-                                                    </th>
-                                                    <td>
-                                                        <Autocomplete
-                                                            multiple
-                                                            freeSolo
-                                                            // id={props.label}
-                                                            placeholder={header.label}
-                                                            options={[
-                                                                "Last input 1",
-                                                                "Last input 2",
-                                                                "Last input 3",
-                                                                "Last input 4",
-                                                                "Last input 5",
-                                                            ]}
-                                                            // getOptionLabel={(option) => option.label}
-                                                            onChange={(event, newValue) => {
-                                                                this.onTableChange_payload_option(
-                                                                    hi,
-                                                                    "value",
-                                                                    newValue
-                                                                );
-                                                            }}
-                                                            size="lg"
-                                                        />
-                                                    </td>
-                                                    <td>
-                                                        <Button
-                                                            onClick={() => this.onchange_payload_option(hi)}
-                                                            variant="plain"
-                                                            color="danger"
-                                                        >
-                                                            <DeleteIcon />
-                                                        </Button>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        }
-                                    })}
-                                </tbody>
-                            </Table>
-                        </Grid>
-                    )}
-
-                    <Grid xs={4}>
-                        <Button
-                            variant="outlined"
-                            color="neutral"
-                            startDecorator={<AddIcon />}
-                            onClick={this.onXchange_payload_option}
-                        >
-                            Add Variable
-                        </Button>
-                    </Grid>
-
-                    <Grid xs={12}>
-                        <Typography
-                            level="title-lg"
-                            endDecorator={
-                                <Tooltip title={""} sx={{ maxWidth: 320 }} placement="right">
-                                    <HelpOutlineIcon color="action" />
-                                </Tooltip>
-                            }
-                        >
-                            Attack mode
-                        </Typography>
-                    </Grid>
-                    <Grid xs={12}>
-                        <CustomRadioButtonsForAttack
-                            value={this.state.attack}
-                            options={this.state.payload_optional_list}
-                            onChange={this.onchange_attack_option}
-                        />
-                    </Grid>
                 </CustomCard>
 
                 <CustomCard title={"Matchers"} description={"Info contains metadata information about a template"}>
@@ -1617,7 +1682,6 @@ export default class EditorTemplate extends React.Component {
                                                         description={"Select the part of the request"}
                                                         options={this.matchersPartOpts}
                                                         onChange={this.onXchange_matchers_option}
-                                                        
                                                     />
                                                 )}
                                                 <ConditionRadioButtons
