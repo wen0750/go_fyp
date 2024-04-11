@@ -5,8 +5,9 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 
-import EditorTemplate from "../component/editor_template";
-import EditorTemplateNew from "../component/editor_template2";
+// import EditorTemplate from "../component/editor_template";
+// import EditorTemplateNew from "../component/editor_template2";
+import EditorTemplate from "../component/editor_template2";
 import EditorAction from "../component/editor_action";
 import EditorVariables from "../component/editor_variables";
 import EditorWorkflow from "../component/editor_workflow";
@@ -111,11 +112,7 @@ class Editor extends React.Component {
                 aria-labelledby={`simple-tab-${index}`}
                 {...other}
             >
-                {value === index && (
-                    <Box sx={{ p: 3 }}>
-                        <Typography>{children}</Typography>
-                    </Box>
-                )}
+                {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
             </div>
         );
     };
@@ -129,7 +126,7 @@ class Editor extends React.Component {
 
     handleChange = (event, newValue) => {
         let tempTW = "";
-        if (newValue === 0 || newValue === 3 || newValue === 4) {
+        if (newValue === 0 || newValue === 3) {
             tempTW = "50%";
         } else {
             tempTW = "100%";
@@ -213,11 +210,8 @@ class Editor extends React.Component {
                     <this.TabPanel value={this.state.curTab} index={3}>
                         <EditorEdit dataChange={this.setInput} />
                     </this.TabPanel>
-                    <this.TabPanel value={this.state.curTab} index={4}>
-                        <EditorTemplateNew onChange={this.setUserInput} templatedata={this.state.input} />
-                    </this.TabPanel>
                 </Box>
-                {(this.state.curTab == 0 || this.state.curTab == 4) && (
+                {this.state.curTab == 0 && (
                     <Box sx={{ width: "50%", ml: "0.5rem", height: "100%" }}>
                         <Paper>
                             <Editor_Right></Editor_Right>
