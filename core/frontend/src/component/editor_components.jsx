@@ -45,41 +45,32 @@ function firstCharToUpper(str) {
 }
 
 function formatDescription(props) {
-    console.log(props);
     return (
         <Box
             sx={{
-                // display: "flex",
-                // flexDirection: "column",
-                // justifyContent: "center",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
                 p: 1,
             }}
         >
-            <Typography
-                color="#FFFFFF"
-                endDecorator={
-                    props.link && (
-                        <Link
-                            level="h1"
-                            variant="outlined"
-                            aria-labelledby="heading-demo"
-                            href={props.link}
-                            fontSize="lg"
-                            borderRadius="sm"
-                            sx={{ color: "#00ADB5" }}
-                            onClick={() => {
-                                console.log(props.link);
-                            }}
-                        >
-                            <LinkIcon sx={{ fontSize: 30 }} />
-                            abcde
-                        </Link>
-                    )
-                }
-                sx={{ width: "auto", maxWidth: 360 }}
-            >
+            <Typography color="#FFFFFF" sx={{ width: "auto", maxWidth: 360 }}>
                 {props.description}
             </Typography>
+            {props.link && (
+                <Link
+                    level="h1"
+                    variant="outlined"
+                    aria-labelledby="heading-demo"
+                    href={props.link}
+                    fontSize="lg"
+                    borderRadius="sm"
+                    sx={{ color: "#00ADB5", width: 140, justifyContent: "center" }}
+                >
+                    Reference
+                    <LinkIcon sx={{ fontSize: 40, ml: 1 }} />
+                </Link>
+            )}
         </Box>
     );
 }
@@ -451,7 +442,6 @@ export function CustomTextInputBox(props) {
     );
 }
 export function CustomTextareaInputBox(props) {
-    console.log(props);
     return (
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
