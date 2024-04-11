@@ -261,6 +261,7 @@ export default class EditorTemplate extends React.Component {
                         label: "Content-Type",
                         description:
                             "The Content-Type HTTP header specifies the media type or MIME type of the content in the request or response. It indicates how the content should be interpreted and processed. Common values include text/html for HTML documents, application/json for JSON data, and image/jpeg for JPEG images.",
+                        descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -270,6 +271,7 @@ export default class EditorTemplate extends React.Component {
                         label: "Cookie",
                         description:
                             "The client can use the Cookie header to send previously stored cookies back to the server. The server then uses these cookies to associate the request with a specific user or session. This header plays an important role in delivering personalized experiences, as it enables the server to remember a user’s login state or language preference.",
+                        descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -1468,6 +1470,7 @@ export default class EditorTemplate extends React.Component {
                                 <CustomTextareaInputBox
                                     label={"path"}
                                     description={"Path of the template executed"}
+                                    link={val.descriptionlink ? val.descriptionlink : ""}                                    
                                     options={["GET", "POST"]}
                                     value={"{{BaseURL}}/"}
                                     onChange={this.onchange_http}
