@@ -7,7 +7,7 @@ import Divider from "@mui/joy/Divider";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
 import Input from "@mui/joy/Input";
-import Link from '@mui/joy/Link';
+import Link from "@mui/joy/Link";
 import Typography from "@mui/joy/Typography";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 
@@ -38,9 +38,49 @@ import Tooltip from "@mui/joy/Tooltip";
 // icon
 import AddIcon from "@mui/icons-material/Add";
 import CheckIcon from "@mui/icons-material/Check";
+import LinkIcon from "@mui/icons-material/Link";
 
 function firstCharToUpper(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function formatDescription(props) {
+    console.log(props);
+    return (
+        <Box
+            sx={{
+                // display: "flex",
+                // flexDirection: "column",
+                // justifyContent: "center",
+                p: 1,
+            }}
+        >
+            <Typography
+                color="#FFFFFF"
+                endDecorator={
+                    props.link && (
+                        <Link
+                            level="h1"
+                            variant="outlined"
+                            aria-labelledby="heading-demo"
+                            href={props.link}
+                            fontSize="lg"
+                            borderRadius="sm"
+                            sx={{ color: "#00ADB5" }}
+                            onClick={() => {
+                                console.log(props.link);
+                            }}
+                        >
+                            <LinkIcon sx={{ fontSize: 30 }} />
+                        </Link>
+                    )
+                }
+                sx={{ width: "auto", maxWidth: 360 }}
+            >
+                {props.description}
+            </Typography>
+        </Box>
+    );
 }
 
 // options components
@@ -49,12 +89,7 @@ export function CustomAutocomplete(props) {
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
                 {props.label}
-                <Tooltip 
-                    title={
-                        props.description}
-                        placement="right" sx={{ maxWidth: 320, zIndex: 20, ml: 1 }}>
-                        
-                    
+                <Tooltip title={props.description} placement="right" sx={{ maxWidth: 360, zIndex: 20, ml: 1 }}>
                     <HelpOutlineIcon color="action" />
                 </Tooltip>
             </FormLabel>
@@ -74,7 +109,7 @@ export function CustomAutocompleteMC(props) {
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
                 {firstCharToUpper(props.label)}
-                <Tooltip title={props.description} placement="right" sx={{ maxWidth: 320, zIndex: 20, ml: 1 }}>
+                <Tooltip title={props.description} placement="right" sx={{ maxWidth: 360, zIndex: 20, ml: 1 }}>
                     <HelpOutlineIcon color="action" />
                 </Tooltip>
             </FormLabel>
@@ -97,7 +132,7 @@ export function CustomAutocompleteFreeMC(props) {
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
                 {firstCharToUpper(props.label)}
-                <Tooltip title={props.description} placement="right" sx={{ maxWidth: 320, zIndex: 20, ml: 1 }}>
+                <Tooltip title={props.description} placement="right" sx={{ maxWidth: 360, zIndex: 20, ml: 1 }}>
                     <HelpOutlineIcon color="action" />
                 </Tooltip>
             </FormLabel>
@@ -121,7 +156,7 @@ export function CustomAutocompleteFree(props) {
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
                 {firstCharToUpper(props.label)}
-                <Tooltip title={props.description} placement="right" sx={{ maxWidth: 320, zIndex: 20, ml: 1 }}>
+                <Tooltip title={props.description} placement="right" sx={{ maxWidth: 360, zIndex: 20, ml: 1 }}>
                     <HelpOutlineIcon color="action" />
                 </Tooltip>
             </FormLabel>
@@ -144,7 +179,7 @@ export function PartAutocompleteMC(props) {
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
                 {firstCharToUpper(props.label)}
-                <Tooltip title={props.description} placement="right" sx={{ maxWidth: 320, zIndex: 20, ml: 1 }}>
+                <Tooltip title={props.description} placement="right" sx={{ maxWidth: 360, zIndex: 20, ml: 1 }}>
                     <HelpOutlineIcon color="action" />
                 </Tooltip>
             </FormLabel>
@@ -181,7 +216,7 @@ export function ExtractorAutocomplete(props) {
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
                 {firstCharToUpper(props.label)}
-                <Tooltip title={props.description} placement="right" sx={{ maxWidth: 320, zIndex: 20, ml: 1 }}>
+                <Tooltip title={props.description} placement="right" sx={{ maxWidth: 360, zIndex: 20, ml: 1 }}>
                     <HelpOutlineIcon color="action" />
                 </Tooltip>
             </FormLabel>
@@ -215,57 +250,30 @@ export function ExtractorAutocomplete(props) {
 }
 export function CustomSelectionBox(props) {
     return (
-      <FormControl sx={{ gridColumn: "1/-1" }}>
-        <FormLabel>
-          {firstCharToUpper(props.label)}{" "}
-          <Tooltip
-                        placement="right"
-                        sx={{ maxWidth: 320, zIndex: 20, ml: 1 }}
-                        title={
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    maxWidth: 320,
-                                    justifyContent: 'center',
-                                    p: 1,
-                                }}
-                            >
-                            <Typography color="#FFFFFF">
-                                {props.description}
-                                <br/>
-                                <Link
-                                    underline="always"
-                                    fontSize="sm"
-                                    color="info"
-                                    href={props.descriptionlink}
-                                >
-                                common
-                                </Link>
-                            </Typography>
-                            </Box>    
-                        }
-                    >
+        <FormControl sx={{ gridColumn: "1/-1" }}>
+            <FormLabel>
+                {firstCharToUpper(props.label)}{" "}
+                <Tooltip placement="right" sx={{ maxWidth: 360, zIndex: 20, ml: 1 }} title={formatDescription(props)}>
                     <HelpOutlineIcon color="action" />
-                    </Tooltip>
-        </FormLabel>
-        <Select
-          size="lg"
-          key={props.label}
-          onChange={(event, newValue) => {
-            props.onChange(props.label, newValue);
-          }}
-        >
-          {props.options &&
-            props.options.map((data, i) => {
-              return (
-                <Option value={data} key={props.label + i}>
-                  {data}
-                </Option>
-              );
-            })}
-        </Select>
-      </FormControl>
+                </Tooltip>
+            </FormLabel>
+            <Select
+                size="lg"
+                key={props.label}
+                onChange={(event, newValue) => {
+                    props.onChange(props.label, newValue);
+                }}
+            >
+                {props.options &&
+                    props.options.map((data, i) => {
+                        return (
+                            <Option value={data} key={props.label + i}>
+                                {data}
+                            </Option>
+                        );
+                    })}
+            </Select>
+        </FormControl>
     );
 }
 
@@ -399,23 +407,10 @@ export function CustomSwitchButtons(props) {
                     {props.label}
                     <Tooltip
                         placement="right"
-                        sx={{ maxWidth: 320, zIndex: 20, ml: 1 }}
-                        title={
-                        <Typography >
-                            {props.description}
-                            <br/>
-                            <Link
-                                underline="always"
-                                fontSize="sm"
-                                color="info"
-                                href={props.descriptionlink}
-                            >
-                            common-examples
-                            </Link>
-                        </Typography>
-                        }
+                        sx={{ maxWidth: 360, zIndex: 20, ml: 1 }}
+                        title={formatDescription(props)}
                     >
-                    <HelpOutlineIcon color="action" />
+                        <HelpOutlineIcon color="action" />
                     </Tooltip>
                 </FormLabel>
             </div>
@@ -441,39 +436,9 @@ export function CustomTextInputBox(props) {
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
                 {firstCharToUpper(props.label)}{" "}
-                 <Tooltip
-                        placement="right"
-                        sx={{ maxWidth: 320, zIndex: 20, ml: 1 }}
-                        title={
-                            <Box
-                                sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    maxWidth: 320,
-                                    justifyContent: 'center',
-                                    p: 1,
-                                }}
-                            >
-                            <Typography color="#FFFFFF">
-                                {props.description}
-                                <br/>
-                                <Link
-                                    underline="always"
-                                    fontSize="sm"
-                                    color="info"
-                                    href={props.descriptionlink}
-                                >
-                                common-examples
-                                </Link>
-                            </Typography>
-                            </Box>    
-                        }
-                    >
+                <Tooltip placement="right" sx={{ maxWidth: 360, zIndex: 20, ml: 1 }} title={formatDescription(props)}>
                     <HelpOutlineIcon color="action" />
-                    </Tooltip>
-                    <Tooltip title={props.description} placement="right" sx={{ maxWidth: 320, zIndex: 20, ml: 1 }}>
-                    <HelpOutlineIcon color="action" />
-                    </Tooltip>
+                </Tooltip>
             </FormLabel>
             <Input
                 size="lg"
@@ -485,11 +450,12 @@ export function CustomTextInputBox(props) {
     );
 }
 export function CustomTextareaInputBox(props) {
+    console.log(props);
     return (
         <FormControl sx={{ gridColumn: "1/-1" }}>
             <FormLabel>
                 {firstCharToUpper(props.label)}
-                <Tooltip title={props.description} placement="right" sx={{ maxWidth: 320, zIndex: 20, ml: 1 }}>
+                <Tooltip title={formatDescription(props)} placement="right" sx={{ maxWidth: 360, zIndex: 20, ml: 1 }}>
                     <HelpOutlineIcon color="action" />
                 </Tooltip>
             </FormLabel>
@@ -597,7 +563,7 @@ export function CustomCard(props) {
             <Typography
                 level="title-lg"
                 endDecorator={
-                    <Tooltip title={props.description} sx={{ maxWidth: 320 }} placement="right">
+                    <Tooltip title={props.description} sx={{ maxWidth: 360 }} placement="right">
                         <HelpOutlineIcon color="action" />
                     </Tooltip>
                 }

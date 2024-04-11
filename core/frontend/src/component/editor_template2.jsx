@@ -20,7 +20,6 @@ import ListItemContent from "@mui/joy/ListItemContent";
 import Table from "@mui/joy/Table";
 import DeleteIcon from "@mui/icons-material/Delete";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import Link from "@mui/joy/Link";
 
 import {
     CustomAutocomplete,
@@ -65,94 +64,6 @@ function generateString(length) {
 export default class EditorTemplate extends React.Component {
     constructor(props) {
         super(props);
-
-        this.matchersPartOpts = [
-            {
-                label: "template-id",
-                description: "ID of the template executed",
-                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
-            },
-            {
-                label: "template-info",
-                description: "Info Block of the template executed",
-                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
-            },
-            {
-                label: "template-path",
-                description: "Path of the template executed",
-                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
-            },
-            {
-                label: "host",
-                description: "Host is the input to the template",
-                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
-            },
-            {
-                label: "matched",
-                description: "Matched is the input which was matched upon",
-                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
-            },
-            {
-                label: "type",
-                description: "Type is the type of request made",
-                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
-            },
-            {
-                label: "request",
-                description: "HTTP request made from the client",
-                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
-            },
-            {
-                label: "response",
-                description: "HTTP response received from server",
-                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
-            },
-            {
-                label: "status_code",
-                description: "Status Code received from the Server",
-                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
-            },
-            {
-                label: "body",
-                description: "HTTP response body received from server (default)",
-                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
-            },
-            {
-                label: "content_length",
-                description: "HTTP Response content length",
-                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
-            },
-            {
-                label: "header",
-                description: "HTTP response headers",
-                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
-            },
-            {
-                label: "all_headers",
-                description: "HTTP response headers",
-                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
-            },
-            {
-                label: "duration",
-                description: "HTTP request time duration",
-                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
-            },
-            {
-                label: "all",
-                description: "HTTP response body + headers",
-                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
-            },
-            {
-                label: "cookies_from_response",
-                description: "HTTP response cookies in name:value format",
-                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
-            },
-            {
-                label: "headers_from_response",
-                description: "HTTP response headers in name:value format",
-                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
-            },
-        ];
 
         this.state = {
             firstRun: true,
@@ -726,6 +637,94 @@ export default class EditorTemplate extends React.Component {
                 },
             ],
         };
+
+        this.matchersPartOpts = [
+            {
+                label: "template-id",
+                description: "ID of the template executed",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "template-info",
+                description: "Info Block of the template executed",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "template-path",
+                description: "Path of the template executed",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "host",
+                description: "Host is the input to the template",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "matched",
+                description: "Matched is the input which was matched upon",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "type",
+                description: "Type is the type of request made",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "request",
+                description: "HTTP request made from the client",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "response",
+                description: "HTTP response received from server",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "status_code",
+                description: "Status Code received from the Server",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "body",
+                description: "HTTP response body received from server (default)",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "content_length",
+                description: "HTTP Response content length",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "header",
+                description: "HTTP response headers",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "all_headers",
+                description: "HTTP response headers",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "duration",
+                description: "HTTP request time duration",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "all",
+                description: "HTTP response body + headers",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "cookies_from_response",
+                description: "HTTP response cookies in name:value format",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+            {
+                label: "headers_from_response",
+                description: "HTTP response headers in name:value format",
+                descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+            },
+        ];
     }
 
     fetchCveData = async () => {
@@ -1217,6 +1216,7 @@ export default class EditorTemplate extends React.Component {
                                     <val.component
                                         label={val.label}
                                         description={val.description}
+                                        link={val.descriptionlink ? val.descriptionlink : ""}
                                         onChange={this.onchange_information}
                                     />
                                 </Grid>
@@ -1258,6 +1258,7 @@ export default class EditorTemplate extends React.Component {
                                     <val.component
                                         label={val.label}
                                         description={val.description}
+                                        link={val.descriptionlink ? val.descriptionlink : ""}
                                         onChange={this.onchange_classification}
                                     />
                                 </Grid>
