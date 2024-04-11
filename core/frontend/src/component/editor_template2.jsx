@@ -394,12 +394,13 @@ export default class EditorTemplate extends React.Component {
     // payload Change Handler
     onchange_payload_option = (key) => {
         const old = this.state.payload_optional_list;
+        var newHROC;
         old[key].enabled = !old[key].enabled;
         console.log(old);
         if (old[key].enabled) {
-            newHROC = this.state.httpRequestOptionCounter + 1;
+            newHROC = this.state.payloadCounter + 1;
         } else {
-            newHROC = this.state.httpRequestOptionCounter - 1;
+            newHROC = this.state.payloadCounter - 1;
         }
         if (newHROC > 1 && attack == "batteringram") {
             this.setState({
