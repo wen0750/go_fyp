@@ -1470,7 +1470,6 @@ export default class EditorTemplate extends React.Component {
                                 <CustomTextareaInputBox
                                     label={"path"}
                                     description={"Path of the template executed"}
-                                    link={val.descriptionlink ? val.descriptionlink : ""}                                    
                                     options={["GET", "POST"]}
                                     value={"{{BaseURL}}/"}
                                     onChange={this.onchange_http}
