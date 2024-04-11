@@ -193,7 +193,6 @@ class Editor extends React.Component {
                             <Tab label="Workflow" {...this.a11yProps(1)} />
                             <Tab label="Upload" {...this.a11yProps(2)} />
                             <Tab label="editor" {...this.a11yProps(3)} />
-                            <Tab label="editor2" {...this.a11yProps(4)} />
                         </Tabs>
                     </Box>
                     <this.TabPanel value={this.state.curTab} index={0}>
