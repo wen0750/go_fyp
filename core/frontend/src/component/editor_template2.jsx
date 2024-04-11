@@ -78,6 +78,7 @@ export default class EditorTemplate extends React.Component {
                 {
                     label: "impact",
                     description: "Impact of the template",
+                    descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                     component: CustomTextareaInputBox,
                     enabled: false,
                 },
@@ -230,6 +231,7 @@ export default class EditorTemplate extends React.Component {
                         label: "Connection",
                         description:
                             "The Connection HTTP header is used to control the behavior of the connection between the client and server. It can indicate whether the connection should be kept alive for subsequent requests, closed after completing the current request, or upgraded to a different protocol, such as WebSocket.",
+                        descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -239,6 +241,7 @@ export default class EditorTemplate extends React.Component {
                         label: "Content-Length",
                         description:
                             "The Content-Length HTTP header specifies the size of the entity body in the request or response message. It indicates the length of the content being sent or received in bytes. This allows the recipient to accurately read and process the message without unnecessary buffering or truncation.",
+                        descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                         component: Input,
                         enabled: false,
                         value: "",
@@ -248,6 +251,7 @@ export default class EditorTemplate extends React.Component {
                         label: "Content-MD5",
                         description:
                             "The Content-MD5 HTTP header provides a base64-encoded MD5 hash of the entity body in the request or response. It is used for integrity checking to ensure that the content has not been modified during transit. The recipient can compare the computed MD5 hash with the provided value for verification.",
+                        descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                         component: Input,
                         enabled: false,
                         value: "",
