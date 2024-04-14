@@ -124,8 +124,8 @@ func routing(router *gin.Engine) {
 	router.POST("/tag/:action", func(c *gin.Context) {
 		action := c.Param("action")
 		switch action {
-		case "file":
-			c.File("../services/tagList.txt")
+		case "all":
+			tagWordlist.StoredTags(c)
 		case "defaultShow":
 			tagWordlist.Top15Tags(c)
 		case "search":

@@ -70,6 +70,7 @@ export default class EditorTemplate extends React.Component {
         this.state = {
             firstRun: true,
             cveOpt: [],
+            tagsOpt: [],
             userinput: {},
             attack: "clusterbomb",
             payloadCounter: 0,
@@ -168,6 +169,23 @@ export default class EditorTemplate extends React.Component {
                 this.setState({ cveOpt: list, firstRun: false });
             }
             return list;
+        } catch (error) {
+            console.log("backend server error");
+            return [];
+        }
+    };
+    fetchTagsData = async () => {
+        try {
+            const data = await (
+                await fetch(`${globeVar.backendprotocol}://${globeVar.backendhost}/tag/all`, {
+                    signal: AbortSignal.timeout(8000),
+                    method: "POST",
+                })
+            ).json();
+            if (this.state.tagsOpt.length != data.length) {
+                this.setState({ tagsOpt: data });
+            }
+            return data.result;
         } catch (error) {
             console.log("backend server error");
             return [];
@@ -460,9 +478,8 @@ export default class EditorTemplate extends React.Component {
 
             if (user_input["info"].hasOwnProperty("tags")) {
                 var tmpstr = "";
-                console.log(this.state.userinput.info.tags);
                 this.state.userinput.info.tags.map((value) => {
-                    tmpstr += value.label + ",";
+                    tmpstr += value.name + ",";
                 });
                 user_input["info"]["tags"] = tmpstr.slice(0, -1);
             }
@@ -588,6 +605,7 @@ export default class EditorTemplate extends React.Component {
     render() {
         if (this.state.firstRun) {
             this.fetchCveData();
+            this.fetchTagsData();
         }
         return (
             <Container maxWidth="lg" sx={{ mx: 0, px: 0 }}>
@@ -620,6 +638,7 @@ export default class EditorTemplate extends React.Component {
                             description={
                                 "This allows you to set some custom tags to a template, depending on the purpose like cve, rce etc. This allows nuclei to identify templates with your input tags and only run them."
                             }
+                            options={this.state.tagsOpt}
                             onChange={this.onchange_information}
                         ></CustomAutocompleteMC>
                     </Grid>

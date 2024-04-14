@@ -94,6 +94,32 @@ func Top15Tags(c *gin.Context) {
 	c.JSON(http.StatusOK, topTags)
 }
 
+// Read the JSON file and return all the tags
+func StoredTags(c *gin.Context) {
+	// Read the file
+	filePath := "../backend/services/tagWordlist/tagList.json"
+	data, err := os.ReadFile(filePath)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Unmarshal JSON data
+	var tagsData TagsData
+	if err := json.Unmarshal(data, &tagsData); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Sort the tags by count, descending
+	sort.Slice(tagsData.Tags, func(i, j int) bool {
+		return tagsData.Tags[i].Count > tagsData.Tags[j].Count
+	})
+
+	// Send the top tags as a JSON response
+	c.JSON(http.StatusOK, tagsData.Tags)
+}
+
 func Action_Search(c *gin.Context) {
 	// Assume 'query' is the query parameter with the user's current input
 	query := c.Query("q")
