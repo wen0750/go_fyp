@@ -26,14 +26,12 @@ import SendIcon from "@mui/icons-material/Send";
 class ProjectFolder extends React.Component {
     constructor(props) {
         super(props);
-        this.rows = [];
         this.state = {
             createProjectModalIsOpen: false,
             createFolderModalIsOpen: false,
             modalLoading: false,
             selectedTIDs: [],
-            rows: this.rows,
-            folderContent: this.rows,
+            folderContent: [],
             folderName: "",
             f_folder_name: "",
             f_project_name: "",
@@ -97,7 +95,10 @@ class ProjectFolder extends React.Component {
                 maxWidth: 200,
                 renderCell: (params) => (
                     <Tooltip title="Delete" placement="right">
-                        <IconButton aria-label="remove this project from project" onClick={() => this.handleRemoveProject(this.props.fid, params.row.pid)}>
+                        <IconButton
+                            aria-label="remove this project from project"
+                            onClick={() => this.handleRemoveProject(this.props.fid, params.row.pid)}
+                        >
                             <DeleteIcon />
                         </IconButton>
                     </Tooltip>
@@ -114,7 +115,6 @@ class ProjectFolder extends React.Component {
     //
     fetchFoldersDetail = (fid) => {
         if (fid.length > 5) {
-            var result;
             fetch(`${globeVar.backendprotocol}://${globeVar.backendhost}/folder/details`, {
                 method: "POST",
                 body: JSON.stringify({
@@ -130,21 +130,20 @@ class ProjectFolder extends React.Component {
                         json[0].project.forEach((item, i) => {
                             item.id = i + 1;
                         });
-                        this.setState({
-                            folderName: json[0].name,
-                            folderContent: json[0].project,
-                        });
-                        return;
+                        if (JSON.stringify(json[0].project) !== JSON.stringify(this.state.folderContent)) {
+                            this.setState({
+                                folderName: json[0].name,
+                                folderContent: json[0].project,
+                            });
+                        }
                     } else {
                         this.setState({
                             folderName: json[0].name,
                             folderContent: [],
                         });
                     }
+                    return;
                 });
-        }
-        if (this.state.folderContent !== this.rows) {
-            this.setState({ folderContent: this.rows });
         }
     };
 
@@ -243,17 +242,28 @@ class ProjectFolder extends React.Component {
                 return (
                     <div>
                         <Tooltip title="Pause">
-                            <IconButton aria-label="take action for this project" onClick={() => this.handleAction(param.row.poc, "Pause", param.row.host, param.row.pid)}>
+                            <IconButton
+                                aria-label="take action for this project"
+                                onClick={() => this.handleAction(param.row.poc, "Pause", param.row.host, param.row.pid)}
+                            >
                                 <PauseIcon />
                             </IconButton>
                         </Tooltip>
                         <Tooltip title="Stop">
-                            <IconButton aria-label="take action for this project" onClick={() => this.handleAction(param.row.poc, "Stop", param.row.host, param.row.pid)}>
+                            <IconButton
+                                aria-label="take action for this project"
+                                onClick={() => this.handleAction(param.row.poc, "Stop", param.row.host, param.row.pid)}
+                            >
                                 <StopIcon />
                             </IconButton>
                         </Tooltip>
                         <Tooltip title="Rescan">
-                            <IconButton aria-label="take action for this project" onClick={() => this.handleAction(param.row.poc, "Restart", param.row.host, param.row.pid)}>
+                            <IconButton
+                                aria-label="take action for this project"
+                                onClick={() =>
+                                    this.handleAction(param.row.poc, "Restart", param.row.host, param.row.pid)
+                                }
+                            >
                                 <ReplayIcon />
                             </IconButton>
                         </Tooltip>
@@ -263,17 +273,30 @@ class ProjectFolder extends React.Component {
                 return (
                     <div>
                         <Tooltip title="Resume">
-                            <IconButton aria-label="take action for this project" onClick={() => this.handleAction(param.row.poc, "Resume", param.row.host, param.row.pid)}>
+                            <IconButton
+                                aria-label="take action for this project"
+                                onClick={() =>
+                                    this.handleAction(param.row.poc, "Resume", param.row.host, param.row.pid)
+                                }
+                            >
                                 <PlayArrowIcon />
                             </IconButton>
                         </Tooltip>
                         <Tooltip title="Stop">
-                            <IconButton aria-label="take action for this project" onClick={() => this.handleAction(param.row.poc, "Stop", param.row.host, param.row.pid)}>
+                            <IconButton
+                                aria-label="take action for this project"
+                                onClick={() => this.handleAction(param.row.poc, "Stop", param.row.host, param.row.pid)}
+                            >
                                 <StopIcon />
                             </IconButton>
                         </Tooltip>
                         <Tooltip title="Rescan">
-                            <IconButton aria-label="take action for this project" onClick={() => this.handleAction(param.row.poc, "Restart", param.row.host, param.row.pid)}>
+                            <IconButton
+                                aria-label="take action for this project"
+                                onClick={() =>
+                                    this.handleAction(param.row.poc, "Restart", param.row.host, param.row.pid)
+                                }
+                            >
                                 <ReplayIcon />
                             </IconButton>
                         </Tooltip>
@@ -282,7 +305,10 @@ class ProjectFolder extends React.Component {
             case "idle":
                 return (
                     <Tooltip title="Scan Now">
-                        <IconButton aria-label="take action for this project" onClick={() => this.handleAction(param.row.poc, "Scan", param.row.host, param.row.pid)}>
+                        <IconButton
+                            aria-label="take action for this project"
+                            onClick={() => this.handleAction(param.row.poc, "Scan", param.row.host, param.row.pid)}
+                        >
                             <PlayArrowIcon />
                         </IconButton>
                     </Tooltip>
@@ -290,7 +316,10 @@ class ProjectFolder extends React.Component {
             default:
                 return (
                     <Tooltip title="Scan Now">
-                        <IconButton aria-label="take action for this project" onClick={() => this.handleAction(param.row.poc, "Scan", param.row.host, param.row.pid)}>
+                        <IconButton
+                            aria-label="take action for this project"
+                            onClick={() => this.handleAction(param.row.poc, "Scan", param.row.host, param.row.pid)}
+                        >
                             <PlayArrowIcon />
                         </IconButton>
                     </Tooltip>
@@ -425,8 +454,6 @@ class ProjectFolder extends React.Component {
         }, 1000);
     };
     CreateProjectModal = () => {
-        var pocs = [];
-        pocs = this.rows;
         return (
             <div>
                 <Modal
@@ -440,7 +467,12 @@ class ProjectFolder extends React.Component {
                             Create a New Project
                         </Typography>
                         <Stack spacing={3} sx={{ width: 1, marginBlock: 1 }}>
-                            <TextField id="outlined-basic" label="Project Name" variant="outlined" onChange={this.changeProjectFormInput_name} />
+                            <TextField
+                                id="outlined-basic"
+                                label="Project Name"
+                                variant="outlined"
+                                onChange={this.changeProjectFormInput_name}
+                            />
                             <InputTags cbFunc={this.changeProjectFormInput_host}></InputTags>
                             <Autocomplete
                                 multiple
@@ -458,12 +490,23 @@ class ProjectFolder extends React.Component {
                                             .filter((item) => item), // Filter out options with no `name` property
                                     });
                                 }}
-                                renderInput={(params) => <TextField {...params} label="Select Template(s) of this project" placeholder="Template(s) (ex. CVE-2013-2621.yaml)" />}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        label="Select Template(s) of this project"
+                                        placeholder="Template(s) (ex. CVE-2013-2621.yaml)"
+                                    />
+                                )}
                             />
                         </Stack>
                         <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ mt: 3, marginLeft: 0, width: 1 }}>
                             <Grid item display="flex" justifyContent="center" alignItems="center" xs={6}>
-                                <Button variant="outlined" startIcon={<DeleteIcon />} onClick={this.closeCreateProjectModal} color="error">
+                                <Button
+                                    variant="outlined"
+                                    startIcon={<DeleteIcon />}
+                                    onClick={this.closeCreateProjectModal}
+                                    color="error"
+                                >
                                     Cancel
                                 </Button>
                             </Grid>
@@ -508,8 +551,6 @@ class ProjectFolder extends React.Component {
     };
 
     createFolderModal = () => {
-        var pocs = [];
-        pocs = this.rows;
         return (
             <div>
                 <Modal
@@ -523,11 +564,21 @@ class ProjectFolder extends React.Component {
                             Create a New Folder
                         </Typography>
                         <Stack spacing={3} sx={{ width: 1, marginBlock: 1 }}>
-                            <TextField id="outlined-basic" label="Folder_Names" variant="outlined" onChange={this.changeFolderFormInput_name} />
+                            <TextField
+                                id="outlined-basic"
+                                label="Folder_Names"
+                                variant="outlined"
+                                onChange={this.changeFolderFormInput_name}
+                            />
                         </Stack>
                         <Grid container columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ mt: 3, marginLeft: 0, width: 1 }}>
                             <Grid item display="flex" justifyContent="center" alignItems="center" xs={6}>
-                                <Button variant="outlined" startIcon={<DeleteIcon />} onClick={this.closeCreateFolderModal} color="error">
+                                <Button
+                                    variant="outlined"
+                                    startIcon={<DeleteIcon />}
+                                    onClick={this.closeCreateFolderModal}
+                                    color="error"
+                                >
                                     Cancel
                                 </Button>
                             </Grid>
@@ -578,7 +629,12 @@ class ProjectFolder extends React.Component {
                         <Button variant="outlined" sx={{ mx: 1 }} onClick={this.openCreateFolderModal}>
                             New Folder
                         </Button>
-                        <Button variant="contained" startIcon={<ControlPointRoundedIcon />} onClick={this.openCreateProjectModal} sx={{ mx: 1 }}>
+                        <Button
+                            variant="contained"
+                            startIcon={<ControlPointRoundedIcon />}
+                            onClick={this.openCreateProjectModal}
+                            sx={{ mx: 1 }}
+                        >
                             Create Project
                             {/* this was a template */}
                         </Button>
@@ -627,8 +683,13 @@ class ProjectFolder extends React.Component {
     };
 
     componentDidMount() {
-        this.fetchFoldersDetail(this.props.fid);
         this.getTemplates();
+        this.fetchFoldersDetail(this.props.fid);
+
+        // setInterval(console.log("heyder"), 1000);
+        setInterval(() => {
+            this.fetchFoldersDetail(this.props.fid);
+        }, 10000);
     }
     componentWillReceiveProps(nextProps) {
         if (nextProps.fid !== this.props.fid) {
@@ -636,8 +697,6 @@ class ProjectFolder extends React.Component {
         }
     }
     render() {
-        console.log(this.state.folderContent);
-        console.log(this.state.f_templates);
         return (
             <div>
                 <this.projectHeader />
