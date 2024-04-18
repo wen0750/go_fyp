@@ -266,7 +266,7 @@ export function CustomAutocompleteFreeMC(props) {
                 id={props.label}
                 placeholder={props.label}
                 options={["Last input 1", "Last input 2", "Last input 3", "Last input 4", "Last input 5"]}
-                getOptionLabel={(option) => option.label}
+                // getOptionLabel={(option) => option.label}
                 onChange={(event, newValue) => {
                     props.onChange(props.ikey, props.label, newValue);
                 }}
