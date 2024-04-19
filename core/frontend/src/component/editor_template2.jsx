@@ -628,6 +628,7 @@ export default class EditorTemplate extends React.Component {
                         <CustomSelectionBox
                             label={"severity"}
                             options={["info", "low", "medium", "high", "critical", ""]}
+                            description={"severity include ifo,low,medium,high and critical."}
                             onChange={this.onchange_information}
                         ></CustomSelectionBox>
                     </Grid>
@@ -715,7 +716,7 @@ export default class EditorTemplate extends React.Component {
                     </Grid>
                 </CustomCard>
 
-                <CustomCard title={"Variables"} description={"Variables"}>
+                <CustomCard title={"Variables"} description={"Variable is a key-value pair of strings that can be used throughout template."}>
                     {this.state.variables_optional_list.length > 0 && (
                         <Grid xs={12} sx={{ py: 0 }}>
                             <Table borderAxis={"xBetween"}>
@@ -785,7 +786,7 @@ export default class EditorTemplate extends React.Component {
                     </Grid>
                 </CustomCard>
 
-                <CustomCard title={"Payload"} description={"payload"}>
+                <CustomCard title={"Payload"} description={"Payloads support both key-values combinations where a list of payloads is provided, or optionally a single file can also be provided as payload which will be read on run-time."}>
                     {this.state.payload_optional_list.length > 0 && (
                         <Grid xs={12} sx={{ py: 0 }}>
                             <Table borderAxis={"xBetween"}>
@@ -870,7 +871,7 @@ export default class EditorTemplate extends React.Component {
                         <Typography
                             level="title-lg"
                             endDecorator={
-                                <Tooltip title={""} sx={{ maxWidth: 320 }} placement="right">
+                                <Tooltip title={"Attack is the type of payload combinations to perform.batteringram is inserts the same payload into all defined payload positions at once, pitchfork combines multiple payload sets and clusterbomb generates permutations and combinations for all payloads."} sx={{ maxWidth: 320 }} placement="right">
                                     <HelpOutlineIcon color="action" />
                                 </Tooltip>
                             }
