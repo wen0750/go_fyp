@@ -609,7 +609,11 @@ export default class EditorTemplate extends React.Component {
         }
         return (
             <Container maxWidth="lg" sx={{ mx: 0, px: 0 }}>
-                <CustomCard title={"Information"} description={"Info contains metadata information about a template"}>
+                <CustomCard
+                    title={"Information"}
+                    link={"https://google.com"}
+                    description={"Info contains metadata information about a template"}
+                >
                     <Grid xs={4}>
                         <CustomTextInputBox
                             label={"name"}
@@ -673,9 +677,9 @@ export default class EditorTemplate extends React.Component {
                         ></ControlledDropdown>
                     </Grid>
                 </CustomCard>
-
                 <CustomCard
                     title={"Classification"}
+                    link={"https://google.com"}
                     description={"Info contains metadata information about a template"}
                 >
                     <Grid xs={4}>
@@ -715,8 +719,11 @@ export default class EditorTemplate extends React.Component {
                         ></ControlledDropdown>
                     </Grid>
                 </CustomCard>
-
-                <CustomCard title={"Variables"} description={"Variable is a key-value pair of strings that can be used throughout template."}>
+                <CustomCard
+                    title={"Variables"}
+                    link={"https://google.com"}
+                    description={"Variable is a key-value pair of strings that can be used throughout template."}
+                >
                     {this.state.variables_optional_list.length > 0 && (
                         <Grid xs={12} sx={{ py: 0 }}>
                             <Table borderAxis={"xBetween"}>
@@ -785,8 +792,13 @@ export default class EditorTemplate extends React.Component {
                         </Button>
                     </Grid>
                 </CustomCard>
-
-                <CustomCard title={"Payload"} description={"Payloads support both key-values combinations where a list of payloads is provided, or optionally a single file can also be provided as payload which will be read on run-time."}>
+                <CustomCard
+                    title={"Payload"}
+                    link={"https://google.com"}
+                    description={
+                        "Payloads support both key-values combinations where a list of payloads is provided, or optionally a single file can also be provided as payload which will be read on run-time."
+                    }
+                >
                     {this.state.payload_optional_list.length > 0 && (
                         <Grid xs={12} sx={{ py: 0 }}>
                             <Table borderAxis={"xBetween"}>
@@ -871,7 +883,13 @@ export default class EditorTemplate extends React.Component {
                         <Typography
                             level="title-lg"
                             endDecorator={
-                                <Tooltip title={"Attack is the type of payload combinations to perform.batteringram is inserts the same payload into all defined payload positions at once, pitchfork combines multiple payload sets and clusterbomb generates permutations and combinations for all payloads."} sx={{ maxWidth: 320 }} placement="right">
+                                <Tooltip
+                                    title={
+                                        "Attack is the type of payload combinations to perform.batteringram is inserts the same payload into all defined payload positions at once, pitchfork combines multiple payload sets and clusterbomb generates permutations and combinations for all payloads."
+                                    }
+                                    sx={{ maxWidth: 320 }}
+                                    placement="right"
+                                >
                                     <HelpOutlineIcon color="action" />
                                 </Tooltip>
                             }
@@ -887,8 +905,11 @@ export default class EditorTemplate extends React.Component {
                         />
                     </Grid>
                 </CustomCard>
-
-                <CustomCard title={"Request"} description={"Info contains metadata information about a template"}>
+                <CustomCard
+                    title={"Request"}
+                    link={"https://google.com"}
+                    description={"Info contains metadata information about a template"}
+                >
                     <Grid xs={4}>
                         <CustomSelectionBox
                             label={"method"}
@@ -1060,8 +1081,11 @@ export default class EditorTemplate extends React.Component {
                             </Grid>
                         )}
                 </CustomCard>
-
-                <CustomCard title={"Matchers"} description={"Info contains metadata information about a template"}>
+                <CustomCard
+                    title={"Matchers"}
+                    link={"https://google.com"}
+                    description={"Info contains metadata information about a template"}
+                >
                     {this.state.matchersConditionCounter > 1 && (
                         <Grid xs={12}>
                             <ConditionRadioButtons
@@ -1202,9 +1226,9 @@ export default class EditorTemplate extends React.Component {
                         ></ControlledDropdown>
                     </Grid>
                 </CustomCard>
-
                 <CustomCard
                     title={"Extractors"}
+                    link={"https://google.com"}
                     description={
                         "Extractors can be used to extract and display in results a match from the response returned by a module."
                     }
@@ -1325,7 +1349,6 @@ export default class EditorTemplate extends React.Component {
                         ></ControlledDropdown>
                     </Grid>
                 </CustomCard>
-
                 <Grid>
                     <Button onClick={this.saveToDataBase}>Save</Button>
                 </Grid>
