@@ -106,35 +106,35 @@ export default class EditorTemplate extends React.Component {
                 {
                     label: "cvss-metrics",
                     description:
-                        "CVSS Metrics for the template. Examples:cvss-metrics: 3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+                        "CVSS Metrics for the template. \n\nExamples: cvss-metrics: 3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
                     descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
                 {
                     label: "cvss-score",
-                    description: "CVSS Score for the template. Examples:cvss-score: 9.8",
+                    description: "CVSS Score for the template. \n\nExamples: cvss-score: 9.8",
                     descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
                 {
                     label: "cpe",
-                    description: "CPE for the template. Examples:cpe: cpe:/a:vendor:product:version",
+                    description: "CPE for the template. \n\nExamples: cpe: cpe:/a:vendor:product:version",
                     descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
                 {
                     label: "epss-score",
-                    description: "EPSS Score for the template.Examples: epss-score: 0.42509",
+                    description: "EPSS Score for the template.\n\nExamples: epss-score: 0.42509",
                     descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
                 {
                     label: "epss-percentile",
-                    description: "EPSS Percentile for the template. Examples:epss-percentile: 0.42509",
+                    description: "EPSS Percentile for the template. \n\nExamples: epss-percentile: 0.42509",
                     descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
                     component: CustomTextInputBox,
                     enabled: false,
@@ -685,7 +685,7 @@ export default class EditorTemplate extends React.Component {
                     <Grid xs={4}>
                         <CustomTextInputBox
                             label={"cwe-id"}
-                            description={"CWE ID for the template. Examples:cwe-id: CWE-22"}
+                            description={"CWE ID for the template. \n\nExamples: cwe-id: CWE-22"}
                             onChange={this.onchange_classification}
                         ></CustomTextInputBox>
                     </Grid>
@@ -693,7 +693,7 @@ export default class EditorTemplate extends React.Component {
                         <CustomAutocomplete
                             label={"cve-id"}
                             options={this.state.cveOpt}
-                            description={"CVE ID for the template. Examples:cve-id: CVE-2020-14420"}
+                            description={"CVE ID for the template. \n\nExamples: cve-id: CVE-2020-14420"}
                             onChange={this.onchange_classification}
                         ></CustomAutocomplete>
                     </Grid>

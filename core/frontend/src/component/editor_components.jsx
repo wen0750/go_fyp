@@ -65,7 +65,7 @@ export function formatDescription(props) {
                 p: 1,
             }}
         >
-            <Typography color="#FFFFFF" sx={{ width: "auto", maxWidth: 360 }}>
+            <Typography color="#FFFFFF" sx={{ width: "auto", maxWidth: 360, whiteSpace: "pre-line" }}>
                 {props.description}
             </Typography>
             {props.link && (
