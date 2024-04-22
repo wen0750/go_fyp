@@ -611,7 +611,7 @@ export default class EditorTemplate extends React.Component {
             <Container maxWidth="lg" sx={{ mx: 0, px: 0 }}>
                 <CustomCard
                     title={"Information"}
-                    link={"https://google.com"}
+                    link={"https://docs.projectdiscovery.io/templates/structure#information"}
                     description={"Info contains metadata information about a template"}
                 >
                     <Grid xs={4}>
@@ -679,7 +679,7 @@ export default class EditorTemplate extends React.Component {
                 </CustomCard>
                 <CustomCard
                     title={"Classification"}
-                    link={"https://google.com"}
+                    link={"https://docs.projectdiscovery.io/templates/structure#information"}
                     description={"Info contains metadata information about a template"}
                 >
                     <Grid xs={4}>
@@ -721,7 +721,7 @@ export default class EditorTemplate extends React.Component {
                 </CustomCard>
                 <CustomCard
                     title={"Variables"}
-                    link={"https://google.com"}
+                    link={"https://docs.projectdiscovery.io/templates/reference/variables"}
                     description={"Variable is a key-value pair of strings that can be used throughout template."}
                 >
                     {this.state.variables_optional_list.length > 0 && (
@@ -794,7 +794,7 @@ export default class EditorTemplate extends React.Component {
                 </CustomCard>
                 <CustomCard
                     title={"Payload"}
-                    link={"https://google.com"}
+                    link={"https://docs.projectdiscovery.io/templates/structure"}
                     description={
                         "Payloads support both key-values combinations where a list of payloads is provided, or optionally a single file can also be provided as payload which will be read on run-time."
                     }
@@ -907,7 +907,7 @@ export default class EditorTemplate extends React.Component {
                 </CustomCard>
                 <CustomCard
                     title={"Request"}
-                    link={"https://google.com"}
+                    link={"https://docs.projectdiscovery.io/templates/protocols/http/basic-http"}
                     description={"Info contains metadata information about a template"}
                 >
                     <Grid xs={4}>
@@ -1083,7 +1083,7 @@ export default class EditorTemplate extends React.Component {
                 </CustomCard>
                 <CustomCard
                     title={"Matchers"}
-                    link={"https://google.com"}
+                    link={"https://docs.projectdiscovery.io/templates/reference/matchers"}
                     description={"Info contains metadata information about a template"}
                 >
                     {this.state.matchersConditionCounter > 1 && (
@@ -1228,7 +1228,7 @@ export default class EditorTemplate extends React.Component {
                 </CustomCard>
                 <CustomCard
                     title={"Extractors"}
-                    link={"https://google.com"}
+                    link={"https://docs.projectdiscovery.io/templates/reference/extractors"}
                     description={
                         "Extractors can be used to extract and display in results a match from the response returned by a module."
                     }
