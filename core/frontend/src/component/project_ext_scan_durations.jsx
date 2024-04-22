@@ -5,7 +5,29 @@ import CanvasJSReact from "@canvasjs/react-charts";
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
-const VulnerabilitiesPiChart = () => {
+function humanDiff(t1, t2) {
+    const diff = Math.max(t1, t2) - Math.min(t1, t2);
+    const SEC = 1000,
+        MIN = 60 * SEC,
+        HRS = 60 * MIN;
+
+    const hrs = Math.floor(diff / HRS);
+    const min = Math.floor((diff % HRS) / MIN).toLocaleString("en-US", {
+        minimumIntegerDigits: 2,
+    });
+    const sec = Math.floor((diff % MIN) / SEC).toLocaleString("en-US", {
+        minimumIntegerDigits: 2,
+    });
+    // const ms = Math.floor(diff % SEC).toLocaleString("en-US", {
+    //     minimumIntegerDigits: 4,
+    //     useGrouping: false,
+    // });
+    // return `${hrs}:${min}:${sec}.${ms}`;
+
+    return `${hrs}:${min}:${sec}`;
+}
+
+const VulnerabilitiesPiChart = (props) => {
     // const { data: chartData } = this.state;
     const options = {
         animationEnabled: true,
@@ -21,13 +43,7 @@ const VulnerabilitiesPiChart = () => {
                 yValueFormatString: "#,###'%'",
                 radius: "120%",
                 innerRadius: "50%",
-                dataPoints: [
-                    { name: "Critical", y: 2 },
-                    { name: "High", y: 3 },
-                    { name: "Medium", y: 13 },
-                    { name: "Low", y: 7 },
-                    { name: "info", y: 75 },
-                ],
+                dataPoints: props.data,
             },
         ],
     };
@@ -43,6 +59,24 @@ const VulnerabilitiesPiChart = () => {
 };
 
 const Body = (props) => {
+    console.log(props.data);
+    let starttF = "...";
+    let endtF = "...";
+    let takeTime = "...";
+    const cve = [];
+    if (props.data) {
+        let startt = new Date(props.data.startTime * 1000);
+        let endt = new Date(props.data.endTime * 1000);
+        starttF = startt.toLocaleString();
+        endtF = endt.toLocaleString();
+        takeTime = humanDiff(startt, endt);
+
+        const chartData = props.data ? props.data.cvecount : {};
+        for (const [key, value] of Object.entries(chartData)) {
+            cve.push({ name: key, y: value });
+        }
+    }
+
     return (
         <div>
             <div style={{ marginBottom: "1rem" }}>
@@ -67,22 +101,22 @@ const Body = (props) => {
                         </tr>
                         <tr>
                             <td>Start:</td>
-                            <td>January 16 at 5:30 PM</td>
+                            <td>{starttF}</td>
                         </tr>
                         <tr>
                             <td>End:</td>
-                            <td>January 16 at 6:28 PM</td>
+                            <td>{endtF}</td>
                         </tr>
                         <tr>
                             <td>Elapsed:</td>
-                            <td>an hour</td>
+                            <td>{takeTime}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div>
                 <UnderLineMiniTitle>Vulnerabilities</UnderLineMiniTitle>
-                <VulnerabilitiesPiChart></VulnerabilitiesPiChart>
+                <VulnerabilitiesPiChart data={cve}></VulnerabilitiesPiChart>
             </div>
         </div>
     );

@@ -1,6 +1,18 @@
 import * as React from "react";
 
-import { Box, Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel } from "@mui/material";
+import {
+    Box,
+    Typography,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TablePagination,
+    TableRow,
+    TableSortLabel,
+} from "@mui/material";
 
 import PropTypes from "prop-types";
 import { visuallyHidden } from "@mui/utils";
@@ -40,7 +52,9 @@ export default class ProjectNotes extends React.Component {
     };
 
     getComparator = (order, orderBy) => {
-        return order === "desc" ? (a, b) => this.descendingComparator(a, b, orderBy) : (a, b) => -this.descendingComparator(a, b, orderBy);
+        return order === "desc"
+            ? (a, b) => this.descendingComparator(a, b, orderBy)
+            : (a, b) => -this.descendingComparator(a, b, orderBy);
     };
 
     stableSort = (array, comparator) => {
@@ -71,7 +85,11 @@ export default class ProjectNotes extends React.Component {
                             padding={headCell.disablePadding ? "none" : "normal"}
                             sortDirection={orderBy === headCell.id ? order : false}
                         >
-                            <TableSortLabel active={orderBy === headCell.id} direction={orderBy === headCell.id ? order : "asc"} onClick={createSortHandler(headCell.id)}>
+                            <TableSortLabel
+                                active={orderBy === headCell.id}
+                                direction={orderBy === headCell.id ? order : "asc"}
+                                onClick={createSortHandler(headCell.id)}
+                            >
                                 {headCell.label}
                                 {orderBy === headCell.id ? (
                                     <Box component="span" sx={visuallyHidden}>
@@ -165,7 +183,11 @@ export default class ProjectNotes extends React.Component {
         const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - this.state.rows.length) : 0;
 
         const visibleRows = React.useMemo(
-            () => this.stableSort(this.state.rows, this.getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+            () =>
+                this.stableSort(this.state.rows, this.getComparator(order, orderBy)).slice(
+                    page * rowsPerPage,
+                    page * rowsPerPage + rowsPerPage
+                ),
             [order, orderBy, page, rowsPerPage]
         );
 
@@ -201,7 +223,13 @@ export default class ProjectNotes extends React.Component {
                                                 margin: "15px",
                                             }}
                                         >
-                                            <TableCell component="th" id={labelId} scope="row" padding="none" sx={{ paddingInline: "15px" }}>
+                                            <TableCell
+                                                component="th"
+                                                id={labelId}
+                                                scope="row"
+                                                padding="none"
+                                                sx={{ paddingInline: "15px" }}
+                                            >
                                                 <Typography
                                                     variant="h6"
                                                     sx={{
@@ -275,7 +303,7 @@ export default class ProjectNotes extends React.Component {
                     <this.EnhancedTable></this.EnhancedTable>
                 </Box>
                 <Box sx={{ width: "30%", padding: "0 25px" }}>
-                    <ScanDurations></ScanDurations>
+                    <ScanDurations data={this.props.inputData}></ScanDurations>
                 </Box>
             </Box>
         );

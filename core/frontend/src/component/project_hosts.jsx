@@ -98,7 +98,9 @@ export default class ProjectHosts extends React.Component {
     };
 
     getComparator = (order, orderBy) => {
-        return order === "desc" ? (a, b) => this.descendingComparator(a, b, orderBy) : (a, b) => -this.descendingComparator(a, b, orderBy);
+        return order === "desc"
+            ? (a, b) => this.descendingComparator(a, b, orderBy)
+            : (a, b) => -this.descendingComparator(a, b, orderBy);
     };
 
     stableSort = (array, comparator) => {
@@ -140,7 +142,11 @@ export default class ProjectHosts extends React.Component {
                             padding={headCell.disablePadding ? "none" : "normal"}
                             sortDirection={orderBy === headCell.id ? order : false}
                         >
-                            <TableSortLabel active={orderBy === headCell.id} direction={orderBy === headCell.id ? order : "asc"} onClick={createSortHandler(headCell.id)}>
+                            <TableSortLabel
+                                active={orderBy === headCell.id}
+                                direction={orderBy === headCell.id ? order : "asc"}
+                                onClick={createSortHandler(headCell.id)}
+                            >
                                 {headCell.label}
                                 {orderBy === headCell.id ? (
                                     <Box component="span" sx={visuallyHidden}>
@@ -351,7 +357,10 @@ export default class ProjectHosts extends React.Component {
                                             </Typography>
                                             {answer.request && (
                                                 <Accordion key={"Accordion2" + i}>
-                                                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content">
+                                                    <AccordionSummary
+                                                        expandIcon={<ExpandMoreIcon />}
+                                                        aria-controls="panel1-content"
+                                                    >
                                                         <Typography
                                                             variant="subtitle2"
                                                             gutterBottom
@@ -363,7 +372,12 @@ export default class ProjectHosts extends React.Component {
                                                         </Typography>
                                                     </AccordionSummary>
                                                     <AccordionDetails>
-                                                        <CodeBlock text={answer.request} language="go" showLineNumbers={false} theme={dracula} />
+                                                        <CodeBlock
+                                                            text={answer.request}
+                                                            language="go"
+                                                            showLineNumbers={false}
+                                                            theme={dracula}
+                                                        />
                                                     </AccordionDetails>
                                                 </Accordion>
                                             )}
@@ -372,7 +386,10 @@ export default class ProjectHosts extends React.Component {
                                                     // defaultExpanded
                                                     key={"Accordion3" + i}
                                                 >
-                                                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content">
+                                                    <AccordionSummary
+                                                        expandIcon={<ExpandMoreIcon />}
+                                                        aria-controls="panel1-content"
+                                                    >
                                                         <Typography
                                                             variant="subtitle2"
                                                             gutterBottom
@@ -384,7 +401,12 @@ export default class ProjectHosts extends React.Component {
                                                         </Typography>
                                                     </AccordionSummary>
                                                     <AccordionDetails>
-                                                        <CodeBlock text={headerpart} language="go" showLineNumbers={false} theme={dracula} />
+                                                        <CodeBlock
+                                                            text={headerpart}
+                                                            language="go"
+                                                            showLineNumbers={false}
+                                                            theme={dracula}
+                                                        />
                                                     </AccordionDetails>
                                                 </Accordion>
                                             )}
@@ -393,7 +415,10 @@ export default class ProjectHosts extends React.Component {
                                                     // defaultExpanded
                                                     key={"Accordion4" + i}
                                                 >
-                                                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content">
+                                                    <AccordionSummary
+                                                        expandIcon={<ExpandMoreIcon />}
+                                                        aria-controls="panel1-content"
+                                                    >
                                                         <Typography
                                                             variant="subtitle4"
                                                             gutterBottom
@@ -405,18 +430,40 @@ export default class ProjectHosts extends React.Component {
                                                         </Typography>
                                                     </AccordionSummary>
                                                     <AccordionDetails>
-                                                        <CodeBlock text={answer.response.substring(period + 1)} language="go" showLineNumbers={false} theme={dracula} />
+                                                        <CodeBlock
+                                                            text={answer.response.substring(period + 1)}
+                                                            language="go"
+                                                            showLineNumbers={false}
+                                                            theme={dracula}
+                                                        />
                                                     </AccordionDetails>
                                                 </Accordion>
                                             )}
 
-                                            <Button variant="contained" onClick={() => this.toggleWindowPortal(i)} sx={{ my: 2 }}>
+                                            <Button
+                                                variant="contained"
+                                                onClick={() => this.toggleWindowPortal(i)}
+                                                sx={{ my: 2 }}
+                                            >
                                                 Get Detail
                                             </Button>
 
                                             {this.state.popupList[i] == true && (
-                                                <NewWindow title={"Raw Respone of " + this.state.threatDetails[0].info.name + " - " + subtitle} closeOnUnmount={false}>
-                                                    <CodeBlock text={html_beautify(answer.response)} language="go" showLineNumbers={false} theme={dracula} />
+                                                <NewWindow
+                                                    title={
+                                                        "Raw Respone of " +
+                                                        this.state.threatDetails[0].info.name +
+                                                        " - " +
+                                                        subtitle
+                                                    }
+                                                    closeOnUnmount={false}
+                                                >
+                                                    <CodeBlock
+                                                        text={html_beautify(answer.response)}
+                                                        language="go"
+                                                        showLineNumbers={false}
+                                                        theme={dracula}
+                                                    />
                                                 </NewWindow>
                                             )}
                                         </AccordionDetails>
@@ -555,7 +602,11 @@ export default class ProjectHosts extends React.Component {
 
         console.log(this.state.vulnerabilities);
         const visibleRows = React.useMemo(
-            () => this.stableSort(this.state.vulnerabilities, this.getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+            () =>
+                this.stableSort(this.state.vulnerabilities, this.getComparator(order, orderBy)).slice(
+                    page * rowsPerPage,
+                    page * rowsPerPage + rowsPerPage
+                ),
             [order, orderBy, page, rowsPerPage]
         );
 
@@ -607,7 +658,10 @@ export default class ProjectHosts extends React.Component {
                                                     padding: 0,
                                                 }}
                                             >
-                                                <StackedBar rowData={row} isOpen={this.state.showStackedBar}></StackedBar>
+                                                <StackedBar
+                                                    rowData={row}
+                                                    isOpen={this.state.showStackedBar}
+                                                ></StackedBar>
                                             </TableCell>
                                         </TableRow>
                                     );
@@ -634,7 +688,10 @@ export default class ProjectHosts extends React.Component {
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
                 </Paper>
-                <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" />
+                <FormControlLabel
+                    control={<Switch checked={dense} onChange={handleChangeDense} />}
+                    label="Dense padding"
+                />
             </Box>
         );
     };
@@ -721,7 +778,7 @@ export default class ProjectHosts extends React.Component {
                     <this.EnhancedTable style={{ width: "75%" }}></this.EnhancedTable>
                 </Box>
                 <Box sx={{ width: 3 / 10, padding: "0 25px" }}>
-                    <ScanDurations></ScanDurations>
+                    <ScanDurations data={this.props.inputData}></ScanDurations>
                 </Box>
                 <this.genVulnerabilitiesDetails></this.genVulnerabilitiesDetails>
             </Box>
