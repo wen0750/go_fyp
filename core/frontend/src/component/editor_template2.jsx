@@ -1092,6 +1092,8 @@ export default class EditorTemplate extends React.Component {
                         <Grid xs={12}>
                             <ConditionRadioButtons
                                 value={this.state.matchersCondition}
+                                description={"Multiple words and regexes can be specified in a single matcher and can be configured with different conditions like AND and OR. \n\nAND - Using AND conditions allows matching of all the words from the list of words for the matcher. Only then will the request be marked as successful when all the words have been matched.\n\nOR - Using OR conditions allows matching of a single word from the list of matcher. The request will be marked as successful when even one of the word is matched for the matcher."}
+                                link={"https://docs.projectdiscovery.io/templates/reference/matchers#conditions"}
                                 options={["or", "and"]}
                                 onChange={this.onChangeMatcherCondition}
                                 ikey={0}
@@ -1303,8 +1305,9 @@ export default class EditorTemplate extends React.Component {
                                                         ikey={i}
                                                         label={"group"}
                                                         description={
-                                                            "group defines the matching group being used.In GO the 'match' is the full array of all matches and submatches.match[0] is the full match.match[n] is the submatches. Most often we'd want match[1] as depicted below"
+                                                            "group defines the matching group being used.In GO the 'match' is the full array of all matches and submatches.match[0] is the full match.match[n] is the submatches. Most often we'd want match[1] as depicted below. Default=NULL"
                                                         }
+                                                        link={"https://docs.projectdiscovery.io/templates/reference/extractors#dynamic-extractor"}
                                                         options={[
                                                             "Last input 1",
                                                             "Last input 2",

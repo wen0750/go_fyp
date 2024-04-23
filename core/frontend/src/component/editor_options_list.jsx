@@ -407,7 +407,8 @@ const opts = {
         },
         {
             label: "regex",
-            description: "Regex contains Regular Expression patterns required to be present in the response part.",
+            description: "Regex contains Regular Expression patterns required to be present in the response part. \n\n Example \n # Match for Linkerd Service via Regex \n\n regex - (?mi)^Via\\s*?:.*?linkerd.*$ \n\n # Match for Open Redirect via Location header \n\n regex:- (?m)^(?:Location\\s*?:\\s*?)(?:https?://|//)?(?:[a-zA-Z0-9\\-_\\.@]*)example\\.com.*$",
+            link: "https://docs.projectdiscovery.io/templates/reference/extractors#kval-extractor",
             valueOption: [],
             condition: "or",
             conditionOptions: ["and", "or"],
@@ -418,7 +419,7 @@ const opts = {
         },
         {
             label: "dsl",
-            description: "DSL are the dsl expressions that will be evaluated as part of nuclei matching rules.",
+            description: "Complex matchers of type dsl allows building more elaborate expressions with helper functions. These function allow access to Protocol Response which contains variety of data based on each protocol. See protocol specific documentation to learn about different returned results. \n\n Example: \n len(body)<1024 && status_code==200 \n#Body length less than 1024 and 200 status code \n\ncontains(toupper(body), md5(cookie)) \n# Check if the MD5 sum of cookies is contained in the uppercase body",
             valueOption: [],
             condition: "or",
             conditionOptions: ["and", "or"],
@@ -464,7 +465,8 @@ const opts = {
     extractors_opts: [
         {
             label: "regex",
-            description: "Regex contains Regular Expression patterns required to be present in the response part.",
+            description: "Regex contains Regular Expression patterns required to be present in the response part. \n\n Example \n # Match for Linkerd Service via Regex \n\n regex - (?mi)^Via\\s*?:.*?linkerd.*$ \n\n # Match for Open Redirect via Location header \n\n regex:- (?m)^(?:Location\\s*?:\\s*?)(?:https?://|//)?(?:[a-zA-Z0-9\\-_\\.@]*)example\\.com.*$",
+            link: "https://docs.projectdiscovery.io/templates/reference/extractors#kval-extractor",
             valueOption: [],
             part: "",
             group: "",
@@ -474,7 +476,8 @@ const opts = {
         },
         {
             label: "dsl",
-            description: "DSL are the dsl expressions that will be evaluated as part of nuclei matching rules.",
+            description: "Complex matchers of type dsl allows building more elaborate expressions with helper functions. These function allow access to Protocol Response which contains variety of data based on each protocol. See protocol specific documentation to learn about different returned results. \n\n Example: \n len(body)<1024 && status_code==200 \n#Body length less than 1024 and 200 status code \n\ncontains(toupper(body), md5(cookie)) \n# Check if the MD5 sum of cookies is contained in the uppercase body",
+            link: "https://docs.projectdiscovery.io/templates/reference/extractors#kval-extractor",
             valueOption: [],
             part: "",
             group: "",
@@ -506,7 +509,7 @@ const opts = {
         },
         {
             label: "json",
-            description: "A json extractor example to extract value of id object from JSON block.",
+            description: "A json extractor example to extract value of id object from JSON block. \n\nExample: \njson:- '.[] | .id'",
             valueOption: [],
             part: "",
             group: "",
