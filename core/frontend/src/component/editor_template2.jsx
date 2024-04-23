@@ -80,15 +80,15 @@ export default class EditorTemplate extends React.Component {
             info_optional_list: [
                 {
                     label: "impact",
-                    description: "Impact of the template",
-                    descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+                    description: "Impact of the template \n\n impact: Successful exploitation of this vulnerability could allow an attacker to execute arbitrary SQL queries, potentially leading to unauthorized access, data leakage, or data manipulation.",
+                    descriptionlink: "https://github.com/projectdiscovery/nuclei/blob/dev/SYNTAX-REFERENCE.md",
                     component: CustomTextareaInputBox,
                     enabled: false,
                 },
                 {
                     label: "remediation",
                     description: "You can go in-depth here on how to mitigate the problem found by this template.",
-                    descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+                    descriptionlink: "https://github.com/projectdiscovery/nuclei/blob/dev/SYNTAX-REFERENCE.md",
                     component: CustomTextareaInputBox,
                     enabled: false,
                 },
@@ -96,7 +96,7 @@ export default class EditorTemplate extends React.Component {
                     label: "reference",
                     description:
                         "Reference is another popular tag to define external reference links for the template.",
-                    descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+                    descriptionlink: "https://docs.projectdiscovery.io/templates/structure#information",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
@@ -107,35 +107,35 @@ export default class EditorTemplate extends React.Component {
                     label: "cvss-metrics",
                     description:
                         "CVSS Metrics for the template. \n\nExamples: cvss-metrics: 3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-                    descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+                    descriptionlink: "https://github.com/projectdiscovery/nuclei/blob/dev/SYNTAX-REFERENCE.md#modelclassification",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
                 {
                     label: "cvss-score",
                     description: "CVSS Score for the template. \n\nExamples: cvss-score: 9.8",
-                    descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+                    descriptionlink: "https://github.com/projectdiscovery/nuclei/blob/dev/SYNTAX-REFERENCE.md#modelclassification",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
                 {
                     label: "cpe",
                     description: "CPE for the template. \n\nExamples: cpe: cpe:/a:vendor:product:version",
-                    descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+                    descriptionlink: "https://github.com/projectdiscovery/nuclei/blob/dev/SYNTAX-REFERENCE.md#modelclassification",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
                 {
                     label: "epss-score",
                     description: "EPSS Score for the template.\n\nExamples: epss-score: 0.42509",
-                    descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+                    descriptionlink: "https://github.com/projectdiscovery/nuclei/blob/dev/SYNTAX-REFERENCE.md#modelclassification",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
                 {
                     label: "epss-percentile",
                     description: "EPSS Percentile for the template. \n\nExamples: epss-percentile: 0.42509",
-                    descriptionlink: "https://mui.com/joy-ui/react-tooltip/",
+                    descriptionlink: "https://github.com/projectdiscovery/nuclei/blob/dev/SYNTAX-REFERENCE.md#modelclassification",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
@@ -617,14 +617,14 @@ export default class EditorTemplate extends React.Component {
                     <Grid xs={4}>
                         <CustomTextInputBox
                             label={"name"}
-                            description={"Name should be good short summary that identifies what the template does."}
+                            description={"Name should be good short summary that identifies what the template does. \n\n Example: SQL injection test"}
                             onChange={this.onchange_information}
                         ></CustomTextInputBox>
                     </Grid>
                     <Grid xs={4}>
                         <CustomTextInputBox
                             label={"author"}
-                            description={"Author of the template."}
+                            description={"Author of the template.\n\n Example: Peter"}
                             onChange={this.onchange_information}
                         ></CustomTextInputBox>
                     </Grid>
@@ -632,7 +632,7 @@ export default class EditorTemplate extends React.Component {
                         <CustomSelectionBox
                             label={"severity"}
                             options={["info", "low", "medium", "high", "critical", ""]}
-                            description={"severity include ifo,low,medium,high and critical."}
+                            description={"severity include ifo,low,medium,high and critical.\n\n Example: Medium"}
                             onChange={this.onchange_information}
                         ></CustomSelectionBox>
                     </Grid>
@@ -641,7 +641,7 @@ export default class EditorTemplate extends React.Component {
                         <CustomAutocompleteMC
                             label={"tags"}
                             description={
-                                "This allows you to set some custom tags to a template, depending on the purpose like cve, rce etc. This allows nuclei to identify templates with your input tags and only run them."
+                                "This allows you to set some custom tags to a template, depending on the purpose like cve, rce etc. This allows nuclei to identify templates with your input tags and only run them.\n\n Example: cve,wordpress"
                             }
                             options={this.state.tagsOpt}
                             onChange={this.onchange_information}
@@ -722,7 +722,7 @@ export default class EditorTemplate extends React.Component {
                 <CustomCard
                     title={"Variables"}
                     link={"https://docs.projectdiscovery.io/templates/reference/variables"}
-                    description={"Variable is a key-value pair of strings that can be used throughout template."}
+                    description={"Variable is a key-value pair of strings that can be used throughout template. \n\n Example: name=a1 value={{value}}"}
                 >
                     {this.state.variables_optional_list.length > 0 && (
                         <Grid xs={12} sx={{ py: 0 }}>
@@ -794,9 +794,9 @@ export default class EditorTemplate extends React.Component {
                 </CustomCard>
                 <CustomCard
                     title={"Payload"}
-                    link={"https://docs.projectdiscovery.io/templates/structure"}
+                    link={"https://docs.projectdiscovery.io/templates/protocols/http/http-payloads"}
                     description={
-                        "Payloads support both key-values combinations where a list of payloads is provided, or optionally a single file can also be provided as payload which will be read on run-time."
+                        "Payloads support both key-values combinations where a list of payloads is provided, or optionally a single file can also be provided as payload which will be read on run-time. \n\n Example: \nName=path  \nVaule=helpers/wordlists/prams.txt"
                     }
                 >
                     {this.state.payload_optional_list.length > 0 && (
@@ -887,6 +887,7 @@ export default class EditorTemplate extends React.Component {
                                     title={
                                         "Attack is the type of payload combinations to perform.batteringram is inserts the same payload into all defined payload positions at once, pitchfork combines multiple payload sets and clusterbomb generates permutations and combinations for all payloads."
                                     }
+                                    link={"https://portswigger.net/burp/documentation/desktop/tools/intruder/configure-attack/attack-types"}
                                     sx={{ maxWidth: 320 }}
                                     placement="right"
                                 >
@@ -913,7 +914,7 @@ export default class EditorTemplate extends React.Component {
                     <Grid xs={4}>
                         <CustomSelectionBox
                             label={"method"}
-                            description={"Request contains a http request to be made from a template"}
+                            description={"Request contains a http request to be made from a template \n\n Example: Get"}
                             options={["GET", "POST"]}
                             onChange={this.onchange_http}
                         ></CustomSelectionBox>
@@ -926,7 +927,8 @@ export default class EditorTemplate extends React.Component {
                             <Grid xs={12}>
                                 <CustomTextareaInputBox
                                     label={"path"}
-                                    description={"Path of the template executed"}
+                                    description={"Path of the template executed \n\nExample: path:{{BaseURL}}/login.php"}
+                                    link={"https://docs.projectdiscovery.io/templates/protocols/http/basic-http"}
                                     options={["GET", "POST"]}
                                     value={"{{BaseURL}}/"}
                                     onChange={this.onchange_http}
@@ -1084,7 +1086,7 @@ export default class EditorTemplate extends React.Component {
                 <CustomCard
                     title={"Matchers"}
                     link={"https://docs.projectdiscovery.io/templates/reference/matchers"}
-                    description={"Info contains metadata information about a template"}
+                    description={"Info contains metadata information about a template \n\n Example \nCheck the target request is Successful \nStatus=200 "}
                 >
                     {this.state.matchersConditionCounter > 1 && (
                         <Grid xs={12}>
@@ -1125,6 +1127,7 @@ export default class EditorTemplate extends React.Component {
                                                         "When writing multi-protocol or flow based templates, there might be a case where we need to validate/match first request then proceed to next request"
                                                     }
                                                     value={val.isInternal}
+                                                    link={"https://docs.projectdiscovery.io/templates/reference/matchers#internal-matchers"}
                                                     onChange={this.onXchange_matchers_option}
                                                     ikey={i}
                                                     local={"isInternal"}
@@ -1135,6 +1138,7 @@ export default class EditorTemplate extends React.Component {
                                                         "All types of matchers also support negative conditions, mostly useful when you look for a match with an exclusions"
                                                     }
                                                     value={val.isNegative}
+                                                    link={"https://docs.projectdiscovery.io/templates/reference/matchers#negative-matchers"}
                                                     onChange={this.onXchange_matchers_option}
                                                     ikey={i}
                                                     local={"isNegative"}
@@ -1154,6 +1158,8 @@ export default class EditorTemplate extends React.Component {
                                                 <ConditionRadioButtons
                                                     value={val.condition}
                                                     options={val.conditionOptions}
+                                                    description={"Multiple words and regexes can be specified in a single matcher and can be configured with different conditions like AND and OR. \n\nAND - Using AND conditions allows matching of all the words from the list of words for the matcher. Only then will the request be marked as successful when all the words have been matched.\n\nOR - Using OR conditions allows matching of a single word from the list of matcher. The request will be marked as successful when even one of the word is matched for the matcher."}
+                                                    link={"https://docs.projectdiscovery.io/templates/reference/matchers#conditions"}
                                                     onChange={this.onXchange_matchers_option}
                                                     ikey={i}
                                                 />

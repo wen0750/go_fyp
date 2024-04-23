@@ -495,7 +495,8 @@ const opts = {
         },
         {
             label: "kval",
-            description: "Extract key: value/key=value formatted data from Response Header/Cookie",
+            description: "Extract key: value/key=value formatted data from Response Header/Cookie \n\n A kval extractor example to extract content-type header from HTTP Response. \n\n kval:content_type",
+            link:"https://docs.projectdiscovery.io/templates/reference/extractors#kval-extractor",
             valueOption: [],
             part: "",
             group: "",

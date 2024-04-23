@@ -93,7 +93,8 @@ export default class EditorTemplate extends React.Component {
                 visible: true,
                 removable: false,
                 tooltip:
-                    "Name should be good short summary that identifies what the template does.",
+                    "Name should be good short summary that identifies what the template does. \n\n example:SQL injection test",
+                
             },
             {
                 key: 1,
