@@ -110,10 +110,18 @@ export default class EditorAction extends React.Component {
                 let htmlContent;
                 if (data.action === "created") {
                     title = "Template Created Successfully";
-                    htmlContent = "<strong>UID:</strong> " + data.id + "<br>" + "This is the <strong>UID</strong> in the Database, you can save it for later search";
+                    htmlContent =
+                        "<strong>UID:</strong> " +
+                        data.id +
+                        "<br>" +
+                        "This is the <strong>UID</strong> in the Database, you can save it for later search";
                 } else {
                     title = "Template Updated Successfully";
-                    htmlContent = "<strong>Template Name:</strong> " + data.id + "<br>" + "It is updated in the Database, you can check it anytime";
+                    htmlContent =
+                        "<strong>Template Name:</strong> " +
+                        data.id +
+                        "<br>" +
+                        "It is updated in the Database, you can check it anytime";
                 }
 
                 // Show a message box to let the user know the Inserted ID
@@ -156,9 +164,9 @@ export default class EditorAction extends React.Component {
                         <Button variant="contained" size="medium">
                             Clear
                         </Button>
-                        <Button variant="contained" onClick={this.saveToMongo} size="medium">
+                        {/* <Button variant="contained" onClick={this.saveToMongo} size="medium">
                             Save To Database
-                        </Button>
+                        </Button> */}
                         <Button variant="contained" onClick={this.ondatasubmit} size="medium">
                             Download
                         </Button>

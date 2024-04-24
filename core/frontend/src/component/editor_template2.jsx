@@ -80,7 +80,8 @@ export default class EditorTemplate extends React.Component {
             info_optional_list: [
                 {
                     label: "impact",
-                    description: "Impact of the template \n\n impact: Successful exploitation of this vulnerability could allow an attacker to execute arbitrary SQL queries, potentially leading to unauthorized access, data leakage, or data manipulation.",
+                    description:
+                        "Impact of the template \n\n impact: Successful exploitation of this vulnerability could allow an attacker to execute arbitrary SQL queries, potentially leading to unauthorized access, data leakage, or data manipulation.",
                     descriptionlink: "https://github.com/projectdiscovery/nuclei/blob/dev/SYNTAX-REFERENCE.md",
                     component: CustomTextareaInputBox,
                     enabled: false,
@@ -107,35 +108,40 @@ export default class EditorTemplate extends React.Component {
                     label: "cvss-metrics",
                     description:
                         "CVSS Metrics for the template. \n\nExamples: cvss-metrics: 3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
-                    descriptionlink: "https://github.com/projectdiscovery/nuclei/blob/dev/SYNTAX-REFERENCE.md#modelclassification",
+                    descriptionlink:
+                        "https://github.com/projectdiscovery/nuclei/blob/dev/SYNTAX-REFERENCE.md#modelclassification",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
                 {
                     label: "cvss-score",
                     description: "CVSS Score for the template. \n\nExamples: cvss-score: 9.8",
-                    descriptionlink: "https://github.com/projectdiscovery/nuclei/blob/dev/SYNTAX-REFERENCE.md#modelclassification",
+                    descriptionlink:
+                        "https://github.com/projectdiscovery/nuclei/blob/dev/SYNTAX-REFERENCE.md#modelclassification",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
                 {
                     label: "cpe",
                     description: "CPE for the template. \n\nExamples: cpe: cpe:/a:vendor:product:version",
-                    descriptionlink: "https://github.com/projectdiscovery/nuclei/blob/dev/SYNTAX-REFERENCE.md#modelclassification",
+                    descriptionlink:
+                        "https://github.com/projectdiscovery/nuclei/blob/dev/SYNTAX-REFERENCE.md#modelclassification",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
                 {
                     label: "epss-score",
                     description: "EPSS Score for the template.\n\nExamples: epss-score: 0.42509",
-                    descriptionlink: "https://github.com/projectdiscovery/nuclei/blob/dev/SYNTAX-REFERENCE.md#modelclassification",
+                    descriptionlink:
+                        "https://github.com/projectdiscovery/nuclei/blob/dev/SYNTAX-REFERENCE.md#modelclassification",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
                 {
                     label: "epss-percentile",
                     description: "EPSS Percentile for the template. \n\nExamples: epss-percentile: 0.42509",
-                    descriptionlink: "https://github.com/projectdiscovery/nuclei/blob/dev/SYNTAX-REFERENCE.md#modelclassification",
+                    descriptionlink:
+                        "https://github.com/projectdiscovery/nuclei/blob/dev/SYNTAX-REFERENCE.md#modelclassification",
                     component: CustomTextInputBox,
                     enabled: false,
                 },
@@ -557,8 +563,7 @@ export default class EditorTemplate extends React.Component {
                         matcherCO["condition"] = t.condition;
                     }
                 }
-
-                if (t["isInternal"]) {
+                if (t["isNegative"]) {
                     matcherCO["negative"] = t.isNegative;
                 }
                 if (t["isInternal"]) {
@@ -566,7 +571,6 @@ export default class EditorTemplate extends React.Component {
                 }
 
                 matcherCO[t.label] = t[t.label];
-
                 user_input["http"][0]["matchers"].push(matcherCO);
             }
         }
@@ -617,7 +621,9 @@ export default class EditorTemplate extends React.Component {
                     <Grid xs={4}>
                         <CustomTextInputBox
                             label={"name"}
-                            description={"Name should be good short summary that identifies what the template does. \n\n Example: SQL injection test"}
+                            description={
+                                "Name should be good short summary that identifies what the template does. \n\n Example: SQL injection test"
+                            }
                             onChange={this.onchange_information}
                         ></CustomTextInputBox>
                     </Grid>
@@ -722,7 +728,9 @@ export default class EditorTemplate extends React.Component {
                 <CustomCard
                     title={"Variables"}
                     link={"https://docs.projectdiscovery.io/templates/reference/variables"}
-                    description={"Variable is a key-value pair of strings that can be used throughout template. \n\n Example: name=a1 value={{value}}"}
+                    description={
+                        "Variable is a key-value pair of strings that can be used throughout template. \n\n Example: name=a1 value={{value}}"
+                    }
                 >
                     {this.state.variables_optional_list.length > 0 && (
                         <Grid xs={12} sx={{ py: 0 }}>
@@ -833,11 +841,11 @@ export default class EditorTemplate extends React.Component {
                                                             // id={props.label}
                                                             placeholder={header.label}
                                                             options={[
-                                                                "Last input 1",
-                                                                "Last input 2",
-                                                                "Last input 3",
-                                                                "Last input 4",
-                                                                "Last input 5",
+                                                                "1'+Order+by+1--+",
+                                                                "1'+Order+by+2--+",
+                                                                "1'+Order+by+3--+",
+                                                                "1'+Order+by+4--+",
+                                                                "1'+Order+by+5--+",
                                                             ]}
                                                             // getOptionLabel={(option) => option.label}
                                                             onChange={(event, newValue) => {
@@ -887,7 +895,9 @@ export default class EditorTemplate extends React.Component {
                                     title={
                                         "Attack is the type of payload combinations to perform.batteringram is inserts the same payload into all defined payload positions at once, pitchfork combines multiple payload sets and clusterbomb generates permutations and combinations for all payloads."
                                     }
-                                    link={"https://portswigger.net/burp/documentation/desktop/tools/intruder/configure-attack/attack-types"}
+                                    link={
+                                        "https://portswigger.net/burp/documentation/desktop/tools/intruder/configure-attack/attack-types"
+                                    }
                                     sx={{ maxWidth: 320 }}
                                     placement="right"
                                 >
@@ -927,7 +937,9 @@ export default class EditorTemplate extends React.Component {
                             <Grid xs={12}>
                                 <CustomTextareaInputBox
                                     label={"path"}
-                                    description={"Path of the template executed \n\nExample: path:{{BaseURL}}/login.php"}
+                                    description={
+                                        "Path of the template executed \n\nExample: path:{{BaseURL}}/login.php"
+                                    }
                                     link={"https://docs.projectdiscovery.io/templates/protocols/http/basic-http"}
                                     options={["GET", "POST"]}
                                     value={"{{BaseURL}}/"}
@@ -1086,13 +1098,17 @@ export default class EditorTemplate extends React.Component {
                 <CustomCard
                     title={"Matchers"}
                     link={"https://docs.projectdiscovery.io/templates/reference/matchers"}
-                    description={"Info contains metadata information about a template \n\n Example \nCheck the target request is Successful \nStatus=200 "}
+                    description={
+                        "Info contains metadata information about a template \n\n Example \nCheck the target request is Successful \nStatus=200 "
+                    }
                 >
                     {this.state.matchersConditionCounter > 1 && (
                         <Grid xs={12}>
                             <ConditionRadioButtons
                                 value={this.state.matchersCondition}
-                                description={"Multiple words and regexes can be specified in a single matcher and can be configured with different conditions like AND and OR. \n\nAND - Using AND conditions allows matching of all the words from the list of words for the matcher. Only then will the request be marked as successful when all the words have been matched.\n\nOR - Using OR conditions allows matching of a single word from the list of matcher. The request will be marked as successful when even one of the word is matched for the matcher."}
+                                description={
+                                    "Multiple words and regexes can be specified in a single matcher and can be configured with different conditions like AND and OR. \n\nAND - Using AND conditions allows matching of all the words from the list of words for the matcher. Only then will the request be marked as successful when all the words have been matched.\n\nOR - Using OR conditions allows matching of a single word from the list of matcher. The request will be marked as successful when even one of the word is matched for the matcher."
+                                }
                                 link={"https://docs.projectdiscovery.io/templates/reference/matchers#conditions"}
                                 options={["or", "and"]}
                                 onChange={this.onChangeMatcherCondition}
@@ -1129,7 +1145,9 @@ export default class EditorTemplate extends React.Component {
                                                         "When writing multi-protocol or flow based templates, there might be a case where we need to validate/match first request then proceed to next request"
                                                     }
                                                     value={val.isInternal}
-                                                    link={"https://docs.projectdiscovery.io/templates/reference/matchers#internal-matchers"}
+                                                    link={
+                                                        "https://docs.projectdiscovery.io/templates/reference/matchers#internal-matchers"
+                                                    }
                                                     onChange={this.onXchange_matchers_option}
                                                     ikey={i}
                                                     local={"isInternal"}
@@ -1140,7 +1158,9 @@ export default class EditorTemplate extends React.Component {
                                                         "All types of matchers also support negative conditions, mostly useful when you look for a match with an exclusions"
                                                     }
                                                     value={val.isNegative}
-                                                    link={"https://docs.projectdiscovery.io/templates/reference/matchers#negative-matchers"}
+                                                    link={
+                                                        "https://docs.projectdiscovery.io/templates/reference/matchers#negative-matchers"
+                                                    }
                                                     onChange={this.onXchange_matchers_option}
                                                     ikey={i}
                                                     local={"isNegative"}
@@ -1160,8 +1180,12 @@ export default class EditorTemplate extends React.Component {
                                                 <ConditionRadioButtons
                                                     value={val.condition}
                                                     options={val.conditionOptions}
-                                                    description={"Multiple words and regexes can be specified in a single matcher and can be configured with different conditions like AND and OR. \n\nAND - Using AND conditions allows matching of all the words from the list of words for the matcher. Only then will the request be marked as successful when all the words have been matched.\n\nOR - Using OR conditions allows matching of a single word from the list of matcher. The request will be marked as successful when even one of the word is matched for the matcher."}
-                                                    link={"https://docs.projectdiscovery.io/templates/reference/matchers#conditions"}
+                                                    description={
+                                                        "Multiple words and regexes can be specified in a single matcher and can be configured with different conditions like AND and OR. \n\nAND - Using AND conditions allows matching of all the words from the list of words for the matcher. Only then will the request be marked as successful when all the words have been matched.\n\nOR - Using OR conditions allows matching of a single word from the list of matcher. The request will be marked as successful when even one of the word is matched for the matcher."
+                                                    }
+                                                    link={
+                                                        "https://docs.projectdiscovery.io/templates/reference/matchers#conditions"
+                                                    }
                                                     onChange={this.onXchange_matchers_option}
                                                     ikey={i}
                                                 />
@@ -1307,7 +1331,9 @@ export default class EditorTemplate extends React.Component {
                                                         description={
                                                             "group defines the matching group being used.In GO the 'match' is the full array of all matches and submatches.match[0] is the full match.match[n] is the submatches. Most often we'd want match[1] as depicted below. Default=NULL"
                                                         }
-                                                        link={"https://docs.projectdiscovery.io/templates/reference/extractors#dynamic-extractor"}
+                                                        link={
+                                                            "https://docs.projectdiscovery.io/templates/reference/extractors#dynamic-extractor"
+                                                        }
                                                         options={[
                                                             "Last input 1",
                                                             "Last input 2",
