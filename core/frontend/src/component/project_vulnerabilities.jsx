@@ -256,10 +256,7 @@ class ProjectVulnerabilities extends React.Component {
                                             </Typography>
                                             {answer.request && (
                                                 <Accordion key={"Accordion2" + i}>
-                                                    <AccordionSummary
-                                                        expandIcon={<ExpandMoreIcon />}
-                                                        aria-controls="panel1-content"
-                                                    >
+                                                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content">
                                                         <Typography
                                                             variant="subtitle2"
                                                             gutterBottom
@@ -271,12 +268,7 @@ class ProjectVulnerabilities extends React.Component {
                                                         </Typography>
                                                     </AccordionSummary>
                                                     <AccordionDetails>
-                                                        <CodeBlock
-                                                            text={answer.request}
-                                                            language="go"
-                                                            showLineNumbers={false}
-                                                            theme={dracula}
-                                                        />
+                                                        <CodeBlock text={answer.request} language="go" showLineNumbers={false} theme={dracula} />
                                                     </AccordionDetails>
                                                 </Accordion>
                                             )}
@@ -285,10 +277,7 @@ class ProjectVulnerabilities extends React.Component {
                                                     // defaultExpanded
                                                     key={"Accordion3" + i}
                                                 >
-                                                    <AccordionSummary
-                                                        expandIcon={<ExpandMoreIcon />}
-                                                        aria-controls="panel1-content"
-                                                    >
+                                                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content">
                                                         <Typography
                                                             variant="subtitle2"
                                                             gutterBottom
@@ -300,12 +289,7 @@ class ProjectVulnerabilities extends React.Component {
                                                         </Typography>
                                                     </AccordionSummary>
                                                     <AccordionDetails>
-                                                        <CodeBlock
-                                                            text={headerpart}
-                                                            language="go"
-                                                            showLineNumbers={false}
-                                                            theme={dracula}
-                                                        />
+                                                        <CodeBlock text={headerpart} language="go" showLineNumbers={false} theme={dracula} />
                                                     </AccordionDetails>
                                                 </Accordion>
                                             )}
@@ -314,10 +298,7 @@ class ProjectVulnerabilities extends React.Component {
                                                     // defaultExpanded
                                                     key={"Accordion4" + i}
                                                 >
-                                                    <AccordionSummary
-                                                        expandIcon={<ExpandMoreIcon />}
-                                                        aria-controls="panel1-content"
-                                                    >
+                                                    <AccordionSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1-content">
                                                         <Typography
                                                             variant="subtitle4"
                                                             gutterBottom
@@ -339,22 +320,13 @@ class ProjectVulnerabilities extends React.Component {
                                                 </Accordion>
                                             )}
 
-                                            <Button
-                                                variant="contained"
-                                                onClick={() => this.toggleWindowPortal(i)}
-                                                sx={{ my: 2 }}
-                                            >
+                                            <Button variant="contained" onClick={() => this.toggleWindowPortal(i)} sx={{ my: 2 }}>
                                                 Get Detail
                                             </Button>
 
                                             {this.state.popupList[i] == true && (
                                                 <NewWindow
-                                                    title={
-                                                        "Raw Respone of " +
-                                                        this.state.threatDetails[0].info.name +
-                                                        " - " +
-                                                        subtitle
-                                                    }
+                                                    title={"Raw Respone of " + this.state.threatDetails[0].info.name + " - " + subtitle}
                                                     closeOnUnmount={false}
                                                 >
                                                     <CodeBlock

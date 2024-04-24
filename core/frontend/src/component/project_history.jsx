@@ -1,26 +1,7 @@
 import * as React from "react";
 
-import {
-    Box,
-    Toolbar,
-    Typography,
-    Paper,
-    Checkbox,
-    IconButton,
-    Tooltip,
-    FormControlLabel,
-    Switch,
-} from "@mui/material";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TablePagination,
-    TableRow,
-    TableSortLabel,
-} from "@mui/material";
+import { Box, Toolbar, Typography, Paper, Checkbox, IconButton, Tooltip, FormControlLabel, Switch } from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, TableSortLabel } from "@mui/material";
 
 import PropTypes from "prop-types";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -84,9 +65,7 @@ export default class ProjectHistory extends React.Component {
     };
 
     getComparator = (order, orderBy) => {
-        return order === "desc"
-            ? (a, b) => this.descendingComparator(a, b, orderBy)
-            : (a, b) => -this.descendingComparator(a, b, orderBy);
+        return order === "desc" ? (a, b) => this.descendingComparator(a, b, orderBy) : (a, b) => -this.descendingComparator(a, b, orderBy);
     };
 
     stableSort = (array, comparator) => {
@@ -280,11 +259,7 @@ export default class ProjectHistory extends React.Component {
         const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - props.data.length) : 0;
 
         const visibleRows = React.useMemo(
-            () =>
-                this.stableSort(props.data, this.getComparator(order, orderBy)).slice(
-                    page * rowsPerPage,
-                    page * rowsPerPage + rowsPerPage
-                ),
+            () => this.stableSort(props.data, this.getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
             [order, orderBy, page, rowsPerPage]
         );
 
@@ -352,19 +327,14 @@ export default class ProjectHistory extends React.Component {
                         onRowsPerPageChange={handleChangeRowsPerPage}
                     />
                 </Paper>
-                <FormControlLabel
-                    control={<Switch checked={dense} onChange={handleChangeDense} />}
-                    label="Dense padding"
-                />
+                <FormControlLabel control={<Switch checked={dense} onChange={handleChangeDense} />} label="Dense padding" />
             </Box>
         );
     };
 
     fetchHistoryRecord = async () => {
         try {
-            const response = await fetch(
-                `${globeVar.backendprotocol}://${globeVar.backendhost}/historyList/${this.props.projectID}`
-            );
+            const response = await fetch(`${globeVar.backendprotocol}://${globeVar.backendhost}/historyList/${this.props.projectID}`);
             const jsonData = await response.json();
             if (this.state.historyRecord != jsonData) {
                 this.setState({ historyRecord: jsonData, display: true });
@@ -382,12 +352,7 @@ export default class ProjectHistory extends React.Component {
         return (
             <Box component="div" sx={{ display: "flex" }}>
                 <Box sx={{ width: "70%" }}>
-                    {this.state.display && (
-                        <this.EnhancedTable
-                            data={this.state.historyRecord}
-                            style={{ width: "75%" }}
-                        ></this.EnhancedTable>
-                    )}
+                    {this.state.display && <this.EnhancedTable data={this.state.historyRecord} style={{ width: "75%" }}></this.EnhancedTable>}
                 </Box>
 
                 <Box sx={{ width: "30%", padding: "0 25px" }}>

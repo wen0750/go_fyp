@@ -441,13 +441,7 @@ export default class Editor_Right extends React.Component {
                         }}
                     >
                         {/* {html_beautify(this.state.tmpHTMLBody)} */}
-                        <CopyBlock
-                            language="html"
-                            text={html_beautify(this.state.tmpHTMLBody)}
-                            codeBlock
-                            theme={dracula}
-                            showLineNumbers={false}
-                        />
+                        <CopyBlock language="html" text={html_beautify(this.state.tmpHTMLBody)} codeBlock theme={dracula} showLineNumbers={false} />
                     </TabPanel>
                     {/* <TabPanel
                         value="2"
@@ -470,11 +464,7 @@ export default class Editor_Right extends React.Component {
                         <this.FetchDataTable changeSelectData={this.FetchDataTableClickHandler}></this.FetchDataTable>
                     </Grid>
                     <Grid item xs={8}>
-                        <this.FetchedDataList
-                            headerName={"General"}
-                            columns={this.state.ycolumns}
-                            rows={this.state.yrow1}
-                        ></this.FetchedDataList>
+                        <this.FetchedDataList headerName={"General"} columns={this.state.ycolumns} rows={this.state.yrow1}></this.FetchedDataList>
                         <this.FetchedDataList
                             headerName={"Response Headers"}
                             columns={this.state.ycolumns}

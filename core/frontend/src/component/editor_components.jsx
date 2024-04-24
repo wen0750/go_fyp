@@ -529,11 +529,7 @@ export function CustomSwitchButtons(props) {
             <div>
                 <FormLabel>
                     {props.label}
-                    <Tooltip
-                        placement="right"
-                        sx={{ maxWidth: 360, zIndex: 20, ml: 1 }}
-                        title={formatDescription(props)}
-                    >
+                    <Tooltip placement="right" sx={{ maxWidth: 360, zIndex: 20, ml: 1 }} title={formatDescription(props)}>
                         <HelpOutlineIcon color="action" />
                     </Tooltip>
                 </FormLabel>

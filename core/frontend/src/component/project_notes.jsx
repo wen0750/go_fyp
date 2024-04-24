@@ -52,9 +52,7 @@ export default class ProjectNotes extends React.Component {
     };
 
     getComparator = (order, orderBy) => {
-        return order === "desc"
-            ? (a, b) => this.descendingComparator(a, b, orderBy)
-            : (a, b) => -this.descendingComparator(a, b, orderBy);
+        return order === "desc" ? (a, b) => this.descendingComparator(a, b, orderBy) : (a, b) => -this.descendingComparator(a, b, orderBy);
     };
 
     stableSort = (array, comparator) => {
@@ -183,11 +181,7 @@ export default class ProjectNotes extends React.Component {
         const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - this.state.rows.length) : 0;
 
         const visibleRows = React.useMemo(
-            () =>
-                this.stableSort(this.state.rows, this.getComparator(order, orderBy)).slice(
-                    page * rowsPerPage,
-                    page * rowsPerPage + rowsPerPage
-                ),
+            () => this.stableSort(this.state.rows, this.getComparator(order, orderBy)).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
             [order, orderBy, page, rowsPerPage]
         );
 
@@ -223,13 +217,7 @@ export default class ProjectNotes extends React.Component {
                                                 margin: "15px",
                                             }}
                                         >
-                                            <TableCell
-                                                component="th"
-                                                id={labelId}
-                                                scope="row"
-                                                padding="none"
-                                                sx={{ paddingInline: "15px" }}
-                                            >
+                                            <TableCell component="th" id={labelId} scope="row" padding="none" sx={{ paddingInline: "15px" }}>
                                                 <Typography
                                                     variant="h6"
                                                     sx={{

@@ -114,7 +114,11 @@ const DropZone = (props) => {
                 let htmlContent;
                 if (data.action === "created") {
                     title = "Template Created Successfully";
-                    htmlContent = "<strong>UID:</strong> " + data.id + "<br>" + "This is the <strong>UID</strong> in the Database, you can save it for later search";
+                    htmlContent =
+                        "<strong>UID:</strong> " +
+                        data.id +
+                        "<br>" +
+                        "This is the <strong>UID</strong> in the Database, you can save it for later search";
                 } else {
                     title = "Template Updated Successfully";
                     htmlContent = "<strong>Template Name:</strong> " + data.id + "<br>" + "It is updated in the Database, you can check it anytime";
@@ -203,10 +207,16 @@ const DropZone = (props) => {
                                 {file.name}
                             </span>
 
-                            <button className={`styled-delete-button${submitted.includes(file) ? " fade-out" : ""}`} onClick={() => handleDelete(file)}>
+                            <button
+                                className={`styled-delete-button${submitted.includes(file) ? " fade-out" : ""}`}
+                                onClick={() => handleDelete(file)}
+                            >
                                 Delete
                             </button>
-                            <button className={`styled-submit-button${submitted.includes(file) ? " fade-out" : ""}`} onClick={() => handleSubmit(file)}>
+                            <button
+                                className={`styled-submit-button${submitted.includes(file) ? " fade-out" : ""}`}
+                                onClick={() => handleSubmit(file)}
+                            >
                                 Submit
                             </button>
                         </li>

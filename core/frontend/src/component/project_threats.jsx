@@ -67,23 +67,16 @@ class ProjectThreats extends React.Component {
     riskLevel = () => {
         return (
             <div style={{ display: "flex", marginBlockEnd: "1rem" }}>
-                <img
-                    src="../image/shield/3_star_shield-removebg-preview.png"
-                    alt=""
-                    width="125"
-                    height="125"
-                    style={{ padding: "10px" }}
-                />
+                <img src="../image/shield/3_star_shield-removebg-preview.png" alt="" width="125" height="125" style={{ padding: "10px" }} />
                 <div>
                     <p>
                         Assessed Threat Level: <b>Medium</b>
                     </p>
                     <p>
-                        The following vulnerabilities are ranked by Tenable's patented Vulnerability Priority Rating
-                        (VPR) system.The findings listed below detail the top ten vulnerabilities,providing a
-                        prioritized view to help guide remediation to effectively reduce risk. Click on each finding to
-                        show further details along with the impacted hosts. To learn more about Tenabl's VPR scoring
-                        system, See Predictive Prioritization.
+                        The following vulnerabilities are ranked by Tenable's patented Vulnerability Priority Rating (VPR) system.The findings listed
+                        below detail the top ten vulnerabilities,providing a prioritized view to help guide remediation to effectively reduce risk.
+                        Click on each finding to show further details along with the impacted hosts. To learn more about Tenabl's VPR scoring system,
+                        See Predictive Prioritization.
                     </p>
                 </div>
             </div>
@@ -135,9 +128,7 @@ class ProjectThreats extends React.Component {
                         serverity: element.info.severityholder.severity,
                         name: element.info.name,
                         score:
-                            element.info.classification && element.info.classification.cvssscore > 0
-                                ? element.info.classification.cvssscore
-                                : "N/A",
+                            element.info.classification && element.info.classification.cvssscore > 0 ? element.info.classification.cvssscore : "N/A",
                         count: 1,
                     });
                     indexid++;

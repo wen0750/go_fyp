@@ -319,8 +319,7 @@ const opts = {
                 {
                     code: 100,
                     label: "Continue",
-                    description:
-                        "The server has received the request headers and the client should proceed to send the request body.",
+                    description: "The server has received the request headers and the client should proceed to send the request body.",
                 },
                 {
                     code: 101,
@@ -372,20 +371,17 @@ const opts = {
                 {
                     code: 500,
                     label: "Internal Server Error",
-                    description:
-                        "A generic error message indicating that the server encountered an unexpected condition.",
+                    description: "A generic error message indicating that the server encountered an unexpected condition.",
                 },
                 {
                     code: 502,
                     label: "Bad Gateway",
-                    description:
-                        "The server received an invalid response from an upstream server while processing the request.",
+                    description: "The server received an invalid response from an upstream server while processing the request.",
                 },
                 {
                     code: 503,
                     label: "Service Unavailable",
-                    description:
-                        "The server is currently unable to handle the request due to temporary overloading or maintenance.",
+                    description: "The server is currently unable to handle the request due to temporary overloading or maintenance.",
                 },
             ],
             condition: "or",
@@ -407,7 +403,8 @@ const opts = {
         },
         {
             label: "regex",
-            description: "Regex contains Regular Expression patterns required to be present in the response part. \n\n Example \n # Match for Linkerd Service via Regex \n\n regex - (?mi)^Via\\s*?:.*?linkerd.*$ \n\n # Match for Open Redirect via Location header \n\n regex:- (?m)^(?:Location\\s*?:\\s*?)(?:https?://|//)?(?:[a-zA-Z0-9\\-_\\.@]*)example\\.com.*$",
+            description:
+                "Regex contains Regular Expression patterns required to be present in the response part. \n\n Example \n # Match for Linkerd Service via Regex \n\n regex - (?mi)^Via\\s*?:.*?linkerd.*$ \n\n # Match for Open Redirect via Location header \n\n regex:- (?m)^(?:Location\\s*?:\\s*?)(?:https?://|//)?(?:[a-zA-Z0-9\\-_\\.@]*)example\\.com.*$",
             link: "https://docs.projectdiscovery.io/templates/reference/extractors#kval-extractor",
             valueOption: [],
             condition: "or",
@@ -419,7 +416,8 @@ const opts = {
         },
         {
             label: "dsl",
-            description: "Complex matchers of type dsl allows building more elaborate expressions with helper functions. These function allow access to Protocol Response which contains variety of data based on each protocol. See protocol specific documentation to learn about different returned results. \n\n Example: \n len(body)<1024 && status_code==200 \n#Body length less than 1024 and 200 status code \n\ncontains(toupper(body), md5(cookie)) \n# Check if the MD5 sum of cookies is contained in the uppercase body",
+            description:
+                "Complex matchers of type dsl allows building more elaborate expressions with helper functions. These function allow access to Protocol Response which contains variety of data based on each protocol. See protocol specific documentation to learn about different returned results. \n\n Example: \n len(body)<1024 && status_code==200 \n#Body length less than 1024 and 200 status code \n\ncontains(toupper(body), md5(cookie)) \n# Check if the MD5 sum of cookies is contained in the uppercase body",
             valueOption: [],
             condition: "or",
             conditionOptions: ["and", "or"],
@@ -465,7 +463,8 @@ const opts = {
     extractors_opts: [
         {
             label: "regex",
-            description: "Regex contains Regular Expression patterns required to be present in the response part. \n\n Example \n # Match for Linkerd Service via Regex \n\n regex - (?mi)^Via\\s*?:.*?linkerd.*$ \n\n # Match for Open Redirect via Location header \n\n regex:- (?m)^(?:Location\\s*?:\\s*?)(?:https?://|//)?(?:[a-zA-Z0-9\\-_\\.@]*)example\\.com.*$",
+            description:
+                "Regex contains Regular Expression patterns required to be present in the response part. \n\n Example \n # Match for Linkerd Service via Regex \n\n regex - (?mi)^Via\\s*?:.*?linkerd.*$ \n\n # Match for Open Redirect via Location header \n\n regex:- (?m)^(?:Location\\s*?:\\s*?)(?:https?://|//)?(?:[a-zA-Z0-9\\-_\\.@]*)example\\.com.*$",
             link: "https://docs.projectdiscovery.io/templates/reference/extractors#kval-extractor",
             valueOption: [],
             part: "",
@@ -476,7 +475,8 @@ const opts = {
         },
         {
             label: "dsl",
-            description: "Complex matchers of type dsl allows building more elaborate expressions with helper functions. These function allow access to Protocol Response which contains variety of data based on each protocol. See protocol specific documentation to learn about different returned results. \n\n Example: \n len(body)<1024 && status_code==200 \n#Body length less than 1024 and 200 status code \n\ncontains(toupper(body), md5(cookie)) \n# Check if the MD5 sum of cookies is contained in the uppercase body",
+            description:
+                "Complex matchers of type dsl allows building more elaborate expressions with helper functions. These function allow access to Protocol Response which contains variety of data based on each protocol. See protocol specific documentation to learn about different returned results. \n\n Example: \n len(body)<1024 && status_code==200 \n#Body length less than 1024 and 200 status code \n\ncontains(toupper(body), md5(cookie)) \n# Check if the MD5 sum of cookies is contained in the uppercase body",
             link: "https://docs.projectdiscovery.io/templates/reference/extractors#kval-extractor",
             valueOption: [],
             part: "",
@@ -498,8 +498,9 @@ const opts = {
         },
         {
             label: "kval",
-            description: "Extract key: value/key=value formatted data from Response Header/Cookie \n\n A kval extractor example to extract content-type header from HTTP Response. \n\n kval:content_type",
-            link:"https://docs.projectdiscovery.io/templates/reference/extractors#kval-extractor",
+            description:
+                "Extract key: value/key=value formatted data from Response Header/Cookie \n\n A kval extractor example to extract content-type header from HTTP Response. \n\n kval:content_type",
+            link: "https://docs.projectdiscovery.io/templates/reference/extractors#kval-extractor",
             valueOption: [],
             part: "",
             group: "",

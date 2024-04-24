@@ -117,11 +117,7 @@ export default class EditorAction extends React.Component {
                         "This is the <strong>UID</strong> in the Database, you can save it for later search";
                 } else {
                     title = "Template Updated Successfully";
-                    htmlContent =
-                        "<strong>Template Name:</strong> " +
-                        data.id +
-                        "<br>" +
-                        "It is updated in the Database, you can check it anytime";
+                    htmlContent = "<strong>Template Name:</strong> " + data.id + "<br>" + "It is updated in the Database, you can check it anytime";
                 }
 
                 // Show a message box to let the user know the Inserted ID
